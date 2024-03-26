@@ -3,26 +3,22 @@
 <mapper namespace="mapper.Member">
 
 	<!-- 회원 정보 생성 -->
-	<insert id="insertMember" parameterType="com.javateam.healtyFoodProject.domain.MemberDTO">
+	<insert id="insertMember" parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		INSERT INTO member_tbl VALUES (
-		#{id},
-		#{password},
-		#{name},	
-		#{gender},
-		#{email},
-		#{mobile},
-		#{phone},
-		#{zip},
-		#{roadAddress},
-		#{jibunAddress},
-		#{detailAddress},
-		#{birthday},		
-		sysdate,
-		1)
+		#{MEMBER_EMAIL},
+		#{MEMBER_PW},
+		#{MEMBER_NICK},
+		#{MEMBER_MOBILE},
+		#{MEMBER_ZIP},
+		#{MEMBER_ADDRESS_1},
+		#{MEMBER_ADDRESS_2},
+		,
+		,
+		)
 	</insert>
 	  
 	<!-- 회원 정보 롤(role) 생성 -->
-	<insert id="insertRole" parameterType="com.javateam.healtyFoodProject.domain.Role">
+	<insert id="insertRole" parameterType="com.javateam.healthyFoodProject.domain.Role">
 		INSERT INTO user_roles VALUES (
 		user_roles_seq.nextval,
 		#{username},
@@ -36,7 +32,7 @@
 	
 	<!-- 회원 정보 조회 -->
 	<select id="selectMember" parameterType="String"
-		    resultType="com.javateam.healtyFoodProject.domain.MemberDTO">
+		    resultType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		SELECT 
 		id,
 		password,
@@ -68,7 +64,7 @@
 	<!-- 동적 SQL 추가(조거/선택적 update)
 	     동적 SQL : https://mybatis.org/mybatis-3/ko/dynamic-sql.html#trim-where-set -->
 	<update id="updateMember" 
-			parameterType="com.javateam.healtyFoodProject.domain.MemberDTO">
+			parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		UPDATE member_tbl
 		<set>
 			<if test="password != null">password = #{password},</if>
@@ -90,7 +86,7 @@
 	
 	<!-- 전체 회원 정보 조회 (페이징) -->
 	<select id="selectMembersByPaging" parameterType="map" 
-			resultType="com.javateam.healtyFoodProject.domain.MemberDTO">
+			resultType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		SELECT  id,
 				password,
 				name,	

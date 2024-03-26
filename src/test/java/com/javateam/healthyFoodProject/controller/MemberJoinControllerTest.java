@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.javateam.healtyFoodProject.domain.MemberDTO;
+import com.javateam.healthyFoodProject.domain.MemberDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

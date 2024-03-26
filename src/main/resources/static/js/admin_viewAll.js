@@ -100,7 +100,7 @@ window.onload = function() {
 			// 메시지
 			let msg = "";
 			 
-			axios.get(`/healtyFoodProject/member/updateRoles/${id}/roleUser/${roleUser.checked}/roleAdmin/${roleAdmin.checked}`)
+			axios.get(`/healthyFoodProject/member/updateRoles/${id}/roleUser/${roleUser.checked}/roleAdmin/${roleAdmin.checked}`)
 				 .then(function(response) {
 					
 						let responseData = response.data;
@@ -173,7 +173,7 @@ window.onload = function() {
 			
 			console.log("회원 상태 변경 : ",  id, ', ', enabled);
 			
-			axios.get(`/healtyFoodProject/member/changeMemberState/${id}/${enabled}`)
+			axios.get(`/healthyFoodProject/member/changeMemberState/${id}/${enabled}`)
 				 .then(function(response) {
 					
 						console.log("response.data === true : ", response.data === true);
@@ -268,7 +268,7 @@ window.onload = function() {
 				// 휴대폰 중복 점검 플래그
 				let mobileDuplicatedCheckFlag = false;
 				
-				axios.get(`/healtyFoodProject/member/hasFldForUpdate/${id}/mobile/${mobileFld.value}`)
+				axios.get(`/healthyFoodProject/member/hasFldForUpdate/${id}/mobile/${mobileFld.value}`)
 				 .then(function(response) {
 					
 					mobileDuplicatedCheckFlag = response.data;
@@ -300,13 +300,13 @@ window.onload = function() {
 					
 					// 변경할 회원 정보 전송
 					// case-1
-					// axios.get(`/healtyFoodProject/member/updateMemberByAdmin/${id}/mobile/${mobileFld.value}`)
+					// axios.get(`/healthyFoodProject/member/updateMemberByAdmin/${id}/mobile/${mobileFld.value}`)
 					
 					// case-2
 					// post 방식
 					axios({
 							method : "post",
-							url : '/healtyFoodProject/member/updateMemberByAdmin',
+							url : '/healthyFoodProject/member/updateMemberByAdmin',
 							data : {
 								id : id,	
 								mobile : mobileFld.value
@@ -357,7 +357,7 @@ window.onload = function() {
 				
 				alert(`${id} 님의 회원 정보를 삭제하겠습니다.`);
 				
-				axios.get(`/healtyFoodProject/member/deleteMemberByAdmin/${id}`)
+				axios.get(`/healthyFoodProject/member/deleteMemberByAdmin/${id}`)
 				 .then(function(response) {
 					
 					console.log("response.data : ", response.data);

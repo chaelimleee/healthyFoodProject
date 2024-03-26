@@ -662,7 +662,7 @@ window.onload = () => {
 
 		if (idCheckFlag == true) {
 		 
-			axios.get(`/healtyFoodProject/member/hasFld/id/${idFld.value}`)
+			axios.get(`/healthyFoodProject/member/hasFld/id/${idFld.value}`)
 				 .then(function(response) {
 					
 					// console.log("서버 응답 : " + JSON.stringify(response));
@@ -705,7 +705,7 @@ window.onload = () => {
 		 
 		if (emailCheckFlag == true) {
 			
-			axios.get(`/healtyFoodProject/member/hasFld/email/${emailFld.value}`)
+			axios.get(`/healthyFoodProject/member/hasFld/email/${emailFld.value}`)
 				 .then(function(response) {
 					
 					emailDuplicatedCheckFlag = response.data;
@@ -743,7 +743,7 @@ window.onload = () => {
 		
 		if (mobileCheckFlag == true) {
 			 
-			axios.get(`/healtyFoodProject/member/hasFld/mobile/${mobileFld.value}`)
+			axios.get(`/healthyFoodProject/member/hasFld/mobile/${mobileFld.value}`)
 				 .then(function(response) {
 					
 					mobileDuplicatedCheckFlag = response.data;
