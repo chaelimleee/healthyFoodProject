@@ -83,21 +83,16 @@ public class MemberJoinControllerTest2 {
 		String joindate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
 		memberDTO = MemberDTO.builder()
-				  			 .id("mybatis1234")
-				  			 .password("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
-				  			 .name("지 유찬")
-				  			 .gender("m")
 				  			 .email("swim50m@abcd.com")
+				  			 .password("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
+				  			 .nick("지유찬")
 				  			 .mobile("010-1212-3434")
-				  			 .phone("02-888-9999")
 				  			 .zip("08290")
 				  			 .roadAddress("서울특별시 관악구 남부순환로 1633 (신림동)")
-				  			 .jibunAddress("서울특별시 관악구 신림동 1422-6")
 				  			 .detailAddress("이젠아카데미 신림점 별관 8층")
-				  			 .birthday(new SimpleDateFormat("yyyy-MM-dd").parse("2000-02-20"))
-				  			 .joindate(new SimpleDateFormat("yyyy-MM-dd").parse(joindate)) // NullPointerException 방지
-				  			 // .joindate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-26")) // NullPointerException 방지
-				  			 .enabled(0)
+				  			 .regDate(new SimpleDateFormat("yyyy-MM-dd").parse(joindate)) // NullPointerException 방지
+				  			 // .regDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-26")) // NullPointerException 방지
+				  			 .display(0)
 				  			 .build();
 	} //
 	

@@ -29,14 +29,11 @@ public class UpdateMemberTest {
 	public void setUp() throws ParseException {
 		
 		memberDTO = MemberDTO.builder()
-	  			 .id("abcd1234")
+	  			 .email("abcd1234")
 	  			 .password("$2a$10$lhx31tqVr9IDrG8NMrtdX.Q..cd1CDd4gRHPxaXZo47aJUOIdrZxK")
-	  			 .email("springjava@abcd.com")
 	  			 .mobile("010-7878-9090")
-	  			 .phone("02-1111-3333")
 	  			 .zip("08285")
 	  			 .roadAddress("서울 관악구 신림로 340")
-	  			 .jibunAddress("신림동 1422-5")
 	  			 .detailAddress("이젠아카데미 신림점 본관")
 	  			 .build();
 		

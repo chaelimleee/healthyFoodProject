@@ -96,7 +96,7 @@ public class MemberUpdateSessController {
 		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
 		
 		String id = customUser.getUsername();
-		memberUpdateDTO.setId(id);
+		memberUpdateDTO.setEmail(id);
 		
 		// 신규 패쓰워드가 공백이 아니라면 패쓰워드 변경
 		// 공백이면 패쓰워드 변경 의사가 없는 것으로 간주하여 기존 패쓰워드 그대로 사용
