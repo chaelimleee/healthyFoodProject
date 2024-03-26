@@ -168,7 +168,7 @@ public class BoardUpdateController {
 
 				// 기존 데이터의 삽입 이미지 목록(삽입 이미지 테이블(upload_file_tbl)의 PK(기본키)) 확보
 				//
-				// ex) 글내용중 이미지가 들어간 내용 ex) <img src="/memberProject/board/image/18" .....
+				// ex) 글내용중 이미지가 들어간 내용 ex) <img src="/healtyFoodProject/board/image/18" .....
 
 				List<Integer> defaultImgList = boardService.getImageList(defaultBoardVO.getBoardContent().trim(),
 						"/board/image/");
@@ -233,7 +233,7 @@ public class BoardUpdateController {
 						for (int imageId : deleteExpectedImgList) {
 							
 							// 삽입 이미지 테이블(upload_file_tbl)에서 저장경로/파일명 가져옴(file_path 필드)
-							// D:/lsh/works/spring_member/memberProject/upload/image/2024/03/12/a92e1a28f7e746b39afe7e83eb97a5d2.jpg
+							// D:/lsh/works/spring_member/healtyFoodProject/upload/image/2024/03/12/a92e1a28f7e746b39afe7e83eb97a5d2.jpg
 							UploadFile uploadFile = imageService.load(imageId); // 삭제할 이미지 파일 경로 확보 :
 																				// uploadFile.getFilePath()
 							// 삽입 이미지 삭제 삭제

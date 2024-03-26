@@ -1,4 +1,4 @@
-package com.javateam.memberProject.dao;
+package com.javateam.healthyFoodProject.dao;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -27,7 +27,7 @@ public class FileUploadService {
 	// spring.servlet.multipart.max-file-size
 	
 	// application.properties 파일 경로 정보 읽어오기 & 의존성 주입
-    // fileUpload.path=D:/lsh/works/spring_member/memberProject/upload/ 등록/읽어오기
+    // fileUpload.path=D:/lsh/works/spring_member/healtyFoodProject/upload/ 등록/읽어오기
 	@Autowired
 	// public FileUploadService(@Value("${fileUpload.path}") String uploadPath) {
 	public FileUploadService(@Value("${fileUpload.path}") String uploadPath,
@@ -187,7 +187,7 @@ public class FileUploadService {
 	 * 삽입 이미지 파일 삭제 서비스
 	 *
 	 * @param encodingFilename 업로드된 파일 경로 + 파일명  
-	 *     ex) D:/lsh/works/spring_member/memberProject/upload/image/2024/03/12/a92e1a28f7e746b39afe7e83eb97a5d2.jpg
+	 *     ex) D:/lsh/works/spring_member/healtyFoodProject/upload/image/2024/03/12/a92e1a28f7e746b39afe7e83eb97a5d2.jpg
 	 * @return 삭제 결과 메시지
 	 */
 	public String deleteImageFile(String encodingFilename) {

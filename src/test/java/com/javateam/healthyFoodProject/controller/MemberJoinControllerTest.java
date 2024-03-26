@@ -1,4 +1,4 @@
-package com.javateam.memberProject.controller;
+package com.javateam.healthyFoodProject.controller;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

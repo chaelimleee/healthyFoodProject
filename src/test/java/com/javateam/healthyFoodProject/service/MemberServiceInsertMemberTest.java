@@ -1,4 +1,4 @@
-package com.javateam.memberProject.service;
+package com.javateam.healthyFoodProject.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 

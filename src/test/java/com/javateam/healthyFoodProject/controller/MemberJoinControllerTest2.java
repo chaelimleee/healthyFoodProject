@@ -1,4 +1,4 @@
-package com.javateam.memberProject.controller;
+package com.javateam.healthyFoodProject.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;

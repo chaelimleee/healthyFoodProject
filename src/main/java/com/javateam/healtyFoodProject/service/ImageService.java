@@ -27,7 +27,7 @@ public class ImageService {
     private final Path rootLocation;
     
     // application.properties 파일 경로 정보
-    // imageUpload.path=D:/lsh/works/spring_member/memberProject/upload/image/ 등록/읽어오기 
+    // imageUpload.path=D:/lsh/works/spring_member/healtyFoodProject/upload/image/ 등록/읽어오기 
     @Autowired
     public ImageService(@Value("${imageUpload.path}") String uploadPath) {
        
