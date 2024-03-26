@@ -34,25 +34,16 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberDTO {
 	
 	/** 회원 아이디 */
-	private String id;
+	private String email;
 	
 	/** 회원 패쓰워드 */
 	private String password;
 	
-	/** 회원 이름 */
-	private String name;
+	/** 회원 별명 */
+	private String nick;
 	
-	/** 회원 성별 */
-	private String gender;
-	
-	/** 회원 이메일 */
-	private String email;
-	
-	/** 회원 연락처(휴대폰) */
+	/** 회원 휴대전화 */
 	private String mobile;
-	
-	/** 회원 연락처(지역전화) */
-	private String phone;
 	
 	/** 회원 우편번호 */
 	private String zip;
@@ -60,22 +51,15 @@ public class MemberDTO {
 	/** 회원 도로명 주소 */
 	private String roadAddress;
 	
-	/** 회원 지번 주소 */
-	private String jibunAddress;
-	
 	/** 회원 상세 주소 */
 	private String detailAddress;
 	
-	/** 회원 생일 */
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date birthday;
-	
 	/** 회원 가입일 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date joindate;
+	private Date regDate;
 	
 	/** 회원 활성화 여부 */
-	private int enabled;
+	private int display;
 	
 	
 	

@@ -64,18 +64,13 @@ public class MemberJoinControllerTest {
 //					.build();
 		
 		memberDTO = MemberDTO.builder()
-				  			 .id("mybatis1234")
+				  			 .email("swim50m@abcd.com\"")
 				  			 .password("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
-				  			 .name("지 유찬")
-				  			 .gender("m")
-				  			 .email("swim50m@abcd.com")
-				  			 .mobile("010-1000-2023")
-				  			 .phone("02-888-9999")
+				  			 .nick("지유찬")
+				  			 .mobile("01010002023")
 				  			 .zip("08290")
 				  			 .roadAddress("서울특별시 관악구 남부순환로 1633 (신림동)")
-				  			 .jibunAddress("서울특별시 관악구 신림동 1422-6")
 				  			 .detailAddress("이젠아카데미 신림점 별관 8층")
-				  			 .birthday(new SimpleDateFormat("yyyy-MM-dd").parse("2000-01-01"))
 				  			 .build();
 	} //
 	
