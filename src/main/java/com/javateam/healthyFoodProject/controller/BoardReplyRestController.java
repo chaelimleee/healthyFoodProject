@@ -51,7 +51,7 @@ public class BoardReplyRestController {
 			//
 			// 주의사항) 
 			// 여기서 댓글의 고유 아이디는 DB를 통해서 생성되므로 원글의 아이디(boardNum)는 다른 필드에 입력됩니다.
-			boardVO.setBoardWriter(map.get("boardWriter").toString());
+			boardVO.setMemberNick(map.get("boardWriter").toString());
 			boardVO.setBoardPass(map.get("boardPass").toString());
 			boardVO.setBoardSubject("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());

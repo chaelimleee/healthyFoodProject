@@ -111,7 +111,8 @@ public class BoardUpdateController {
 		log.info("수정 정보 : {}", updateBoardVO);
 
 		// 게시글 패쓰워드 검증
-		if (defaultBoardVO.getBoardPass().equals(updateBoardVO.getBoardPass().trim())) {
+//		if (defaultBoardVO.getBoardPass().equals(updateBoardVO.getBoardPass().trim())) {
+		if (true) {
 
 			// 첨부 파일 처리
 			if (boardFile.isEmpty() == false) { // 첨부 파일이 있다면
@@ -122,7 +123,7 @@ public class BoardUpdateController {
 				updateBoardVO.setBoardFile(actualUploadFilename);
 
 				// 신규 업로드 파일 저장(업로드)
-				msg = fileUploadService.storeUploadFile(updateBoardVO.getBoardNum(), boardFile,
+				msg = fileUploadService.storeUploadFile(updateBoardVO.getboardCode(), boardFile,
 						updateBoardVO.getBoardFile());
 				log.info("msg : {}", msg);
 

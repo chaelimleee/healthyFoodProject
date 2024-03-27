@@ -80,7 +80,7 @@ public class BoardController {
 			boardVO.setBoardFile(actualUploadFilename);
 
 			// 첨부 파일이 있을 때만 저장
-			msg = fileUPloadService.storeUploadFile(boardVO.getBoardNum(), boardFile, boardVO.getBoardFile());
+			msg = fileUPloadService.storeUploadFile(boardVO.getboardCode(), boardFile, boardVO.getBoardFile());
 			log.info("msg : {}", msg);
 		} 
 		

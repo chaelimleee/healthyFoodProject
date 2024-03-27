@@ -281,6 +281,78 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	}
 
 	
+	public int getBoardCode() {
+		return boardCode;
+	}
+
+	public void setBoardCode(int boardCode) {
+		this.boardCode = boardCode;
+	}
+
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+
+	public String getMemberNick() {
+		return memberNick;
+	}
+
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
+
+	public String getMemberImg() {
+		return memberImg;
+	}
+
+	public void setMemberImg(String memberImg) {
+		this.memberImg = memberImg;
+	}
+
+	public String getBoardOrigin() {
+		return boardOrigin;
+	}
+
+	public void setBoardOrigin(String boardOrigin) {
+		this.boardOrigin = boardOrigin;
+	}
+
+	public String getBoardTitle() {
+		return boardTitle;
+	}
+
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
+	}
+
+	public String getBoardImg() {
+		return boardImg;
+	}
+
+	public void setBoardImg(String boardImg) {
+		this.boardImg = boardImg;
+	}
+
+	public String getBoardImgOrigin() {
+		return boardImgOrigin;
+	}
+
+	public void setBoardImgOrigin(String boardImgOrigin) {
+		this.boardImgOrigin = boardImgOrigin;
+	}
+
+	public int getBoardDisplay() {
+		return boardDisplay;
+	}
+
+	public void setBoardDisplay(int boardDisplay) {
+		this.boardDisplay = boardDisplay;
+	}
+
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용
 	@Override
 	public boolean equals(Object obj) {
