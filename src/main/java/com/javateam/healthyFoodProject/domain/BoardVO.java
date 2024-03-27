@@ -52,13 +52,25 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Column(name = "BOARD_CODE") 
 	private int boardCode; 
 	
-	/** 게시글 작성자 아이디*/
+	/** 게시글 작성자 이메일 아이디*/
 	@Column(name = "MEMBER_EMAIL")
 	private String memberEmail; 
+	
+	/** 게시글 작성자 별명*/
+	@Column(name = "MEMBER_NICK")
+	private String memberNick; 
+
+	/** 게시글 작성자 이미지*/
+	@Column(name = "MERBER_IMG")
+	private String memberImg; 
 	
 	/** 원게시글 번호 */
 	@Column(name = "BOARD_ORIGIN")
 	private String boardOrigin; 
+	
+	/** 게시글 답글 순서 */
+	@Column(name = "board_re_seq")
+	private int boardReSeq; 
 	
 	/** 게시글 제목 */
 	@Column(name = "BOARD_TITLE")
@@ -76,42 +88,36 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Column(name = "BOARD_IMG_ORIGIN")
 	private String boardImgOrigin; 
 	
-	/** 첨부 파일(원래 파일명) */
-	@Column(name = "BOARD_ORIGINNAL_FILE") //----DB 추가해야함 ----/0326_LEE
-	private String boardOriginalFile; 
-	
 	/** 첨부 파일(인코딩된 파일명) */
 	@Column(name = "BOARD_FILE") //----DB 추가해야함 ----/0326_LEE
 	private String boardFile; 
+	
+	/** 첨부 파일(원래 파일명) */
+	@Column(name = "BOARD_ORIGINNAL_FILE") //----DB 추가해야함 ----/0326_LEE
+	private String boardOriginalFile; 
 	
 	/** 게시글 등록일 */
 	@CreationTimestamp // 작성 날짜(기본값) 생성
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") // JSON 변환시 "년월일 및 시분초"까지 모두 출력 
 	@Column(name = "BOARD_DATE")
-	private int boardDate; 
+	private Date boardDate; 
 	
+	/** 게시글 조회수 */
+	@Column(name = "BOARD_READ_COUNT")
+	private int boardReadCount = 0; 
+
 	/** 활성화 여부 */
 	@Column(name = "BOARD_DISPLAY")
 	private int boardDisplay; 
-	
-	//---- 추가 할 것인지. ----/0326_LEE
-	/** 게시글 답글 순서 */
-//	@Column(name = "board_re_seq")
-	private int boardReSeq; 
-	
-	//---- 추가 할 것인지. ----/0326_LEE
-	/** 게시글 조회수 */
-//	@Column(name = "board_readcount")
-	private int boardReadCount = 0; 
 	
 	public BoardVO() {}
 	
 	// BoardDTO -> BoardVO
     public BoardVO(BoardDTO board) {
         
-        this.boardCode = board.getboardCode();
-        this.memberEmail = board.getmemberEmail();
-        this.boardTitle = board.getboardTitle();
+        this.boardCode = board.getBoardCode();
+        this.memberEmail = board.getMemberEmail();
+        this.boardTitle = board.getBoardTitle();
         this.boardContent = board.getBoardContent();
         this.boardOriginalFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         this.boardFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
@@ -120,8 +126,6 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         this.boardFile = board.getBoardFile().getOriginalFilename().trim().equals("") ?
         		"" : FileUploadUtil.encodeFilename(board.getBoardFile().getOriginalFilename());
         		
-        this.boardReRef = board.getBoardReRef();
-        this.boardReLev = board.getBoardReLev();
         this.boardReSeq = board.getBoardReSeq();
         this.boardReadCount = board.getBoardReadCount();
         this.boardDate = board.getBoardDate();
@@ -138,8 +142,6 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         this.boardContent = (String)map.get("boardContent");
         this.boardOriginalFile = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
         // this.boardFile = (MultipartFile)map.get("boardFile") == null ? "" : ((MultipartFile)map.get("boardFile")).getOriginalFilename(); // 파일명 저장
-        this.boardReRef = Integer.parseInt(map.get("boardReRef").toString());
-        this.boardReLev = Integer.parseInt(map.get("boardReLev").toString());
         this.boardReSeq = Integer.parseInt(map.get("boardReSeq").toString());
         // this.boardReadCount = Integer.parseInt(map.get("boardReadCount").toString()); // 조회수 제외
         this.boardDate = (Date)map.get("boardDate");
@@ -175,8 +177,6 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 
         ////////////////////////////////////////////////////////
         
-        this.boardReRef = map.get("boardReRef") == null ? 0 : Integer.parseInt(map.get("boardReRef").toString());
-        this.boardReLev = map.get("boardReLev") == null ? 0 : Integer.parseInt(map.get("boardReLev").toString());
         this.boardReSeq = map.get("boardReSeq") == null ? 0 : Integer.parseInt(map.get("boardReSeq").toString());
         this.boardDate = (Date)map.get("boardDate");
     }
@@ -229,22 +229,6 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		this.boardFile = boardFile;
 	}
 
-	public int getBoardReRef() {
-		return boardReRef;
-	}
-
-	public void setBoardReRef(int boardReRef) {
-		this.boardReRef = boardReRef;
-	}
-
-	public int getBoardReLev() {
-		return boardReLev;
-	}
-
-	public void setBoardReLev(int boardReLev) {
-		this.boardReLev = boardReLev;
-	}
-
 	public int getBoardReSeq() {
 		return boardReSeq;
 	}
@@ -273,10 +257,9 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("BoardVO [boardCode=").append(boardCode).append(", memberEmail=").append(memberEmail)
-				.append(", boardPass=").append(boardPass).append(", boardTitle=").append(boardTitle)
+				.append(", boardPass=").append(", boardTitle=").append(boardTitle)
 				.append(", boardContent=").append(boardContent).append(", boardOriginalFile=").append(boardOriginalFile)
-				.append(", boardFile=").append(boardFile).append(", boardReRef=").append(boardReRef)
-				.append(", boardReLev=").append(boardReLev).append(", boardReSeq=").append(boardReSeq)
+				.append(", boardFile=").append(boardFile).append(", boardReSeq=").append(boardReSeq)
 				.append(", boardReadCount=").append(boardReadCount).append(", boardDate=").append(boardDate)
 				.append("]");
 		return builder.toString();
@@ -292,7 +275,6 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		result = prime * result + ((boardFile == null) ? 0 : boardFile.hashCode());
 		result = prime * result + boardCode;
 		result = prime * result + ((boardOriginalFile == null) ? 0 : boardOriginalFile.hashCode());
-		result = prime * result + ((boardPass == null) ? 0 : boardPass.hashCode());
 		result = prime * result + ((boardTitle == null) ? 0 : boardTitle.hashCode());
 		result = prime * result + ((memberEmail == null) ? 0 : memberEmail.hashCode());
 		return result;
