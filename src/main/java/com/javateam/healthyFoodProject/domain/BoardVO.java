@@ -52,7 +52,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Column(name = "BOARD_CODE") 
 	private int boardCode; 
 	
-	/** 게시글 작성자 */
+	/** 게시글 작성자 아이디*/
 	@Column(name = "MEMBER_EMAIL")
 	private String memberEmail; 
 	
