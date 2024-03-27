@@ -49,64 +49,69 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 			sequenceName = "board_seq",
 			initialValue = 1,
 			allocationSize = 1)
-	@Column(name = "board_num") 
-	private int boardNum; 
+	@Column(name = "BOARD_CODE") 
+	private int boardCode; 
 	
 	/** 게시글 작성자 */
-	@Column(name = "board_writer")
-	private String boardWriter; 
+	@Column(name = "MEMBER_EMAIL")
+	private String memberEmail; 
 	
-	/** 게시글 비밀번호 */
-	@Column(name = "board_pass")
-	private String boardPass; 
+	/** 원게시글 번호 */
+	@Column(name = "BOARD_ORIGIN")
+	private String boardOrigin; 
 	
 	/** 게시글 제목 */
-	@Column(name = "board_subject")
-	private String boardSubject; 
+	@Column(name = "BOARD_TITLE")
+	private String boardTitle; 
 	
 	/** 게시글 내용 */
-	@Column(name = "board_content")
+	@Column(name = "BOARD_CONTENT")
 	private String boardContent; 
 	
+	/** 게시글 썸네일 */
+	@Column(name = "BOARD_IMG")
+	private String boardImg; 
+	
+	/** 게시글 썸네일 원본 */
+	@Column(name = "BOARD_IMG_ORIGIN")
+	private String boardImgOrigin; 
+	
 	/** 첨부 파일(원래 파일명) */
-	@Column(name = "board_original_file")
+	@Column(name = "BOARD_ORIGINNAL_FILE") //----DB 추가해야함 ----/0326_LEE
 	private String boardOriginalFile; 
 	
 	/** 첨부 파일(인코딩된 파일명) */
-	@Column(name = "board_file")
+	@Column(name = "BOARD_FILE") //----DB 추가해야함 ----/0326_LEE
 	private String boardFile; 
 	
-	/** 게시글 답글의 원 게시글(관련글) 번호 */
-	@Column(name = "board_re_ref")
-	private int boardReRef; 
-	
-	/** 게시글 답글 레벨 */
-	@Column(name = "board_re_lev")
-	private int boardReLev; 
-	
-	/** 게시글 답글 순서 */
-	@Column(name = "board_re_seq")
-	private int boardReSeq; 
-	
-	/** 게시글 조회수 */
-	@Column(name = "board_readcount")
-	private int boardReadCount = 0; 
-	
-	/** 게시글 작성일자 */
-	@Column(name = "board_date")
+	/** 게시글 등록일 */
 	@CreationTimestamp // 작성 날짜(기본값) 생성
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss") // JSON 변환시 "년월일 및 시분초"까지 모두 출력 
-	private Date boardDate;
+	@Column(name = "BOARD_DATE")
+	private int boardDate; 
+	
+	/** 활성화 여부 */
+	@Column(name = "BOARD_DISPLAY")
+	private int boardDisplay; 
+	
+	//---- 추가 할 것인지. ----/0326_LEE
+	/** 게시글 답글 순서 */
+//	@Column(name = "board_re_seq")
+	private int boardReSeq; 
+	
+	//---- 추가 할 것인지. ----/0326_LEE
+	/** 게시글 조회수 */
+//	@Column(name = "board_readcount")
+	private int boardReadCount = 0; 
 	
 	public BoardVO() {}
 	
 	// BoardDTO -> BoardVO
     public BoardVO(BoardDTO board) {
         
-        this.boardNum = board.getBoardNum();
-        this.boardWriter = board.getBoardWriter();
-        this.boardPass = board.getBoardPass();
-        this.boardSubject = board.getBoardSubject();
+        this.boardCode = board.getboardCode();
+        this.memberEmail = board.getmemberEmail();
+        this.boardTitle = board.getboardTitle();
         this.boardContent = board.getBoardContent();
         this.boardOriginalFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         this.boardFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
@@ -127,10 +132,9 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 
     	log.info("BoardVO 오버로딩 생성자 : Map to VO");
     	
-    	this.boardNum = Integer.parseInt(map.get("boardNum").toString());
-        this.boardWriter = (String)map.get("boardWriter");
-        this.boardPass = (String)map.get("boardPass");
-        this.boardSubject = (String)map.get("boardSubject");
+    	this.boardCode = Integer.parseInt(map.get("boardCode").toString());
+        this.memberEmail = (String)map.get("memberEmail");
+        this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         this.boardOriginalFile = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
         // this.boardFile = (MultipartFile)map.get("boardFile") == null ? "" : ((MultipartFile)map.get("boardFile")).getOriginalFilename(); // 파일명 저장
@@ -148,12 +152,11 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
     	log.info("BoardVO 오버로딩 생성자 : Map to VO");
     	
     	// 교정 : 2024.3
-    	// this.boardNum = Integer.parseInt(map.get("boardNum").toString());
-    	this.boardNum = map.get("boardNum") == null ? 0 : Integer.parseInt(map.get("boardNum").toString());
+    	// this.boardCode = Integer.parseInt(map.get("boardCode").toString());
+    	this.boardCode = map.get("boardCode") == null ? 0 : Integer.parseInt(map.get("boardCode").toString());
     	
-        this.boardWriter = (String)map.get("boardWriter");
-        this.boardPass = (String)map.get("boardPass");
-        this.boardSubject = (String)map.get("boardSubject");
+        this.memberEmail = (String)map.get("memberEmail");
+        this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         
         ////////////////////////////////////////////////////////
@@ -178,36 +181,28 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         this.boardDate = (Date)map.get("boardDate");
     }
     
-	public int getBoardNum() {
-		return boardNum;
+	public int getboardCode() {
+		return boardCode;
 	}
 
-	public void setBoardNum(int boardNum) {
-		this.boardNum = boardNum;
+	public void setboardCode(int boardCode) {
+		this.boardCode = boardCode;
 	}
 
-	public String getBoardWriter() {
-		return boardWriter;
+	public String getmemberEmail() {
+		return memberEmail;
 	}
 
-	public void setBoardWriter(String boardWriter) {
-		this.boardWriter = boardWriter;
+	public void setmemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
 	}
 
-	public String getBoardPass() {
-		return boardPass;
+	public String getboardTitle() {
+		return boardTitle;
 	}
 
-	public void setBoardPass(String boardPass) {
-		this.boardPass = boardPass;
-	}
-
-	public String getBoardSubject() {
-		return boardSubject;
-	}
-
-	public void setBoardSubject(String boardSubject) {
-		this.boardSubject = boardSubject;
+	public void setboardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
 	}
 
 	public String getBoardContent() {
@@ -277,8 +272,8 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BoardVO [boardNum=").append(boardNum).append(", boardWriter=").append(boardWriter)
-				.append(", boardPass=").append(boardPass).append(", boardSubject=").append(boardSubject)
+		builder.append("BoardVO [boardCode=").append(boardCode).append(", memberEmail=").append(memberEmail)
+				.append(", boardPass=").append(boardPass).append(", boardTitle=").append(boardTitle)
 				.append(", boardContent=").append(boardContent).append(", boardOriginalFile=").append(boardOriginalFile)
 				.append(", boardFile=").append(boardFile).append(", boardReRef=").append(boardReRef)
 				.append(", boardReLev=").append(boardReLev).append(", boardReSeq=").append(boardReSeq)
@@ -295,11 +290,11 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		int result = 1;
 		result = prime * result + ((boardContent == null) ? 0 : boardContent.hashCode());
 		result = prime * result + ((boardFile == null) ? 0 : boardFile.hashCode());
-		result = prime * result + boardNum;
+		result = prime * result + boardCode;
 		result = prime * result + ((boardOriginalFile == null) ? 0 : boardOriginalFile.hashCode());
 		result = prime * result + ((boardPass == null) ? 0 : boardPass.hashCode());
-		result = prime * result + ((boardSubject == null) ? 0 : boardSubject.hashCode());
-		result = prime * result + ((boardWriter == null) ? 0 : boardWriter.hashCode());
+		result = prime * result + ((boardTitle == null) ? 0 : boardTitle.hashCode());
+		result = prime * result + ((memberEmail == null) ? 0 : memberEmail.hashCode());
 		return result;
 	}
 
@@ -332,7 +327,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		} else if (!boardFile.equals(other.boardFile)) {
 			return false;
 		}
-		if (boardNum != other.boardNum) {
+		if (boardCode != other.boardCode) {
 			return false;
 		}
 		if (boardOriginalFile == null) {
@@ -343,25 +338,18 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 			return false;
 		} 
 		
-		if (boardPass == null) {
-			if (other.boardPass != null) {
+		if (boardTitle == null) {
+			if (other.boardTitle != null) {
 				return false;
 			}
-		} else if (!boardPass.equals(other.boardPass)) {
+		} else if (!boardTitle.equals(other.boardTitle)) {
 			return false;
 		}
-		if (boardSubject == null) {
-			if (other.boardSubject != null) {
+		if (memberEmail == null) {
+			if (other.memberEmail != null) {
 				return false;
 			}
-		} else if (!boardSubject.equals(other.boardSubject)) {
-			return false;
-		}
-		if (boardWriter == null) {
-			if (other.boardWriter != null) {
-				return false;
-			}
-		} else if (!boardWriter.equals(other.boardWriter)) {
+		} else if (!memberEmail.equals(other.memberEmail)) {
 			return false;
 		}
 		return true;
