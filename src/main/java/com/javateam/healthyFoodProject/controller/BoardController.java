@@ -57,7 +57,7 @@ public class BoardController {
 	} // 
 	
 	// DTO 대신 Map 형태의 인자 수신 
-	@PostMapping("/writeProc.do")
+	@PostMapping("/writeProc.do") 
 	public String writeProc(@RequestParam Map<String, Object> map, 
 							@RequestPart(value="boardFile") MultipartFile boardFile, 
 							Model model) {
