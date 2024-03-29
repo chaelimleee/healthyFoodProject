@@ -114,7 +114,7 @@ public class BoardController {
 		model.addAttribute("board", boardVO);
 		
 		// 조회할 때마다 조회수 갱신(+)
-		boardService.updateBoardReadcountByBoardNum(boardNum);
+		boardService.updateBoardReadcountByBoardCode(boardNum);
 		
 		return "/board/view";
 	}

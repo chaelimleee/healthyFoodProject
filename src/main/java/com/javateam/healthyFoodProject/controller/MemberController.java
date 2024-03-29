@@ -49,7 +49,7 @@ public class MemberController {
 		// TODO
 		// 패쓰워드 암호화
 		bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		memberDTO.setPassword(bCryptPasswordEncoder.encode(memberDTO.getPassword()));
+		memberDTO.setMemberPw(bCryptPasswordEncoder.encode(memberDTO.getMemberPw()));
 		boolean result = memberService.insertMemberRole(memberDTO);
 		
 		String msg = "";		
@@ -158,7 +158,7 @@ public class MemberController {
 			// 패쓰워드 암호화		
 			// 주의) 변경된 패쓰워드(password1 혹은 password2) => 암호화 => 기존 패쓰워드(password)에 대입
 			bCryptPasswordEncoder = new BCryptPasswordEncoder();
-			memberUpdateDTO.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword1()));				
+			memberUpdateDTO.setMemberPw(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword1()));				
 		}
 		
 		log.info("updateProc.do-1(암호화 이후) : {}", memberUpdateDTO);

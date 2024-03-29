@@ -51,12 +51,12 @@ public class BoardReplyRestController {
 			//
 			// 주의사항) 
 			// 여기서 댓글의 고유 아이디는 DB를 통해서 생성되므로 원글의 아이디(boardNum)는 다른 필드에 입력됩니다.
-			boardVO.setMemberNick(map.get("boardWriter").toString());
-			boardVO.setBoardPass(map.get("boardPass").toString());
-			boardVO.setBoardSubject("댓글");
+			boardVO.setMemberNick(map.get("memberNick").toString());
+//			boardVO.setBoardPass(map.get("boardPass").toString());
+//			boardVO.setBoardSubject("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());
-			boardVO.setBoardReRef(Integer.parseInt(map.get("boardNum").toString()));
-			boardVO.setBoardReLev(1);
+//			boardVO.setBoardReRef(Integer.parseInt(map.get("boardNum").toString()));
+//			boardVO.setBoardReLev(1);
 			
 			// 댓글의 현황을 보면서 댓글 시퀀스 결정
 			boardVO = boardService.insertBoard(boardVO);
@@ -66,7 +66,7 @@ public class BoardReplyRestController {
 			if (boardVO != null) {
 				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
-				replyList = boardService.selectReplysById(boardVO.getBoardReRef());				
+//				replyList = boardService.selectReplysById(boardVO.getBoardReRef());				
 				
 				// 댓글 등록 성공 : 성공 코드(200)
 				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
@@ -148,43 +148,43 @@ public class BoardReplyRestController {
 		try {
 			BoardVO boardVO = new BoardVO();
 			
-			int boardNum = Integer.parseInt(map.get("boardNum").toString());
+			int boardCode = Integer.parseInt(map.get("boardCode").toString());
 			
 			// 주의) 댓글 수정에서는 댓글의 아이디가 이미 등록시 발행이 되어 있으므로 댓글의 실제 아이디 !
-			boardVO.setBoardNum(boardNum);  
-			boardVO.setBoardWriter(map.get("boardWriter").toString());
-			boardVO.setBoardPass(map.get("boardPass").toString());
-			boardVO.setBoardSubject("댓글");
-			boardVO.setBoardReRef(Integer.parseInt(map.get("boardReRef").toString()));
+			boardVO.setBoardCode(boardCode);  
+			boardVO.setMemberEmail(map.get("memberEmail").toString());
+//			boardVO.setBoardPass(map.get("boardP/ass").toString());
+//			boardVO.setBoardSubject("댓글");
+//			boardVO.setBoardReRef(Integer.parseInt(map.get("boardReRef").toString()));
 			boardVO.setBoardContent(map.get("boardContent").toString());
-			boardVO.setBoardReLev(1);
+//			boardVO.setBoardReLev(1);
 			boardVO.setBoardDate(new Date(System.currentTimeMillis()));
 			
 			log.info("boardVO : {}", boardVO);
 			
-			// 패쓰워드 체크
-			String originalBoardPass = boardService.selectBoard(boardNum).getBoardPass();
-			
-			boolean isPass = map.get("boardPass").toString().equals(originalBoardPass) ? true : false;
-			
-			if (isPass == true) {
-				
-				boardVO = boardService.updateBoard(boardVO);
-				
-				log.info("--- result : {}", boardVO);
-				
-			} else { // 패쓰워드가 틀리면...
-				
-				log.error("게시글 패쓰워드 불일치");
-
-				// Http Status Code : 401
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-			} // 
+//			// 패쓰워드 체크
+//			String originalBoardPass = boardService.selectBoard(boardCode).getBoardPass();
+//			
+//			boolean isPass = map.get("boardPass").toString().equals(originalBoardPass) ? true : false;
+//			
+//			if (isPass == true) {
+//				
+//				boardVO = boardService.updateBoard(boardVO);
+//				
+//				log.info("--- result : {}", boardVO);
+//				
+//			} else { // 패쓰워드가 틀리면...
+//				
+//				log.error("게시글 패쓰워드 불일치");
+//
+//				// Http Status Code : 401
+//				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//			} // 
 			
 			if (boardVO != null) {
 				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
-				replyList = boardService.selectReplysById(boardVO.getBoardReRef());				
+//				replyList = boardService.selectReplysById(boardVO.getBoardReRef());				
 				
 				// 댓글 등록 성공 : 성공 코드(200)
 				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
@@ -229,47 +229,47 @@ public class BoardReplyRestController {
 		try {
 			
 			// 패쓰워드 체크
-			String originalBoardPass = boardService.selectBoard(boardNum).getBoardPass();
+//			String originalBoardPass = boardService.selectBoard(boardNum).getBoardPass();
 			
-			log.info("originalBoardPass : {}", originalBoardPass);
+//			log.info("originalBoardPass : {}", originalBoardPass);
+//			
+//			boolean isPass = boardPass.equals(originalBoardPass) ? true : false;
 			
-			boolean isPass = boardPass.equals(originalBoardPass) ? true : false;
-			
-			log.info("패스워드 일치 여부 : {}", isPass);
-			
-			boolean result = false; // 삭제 결과
-			
-			if (isPass == true) {
-				
-				result = boardService.deleteReplysById(boardNum);
-				
-			} else { // 패쓰워드가 틀리면...
-				
-				log.error("게시글 패쓰워드 불일치");
-
-				// Http Status Code : 401
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-			} // 
-			
-			log.info("삭제 결과 : {}", result);
-			
-			if (result == true) { // 삭제
-				
-				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
-				replyList = boardService.selectReplysById(originalBoardNum);				
-				
-				// 댓글 등록 성공 : 성공 코드(200)
-				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
-				
-				// 원글에 따른 전체 댓글 현황 목록(리스트) 리턴(클라리언트에 전송)
-				responseEntity = new ResponseEntity<>(replyList, HttpStatus.OK); 
-				
-			} else {
-				// 댓글 등록 실패 : 실패 코드(204)
-				// responseEntity = new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
-				responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-			}
-			
+//			log.info("패스워드 일치 여부 : {}", isPass);
+//			
+//			boolean result = false; // 삭제 결과
+//			
+//			if (isPass == true) {
+//				
+//				result = boardService.deleteReplysById(boardNum);
+//				
+//			} else { // 패쓰워드가 틀리면...
+//				
+//				log.error("게시글 패쓰워드 불일치");
+//
+//				// Http Status Code : 401
+//				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//			} // 
+//			
+//			log.info("삭제 결과 : {}", result);
+//			
+//			if (result == true) { // 삭제
+//				
+//				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
+//				replyList = boardService.selectReplysById(originalBoardNum);				
+//				
+//				// 댓글 등록 성공 : 성공 코드(200)
+//				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+//				
+//				// 원글에 따른 전체 댓글 현황 목록(리스트) 리턴(클라리언트에 전송)
+//				responseEntity = new ResponseEntity<>(replyList, HttpStatus.OK); 
+//				
+//			} else {
+//				// 댓글 등록 실패 : 실패 코드(204)
+//				// responseEntity = new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
+//				responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+//			}
+//			
 		} catch (Exception e) {
 			log.error("replyWrite error : {}", e);
 			e.printStackTrace();

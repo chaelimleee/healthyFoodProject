@@ -47,9 +47,9 @@ public class BoardUpdateController {
 	ImageStoreService imageStoreService;
 
 	@GetMapping("/update.do")
-	public String update(@RequestParam("boardNum") int boardNum, Model model, HttpSession session) {
+	public String update(@RequestParam("boardCode") int boardCode, Model model, HttpSession session) {
 
-		BoardVO boardVO = boardService.selectBoard(boardNum);
+		BoardVO boardVO = boardService.selectBoard(boardCode);
 		// BoardDTO boardDTO = new BoardDTO(boardVO);
 		// model.addAttribute("boardDTO", boardDTO);
 
@@ -93,10 +93,10 @@ public class BoardUpdateController {
 		// 수정에 실패했을 때는  글수정 화면으로 이동하고, 성공하였을 때는 개별 게시글 보기로 이동하도록 변경 
 		// 성공/실패에 따라 선택적으로 화면 이동하기 위해 변수 활용(movePage)
 		// 초기 기본값 변경
-		// String returnPath = "redirect:/board/view.do/" + map.get("boardNum").toString(); // 리턴(이동) 페이지
+		// String returnPath = "redirect:/board/view.do/" + map.get("boardCode").toString(); // 리턴(이동) 페이지
 		
 		String returnPath; // 글수정 "성공/실패" 모두 "/error/error"로 가도록 재설정
-		String movePage = "/board/update.do?boardNum=" + map.get("boardNum").toString(); // 리턴(이동) 페이지
+		String movePage = "/board/update.do?boardCode=" + map.get("boardCode").toString(); // 리턴(이동) 페이지
 		
 		String msg = ""; // 메시지
 
@@ -119,7 +119,7 @@ public class BoardUpdateController {
 
 				// 저장용 파일명 암호화
 				String actualUploadFilename = FileUploadUtil.encodeFilename(boardFile.getOriginalFilename());
-				updateBoardVO.setBoardOriginalFile(boardFile.getOriginalFilename());
+				updateBoardVO.setBoardFileOriginal(boardFile.getOriginalFilename());
 				updateBoardVO.setBoardFile(actualUploadFilename);
 
 				// 신규 업로드 파일 저장(업로드)
@@ -145,10 +145,10 @@ public class BoardUpdateController {
 				} else {
 				
 					// 기존 파일을 입력
-					String originalFilename = defaultBoardVO.getBoardOriginalFile() != null
-							? defaultBoardVO.getBoardOriginalFile()
+					String originalFilename = defaultBoardVO.getBoardFileOriginal() != null
+							? defaultBoardVO.getBoardFileOriginal()
 							: null;
-					updateBoardVO.setBoardOriginalFile(originalFilename);
+					updateBoardVO.setBoardFileOriginal(originalFilename);
 
 					String encBoardFilename = defaultBoardVO.getBoardFile() != null ? defaultBoardVO.getBoardFile() : null;
 					updateBoardVO.setBoardFile(encBoardFilename);
@@ -286,12 +286,8 @@ public class BoardUpdateController {
 				
 				// 수정에 실패했을 때는  글수정 화면으로 이동하고, 성공하였을 때는 개별 게시글 보기로 이동하도록 변경 
 				// 게시글 수정 성공후 개별 게시글 보기로 이동
-				movePage = "/board/view.do/" + map.get("boardNum").toString();
+				movePage = "/board/view.do/" + map.get("boardCode").toString();
 			} //
-
-		} else { // 패쓰워드 틀렸을 때
-
-			msg = "게시글 패쓰워드가 틀렸습니다. 다시 입력하십시오.";
 
 		} //
 
@@ -299,7 +295,7 @@ public class BoardUpdateController {
 
 		// 수정에 실패했을 때는  글수정 화면으로 이동하고, 성공하였을 때는 개별 게시글 보기로 이동하도록 변경 
 		// 초기값은 메서드 초기에 언급된 지역 변수에서 변경(movePage)
-		// model.addAttribute("movePage", "/board/update.do?boardNum=" + map.get("boardNum").toString());
+		// model.addAttribute("movePage", "/board/update.do?boardCode=" + map.get("boardCode").toString());
 		model.addAttribute("movePage", movePage);
 		returnPath = "/error/error"; // 에러 페이지로 이동
 
