@@ -54,7 +54,7 @@ public class BoardController {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
 		return "/board/write";
-	} //
+	} // 
 	
 	// DTO 대신 Map 형태의 인자 수신 
 	@PostMapping("/writeProc.do")
