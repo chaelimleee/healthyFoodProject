@@ -24,23 +24,18 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 
 	public MemberUpdateDTO(MemberDTO memberDTO) {
 
-		this.setEmail(memberDTO.getEmail());
-		this.setPassword(memberDTO.getPassword());
-		this.setNick(memberDTO.getNick());
-		this.setMobile(memberDTO.getMobile());
-		this.setZip(memberDTO.getZip());
-		this.setRoadAddress(memberDTO.getRoadAddress());
-		this.setDetailAddress(memberDTO.getDetailAddress());
+		this.setMemberEmail(memberDTO.getMemberEmail());
+		this.setMemberPw(memberDTO.getMemberPw());
+		this.setMemberNick(memberDTO.getMemberNick());
+		this.setMemberMobile(memberDTO.getMemberMobile());
+		this.setMemberZip(memberDTO.getMemberZip());
+		this.setMemberAddress1(memberDTO.getMemberAddress1());
+		this.setMemberAddress2(memberDTO.getMemberAddress2());
 		this.setRegDate(memberDTO.getRegDate());
-		this.setDisplay(memberDTO.getDisplay());
+		this.setMemberRole(memberDTO.getMemberRole());
+		this.setMemberDisplay(memberDTO.getMemberDisplay());
 	}
 
-	@Override
-	public String toString() {
-		return "MemberUpdateDTO [password1=" + password1 + ", password2=" + password2 + ", getEmail()=" + getEmail()
-				+ ", getPassword()=" + getPassword() + ", getNick()=" + getNick() + ", getMobile()=" + getMobile()
-				+ ", getZip()=" + getZip() + ", getRoadAddress()=" + getRoadAddress() + "getDetailAddress()="
-				+ getDetailAddress() + ", getRegDate()=" + getRegDate() + ", getDisplay()=" + getDisplay() + "]";
-	}
+	
 
 }

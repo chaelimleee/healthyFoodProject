@@ -54,10 +54,10 @@ public class BoardController {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
 		return "/board/write";
-	} //
+	} // 
 	
 	// DTO 대신 Map 형태의 인자 수신 
-	@PostMapping("/writeProc.do")
+	@PostMapping("/writeProc.do") 
 	public String writeProc(@RequestParam Map<String, Object> map, 
 							@RequestPart(value="boardFile") MultipartFile boardFile, 
 							Model model) {
@@ -80,7 +80,7 @@ public class BoardController {
 			boardVO.setBoardFile(actualUploadFilename);
 
 			// 첨부 파일이 있을 때만 저장
-			msg = fileUPloadService.storeUploadFile(boardVO.getBoardNum(), boardFile, boardVO.getBoardFile());
+			msg = fileUPloadService.storeUploadFile(boardVO.getboardCode(), boardFile, boardVO.getBoardFile());
 			log.info("msg : {}", msg);
 		} 
 		
@@ -114,7 +114,7 @@ public class BoardController {
 		model.addAttribute("board", boardVO);
 		
 		// 조회할 때마다 조회수 갱신(+)
-		boardService.updateBoardReadcountByBoardNum(boardNum);
+		boardService.updateBoardReadcountByBoardCode(boardNum);
 		
 		return "/board/view";
 	}

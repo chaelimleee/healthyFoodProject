@@ -34,32 +34,41 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberDTO {
 	
 	/** 회원 아이디 */
-	private String email;
+	private String memberEmail;
 	
 	/** 회원 패쓰워드 */
-	private String password;
+	private String memberPw;
 	
 	/** 회원 별명 */
-	private String nick;
+	private String memberNick;
 	
 	/** 회원 휴대전화 */
-	private String mobile;
+	private String memberMobile;
 	
 	/** 회원 우편번호 */
-	private String zip;
+	private String memberZip;
 	
 	/** 회원 도로명 주소 */
-	private String roadAddress;
+	private String memberAddress1;
 	
 	/** 회원 상세 주소 */
-	private String detailAddress;
+	private String memberAddress2;
+
+	/** 회원 이미지 */
+	private String memberImg;
+	
+	/** 회원 이미지 원본 */
+	private String memberImgOrigin;
 	
 	/** 회원 가입일 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date regDate;
 	
+	/** 회원 롤 */
+	private String memberRole;
+	
 	/** 회원 활성화 여부 */
-	private int display;
+	private int memberDisplay;
 	
 	
 	

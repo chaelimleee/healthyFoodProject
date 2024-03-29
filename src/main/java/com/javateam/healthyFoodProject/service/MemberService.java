@@ -41,7 +41,7 @@ public class MemberService {
 		result = false;
 		
 		try {
-			memberDAO.insertRole(new Role(memberDTO.getEmail(), "ROLE_USER"));
+			memberDAO.insertRole(new Role(memberDTO.getMemberEmail(), "ROLE_USER"));
 			result = true;
 		} catch (Exception e) {
 			log.error("MemberService.insertMemberRole.insertRole : {}", e);
