@@ -6,21 +6,32 @@
 
 	<!-- 회원 정보 생성 -->
 	<insert id="insertMember" parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
-		INSERT INTO member_tbl VALUES (
-		#{memberEmail},
-		#{memberPw},
-		#{memberName},
-		#{memberNick},
-		#{memberMobile},
-		#{memberBirth},
-		#{memberZip},
-		#{memberAddress1},
-		#{memberAddress2},
-		#{memberImg},
-		#{memberImgOrigin},
-		sysdate,
-		'ROLE_USER',
-		1
+		INSERT INTO member_tbl(
+			MEMBER_EMAIL,
+	        MEMBER_PW,
+	        MEMBER_NAME,
+	        MEMBER_NICK,
+	        MEMBER_MOBILE,
+	        MEMBER_BIRTH,
+	        MEMBER_ZIP,
+	        MEMBER_ADDRESS1,
+	        MEMBER_ADDRESS2,
+	        MEMBER_DATE,
+	        MEMBER_ROLE,
+	        MEMBER_DISPLAY
+   		 ) VALUES (
+			#{memberEmail},
+			#{memberPw},
+			#{memberName},
+			#{memberNick},
+			#{memberMobile},
+			#{memberBirthAll},
+			#{memberZip},
+			#{memberAddress1},
+			#{memberAddress2},
+			sysdate,
+			'ROLE_USER',
+			1
 		)
 	</insert>
 	  

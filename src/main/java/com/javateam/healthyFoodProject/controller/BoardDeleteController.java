@@ -24,7 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardDeleteController {
 
 	/**
-	 * 0401 leee 수정 완.
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 게터세터 수정 완.
 	 */
 	
 	@Autowired
@@ -74,7 +76,7 @@ public class BoardDeleteController {
 			
 			// 게시글 패쓰워드 검증
 //			if (boardPass.trim().equals(boardVO.getBoardPass())) {
-			if (memberEmail.trim().equals(boardVO.getmemberEmail())) {
+			if (memberEmail.trim().equals(boardVO.getMemberEmail())) {
 				
 				log.info("이메일 점검 성공");
 			

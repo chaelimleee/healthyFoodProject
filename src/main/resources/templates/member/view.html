@@ -12,7 +12,14 @@
 </head>
 <body>
 
-<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+<!-- 
+	leee
+	0401 수정완. 그러나 손봐야함. 
+	0402 여기 회원 기본 주소, 상세 주소 id 변경
+		<div id="road_address_fld_pnl"> ==> memberAddress1_fld_pnl 
+		<div id="detail_address_fld_pnl"> ==>  memberAddress2_fld_pnl
+		회원 이미지, 등 더 추가해야 할 것 있음.. 일단 돌아가게 되면 추가하기로 .
+-->
 
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
@@ -52,26 +59,7 @@
 						<div class="fld_content" th:text="${memberDTO.memberNick}"></div>
 					</div>
 					<!--// 회원 이름 -->
-		<!-- 
-					회원  성별
-					<div id="gender_fld_pnl">
-						<div class="fld_label">
-							<label>성별</label>
-						</div>
-						<div class="fld_content"
-							th:text="${memberDTO.gender == 'm' ? '남자 ' : '여자'}"></div>
-					</div>
-					// 회원 성별
-		
-					회원  이메일
-					<div id="email_fld_pnl">
-						<div class="fld_label">
-							<label for="email"> 이메일 </label>
-						</div>
-						<div class="fld_content" th:text="${memberDTO.email}"></div>
-					</div>
-					// 회원 이메일
-		 -->
+
 					<!-- 회원  연락처(휴대폰) -->
 					<div id="mobile_fld_pnl">
 						<div class="fld_label">
@@ -80,16 +68,7 @@
 						<div class="fld_content" th:text="${memberDTO.memberMobile}"></div>
 					</div>
 					<!--// 회원 연락처(휴대폰) -->
-		<!-- 
-					회원  연락처(집전화)
-					<div id="phone_fld_pnl">
-						<div class="fld_label">
-							<label for="phone">집전화</label>
-						</div>
-						<div class="fld_content" th:text="${memberDTO.phone}"></div>
-					</div>
-					// 회원  연락처(집전화)
-		 -->
+
 					<!-- 회원  우편번호 -->
 					<div id="zip_fld_pnl">
 						<div class="fld_label">
@@ -100,23 +79,15 @@
 					<!--// 회원 우편번호 -->
 		
 					<!-- 회원  기본 주소 -->
-					<div id="road_address_fld_pnl">
+					<div id="memberAddress1_fld_pnl">
 						<div class="fld_label">
 							<label for="memberAddress1">도로명 주소</label>
 						</div>
 						<div class="fld_content" th:text="${memberDTO.memberAddress1}"></div>
 					</div>
 					
-					<!-- <div id="jibun_address_fld_pnl">
-						<div class="fld_label">
-							<label for="jibunAddress">지번 주소</label>
-						</div>
-						<div class="fld_content" th:text="${memberDTO.jibunAddress}"></div>
-					</div>
-					// 회원 기본 주소
-		 -->
 					<!-- 회원 상세 주소 -->
-					<div id="detail_address_fld_pnl">
+					<div id="memberAddress2_fld_pnl">
 						<div class="fld_label">
 							<label for="memberAddress2">상세주소</label>
 						</div>
