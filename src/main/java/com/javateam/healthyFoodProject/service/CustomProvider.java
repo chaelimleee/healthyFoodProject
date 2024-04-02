@@ -32,6 +32,7 @@ public class CustomProvider
 		implements AuthenticationProvider, UserDetailsService {
 	/**
 	 * 0401 leee 수정완. 인데 좀 더 손봐야함.
+	 * 0402 leee 
 	 */
 	private JdbcTemplate jdbcTemplate;
 	
