@@ -40,7 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardController { 
 	/**
-	 * 0401 leee 수정 완.
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 BoardVO 게터세터 바꿔서 대문자 소문자 수정 완. 
 	 */
 	@Autowired
 	BoardService boardService;
@@ -82,7 +84,7 @@ public class BoardController {
 			boardVO.setBoardFile(actualUploadFilename);
 
 			// 첨부 파일이 있을 때만 저장
-			msg = fileUPloadService.storeUploadFile(boardVO.getboardCode(), boardFile, boardVO.getBoardFile());
+			msg = fileUPloadService.storeUploadFile(boardVO.getBoardCode(), boardFile, boardVO.getBoardFile());
 			log.info("msg : {}", msg);
 		} 
 		

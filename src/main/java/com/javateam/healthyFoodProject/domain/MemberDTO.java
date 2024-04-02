@@ -33,7 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberDTO {
 	/** 
-	 * 0401 leee 수정 완.
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 생일 수정 완. 
+	 * 		셀렉트 박스 사용으로 생일을 3개로 나눠서 받아 온 후 , 매퍼에서 합쳐서 저장. 
 	 * 
 	 * 14개 컬럼
 	 * 	MEMBER_EMAIL	  회원 이메일
@@ -69,7 +72,19 @@ public class MemberDTO {
 	private String memberMobile;
 
 	/** 6. 회원 생년월일 */
-	private String memberBirth;
+	private Date memberBirth;
+	
+	/** 6. 회원 생일 년도 */ // 추가수정
+	private String memberYear;
+	
+	/** 6. 회원 생일 월 */  // 추가수정
+	private String memberMonth;
+	
+	/** 6. 회원 생일 일 */  // 추가수정
+	private String memberDay;
+	
+	/** 6. 회원 생일 더함.  */  // 추가수정
+	private String memberBirthAll;
 	
 	/** 7. 회원 우편번호 */
 	private String memberZip;
@@ -96,7 +111,9 @@ public class MemberDTO {
 	/** 14. 회원 활성화 여부 */
 	private int memberDisplay;
 	
-	
+	public static String formatBirthAll(String memberYear, String memberMonth, String memberDay) {
+		return memberYear + "-" + memberMonth +"-" + memberDay ;
+	}
 	
 	// DTO => MultiValueMap
 	public static MultiValueMap<String, String> toMap(MemberDTO memberDTO) 
@@ -112,7 +129,7 @@ public class MemberDTO {
 				
 				Method method = memberDTO.getClass().getDeclaredMethod("get"+StringUtils.capitalize(fld.getName()));
 				
-				if (fld.getName().equals("memberBirth") || fld.getName().equals("regDate")) {
+				if (fld.getName().equals("memberDate")) {
 				
 					map.put(fld.getName(), Arrays.asList(new SimpleDateFormat("yyyy-MM-dd").format(method.invoke(memberDTO))));
 					
@@ -143,7 +160,7 @@ public class MemberDTO {
 							field = this.getClass().getDeclaredField(fldName);
 							field.setAccessible(true);
 							
-							if (!fldName.equals("memberBirth") || !fldName.equals("regDate")) {
+							if (!fldName.equals("memberDate")) {
 								field.set(this, requestMap.get(fldName));
 							}
 							

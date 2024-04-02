@@ -103,11 +103,11 @@ public class SecurityConfig {
 							                			 "/board/deleteProc.do").authenticated()
 						                .anyRequest().authenticated()); 
         
-                
+                	
            http.formLogin(formLogin -> formLogin
 				                .loginPage("/login")
-				                .usernameParameter("username")
-				    			.passwordParameter("password")
+				                .usernameParameter("memberEmail")
+				    			.passwordParameter("memberPw")
 				    			.defaultSuccessUrl("/welcome")                
 				                .failureUrl("/loginError")
 				                //.successHandler(new CustomAuthenticationSuccess()) // 로그인 성공 핸들러 

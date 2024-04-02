@@ -12,11 +12,13 @@ import lombok.Setter;
 public class MemberUpdateDTO extends MemberDTO implements Serializable {
 
 	/**
-	 * 0401 leee 수정 완.
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 regDate 수정 완.
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/** 회원 패쓰워드(수정) */
+	/** 회원 패쓰워드(수정) */ 
 	private String password1;
 
 	/** 회원 패쓰워드(확인) */
@@ -35,7 +37,7 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 		this.setMemberAddress2(memberDTO.getMemberAddress2());
 		this.setMemberImg(memberDTO.getMemberImg());
 		this.setMemberImgOrigin(memberDTO.getMemberImgOrigin());
-		this.setRegDate(memberDTO.getRegDate());
+		this.setMemberDate(memberDTO.getMemberDate());
 		this.setMemberRole(memberDTO.getMemberRole());
 		this.setMemberDisplay(memberDTO.getMemberDisplay());
 	}
@@ -48,7 +50,7 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 				+ ", getMemberBirth()=" + getMemberBirth() + ", getMemberZip()=" + getMemberZip()
 				+ ", getMemberAddress1()=" + getMemberAddress1() + ", getMemberAddress2()=" + getMemberAddress2()
 				+ ", getMemberImg()=" + getMemberImg() + ", getMemberImgOrigin()=" + getMemberImgOrigin()
-				+ ", getRegDate()=" + getRegDate() + ", getMemberRole()=" + getMemberRole() + ", getMemberDisplay()="
+				+ ", getRegDate()=" + getMemberDate() + ", getMemberRole()=" + getMemberRole() + ", getMemberDisplay()="
 				+ getMemberDisplay() + ", getClass()=" + getClass() + "]";
 	}
 

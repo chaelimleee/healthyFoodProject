@@ -49,7 +49,7 @@ public class CustomProvider
     	try {
 	    	return (CustomUser)jdbcTemplate.queryForObject(
 	    			  // "SELECT * FROM member_tbl WHERE id=?", 
-	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW, enabled FROM member_tbl WHERE MEMBER_EMAIL=?",
+	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW as password, enabled FROM member_tbl WHERE MEMBER_EMAIL=?",
 				     new BeanPropertyRowMapper<CustomUser>(CustomUser.class),
 				     new Object[]{ username });
 	    } catch (EmptyResultDataAccessException e) {
@@ -78,8 +78,8 @@ public class CustomProvider
 	@Override
 	public Authentication authenticate(Authentication authentication) 
 				throws AuthenticationException {
-		
-		log.info("----- authenticate");
+		// 로그인 인증. 
+		log.info("----- authenticate : " + authentication);// 잘 됨.
 		
 		String username = authentication.getName();
 		String password = "";
@@ -104,7 +104,10 @@ public class CustomProvider
 	        	log.info("user(사용자 현황) : " + user);
         		
 	            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	            password = (String) authentication.getCredentials(); // 비교할 비밀번호 
+	            password = (String) authentication.getCredentials(); // 비교할 비밀번호
+	            
+	            log.info("비밀번호  : " + password); 
+	            
 	            
 	            if (passwordEncoder.matches(password, user.getPassword())) {
 	            	log.info("비밀번호 일치 !");	

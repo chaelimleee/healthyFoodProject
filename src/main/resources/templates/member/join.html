@@ -6,8 +6,15 @@
  	  lang="ko-kr"> 
 <head>
 
-<!-- 0401 leee 수정완. 그러나 손봐야함. -->
-<!-- 회원 이미지 기본 이미지 설정해놓기,, 등..-->
+<!-- 
+	leee
+	0401 수정완. 그러나 손봐야함. 
+	     회원 이미지 기본 이미지 설정해놓기,, 등..
+	0402 <div id="road_address_fld_pnl"> ==> memberAddress1_fld_pnl 
+		<div id="detail_address_fld_pnl"> ==>  memberAddress2_fld_pnl
+		회원 이미지, 등 더 추가해야 할 것 있음.. 일단 돌아가게 되면 추가하기로 . 
+	0402 11:22 생일 셀렉트 박스 수정. js를 스크립트로 추가함. 
+-->
 
 
     <meta charset="UTF-8">
@@ -36,6 +43,39 @@
     <!-- 메시징 -->
     <script th:inline="javascript" th:if="${msg != null}">
 		alert([[${msg}]]);
+	</script>
+	
+	<!-- jQuery 0402 추가함 !! 생일 셀렉트 박스 사용위해서.-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<!-- jQuery 0402 추가함 !! 생일 셀렉트 박스 사용위해서.-->
+	<script type="text/javascript">
+		$(document).ready(function(){            
+	        var now = new Date();
+	        var year = now.getFullYear();
+	        var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
+	        var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+	        //년도 selectbox만들기               
+	        for(var i = 1900 ; i <= year ; i++) {
+	            $('#year').append('<option value="' + i + '">' + i + '년</option>');    
+	        }
+	        
+	        // 월별 selectbox 만들기            
+	        for(var i=1; i <= 12; i++) {
+	            var mm = i > 9 ? i : "0"+i ;            
+	            $('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
+	        }
+	        
+	        // 일별 selectbox 만들기
+	        for(var i=1; i <= 31; i++) {
+	            var dd = i > 9 ? i : "0"+i ;            
+	            $('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
+	        }
+	        $("#year  > option[value="+year+"]").attr("selected", "true");        
+	        $("#month  > option[value="+mon+"]").attr("selected", "true");    
+	        $("#day  > option[value="+day+"]").attr("selected", "true");       
+	        
+	    })
 	</script>
 </head>
 <body>
@@ -68,18 +108,6 @@
 		                <div id="id_fld_err_pnl">
 		                </div>
 		                <!--// 회원 아이디-->
-		                		
-		                <!-- 별명 중복 처리 할 건지. -->			
-		                <!-- 회원 별명 -->	
-		                <div id="nick_fld_pnl">	
-		                    <div class="fld_label">
-		                        <label for="memberNick">닉네임</label>
-		                    </div>
-		                    <div class="fld_content">
-		                        <input type="text" id="memberNick" name="memberNick" maxlength="20" th:field="*{memberNick}" />       
-		                    </div>							
-		                </div>						
-		                
 		                
 		                <!-- 회원 패쓰워드 -->	
 		                <div id="pw_fld_pnl">	
@@ -97,7 +125,7 @@
 		                <div id="password_fld_err_pnl">
 		                </div>
 		                <!--// 회원 패쓰워드 -->
-		                
+		                		
 		                <!-- 회원  이름-->
 		                <!-- 이름 용례 추가 -->	
 		                <div id="name_fld_pnl">	
@@ -114,45 +142,17 @@
 		                <div id="name_fld_err_pnl">
 		                </div>
 		                <!--// 회원 이름 -->
-		              <!--   
-		                회원  성별	
-		                <div id="gender_fld_pnl">	
+		                
+		                <!-- 별명 중복 처리 할 건지. -->			
+		                <!-- 회원 별명 -->	
+		                <div id="nick_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label>성별</label>
+		                        <label for="memberNick">닉네임</label>
 		                    </div>
-		                    <div class="fld_content">                        
-		                        <div><input type="radio" id="radio1" name="gender" value="m" th:field="*{gender}" /></div>
-		                        <div><label for="radio1">남</label></div>
-		                        <div>&nbsp;</div>                                
-		                        <div><input type="radio" id="radio2" name="gender" value="f" th:field="*{gender}"></div>
-		                        <div>&nbsp;</div>                     
-		                        <div><label for="radio2">여</label></div>
-		                    </div>
-		                </div>                     
-		                    
-		                회원 성별 에러 메시징
-		                <div id="gender_fld_err_pnl">
-		                </div>
-		                // 회원 성별
-		                     -->
-		              <!--   <!-- 회원  이메일 -->	
-		                <!-- <div id="email_fld_pnl">	
-		                    <div class="fld_label">
-		                        <label for="email">
-		                            이메일
-		                        </label>
-		                    </div>    
 		                    <div class="fld_content">
-		                        <input type="email" id="email" name="email" th:field="*{email}" />
-		                        ex) abcd@abcd.com
-		                    </div>
-		                </div>
-		                    
-		                회원 이메일 에러 메시징
-		                <div id="email_fld_err_pnl">
-		                </div>
-		                // 회원 이메일
-		                 -->     -->
+		                        <input type="text" id="memberNick" name="memberNick" maxlength="20" th:field="*{memberNick}" />       
+		                    </div>							
+		                </div>						
 		                 
 		                <!-- 회원  연락처(휴대폰) -->	
 		                <div id="mobile_fld_pnl">	
@@ -169,24 +169,25 @@
 		                <div id="mobile_fld_err_pnl">
 		                </div>
 		                <!--// 회원 연락처(휴대폰) -->
-		                <!-- 
-		                <!-- 회원  연락처(집전화)	
-		                <div id="phone_fld_pnl">	
-		                    <div class="fld_label">
-		                        <label for="phone">집전화</label>
-		                    </div>
-		                    <div class="fld_content">
-		                        <input type="text" id="phone" name="phone" th:field="*{phone}"/>
-		                        ex) 02-1111-2222
-		                    </div>    
-		                </div>                    
 		                
-		                회원  연락처(집전화) 에러 메시징
-		                <div id="phone_fld_err_pnl">
+		                <!-- 회원 생일	 -->
+		                <div id="birthday_fld_pnl">	
+		                    <div class="fld_label">
+		                        <label for="memberBirth">생일</label>
+		                    </div>    
+		                    <div class="fld_content">
+		                        <!-- <input type="text" id="memberBirth" name="memberBirth" maxlength="10" /> -->
+		                        <select name="yy" id="year"></select>년
+								<select name="mm" id="month"></select>월
+								<select name="dd" id="day"></select>일
+		                    </div>
 		                </div>
-		                // 회원  연락처(집전화)
-		                     -->
-		                      -->
+		                
+		                <!-- 회원 생일 에러 메시징 -->
+		                <div id="birthday_fld_err_pnl">
+		                </div>
+		                <!-- // 회원 생일 -->
+
 		                <!-- 회원  우편번호 -->	
 		                <div id="zip_fld_pnl">	
 		                    <div class="fld_label">
@@ -195,15 +196,16 @@
 		                    <div class="fld_content">
 		                        <input type="text" id="memberZip" name="memberZip" style="width:100px;" readonly />
 		                        
-		                        <!-- 주소 검색 -->
-		                        <button type="button" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button>
+		                        <!-- 주소 검색 -->		
+		                        <button type="button" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button> 
+		                        <!-- <button type="button" id="address_search_btn" onclick="alert('주소 검색 확인')">주소 검색</button> -->
 		                        <button type="button" id="address_delete_btn">주소 삭제</button>
 		                    </div>                    
 		                </div>
 		                <!--// 회원 우편번호 -->
 		                    
 		                <!-- 회원 기본 주소(도로명) -->	
-		                <div id="road_address_fld_pnl">	
+		                <div id="memberAddress1_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="memberAddress1">도로명 주소</label>
 		                    </div>
@@ -211,24 +213,9 @@
 		                        <input type="text" id="memberAddress1" name="memberAddress1" style="width:500px" readonly th:field="*{memberAddress1}" />
 		                    </div>
 		                </div>
-		                <!-- 
-		                회원 기본 주소(지번)	
-		                <div id="jibun_address_fld_pnl">	
-		                    <div class="fld_label">
-		                        <label for="jibunAddress">지번 주소</label>
-		                    </div>    
-		                    <div class="fld_content">
-		                        <input type="text" id="jibunAddress" name="jibunAddress" style="width:500px" readonly th:field="*{jibunAddress}" />
-		                    </div>
-		                </div>
-		                
-		                회원 상세주소 에러 메시징 : 우편번호/기본주소 입력시 상세주소 미입력할 경우
-		                <div id="address_fld_err_pnl">
-		                </div>
-		                // 회원 기본 주소
-		                 -->
+
 		                <!-- 회원 상세 주소 -->	
-		                <div id="detail_address_fld_pnl">	
+		                <div id="memberAddress2_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="memberAddress2">상세주소</label>
 		                    </div>    
@@ -242,21 +229,6 @@
 		                </div>
 		                <!--// 회원 상세주소 -->
 		                
-		                회원 생일	
-		                <div id="birthday_fld_pnl">	
-		                    <div class="fld_label">
-		                        <label for="birthday">생일</label>
-		                    </div>    
-		                    <div class="fld_content">
-		                        <input type="text" id="memberBirth" name="memberBirth" maxlength="10" />
-		                        ex) 2000-01-01, 1999-12-10
-		                    </div>
-		                </div>
-		                
-		                회원 생일 에러 메시징
-		                <div id="birthday_fld_err_pnl">
-		                </div>
-		                // 회원 생일
 
 		                <!-- 회원  가입/취소 버튼 -->	
 		                <div id="buttons_fld_pnl">	

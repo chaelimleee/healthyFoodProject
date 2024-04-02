@@ -25,6 +25,8 @@ import com.javateam.healthyFoodProject.util.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * leee
+ * 0402 게터세터 없던거 다 넣음. 수정완.
  * @author oracle
  *
  */
@@ -252,6 +254,128 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		return result;
 	}
 	
+	
+	
+	public int getBoardCode() {
+		return boardCode;
+	}
+
+	public void setBoardCode(int boardCode) {
+		this.boardCode = boardCode;
+	}
+
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+
+	public String getMemberNick() {
+		return memberNick;
+	}
+
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
+
+	public String getMemberImg() {
+		return memberImg;
+	}
+
+	public void setMemberImg(String memberImg) {
+		this.memberImg = memberImg;
+	}
+
+	public int getBoardOrigin() {
+		return boardOrigin;
+	}
+
+	public void setBoardOrigin(int boardOrigin) {
+		this.boardOrigin = boardOrigin;
+	}
+
+	public int getBoardReSeq() {
+		return boardReSeq;
+	}
+
+	public void setBoardReSeq(int boardReSeq) {
+		this.boardReSeq = boardReSeq;
+	}
+
+	public String getBoardTitle() {
+		return boardTitle;
+	}
+
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
+	}
+
+	public String getBoardContent() {
+		return boardContent;
+	}
+
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
+	}
+
+	public String getBoardImg() {
+		return boardImg;
+	}
+
+	public void setBoardImg(String boardImg) {
+		this.boardImg = boardImg;
+	}
+
+	public String getBoardImgOrigin() {
+		return boardImgOrigin;
+	}
+
+	public void setBoardImgOrigin(String boardImgOrigin) {
+		this.boardImgOrigin = boardImgOrigin;
+	}
+
+	public String getBoardFile() {
+		return boardFile;
+	}
+
+	public void setBoardFile(String boardFile) {
+		this.boardFile = boardFile;
+	}
+
+	public String getBoardFileOriginal() {
+		return boardFileOriginal;
+	}
+
+	public void setBoardFileOriginal(String boardFileOriginal) {
+		this.boardFileOriginal = boardFileOriginal;
+	}
+
+	public Date getBoardDate() {
+		return boardDate;
+	}
+
+	public void setBoardDate(Date boardDate) {
+		this.boardDate = boardDate;
+	}
+
+	public int getBoardReadCount() {
+		return boardReadCount;
+	}
+
+	public void setBoardReadCount(int boardReadCount) {
+		this.boardReadCount = boardReadCount;
+	}
+
+	public int getBoardDisplay() {
+		return boardDisplay;
+	}
+
+	public void setBoardDisplay(int boardDisplay) {
+		this.boardDisplay = boardDisplay;
+	}
+
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용
 	@Override
 	public boolean equals(Object obj) {
