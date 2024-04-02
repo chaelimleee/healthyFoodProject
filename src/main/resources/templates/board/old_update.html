@@ -180,9 +180,6 @@ window.onload = function() {
 				encType="multipart/form-data" method="post" th:object="${board}">
 				
 				<!-- 기존 정보 전송용 히든 필드 -->
-				<input type="hidden" id="boardReRef" name="boardReRef" th:value="${board.boardReRef}" />
-				<input type="hidden" id="boardReLev" name="boardReLev" th:value="${board.boardReLev}" />
-				<input type="hidden" id="boardReRef" name="boardReRef" th:value="${board.boardReRef}" />
 				<input type="hidden" id="boardReSeq" name="boardReSeq" th:value="${board.boardReSeq}" />
 				<!--// 기존 정보 전송용 히든 필드 -->
 				
@@ -214,9 +211,9 @@ window.onload = function() {
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardSubject"
-							name="boardSubject" required title="글제목을 입력하십시오" th:value="${board.boardSubject}" 
-							th:field="*{boardSubject}"/></td>
+						<td><input type="text" class="form-control" id="boardCode"
+							name="boardCode" required title="글제목을 입력하십시오" th:value="${board.boardCode}" 
+							th:field="*{boardCode}"/></td>
 					</tr>
 
 					<tr>

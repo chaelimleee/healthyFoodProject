@@ -25,6 +25,9 @@
 </head>
 <body>
 
+<!-- 0401 수정완. leee 이긴한데 좀 더 손봐야함. -->
+
+
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
 	
@@ -77,15 +80,13 @@
 				<thead>
 					<tr>
 						<th>번호</th>
+						<th>회원이미지</th>
 						<th>아이디</th>
+						<th>닉네임</th>
 						<th>이름</th>
-						<th>성별</th>
-						<th>이메일</th>
 						<th>휴대폰</th>
-						<th>집전화</th>
 						<th>우편번호</th>
 						<th>기본주소(도로명)</th>
-						<th>기본주소(지번)</th>
 						<th>상세주소</th>
 						<th>생일</th>
 						<th>가입일</th>
@@ -99,28 +100,25 @@
 				<tbody>
 					<tr th:if="${not #lists.isEmpty(members) && pageVO.listCount > 0}" th:each="member, st : ${members}">
 						<td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td>
-						<td th:utext="${member.get('ID')}"></td>
-						<td th:utext="${member.get('NAME')}"></td>
-						<td th:utext="${member.get('GENDER') == 'm' ? '남' : '여'}"></td>
-						<td th:utext="${member.get('EMAIL')}"></td>
+						<td th:utext="${member.get('MEMBER_EMAIL')}"></td>
+						<td th:utext="${member.get('MEMBER_NICK')}"></td>
+						<td th:utext="${member.get('MEMBER_NAME')}"></td>
 						
 						<td>
-							<input type="text" th:value="${member.get('MOBILE')}" 
-								   th:id="${'mobile_' + member.get('ID')}"
-								   th:name="${'mobile_' + member.get('ID')}"
+							<input type="text" th:value="${member.get('MEMBER_MOBILE')}" 
+								   th:id="${'mobile_' + member.get('MEMBER_EMAIL')}"
+								   th:name="${'mobile_' + member.get('MEMBER_EMAIL')}"
 								   readonly
 								   style="border:0"
 								   size="13"
 								   maxlength="13" />
 						</td>
 										
-						<td th:utext="${member.get('PHONE')}"></td>
-						<td th:utext="${member.get('ZIP')}"></td>
-						<td th:utext="${member.get('ROAD_ADDRESS')}"></td>
-						<td th:utext="${member.get('JIBUN_ADDRESS')}"></td>
-						<td th:utext="${member.get('DETAIL_ADDRESS')}"></td>
-						<td th:utext="${#dates.format(member.get('BIRTHDAY'), 'yyyy년 MM월 dd일')}"></td>
-						<td th:utext="${#dates.format(member.get('JOINDATE'), 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
+						<td th:utext="${member.get('MEMBER_ZIP')}"></td>
+						<td th:utext="${member.get('MEMBER_ADDRESS1')}"></td>
+						<td th:utext="${member.get('MEMBER_ADDRESS2')}"></td>
+						<td th:utext="${#dates.format(member.get('MEMBER_BIRTH'), 'yyyy년 MM월 dd일')}"></td>
+						<td th:utext="${#dates.format(member.get('MERBER_DATE'), 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
 						
 						<!-- 등급(role) : 체크 박스로 표기 
 							 - bootstrap checkbox 
@@ -130,10 +128,10 @@
 							
 								<!-- 회원은 여기서는 비 회원 전환 처리하지 불가능하도록 disabled, readonly 처리  -->
 								<label class="form-check-label" 
-									   th:for="${'role1_' + member.get('ID')}">회원</label>
+									   th:for="${'role1_' + member.get('MEMBER_EMAIL')}">회원</label>
 									   
 								<input type="checkbox" class="form-check-input" 
-									   th:id="${'role1_' + member.get('ID')}"												 
+									   th:id="${'role1_' + member.get('MEMBER_EMAIL')}"												 
 									   name="role" value="ROLE_USER" 
 									   th:checked="${#strings.contains(member.get('ROLE'),'ROLE_USER')}"
 									  >
@@ -142,17 +140,17 @@
 								<br>
 									   
 								<label class="form-check-label" 
-									   th:for="${'role2_' + member.get('ID')}">관리자</label>
+									   th:for="${'role2_' + member.get('MEMBER_EMAIL')}">관리자</label>
 															
 								<input type="checkbox" class="form-check-input" 
-									   th:id="${'role2_' + member.get('ID')}" 
+									   th:id="${'role2_' + member.get('MEMBER_EMAIL')}" 
 									   name="role" value="ROLE_ADMIN" 
 									   th:checked="${#strings.contains(member.get('ROLE'),'ROLE_ADMIN')}">
 							</div>		   							   
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'role_update_btn_' + member.get('ID')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'role_update_btn_' + member.get('MEMBER_EMAIL')}" class="btn btn-sm btn-outline-primary">변경</button>
 						</td>
 						
 						<!--// 등급(role) -->
@@ -163,10 +161,10 @@
 						<td>
 							<div class="form-check form-switch"> 
 								
-								<label th:id="${'label_enabled_' + member.get('ID')}" th:for="${'enabled_' + member.get('ID')}" class="form-check-label"
+								<label th:id="${'label_enabled_' + member.get('MEMBER_EMAIL')}" th:for="${'enabled_' + member.get('MEMBER_EMAIL')}" class="form-check-label"
 									   th:text="${member.get('ENABLED') == 1 ? '활동' : '휴면'}"></label>
 									   
-								<input type="checkbox" class="form-check-input" name="enabled"  th:id="${'enabled_' + member.get('ID')}"
+								<input type="checkbox" class="form-check-input" name="enabled"  th:id="${'enabled_' + member.get('MEMBER_EMAIL')}"
 									   th:value="${member.get('ENABLED')}"												 
 									   th:checked="${member.get('ENABLED') == 1}">
 												
@@ -174,15 +172,15 @@
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'enabled_update_btn_' + member.get('ID')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'enabled_update_btn_' + member.get('MEMBER_EMAIL')}" class="btn btn-sm btn-outline-primary">변경</button>
 						</td>
 						
 						<!--// 활동 여부 -->
 						
 						<!-- 메뉴 -->
 						<td>
-							<button class="btn btn-sm btn-primary" th:id="${'update_btn' + member.get('ID')}">수정</button>&nbsp;
-							<button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('ID')}">삭제</button>
+							<button class="btn btn-sm btn-primary" th:id="${'update_btn' + member.get('MEMBER_EMAIL')}">수정</button>&nbsp;
+							<button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('MEMBER_EMAIL')}">삭제</button>
 						</td>				
 						<!--// 메뉴 -->
 						
@@ -301,15 +299,13 @@
 					
 					<div id="select_pnl" class="col-2 pe-0">
 						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
-						  <option selected value="id">아이디</option>
-						  <option value="name">이름</option>
-						  <option value="gender">성별</option>
-						  <option value="email">이메일</option>
-						  <option value="mobile">휴대폰</option>
-						  <option value="phone">집전화</option>
-						  <option value="address">주소</option>
-						  <option value="birthday">생일</option>
-						  <option value="joindate">가입일</option>
+						  <option selected value="MEMBER_EMAIL">아이디</option>
+						  <option value="MEMBER_NAME">이름</option>
+						  <option value="MEMBER_NICK">닉네임</option>
+						  <option value="MEMBER_MOBILE">휴대폰</option>
+						  <option value="MEMBER_ADDRESS1">주소</option>
+						  <option value="MEMBER_BIRTH">생일</option>
+						  <option value="MERBER_DATE">가입일</option>
 						  <option value="role">등급(role)</option>
 						</select>
 					</div>

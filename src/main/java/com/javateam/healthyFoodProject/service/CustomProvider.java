@@ -30,7 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomProvider 
 		implements AuthenticationProvider, UserDetailsService {
-	
+	/**
+	 * 0401 leee 수정완. 인데 좀 더 손봐야함.
+	 */
 	private JdbcTemplate jdbcTemplate;
 	
     @Autowired
@@ -46,7 +48,7 @@ public class CustomProvider
     	try {
 	    	return (CustomUser)jdbcTemplate.queryForObject(
 	    			  // "SELECT * FROM member_tbl WHERE id=?", 
-	    			  "SELECT id as username, password, enabled FROM member_tbl WHERE id=?",
+	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW, enabled FROM member_tbl WHERE MEMBER_EMAIL=?",
 				     new BeanPropertyRowMapper<CustomUser>(CustomUser.class),
 				     new Object[]{ username });
 	    } catch (EmptyResultDataAccessException e) {
@@ -103,10 +105,11 @@ public class CustomProvider
 	            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	            password = (String) authentication.getCredentials(); // 비교할 비밀번호 
 	            
-	            if (passwordEncoder.matches(password, user.getPassword())) 
+	            if (passwordEncoder.matches(password, user.getPassword())) {
 	            	log.info("비밀번호 일치 !");	
-	            else 
+	            }else {
 	            	throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+	            }
 	            
 	            List<Role> roles = this.loadUserRole(username);
 	            user.setAuthorities(roles);

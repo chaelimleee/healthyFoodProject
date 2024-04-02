@@ -37,6 +37,21 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	/**
 	 * 
+	 * 	BOARD_CODE	       게시글 번호
+		MEMBER_EMAIL	   회원 이메일
+		MEMBER_NICK	       회원 별명
+		MERBER_IMG	       회원 이미지
+		BOARD_ORIGIN	   원게시글 번호
+		BOARD_RE_SEQ	   답글 순서
+		BOARD_TITLE	       게시글 제목
+		BOARD_CONTENT	   게시글 내용
+		BOARD_IMG	       게시글 썸네일
+		BOARD_IMG_ORIGIN   게시글 썸네일 원본
+		BOARD_FILE	       게시글 파일
+		BOARD_FILE_ORIGIIN 게시글 파일 원본
+		BOARD_DATE	       게시글 등록일
+		BOARD_READ_COUNT   게시글 조회수
+		BOARD_DISPLAY	   게시글 활성화
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -66,10 +81,10 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	/** 원게시글 번호 */
 	@Column(name = "BOARD_ORIGIN")
-	private String boardOrigin; 
+	private int boardOrigin; 
 	
 	/** 게시글 답글 순서 */
-	@Column(name = "board_re_seq")
+	@Column(name = "BOARD_RE_SEQ")
 	private int boardReSeq; 
 	
 	/** 게시글 제목 */
@@ -116,6 +131,8 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	 * 수정 완. 0328 lee
 	 * 멤버 닉네임, 이미지는 굳이 외래키 해야하는지 의문. 
 	 * 그냥 이메일만 받아오면 닉네임이랑 이미지 둘 다 알 수 있는 거 아닌가?
+	 * 
+	 * -->0401 강사님 말씀. 제약사항에 너무 얽매이지 말고 일단 하고 나중에 add하셈.
 	 * @param board
 	 */
 	// BoardDTO -> BoardVO
@@ -123,13 +140,14 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         
         this.boardCode = board.getBoardCode();
         this.memberEmail = board.getMemberEmail();
-//        this.memberNick = board.getMemberNick();
-//        this.memberImg = board.mem
+        this.memberNick = board.getMemberNick();
+        this.memberImg = board.getMemberImg();
         this.boardOrigin = board.getBoardOrigin();
-        this.boardReSeq = board.getBoardReSeq();
+        this.boardReSeq = board.getBoardReSeq(); 
         this.boardTitle = board.getBoardTitle();
         this.boardContent = board.getBoardContent();
         this.boardImg= board.getBoardImg();
+        this.boardImgOrigin= board.getBoardImgOrigin();
         this.boardFileOriginal = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         this.boardFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         
@@ -153,6 +171,11 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
     	
     	this.boardCode = Integer.parseInt(map.get("boardCode").toString());
         this.memberEmail = (String)map.get("memberEmail");
+        this.memberNick = map.get("memberNick").toString();
+        this.memberImg = map.get("memberImg").toString();
+        this.boardOrigin = (int) map.get("boardOrigin");
+        this.boardImg= (String) map.get("boardImg");
+        this.boardImgOrigin= (String) map.get("boardImgOrigin");
         this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         this.boardFileOriginal = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
@@ -196,86 +219,20 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         this.boardDate = (Date)map.get("boardDate");
     }
     
-	public int getboardCode() {
-		return boardCode;
-	}
-
-	public void setboardCode(int boardCode) {
-		this.boardCode = boardCode;
-	}
-
-	public String getmemberEmail() {
-		return memberEmail;
-	}
-
-	public void setmemberEmail(String memberEmail) {
-		this.memberEmail = memberEmail;
-	}
-
-	public String getboardTitle() {
-		return boardTitle;
-	}
-
-	public void setboardTitle(String boardTitle) {
-		this.boardTitle = boardTitle;
-	}
-
-	public String getBoardContent() {
-		return boardContent;
-	}
-
-	public void setBoardContent(String boardContent) {
-		this.boardContent = boardContent;
-	}
-
-	public String getBoardFileOriginal() {
-		return boardFileOriginal;
-	}
-
-	public void setBoardFileOriginal(String boardFileOriginal) {
-		this.boardFileOriginal = boardFileOriginal;
-	}
-
-	public String getBoardFile() {
-		return boardFile;
-	}
-
-	public void setBoardFile(String boardFile) {
-		this.boardFile = boardFile;
-	}
-
-	public int getBoardReSeq() {
-		return boardReSeq;
-	}
-
-	public void setBoardReSeq(int boardReSeq) {
-		this.boardReSeq = boardReSeq;
-	}
-
-	public int getBoardReadCount() {
-		return boardReadCount;
-	}
-
-	public void setBoardReadCount(int boardReadCount) {
-		this.boardReadCount = boardReadCount;
-	}
-
-	public Date getBoardDate() {
-		return boardDate;
-	}
-
-	public void setBoardDate(Date boardDate) {
-		this.boardDate = boardDate;
-	}
+	
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BoardVO [boardCode=").append(boardCode).append(", memberEmail=").append(memberEmail)
+		builder.append("BoardVO [boardCode=").append(boardCode)
+				.append(", memberEmail=").append(memberEmail)
 				.append(", boardTitle=").append(boardTitle)
-				.append(", boardContent=").append(boardContent).append(", boardFileOriginal=").append(boardFileOriginal)
-				.append(", boardFile=").append(boardFile).append(", boardReSeq=").append(boardReSeq)
-				.append(", boardReadCount=").append(boardReadCount).append(", boardDate=").append(boardDate)
+				.append(", boardContent=").append(boardContent)
+				.append(", boardFileOriginal=").append(boardFileOriginal)
+				.append(", boardFile=").append(boardFile)
+				.append(", boardReSeq=").append(boardReSeq)
+				.append(", boardReadCount=").append(boardReadCount)
+				.append(", boardDate=").append(boardDate)
 				.append("]");
 		return builder.toString();
 	}
@@ -294,80 +251,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		result = prime * result + ((memberEmail == null) ? 0 : memberEmail.hashCode());
 		return result;
 	}
-
 	
-	public int getBoardCode() {
-		return boardCode;
-	}
-
-	public void setBoardCode(int boardCode) {
-		this.boardCode = boardCode;
-	}
-
-	public String getMemberEmail() {
-		return memberEmail;
-	}
-
-	public void setMemberEmail(String memberEmail) {
-		this.memberEmail = memberEmail;
-	}
-
-	public String getMemberNick() {
-		return memberNick;
-	}
-
-	public void setMemberNick(String memberNick) {
-		this.memberNick = memberNick;
-	}
-
-	public String getMemberImg() {
-		return memberImg;
-	}
-
-	public void setMemberImg(String memberImg) {
-		this.memberImg = memberImg;
-	}
-
-	public String getBoardOrigin() {
-		return boardOrigin;
-	}
-
-	public void setBoardOrigin(String boardOrigin) {
-		this.boardOrigin = boardOrigin;
-	}
-
-	public String getBoardTitle() {
-		return boardTitle;
-	}
-
-	public void setBoardTitle(String boardTitle) {
-		this.boardTitle = boardTitle;
-	}
-
-	public String getBoardImg() {
-		return boardImg;
-	}
-
-	public void setBoardImg(String boardImg) {
-		this.boardImg = boardImg;
-	}
-
-	public String getBoardImgOrigin() {
-		return boardImgOrigin;
-	}
-
-	public void setBoardImgOrigin(String boardImgOrigin) {
-		this.boardImgOrigin = boardImgOrigin;
-	}
-
-	public int getBoardDisplay() {
-		return boardDisplay;
-	}
-
-	public void setBoardDisplay(int boardDisplay) {
-		this.boardDisplay = boardDisplay;
-	}
-
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용
 	@Override
 	public boolean equals(Object obj) {

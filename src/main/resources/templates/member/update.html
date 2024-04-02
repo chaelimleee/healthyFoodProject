@@ -5,8 +5,13 @@
 	  layout:decorate="~{layout}"
  	  lang="ko-kr"> 
 <head>
+
+
+<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+<!-- 아이디랑 이름 DB랑 같게 하는건지,, dto랑 같게 하는건지,,-->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta memberName="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보 수정</title>
     
     <link th:href="@{/css/member_join.css}" rel="stylesheet" />
@@ -52,46 +57,46 @@
 		                <!-- 회원 아이디-->	
 		                <div id="id_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="id">아이디</label>
+		                        <label for="memberEmail">아이디</label>
 		                    </div>
-		                    <div class="fld_content" th:text="*{id}"></div>							
+		                    <div class="fld_content" th:text="*{memberEmail}"></div>							
 		                </div>
 		                <!--// 회원 아이디-->
 		                
 		                <!-- 수정용 패쓰워드(2개) -->
 		                <div id="pw1_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="password1">패쓰워드(신규)</label>
+		                        <label for="memberPw1">패쓰워드(신규)</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="password1" name="password1" maxlength="20" th:field="*{password1}" />
+		                        <input type="text" id="memberPw1" memberName="memberPw1" maxlength="20" th:field="*{memberPw1}" />
 		                    </div>
 		                </div>
 		                
 		                <div id="pw2_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="password2">패쓰워드(확인)</label>
+		                        <label for="memberPw2">패쓰워드(확인)</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="password2" name="password2" maxlength="20" th:field="*{password2}" />
+		                        <input type="text" id="memberPw2" memberName="memberPw2" maxlength="20" th:field="*{memberPw2}" />
 		                    </div>
 		                </div>
 		                
 		                <!-- 회원 패쓰워드 에러 메시징 -->
-		                <div id="password_fld_err_pnl">
+		                <div id="memberPw_fld_err_pnl">
 		                </div>
 		                <!--// 회원 패쓰워드 -->
 		                
 		                <!-- 회원  이름-->
-		                <div id="name_fld_pnl">	
+		                <div id="memberName_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="name">이름</label>
+		                        <label for="membermemberName">이름</label>
 		                    </div>
-		                    <div class="fld_content" th:text="*{name}"></div>    
+		                    <div class="fld_content" th:text="*{membermemberName}"></div>    
 		                </div>
 		                <!--// 회원 이름 -->
-		                
-		                <!-- 회원  성별 -->	
+		                <!-- 
+		                회원  성별	
 		                <div id="gender_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="gender">성별</label>
@@ -100,9 +105,9 @@
 		                    	<span th:text="${memberUpdateDTO.gender == 'm' ? '남자 ' : '여자'}"></span>                        
 		                    </div>
 		                </div>                     
-		                <!--// 회원 성별 -->
+		                // 회원 성별
 		                    
-		                <!-- 회원  이메일 -->	
+		                회원  이메일	
 		                <div id="email_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="email">
@@ -110,23 +115,23 @@
 		                        </label>
 		                    </div>    
 		                    <div class="fld_content">
-		                        <input type="email" id="email" name="email" th:field="*{email}" />
+		                        <input type="email" id="email" memberName="email" th:field="*{email}" />
 		                        ex) abcd@abcd.com
 		                    </div>
 		                </div>
 		                    
-		                <!-- 회원 이메일 에러 메시징 -->
+		                회원 이메일 에러 메시징
 		                <div id="email_fld_err_pnl">
 		                </div>
-		                <!--// 회원 이메일 -->
-		                    
+		                // 회원 이메일
+		                     -->
 		                <!-- 회원  연락처(휴대폰) -->	
 		                <div id="mobile_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="mobile">휴대폰</label>
+		                        <label for="memberMobile">휴대폰</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="mobile" name="mobile" th:field="*{mobile}"/>
+		                        <input type="text" id="memberMobile" memberName="memberMobile" th:field="*{memberMobile}"/>
 		                        ex) 010-1234-5678
 		                    </div>    
 		                </div>                    
@@ -135,30 +140,30 @@
 		                <div id="mobile_fld_err_pnl">
 		                </div>
 		                <!--// 회원 연락처(휴대폰) -->
-		                
-		                <!-- 회원  연락처(집전화) -->	
+		                <!-- 
+		                회원  연락처(집전화)	
 		                <div id="phone_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="phone">집전화</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="phone" name="phone" th:field="*{phone}"/>
+		                        <input type="text" id="phone" memberName="phone" th:field="*{phone}"/>
 		                        ex) 02-1111-2222
 		                    </div>    
 		                </div>                    
 		                
-		                <!-- 회원  연락처(집전화) 에러 메시징 -->
+		                회원  연락처(집전화) 에러 메시징
 		                <div id="phone_fld_err_pnl">
 		                </div>
-		                <!--// 회원  연락처(집전화) -->
-		                    
+		                // 회원  연락처(집전화)
+		                     -->
 		                <!-- 회원  우편번호 -->	
 		                <div id="zip_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="zip">우편번호</label>
+		                        <label for="memberZip">우편번호</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="zip" name="zip" style="width:100px;" th:field="*{zip}" readonly />
+		                        <input type="text" id="memberZip" memberName="memberZip" style="width:100px;" th:field="*{memberZip}" readonly />
 		                        
 		                        <!-- 주소 검색 -->
 		                        <button type="button" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button>
@@ -170,30 +175,30 @@
 		                <!-- 회원 기본 주소(도로명 + 지번 주소)  -->	
 		                <div id="road_address_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="roadAddress">도로명 주소</label>
+		                        <label for="memberAddress1">도로명 주소</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="roadAddress" name="roadAddress" style="width:500px" readonly th:field="*{roadAddress}" />
+		                        <input type="text" id="memberAddress1" memberName="memberAddress1" style="width:500px" readonly th:field="*{memberAddress1}" />
 		                    </div>
 		                </div>
 		                
-		                <div id="jibun_address_fld_pnl">	
+		                <!-- <div id="jibun_address_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="jibunAddress">지번 주소</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="jibunAddress" name="jibunAddress" style="width:500px" readonly th:field="*{jibunAddress}" />
+		                        <input type="text" id="jibunAddress" memberName="jibunAddress" style="width:500px" readonly th:field="*{jibunAddress}" />
 		                    </div>
 		                </div>
-		                <!--// 회원 기본 주소(도로명 + 지번 주소) -->
-		                
+		                // 회원 기본 주소(도로명 + 지번 주소)
+		                 -->
 		                <!-- 회원 상세 주소  -->	
 		                <div id="detail_address_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="detailAddress">상세주소</label>
+		                        <label for="memberAddress2">상세주소</label>
 		                    </div>    
 		                    <div class="fld_content">
-		                        <input type="text" id="detailAddress" name="detailAddress" style="width:400px" th:field="*{detailAddress}" />
+		                        <input type="text" id="memberAddress2" memberName="memberAddress2" style="width:400px" th:field="*{memberAddress2}" />
 		                    </div>
 		                </div>
 		                
@@ -203,34 +208,33 @@
 		                <!--// 회원 상세주소 -->
 		                
 		                <!-- 회원  생일 -->	
-		                <div id="birthday_fld_pnl">	
+		                <div id="memberBirth_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="birthday">생일</label>
+		                        <label for="memberBirth">생일</label>
 		                    </div>    
 		                    <div class="fld_content" 
-		                    	 th:text="${#dates.format(memberUpdateDTO.birthday, 'yyyy년 MM월 dd일')}"></div>
+		                    	 th:text="${#dates.format(memberUpdateDTO.memberBirth, 'yyyy년 MM월 dd일')}"></div>
 		                </div>                
 		                <!--// 회원 생일 -->
 		                
 		                <!-- 가입일 -->
-						<div id="joindate_fld_pnl">
+						<div id="memberDate_fld_pnl">
 							<div class="fld_label",>
 								<label>가입일</label>
 							</div>
 							<div class="fld_content"
-						    	th:text="${#dates.format(memberUpdateDTO.joindate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></div>
+						    	th:text="${#dates.format(memberUpdateDTO.memberDate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></div>
 						</div>
 						<!--// 가입일 -->
 						
 						<!-- 히든 필드들  -->
 						<div>
-							<input type="hidden" id="id" name="id" th:field="*{id}" readonly />
-							<input type="hidden" id="password" name="password" th:field="*{password}" readonly />
-							<input type="hidden" id="name" name="name" th:field="*{name}" readonly />
-							<input type="hidden" id="birthday" name="birthday" th:field="*{birthday}" readonly />
-							<input type="hidden" id="joindate" name="joindate" th:field="*{joindate}" readonly />
-							<input type="hidden" id="enabled" name="enabled" th:field="*{enabled}" />
-							<input type="hidden" id="gender" name="gender" th:field="*{gender}" />
+							<input type="hidden" id="memberEmail" memberName="memberEmail" th:field="*{memberEmail}" readonly />
+							<input type="hidden" id="memberPw" memberName="memberPw" th:field="*{memberPw}" readonly />
+							<input type="hidden" id="memberName" memberName="memberName" th:field="*{memberName}" readonly />
+							<input type="hidden" id="memberBirth" memberName="memberBirth" th:field="*{memberBirth}" readonly />
+							<input type="hidden" id="memberDate" memberName="memberDate" th:field="*{memberDate}" readonly />
+							<input type="hidden" id="memberDisplay" memberName="memberDisplay" th:field="*{memberDisplay}" />
 						</div>
 						<!--// 히든 필드들  -->
 		                

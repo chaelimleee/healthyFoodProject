@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-	<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" -->
-	
+<html lang="ko" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> -->
 <div th:fragment="header">
 
 	<!-- //////////////////////////////////////////////////////////// -->
@@ -84,8 +84,9 @@
 	
 	<!-- //////////////////////////////////////////////////////////// -->
 	
+
+<!-- 	<div class=" bs-success-subtle header_sect_pnl "> -->
 	<div class="header_sect_pnl">
-	
 			<!-- 
 			
 			- Spring Security/Thymeleaf
@@ -129,11 +130,23 @@
 			<li><a th:href="@{/board/list.do}">게시글 목록</a></li>
 			<!--// 게시판 링크 -->
 			
+			<!-- <div class="sub-menu">
+				<ul class="menu">
+					<li>
+						<a href="/signin">로그인</a>
+					</li>
+				</ul>
+				<div class="search">
+					<input type="text" />
+					<div class="material-icons">검색하기</div>
+				</div>
+			</div>
+ -->
 			<!-- 등급(롤:role)이 관리자일 경우 -->
 			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/viewAllWithRoles.do}">회원 관리</a></li>
 			
 		</ul>
-
+		
 	</div>
 
 </div>

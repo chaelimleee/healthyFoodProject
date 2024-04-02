@@ -78,7 +78,7 @@ public class SecurityConfig {
 										// axios 추가
 						                // security 적용 예외 URL 등록와의 중복 부분 제외 => "/"만 적용
 						                // .requestMatchers("/", "/css/**", "/webjars/**", "/images/**", "/js/**", "/axios/**", "/bootstrap-icons/**").permitAll()
-						                .requestMatchers("/").permitAll() 
+										.requestMatchers("/").permitAll() 
 						                .requestMatchers("/swagger-resources/**", "/swagger/**", "/swagger-ui.html").permitAll()
 						                .requestMatchers("/member/hasFld/**", "/member/view.do" ).permitAll()
 						                .requestMatchers("/member/update.do", "/member/updateProc.do").authenticated()
@@ -86,19 +86,23 @@ public class SecurityConfig {
 						                .requestMatchers("/member/join.do", "/member/joinProc.do", "/member/joinProcRest.do").permitAll()
 						                .requestMatchers("/member/updateRoles/**", "/member/changeMemberState/**", 
 						                			     "/member/updateMemberByAdmin/**", "/member/deleteMemberByAdmin/**").authenticated()
+						                .requestMatchers("/board/replyWrite.do").permitAll()
 						                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 						                .requestMatchers("/content1", "/content2").permitAll()	
 						                //
 						                // 게시판 관련 링크 추가
 						                .requestMatchers("/board/view.do/**","/board/list.do","/board/searchList.do",
 						                				"/board/image", "/board/image/**",
-						                				"/board/getRepliesAll.do").permitAll()
+						                				"/board/getRepliesAll.do","/board/download/**").permitAll()
+						                
 						                .requestMatchers("/board/write.do","/board/writeProc.do",
 							                			 "/board/update.do", "/board/updateProc.do",
-							                			 "/board/replyWrite.do", "/board/replyUpdate.do", 
+							                			 "/board/replyWrite.do",
+							                			  "/board/replyUpdate.do", 
 							                			 "/board/replyDelete.do",
 							                			 "/board/deleteProc.do").authenticated()
 						                .anyRequest().authenticated()); 
+        
                 
            http.formLogin(formLogin -> formLogin
 				                .loginPage("/login")

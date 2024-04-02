@@ -39,7 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("board")
 @Slf4j
 public class BoardController { 
-	
+	/**
+	 * 0401 leee 수정 완.
+	 */
 	@Autowired
 	BoardService boardService;
 	
@@ -105,16 +107,16 @@ public class BoardController {
 		return "/error/error"; 
 	} //
 	
-	@GetMapping("/view.do/{boardNum}")
-	public String view(@PathVariable("boardNum") int boardNum, Model model) {
-		
-		BoardVO boardVO =boardService.selectBoard(boardNum);
+	@GetMapping("/view.do/{boardCode}")
+	public String view(@PathVariable("boardCode") int boardCode, Model model) {
+		 
+		BoardVO boardVO =boardService.selectBoard(boardCode);
 		log.info("BoardVO : {}", boardVO);
 		
 		model.addAttribute("board", boardVO);
 		
 		// 조회할 때마다 조회수 갱신(+)
-		boardService.updateBoardReadcountByBoardCode(boardNum);
+		boardService.updateBoardReadcountByBoardCode(boardCode);
 		
 		return "/board/view";
 	}

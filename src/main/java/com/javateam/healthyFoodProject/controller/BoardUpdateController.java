@@ -123,7 +123,7 @@ public class BoardUpdateController {
 				updateBoardVO.setBoardFile(actualUploadFilename);
 
 				// 신규 업로드 파일 저장(업로드)
-				msg = fileUploadService.storeUploadFile(updateBoardVO.getboardCode(), boardFile,
+				msg = fileUploadService.storeUploadFile(updateBoardVO.getBoardCode(), boardFile,
 						updateBoardVO.getBoardFile());
 				log.info("msg : {}", msg);
 

@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>게시글 쓰기</title>
 
+<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+
+
 <!-- bootstrap -->
 <!-- <link rel="stylesheet"
 	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
@@ -206,17 +209,17 @@ window.onload = function() {
 							name="boardWriter" th:value="${#authentication.name}" readonly /></td>
 					</tr>
 
-					<tr>
+					<!-- <tr>
 						<th scope="col">패쓰워드</th>
 						<td><input type="text" class="form-control" id="boardPass"
 							name="boardPass" required 
 							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr>
+					</tr> -->
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardSubject"
-							name="boardSubject" required title="글제목을 입력하십시오" /></td>
+						<td><input type="text" class="form-control" id="boardTitle"
+							name="boardTitle" required title="글제목을 입력하십시오" /></td>
 					</tr>
 
 					<tr>
