@@ -26,7 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("board")
 @Slf4j
 public class BoardImageRestController {
-	
+	/**
+	 * 0401 leee 수정 완.
+	 */
 	@Autowired
     ImageService imageService;
 	

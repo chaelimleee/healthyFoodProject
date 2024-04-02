@@ -23,6 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardDeleteController {
 
+	/**
+	 * 0401 leee 수정 완.
+	 */
+	
 	@Autowired
 	BoardService boardService;
 
@@ -36,10 +40,11 @@ public class BoardDeleteController {
 	ImageStoreService imageStoreService;
 
 	@GetMapping("/deleteProc.do")
-	public String updateProc(@RequestParam("boardCode") int boardCode, 
+	public String updateProc(@RequestParam("boardCode") int boardCode,
+							 @RequestParam("memberEmail") String memberEmail,
 						     Model model) {
 
-		log.info("------ deleteProc.do : boardCode : {} ", boardCode );
+		log.info("------ deleteProc.do : boardCode : {} , memberEmail : {} ", boardCode, memberEmail );
 
 		// 개별 게시글 보기로 이동(movePage)
 		// 게시글 삭제 성공시에는 게시글 목록으로 이동(이미 삭제되었으므로 이동할 게시글이 없음)
@@ -69,9 +74,9 @@ public class BoardDeleteController {
 			
 			// 게시글 패쓰워드 검증
 //			if (boardPass.trim().equals(boardVO.getBoardPass())) {
-			if (true) {
+			if (memberEmail.trim().equals(boardVO.getmemberEmail())) {
 				
-				log.info("패쓰워드 점검 성공");
+				log.info("이메일 점검 성공");
 			
 				// 삭제할 삽입 이미지 점검
 				List<Integer> deleteImgList = boardService.getImageList(boardVO.getBoardContent().trim(),

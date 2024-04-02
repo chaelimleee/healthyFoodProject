@@ -16,7 +16,7 @@ function getPostcodeAddress() {
             
             ////////////////////////////////////////////////////////////////
             
-            console.log("도로명 주소 : " + data.roadAddress);
+            console.log("도로명 주소 : " + data.memberAddress1);
             console.log("지번 주소 : " + data.jibunAddress);
             console.log("지번 주소(자동처리 : 지번 미출력시 자동 입력처리) : " + data.autoJibunAddress);
 
@@ -26,7 +26,7 @@ function getPostcodeAddress() {
             /*
             if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                 
-                fullAddr = data.roadAddress;
+                fullAddr = data.memberAddress1;
 
             } else { // 사용자가 지번 주소를 선택했을 경우(J)
                 // fullAddr = data.jibunAddress;
@@ -34,7 +34,7 @@ function getPostcodeAddress() {
             }
             */
 
-            fullAddr = data.roadAddress;
+            fullAddr = data.memberAddress1;
             // 지번 미입력시 : 자동 입력 지번 주소 활용(data.autoJibunAddress)
             fullAddrJibun = data.jibunAddress == '' ? data.autoJibunAddress : data.jibunAddress;
 
@@ -77,21 +77,21 @@ function getPostcodeAddress() {
             // javateacher) 본 회원가입 코드에서는 도로명으로 선택하든 지번 주소로 선택하든
             // 일괄적으로 도로명으로 기본주소가 들어가도록 설정하였습니다.
             
-            let zipFld = document.getElementById('zip');
-            let roadAddressFld = document.getElementById('roadAddress');
+            let memberZipFld = document.getElementById('memberZip');
+            let memberAddress1Fld = document.getElementById('memberAddress1');
             let jibunAddressFld = document.getElementById('jibunAddress');
-			let detailAddressFld = document.getElementById('detailAddress');
+			let memberAddress2Fld = document.getElementById('memberAddress2');
             let addressFldErrPnl = document.getElementById('address_fld_err_pnl');
 
-            zipFld.value = data.zonecode; // 5자리 우편번호 사용
-            roadAddressFld.value = fullAddr; // 도로명 주소
+            memberZipFld.value = data.zonecode; // 5자리 우편번호 사용
+            memberAddress1Fld.value = fullAddr; // 도로명 주소
 			jibunAddressFld.value = fullAddrJibun; // 지번 주소
             
             // 커서를 상세주소 필드로 이동한다.
-            detailAddressFld.focus();                        
+            memberAddress2Fld.focus();                        
 
             // 주소 필드 점검
-            isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+            isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl);
         }   
     }).open();
 }
@@ -195,14 +195,14 @@ function isCheckGenderFldValid(genderFld, errPnl, errMsg) {
 ////////////////////////////////////////////////////
 
 // 우편번호/주소 필드 점검
-function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl) {
+function isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl) {
 
     let resultFlag = false;
 
-	let zipFldVal = zipFld.value;
-	let roadAddressFldVal = roadAddressFld.value;
+	let memberZipFldVal = memberZipFld.value;
+	let memberAddress1FldVal = memberAddress1Fld.value;
 	let jibunAddressFldVal = jibunAddressFld.value;
-	let detailAddressFldVal = detailAddressFld.value;
+	let memberAddress2FldVal = memberAddress2Fld.value;
     
 
     // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
@@ -215,16 +215,16 @@ function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailA
 
 	console.log("\n----------------------------------\n")
 	
-	console.log("우편번호 필드(길이) : " + zipFldVal.length);
-	console.log("도로명 주소 필드(길이) : " + roadAddressFldVal.length);
+	console.log("우편번호 필드(길이) : " + memberZipFldVal.length);
+	console.log("도로명 주소 필드(길이) : " + memberAddress1FldVal.length);
 	console.log("지번 주소 필드(길이) : " + jibunAddressFldVal.length);
-	console.log("상세 주소 필드(길이) : " + detailAddressFldVal.length);
+	console.log("상세 주소 필드(길이) : " + memberAddress2FldVal.length);
 	
 	// 주소 필드들의 길이로 점검
 	
     // 1) 상세주소 미입력시
-    if (zipFldVal.length != 0 && roadAddressFldVal.length != 0 && 
-		jibunAddressFldVal.length != 0 && detailAddressFldVal.length == 0) {  
+    if (memberZipFldVal.length != 0 && memberAddress1FldVal.length != 0 && 
+		jibunAddressFldVal.length != 0 && memberAddress2FldVal.length == 0) {  
 			
 		console.log("주소 필드 에러 메시지 : 상세주소를 넣지 않았습니다.")	
     
@@ -232,8 +232,8 @@ function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailA
         addressFldErrPnl.innerHTML = "상세 주소를 입력하십시오.";
 
     // 2) 기본주소 미입력시(주소 미검색)
-	} else if (zipFldVal.length == 0 && roadAddressFldVal.length == 0 && 
-			   jibunAddressFldVal.length == 0 && detailAddressFldVal.length != 0) {
+	} else if (memberZipFldVal.length == 0 && memberAddress1FldVal.length == 0 && 
+			   jibunAddressFldVal.length == 0 && memberAddress2FldVal.length != 0) {
 				
 		console.log("주소 필드 에러 메시지 : 주소 검색을 통해서 우편번호와 기본주소를 입력하십시오.")
 		
@@ -339,13 +339,13 @@ window.onload = () => {
     let phoneFldErrPnl = document.getElementById("phone_fld_err_pnl");
 
     // 우편번호/주소 필드 인식
-    let zipFld = document.getElementById("zip");
+    let memberZipFld = document.getElementById("memberZip");
 
-    let roadAddressFld = document.getElementById("roadAddress");
+    let memberAddress1Fld = document.getElementById("memberAddress1");
 
     let jibunAddressFld = document.getElementById("jibunAddress");
 
-	let detailAddressFld = document.getElementById("detailAddress");
+	let memberAddress2Fld = document.getElementById("memberAddress2");
 
     // 주소 필드 에러 패널 인식
     let addressFldErrPnl = document.getElementById("address_fld_err_pnl");
@@ -556,7 +556,7 @@ window.onload = () => {
     // 2) 필수 사항이 아닐 경우는 다 비워져 있는 경우는 문제가 안되며, 그렇지 않고 필드 한개가 누락된 경우는
     //    폼 점검 에러를 유발하도록 구성합니다.
 
-    detailAddressFld.onblur = (e) => {
+    memberAddress2Fld.onblur = (e) => {
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
         
@@ -568,11 +568,11 @@ window.onload = () => {
 
         console.log("주소 필드에러 메시지 : " + addressFldErrPnl.innerHTML);
 
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl);
 
     } //
 
-    detailAddressFld.onkeyup = (e) => {
+    memberAddress2Fld.onkeyup = (e) => {
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
 
@@ -584,7 +584,7 @@ window.onload = () => {
 
         console.log("주소 필드에러 메시지 : " + addressFldErrPnl.innerHTML);
 
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl);
        
     } //
 
@@ -597,8 +597,8 @@ window.onload = () => {
 
         console.log("주소 삭제");
 
-        zip.value = "";
-        roadAddressFld.value = "";
+        memberZip.value = "";
+        memberAddress1Fld.value = "";
         jibunAddressFld.value = "";
 
 		// 주소 에러 메시지 제거
@@ -800,7 +800,7 @@ window.onload = () => {
 		console.log(`연락처(집전화) 점검 플래그(phoneCheckFlag) : ${phoneCheckFlag}`);
 		
         // 주소 필드 점검 플래그
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl); 
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl); 
 
         console.log(`주소 점검 플래그(addressCheckFlag) : ${addressCheckFlag}`);
 
@@ -921,7 +921,7 @@ window.onload = () => {
             // 우편번호/주소 필드 재점검
             if (addressCheckFlag == false) {
                 
-                addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl); 
+                addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl); 
             } //
 
             // 생일 필드 재점검
