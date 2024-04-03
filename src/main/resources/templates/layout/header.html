@@ -29,9 +29,9 @@
 				<th style="width: 150px;">마지막 페이지</th>
 				<td th:text="${pageVO.endPage}"></td>
 			</tr>
-			<tr th:each="board, st : ${boardList}" th:if="${not #lists.isEmpty(boardList)}">
-				<th colspan="1">게시글 정보</th>
-				<td colspan="11"><span th:text="${board}"></span><br></td>
+			<tr th:if="${not #lists.isEmpty(listCount)}">
+				<th colspan="1">총 게시글 수</th>
+				<td colspan="11"><span th:text="${listCount}"></span><br></td>
 			</tr>
 		</table>
 	

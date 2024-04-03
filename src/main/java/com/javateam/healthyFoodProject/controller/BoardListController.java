@@ -65,6 +65,7 @@ public class BoardListController {
 	
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("listCount", listCount);//추가 및 수정
 		
 		return "/board/list";		
 	} //

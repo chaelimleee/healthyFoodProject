@@ -86,20 +86,24 @@ public class SecurityConfig {
 						                .requestMatchers("/member/join.do", "/member/joinProc.do", "/member/joinProcRest.do").permitAll()
 						                .requestMatchers("/member/updateRoles/**", "/member/changeMemberState/**", 
 						                			     "/member/updateMemberByAdmin/**", "/member/deleteMemberByAdmin/**").authenticated()
+						                .requestMatchers("/board/ReWrite.do/").authenticated()
+						                .requestMatchers("/board/replyWrite.do").permitAll()
 						                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 						                .requestMatchers("/content1", "/content2").permitAll()	
-						                //
+						                //수정
 						                // 게시판 관련 링크 추가
-						                .requestMatchers("/board/view.do/**","/board/list.do","/board/searchList.do",
-						                				"/board/image", "/board/image/**",
-						                				"/board/getRepliesAll.do").permitAll()
+						                .requestMatchers("/board/view.do/**","/board/list.do/**","/board/searchList.do",
+				                				"/board/image", "/board/image/**",
+				                				"/board/getRepliesAll.do","/board/download/**").permitAll()
+				                
 						                .requestMatchers("/board/write.do","/board/writeProc.do",
-							                			 "/board/update.do", "/board/updateProc.do",
-							                			 "/board/replyWrite.do", "/board/replyUpdate.do", 
-							                			 "/board/replyDelete.do",
-							                			 "/board/deleteProc.do").authenticated()
-						                .anyRequest().authenticated()); 
-                
+					                			 "/board/update.do", "/board/updateProc.do",
+					                			 "/board/replyWrite.do",
+					                			  "/board/replyUpdate.do", 
+					                			 "/board/replyDelete.do",
+					                			 "/board/deleteProc.do").authenticated()
+						                .anyRequest().authenticated()); //수정
+                	
            http.formLogin(formLogin -> formLogin
 				                .loginPage("/login")
 				                .usernameParameter("username")
