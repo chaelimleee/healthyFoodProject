@@ -16,7 +16,10 @@
 </head>
 <body>
 
-<!-- 0401 leee 수정 완. -->
+<!-- 
+0401 leee 수정 완. 
+0403 leee memberDisplay => enabled 로 변경함. 
+-->
 
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
@@ -90,7 +93,7 @@
 						<td th:utext="${#dates.format(member.memberBirth, 'yyyy년 MM월 dd일')}"></td>
 						<td
 							th:utext="${#dates.format(member.memberDate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
-						<td th:utext="${member.memberDisplay == '1' ? '활동' : '휴면'}"></td>
+						<td th:utext="${member.enabled == '1' ? '활동' : '휴면'}"></td>
 						<td>
 							<button class="btn btn-primary"
 								id="${'update_btn' + (st.count + (pageVO.currPage - 1) * 10)}">수정</button>&nbsp;

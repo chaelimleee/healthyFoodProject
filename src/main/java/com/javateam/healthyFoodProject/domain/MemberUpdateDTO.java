@@ -39,7 +39,7 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 		this.setMemberImgOrigin(memberDTO.getMemberImgOrigin());
 		this.setMemberDate(memberDTO.getMemberDate());
 		this.setMemberRole(memberDTO.getMemberRole());
-		this.setMemberDisplay(memberDTO.getMemberDisplay());
+		this.setEnabled(memberDTO.getEnabled());
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 				+ ", getMemberBirth()=" + getMemberBirth() + ", getMemberZip()=" + getMemberZip()
 				+ ", getMemberAddress1()=" + getMemberAddress1() + ", getMemberAddress2()=" + getMemberAddress2()
 				+ ", getMemberImg()=" + getMemberImg() + ", getMemberImgOrigin()=" + getMemberImgOrigin()
-				+ ", getRegDate()=" + getMemberDate() + ", getMemberRole()=" + getMemberRole() + ", getMemberDisplay()="
-				+ getMemberDisplay() + ", getClass()=" + getClass() + "]";
+				+ ", getRegDate()=" + getMemberDate() + ", getMemberRole()=" + getMemberRole() + ", getenabled()="
+				+ getEnabled() + ", getClass()=" + getClass() + "]";
 	}
 
 	

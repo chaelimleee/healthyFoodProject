@@ -106,7 +106,7 @@ public class BoardDeleteController {
 				log.info("첨부 파일 삭제 직전 !");
 				
 				// 첨부 파일 삭제
-				if (boardVO.getBoardFileOriginal() != null) { // 첨부 파일이 있다면
+				if (boardVO.getBoardFileOrigin() != null) { // 첨부 파일이 있다면
 					
 					log.info("첨부 파일 존재 !");
 
