@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;
 /**
  * 수정 완. 0401
+ * 0403 leee enabled 없앰. > DB컬럼에 없고, 없애도 될듯.
  * @author leee
  *
  */
@@ -25,7 +26,7 @@ public class BoardDTO {
 	private MultipartFile boardFile; // 첨부 파일(인코딩된 파일명)
 	private Date boardDate; // 게시글 등록일
 	private int boardReadCount = 0 ; // 게시글 조회수
-	private int boardDisplay; // 활성화 여부
+//	private int enabled; // 활성화 여부
 	private String textMulti = "text"; // 텍스트 모드(text:기본값) / 멀티미디어 모드(multi)
 	
 	// 업로드 파일(파일명을 확인할 수 있도록 파일명 인쇄) : boardFile.getOriginalFilename()
@@ -36,7 +37,7 @@ public class BoardDTO {
 				+ ", MERBER_IMG=" + memberImg + ", boardOrigin=" + boardOrigin + ", boardReSeq=" + boardReSeq
 				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardImg=" + boardImg
 				+ ", boardImgOrigin=" + boardImgOrigin + ", boardFile=" + boardFile + ", boardDate=" + boardDate
-				+ ", boardReadCount=" + boardReadCount + ", boardDisplay=" + boardDisplay + ", textMulti=" + textMulti
+				+ ", boardReadCount=" + boardReadCount + ", textMulti=" + textMulti
 				+ "]";
 	}
 	

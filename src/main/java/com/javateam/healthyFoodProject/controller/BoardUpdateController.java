@@ -119,7 +119,7 @@ public class BoardUpdateController {
 
 				// 저장용 파일명 암호화
 				String actualUploadFilename = FileUploadUtil.encodeFilename(boardFile.getOriginalFilename());
-				updateBoardVO.setBoardFileOriginal(boardFile.getOriginalFilename());
+				updateBoardVO.setBoardFileOrigin(boardFile.getOriginalFilename());
 				updateBoardVO.setBoardFile(actualUploadFilename);
 
 				// 신규 업로드 파일 저장(업로드)
@@ -145,10 +145,10 @@ public class BoardUpdateController {
 				} else {
 				
 					// 기존 파일을 입력
-					String originalFilename = defaultBoardVO.getBoardFileOriginal() != null
-							? defaultBoardVO.getBoardFileOriginal()
+					String originalFilename = defaultBoardVO.getBoardFileOrigin() != null
+							? defaultBoardVO.getBoardFileOrigin()
 							: null;
-					updateBoardVO.setBoardFileOriginal(originalFilename);
+					updateBoardVO.setBoardFileOrigin(originalFilename);
 
 					String encBoardFilename = defaultBoardVO.getBoardFile() != null ? defaultBoardVO.getBoardFile() : null;
 					updateBoardVO.setBoardFile(encBoardFilename);

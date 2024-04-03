@@ -275,9 +275,9 @@ window.onload = function() {
 							<div class="row my-1">
 							
 								<div class="col-8">
-									<a th:href="@{'/board/download/'+${board.boardFileOriginal}+'/'+${board.boardFile}}" 
-									   th:if="${!#strings.isEmpty(board.boardFileOriginal)}" 
-									   th:utext="${board.boardFileOriginal}"></a>
+									<a th:href="@{'/board/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
+									   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
+									   th:utext="${board.boardFileOrigin}"></a>
 								</div>   
 								
 								<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>

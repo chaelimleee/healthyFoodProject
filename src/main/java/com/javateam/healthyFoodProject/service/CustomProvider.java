@@ -31,8 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomProvider 
 		implements AuthenticationProvider, UserDetailsService {
 	/**
-	 * 0401 leee 수정완. 인데 좀 더 손봐야함.
-	 * 0402 leee 
+	 * leee 
+	 * 0401 수정완. 인데 좀 더 손봐야함.
+	 * 0402 로그인 가능!!
 	 */
 	private JdbcTemplate jdbcTemplate;
 	
@@ -49,6 +50,7 @@ public class CustomProvider
     	try {
 	    	return (CustomUser)jdbcTemplate.queryForObject(
 	    			  // "SELECT * FROM member_tbl WHERE id=?", 
+	    			  // 0402 수정함. as password 로 수정 
 	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW as password, enabled FROM member_tbl WHERE MEMBER_EMAIL=?",
 				     new BeanPropertyRowMapper<CustomUser>(CustomUser.class),
 				     new Object[]{ username });

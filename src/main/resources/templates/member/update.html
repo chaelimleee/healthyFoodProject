@@ -66,19 +66,19 @@
 		                <!-- 수정용 패쓰워드(2개) -->
 		                <div id="pw1_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="memberPw1">패쓰워드(신규)</label>
+		                        <label for="password1">패쓰워드(신규)</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="memberPw1" memberName="memberPw1" maxlength="20" th:field="*{memberPw1}" />
+		                        <input type="text" id="password1" memberName="password1" maxlength="20" th:field="*{password1}" />
 		                    </div>
 		                </div>
 		                
 		                <div id="pw2_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="memberPw2">패쓰워드(확인)</label>
+		                        <label for="password2">패쓰워드(확인)</label>
 		                    </div>
 		                    <div class="fld_content">
-		                        <input type="text" id="memberPw2" memberName="memberPw2" maxlength="20" th:field="*{memberPw2}" />
+		                        <input type="text" id="password2" memberName="password2" maxlength="20" th:field="*{password2}" />
 		                    </div>
 		                </div>
 		                
@@ -90,9 +90,9 @@
 		                <!-- 회원  이름-->
 		                <div id="memberName_fld_pnl">	
 		                    <div class="fld_label">
-		                        <label for="membermemberName">이름</label>
+		                        <label for="memberName">이름</label>
 		                    </div>
-		                    <div class="fld_content" th:text="*{membermemberName}"></div>    
+		                    <div class="fld_content" th:text="*{memberName}"></div>    
 		                </div>
 		                <!--// 회원 이름 -->
 		                <!-- 
@@ -234,7 +234,7 @@
 							<input type="hidden" id="memberName" memberName="memberName" th:field="*{memberName}" readonly />
 							<input type="hidden" id="memberBirth" memberName="memberBirth" th:field="*{memberBirth}" readonly />
 							<input type="hidden" id="memberDate" memberName="memberDate" th:field="*{memberDate}" readonly />
-							<input type="hidden" id="memberDisplay" memberName="memberDisplay" th:field="*{memberDisplay}" />
+							<input type="hidden" id="enabled" memberName="enabled" th:field="*{enabled}" />
 						</div>
 						<!--// 히든 필드들  -->
 		                
