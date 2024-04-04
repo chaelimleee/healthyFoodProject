@@ -31,13 +31,13 @@ public class InsertMemberTest {
 	public void setUp() throws ParseException {
 		
 		memberDTO = MemberDTO.builder()
-	  			 .email("abcd@abcd.com")
-	  			 .password("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
-	  			 .nick("장길산")
-	  			 .mobile("01065657878")
-	  			 .zip("08290")
-	  			 .roadAddress("서울특별시 관악구 남부순환로 1633 (신림동)")
-	  			 .detailAddress("이젠아카데미 신림점 별관 8층")
+	  			 .memberEmail("abcd@abcd.com")
+	  			 .memberPw("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
+	  			 .memberNick("장길산")
+	  			 .memberMobile("01065657878")
+	  			 .memberZip("08290")
+	  			 .memberAddress1("서울특별시 관악구 남부순환로 1633 (신림동)")
+	  			 .memberAddress2("이젠아카데미 신림점 별관 8층")
 	  			 .build();
 	}
 	
@@ -92,7 +92,7 @@ public class InsertMemberTest {
 		result = false;
 		
 		try {
-			memberDAO.insertRole(new Role(memberDTO.getEmail(), "ROLE_HUMAN"));
+			memberDAO.insertRole(new Role(memberDTO.getMemberEmail(), "ROLE_HUMAN"));
 			result = true;
 		} catch (Exception e) {
 			log.error("InsertMemberTest.insertRole : {}", e);

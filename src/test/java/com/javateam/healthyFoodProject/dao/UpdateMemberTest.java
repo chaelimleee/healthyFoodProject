@@ -29,12 +29,12 @@ public class UpdateMemberTest {
 	public void setUp() throws ParseException {
 		
 		memberDTO = MemberDTO.builder()
-	  			 .email("abcd1234")
-	  			 .password("$2a$10$lhx31tqVr9IDrG8NMrtdX.Q..cd1CDd4gRHPxaXZo47aJUOIdrZxK")
-	  			 .mobile("010-7878-9090")
-	  			 .zip("08285")
-	  			 .roadAddress("서울 관악구 신림로 340")
-	  			 .detailAddress("이젠아카데미 신림점 본관")
+	  			 .memberEmail("abcd1234")
+	  			 .memberPw("$2a$10$lhx31tqVr9IDrG8NMrtdX.Q..cd1CDd4gRHPxaXZo47aJUOIdrZxK")
+	  			 .memberMobile("010-7878-9090")
+	  			 .memberZip("08285")
+	  			 .memberAddress1("서울 관악구 신림로 340")
+	  			 .memberAddress2("이젠아카데미 신림점 본관")
 	  			 .build();
 		
 	}

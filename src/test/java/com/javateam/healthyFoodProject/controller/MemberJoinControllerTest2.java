@@ -83,16 +83,16 @@ public class MemberJoinControllerTest2 {
 		String joindate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
 		memberDTO = MemberDTO.builder()
-				  			 .email("swim50m@abcd.com")
-				  			 .password("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
-				  			 .nick("지유찬")
-				  			 .mobile("010-1212-3434")
-				  			 .zip("08290")
-				  			 .roadAddress("서울특별시 관악구 남부순환로 1633 (신림동)")
-				  			 .detailAddress("이젠아카데미 신림점 별관 8층")
-				  			 .regDate(new SimpleDateFormat("yyyy-MM-dd").parse(joindate)) // NullPointerException 방지
+				  			 .memberEmail("swim50m@abcd.com")
+				  			 .memberPw("$2a$10$1t3vaIa5jtsMp2RY9y7xhuJz0xDRNEl0csvPYvgCbyKuKeyOVucES")
+				  			 .memberNick("지유찬")
+				  			 .memberMobile("010-1212-3434")
+				  			 .memberZip("08290")
+				  			 .memberAddress1("서울특별시 관악구 남부순환로 1633 (신림동)")
+				  			 .memberAddress2("이젠아카데미 신림점 별관 8층")
+				  			 .memberDate(new SimpleDateFormat("yyyy-MM-dd").parse(joindate)) // NullPointerException 방지
 				  			 // .regDate(new SimpleDateFormat("yyyy-MM-dd").parse("2023-09-26")) // NullPointerException 방지
-				  			 .display(0)
+				  			 .enabled(0)
 				  			 .build();
 	} //
 	
