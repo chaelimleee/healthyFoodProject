@@ -111,7 +111,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	private String boardFile; 
 	
 	/** 첨부 파일(원래 파일명) */
-	@Column(name = "BOARD_FILE_ORIGIIN") 
+	@Column(name = "BOARD_FILE_ORIGIN") 
 	private String boardFileOrigin; 
 	
 	/** 게시글 등록일 */
