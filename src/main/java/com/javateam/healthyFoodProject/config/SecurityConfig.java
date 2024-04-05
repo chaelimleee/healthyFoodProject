@@ -86,24 +86,35 @@ public class SecurityConfig {
 						                .requestMatchers("/member/join.do", "/member/joinProc.do", "/member/joinProcRest.do").permitAll()
 						                .requestMatchers("/member/updateRoles/**", "/member/changeMemberState/**", 
 						                			     "/member/updateMemberByAdmin/**", "/member/deleteMemberByAdmin/**").authenticated()
-						                .requestMatchers("/board/ReWrite.do/").authenticated()
 						                .requestMatchers("/board/replyWrite.do").permitAll()
 						                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 						                .requestMatchers("/content1", "/content2").permitAll()	
-						                //수정
-						                // 게시판 관련 링크 추가
+						                //
+						                // 게시판 관련 링크 추가 
+						                //240405-es-song- photo_board 추가(permitAll(),authenticated())
 						                .requestMatchers("/board/view.do/**","/board/list.do/**","/board/searchList.do",
-				                				"/board/image", "/board/image/**",
-				                				"/board/getRepliesAll.do","/board/download/**").permitAll()
-				                
+						                				"/board/image", "/board/image/**",
+						                				"/board/getRepliesAll.do","/board/download/**",
+						                				"/photo_board/view.do/**","/photo_board/list.do/**","/photo_board/searchList.do",
+						                				"/photo_board/image", "/photo_board/image/**",
+						                				"/photo_board/getRepliesAll.do").permitAll()
+						                
 						                .requestMatchers("/board/write.do","/board/writeProc.do",
-					                			 "/board/update.do", "/board/updateProc.do",
-					                			 "/board/replyWrite.do",
-					                			  "/board/replyUpdate.do", 
-					                			 "/board/replyDelete.do",
-					                			 "/board/deleteProc.do").authenticated()
-						                .anyRequest().authenticated()); //수정
-                	
+							                			 "/board/update.do", "/board/updateProc.do",
+							                			 "/board/replyWrite.do",
+							                			  "/board/replyUpdate.do", 
+							                			 "/board/replyDelete.do",
+							                			 "/board/deleteProc.do",
+				                		
+							                			 "/photo_board/write.do","/photo_board/writeProc.do",
+							                			 "/photo_board/update.do", "/photo_board/updateProc.do",
+							                			 "/photo_board/replyWrite.do",
+							                			 "/photo_board/replyUpdate.do", 
+							                			 "/photo_board/replyDelete.do",
+							                			 "/photo_board/deleteProc.do"
+							                			 ).authenticated()
+						                .anyRequest().authenticated()); 
+        
            http.formLogin(formLogin -> formLogin
 				                .loginPage("/login")
 				                .usernameParameter("username")
