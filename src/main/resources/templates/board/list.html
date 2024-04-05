@@ -173,7 +173,7 @@ window.onload = function() {
 	
 						<!-- 현재 페이지 -->
 						<!-- 0404 leee 삼항 연산자 : 참 거짓 둘 다 넣어야함. -->
-						<!-- 쿼리 링크 물음표 들어가야함. 문자열하고 num을 분리 시킴. num이 0보다 크다는 조건을 주면 num-1안해도됨.  -->
+						<!-- 0404 leee 쿼리 링크 물음표 들어가야함. 문자열하고 num을 분리 시킴. num이 0보다 크다는 조건을 주면 num-1안해도됨.  -->
 						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
 							th:each="num : ${#numbers.sequence(startPage, endPage)}">
  							<a class="page-link" th:if="${num > 0}" th:href="@{'/board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>

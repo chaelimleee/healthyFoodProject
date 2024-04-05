@@ -53,7 +53,7 @@ public class SecurityConfig {
     	// 참고) /v2/api-docs : swagger의 전체적인 환경설정 정보를 JSON 형식으로 보여주는 페이지
     	// /v2/api-docs, /swagger-resources/**, /swagger/**, swagger-ui.html
     	// axios 항목 예외 추가
-    	return (web) -> web.ignoring().requestMatchers("/css/**", "/webjars/**", 
+    	return (web) -> web.ignoring().requestMatchers("/css/**", "/webjars/**","/img/**", 
     				"/images/**", "/js/**", "/v2/api-docs", "/swagger-resources/**", "/swagger/**", "/swagger-ui.html",
     				"/axios/**", "/bootstrap-icons/**", "/bootstrap/**",
     				"/summernote/**");    	

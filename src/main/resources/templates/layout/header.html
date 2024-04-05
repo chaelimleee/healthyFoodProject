@@ -163,7 +163,7 @@
 				</form>
 					
 				<form class="d-flex m-2" style="vertical-align: bottom; float: left;">
-					<a class="btn btn-outline-success" href="http://localhost:8181/healthyFoodProject/member/join.do"
+					<a class="btn btn-outline-success" th:href="@{/logout}"
 						role="button" sec:authorize="isAuthenticated()"  style="vertical-align: bottom;">
 						로그아웃
 					</a>
