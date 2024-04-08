@@ -127,7 +127,8 @@
 			
 			<!-- 게시판 링크 -->
 			<li><a th:href="@{/board/list.do}">게시글 목록</a></li>
-			<!--// 게시판 링크 -->
+			<!--Photo 게시판 링크 -->
+			<li><a th:href="@{/photo_board/list.do}">Photo 게시글 목록</a></li>
 			
 			<!-- 등급(롤:role)이 관리자일 경우 -->
 			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/viewAllWithRoles.do}">회원 관리</a></li>
