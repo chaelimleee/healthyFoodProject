@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.thymeleaf.util.DateUtils;
 
 import com.javateam.healthyFoodProject.domain.MemberDTO;
 import com.javateam.healthyFoodProject.domain.MemberUpdateDTO;
@@ -22,7 +23,15 @@ public class MemberDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
+//	public void insertMemberBirth(MemberDTO memberDTO) {
+//
+//		sqlSession.insert("mapper.Member.insertMember", memberDTO);
+//	}
+	
 	public void insertMember(MemberDTO memberDTO) {
+		String memberBirth = MemberDTO.formatBirthAll(memberDTO.getMemberYear(), memberDTO.getMemberMonth(), memberDTO.getMemberDay());
+		
+		memberDTO.setMemberBirthAll(memberBirth);
 		sqlSession.insert("mapper.Member.insertMember", memberDTO);
 	}
 	

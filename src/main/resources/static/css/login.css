@@ -19,11 +19,11 @@
 */
 #login_box 
 {  
-    width:350px;
-    height:280px;
+    width:500px;
+    height:700px;
     text-align:center;
-    padding-top:20px;
-        
+    padding-top:10px;
+    background-color: aqua;
     font-family:Nanum Gothic;
 }  
 
@@ -61,9 +61,9 @@ input#join_btn, input#login_btn
     
     1) 외부 간격 : 상하 5px
 */
-div#id_box, div#pw_box 
-{
-    margin:5px 0;	
+/* div#id_box, div#pw_box  */
+div#pw_box {
+    margin:15px 0;	
 }
 
 /* 

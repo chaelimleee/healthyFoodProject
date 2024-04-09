@@ -32,45 +32,87 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @Slf4j
 public class MemberDTO {
+	/** 
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 생일 수정 완. 
+	 * 		셀렉트 박스 사용으로 생일을 3개로 나눠서 받아 온 후 , 매퍼에서 합쳐서 저장. 
+	 * 
+	 * 14개 컬럼
+	 * 	MEMBER_EMAIL	  회원 이메일
+		MEMBER_PW	      회원 비밀번호
+		MEMBER_NAME	      회원 이름
+		MEMBER_NICK	      회원 별명
+		MEMBER_MOBILE	  회원 휴대전화
+		MEMBER_BIRTH	  회원 생일
+		MEMBER_ZIP    	  회원 우편번호
+		MEMBER_ADDRESS1	  회원 기본주소
+		MEMBER_ADDRESS2	  회원 상세주소
+		MERBER_IMG	      회원 이미지
+		MERBER_IMG_ORIGIN 회원 이미지 원본
+		MERBER_DATE	      회원 가입일
+		MEMBER_ROLE	      회원 권한
+		ENABLED	  회원 활성화
+	 */
 	
-	/** 회원 아이디 */
+	/** 1. 회원 이메일 아이디 */
 	private String memberEmail;
 	
-	/** 회원 패쓰워드 */
+	/** 2. 회원 패쓰워드 */
 	private String memberPw;
 	
-	/** 회원 별명 */
+	/** 3. 회원 이름 */
+	private String memberName;
+	
+	/** 4. 회원 별명 */
 	private String memberNick;
 	
-	/** 회원 휴대전화 */
+	/** 5. 회원 휴대전화 */
 	private String memberMobile;
+
+	/** 6. 회원 생년월일 */
+	private Date memberBirth;
 	
-	/** 회원 우편번호 */
+	/** 6. 회원 생일 년도 */ // 추가수정
+	private String memberYear;
+	
+	/** 6. 회원 생일 월 */  // 추가수정
+	private String memberMonth;
+	
+	/** 6. 회원 생일 일 */  // 추가수정
+	private String memberDay;
+	
+	/** 6. 회원 생일 더함.  */  // 추가수정
+	private String memberBirthAll;
+	
+	/** 7. 회원 우편번호 */
 	private String memberZip;
 	
-	/** 회원 도로명 주소 */
+	/** 8. 회원 기본 도로명 주소 */
 	private String memberAddress1;
 	
-	/** 회원 상세 주소 */
+	/** 9. 회원 상세 주소 */
 	private String memberAddress2;
 
-	/** 회원 이미지 */
+	/** 10. 회원 이미지 */
 	private String memberImg;
 	
-	/** 회원 이미지 원본 */
+	/** 11. 회원 이미지 원본 */
 	private String memberImgOrigin;
 	
-	/** 회원 가입일 */
+	/** 12. 회원 가입일 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date regDate;
+	private Date memberDate;
 	
-	/** 회원 롤 */
+	/** 13. 회원 롤 */
 	private String memberRole;
 	
-	/** 회원 활성화 여부 */
-	private int memberDisplay;
+	/** 14. 회원 활성화 여부 */
+	private int enabled;
 	
-	
+	public static String formatBirthAll(String memberYear, String memberMonth, String memberDay) {
+		return memberYear + "-" + memberMonth +"-" + memberDay ;
+	}
 	
 	// DTO => MultiValueMap
 	public static MultiValueMap<String, String> toMap(MemberDTO memberDTO) 
@@ -86,7 +128,7 @@ public class MemberDTO {
 				
 				Method method = memberDTO.getClass().getDeclaredMethod("get"+StringUtils.capitalize(fld.getName()));
 				
-				if (fld.getName().equals("birthday") || fld.getName().equals("joindate")) {
+				if (fld.getName().equals("memberDate")) {
 				
 					map.put(fld.getName(), Arrays.asList(new SimpleDateFormat("yyyy-MM-dd").format(method.invoke(memberDTO))));
 					
@@ -117,7 +159,7 @@ public class MemberDTO {
 							field = this.getClass().getDeclaredField(fldName);
 							field.setAccessible(true);
 							
-							if (!fldName.equals("birthday") || !fldName.equals("joindate")) {
+							if (!fldName.equals("memberDate")) {
 								field.set(this, requestMap.get(fldName));
 							}
 							
