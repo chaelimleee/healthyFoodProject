@@ -83,7 +83,7 @@ public class BoardController {
 			String actualUploadFilename = FileUploadUtil.encodeFilename(boardFile.getOriginalFilename());
 			boardVO.setBoardFile(actualUploadFilename);
 
-			// 첨부 파일이 있을 때만 저장
+			// 첨부 파일이 있을 때만 저장 // 됨.
 			msg = fileUPloadService.storeUploadFile(boardVO.getBoardCode(), boardFile, boardVO.getBoardFile());
 			log.info("msg : {}", msg);
 		} 

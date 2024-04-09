@@ -5,12 +5,19 @@
 	<!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> -->
 <!-- bootstrap icons :  -->
 <head>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> -->
 	<!-- 0405 leee 메인화면 상단 로고 글꼴 추가 -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+ 
 	<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
 	<style>
 	
@@ -96,8 +103,7 @@
 			display: block; margin:0 ;
 		} */
 		
-	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</style> 
 	
 </head>
 
@@ -240,7 +246,11 @@
 
 				<div class="header_menus" style="width:90em; float: right;">
 
-					<h1 class="m-2 p-1" style="float: left; margin:10px;">healthFood</h1>
+					<h1 class="m-2 p-1" style="float: left; margin:10px;">
+						<a th:href="@{/}" style="text-decoration-line: none;"> 
+							healthFood 
+						</a>
+					</h1>
 
 					<a class="btn btn-outline-success" 
 						href="http://localhost:8181/healthyFoodProject/login"
@@ -296,7 +306,7 @@
 
 								<!-- <a class="navbar-brand" th:href="@{/}">healthyFood</a> -->
 								
-								<li class="nav-item">
+								<li class="nav-item ">
 									<a  class="nav-link active" 
 										  aria-current="page" 
 										  th:href="@{/}">
@@ -307,6 +317,7 @@
 									</a>
 								</li>
 								
+								
 								<!-- 로그인 인증되었을 때   -->
 								
 								<!-- <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -315,7 +326,8 @@
 
 								<li class="nav-item dropdown" 
 										sec:authorize="isAuthenticated()">
-									<a  class="btn nav-link active dropdown-toggle"  
+									<a  class="nav-link dropdown-toggle"
+											id="navbarDropdown"  
 										 	role="button" 
 											data-bs-toggle="dropdown" 
 											aria-expanded="false" 
@@ -323,9 +335,11 @@
 											나의 맞춤 건강식
 									</a>
 									<ul class="dropdown-menu " 
-											style="display: none;"  
-											onmouseover="showDropdownMenu(this)" 
-											onmouseout="hideDropdownMenu(this)">
+											style="display: none;" 
+											aria-labelledby="navbarDropdown" 
+											>
+											<!-- onmouseover="showDropdownMenu(this)" 
+											onmouseout="hideDropdownMenu(this)" -->
 										<li><a class="dropdown-item" href="#">사상체질 맞춤 건강식</a></li>
 										<li><a class="dropdown-item" href="#">건강상태 맞춤 건강식</a></li>
 									</ul>

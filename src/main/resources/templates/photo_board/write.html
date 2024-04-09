@@ -31,7 +31,7 @@ function sendFile(file, el) {
 	  
     data: formData,
     type: "POST", // 업로드시 필수사항
-    url: '/memberProject/board/image',
+    url: '/healthyFoodProject/photo_board/image',
     cache: false,
     contentType: false,
     enctype: 'multipart/form-data', // 업로드시 필수사항 
@@ -147,7 +147,7 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 
-			<form id="board_write_frm" th:action="@{'/qna_board/writeProc.do'}" method="post">
+			<form id="board_write_frm" th:action="@{'/photo_board/writeProc.do'}" method="post">
 
 				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
 

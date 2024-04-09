@@ -5,7 +5,7 @@
 // 댓글 목록 읽어오기
 function getAllReplies(originalBoardId, memberNick) {
 	
-	axios.get(`/memberProject/board/getRepliesAll.do?boardCode=${originalBoardId}`) 
+	axios.get(`/healthyFoodProject/board/getRepliesAll.do?boardCode=${originalBoardId}`) 
 		 .then(function(response) {
 			 
 			// alert("전체 댓글 가져오기");
@@ -148,9 +148,9 @@ function writeReply(originalBoardId, memberNick) {
 		if (memberNick == 'anonymousUser'){
 		
 			alert("댓글 작성을 위해서 로그인이 필요합니다.");
-			//location.href = "/memberProject/login";
-			//location.href = "/memberProject/board/replyWrite.do";
-			//movePath ="redirect:/memberProject/board/replyWrite.do";
+			//location.href = "/healthyFoodProject/login";
+			//location.href = "/healthyFoodProject/board/replyWrite.do";
+			//movePath ="redirect:/healthyFoodProject/board/replyWrite.do";
 			//history.back();//이전 페이지로 돌아가기
 			//location.reload();
 			
@@ -200,7 +200,7 @@ function writeReply(originalBoardId, memberNick) {
 	 			} else { 
 				 
 	 				// 전송			  
-	 				axios.post('/memberProject/board/replyWrite.do', 
+	 				axios.post('/healthyFoodProject/board/replyWrite.do', 
 	 					{
 							boardCode : originalBoardId,
 							boardContent : replyWriteForm.value,
@@ -472,7 +472,7 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 			
 				// 전송	
 				// 주의) 여기서 boardCode 댓글 자체의 아이디입니다.		  
- 				axios.post('/memberProject/board/replyUpdate.do', 
+ 				axios.post('/healthyFoodProject/board/replyUpdate.do', 
  					{
 					    boardCode : replyBoardId,
 						boardContent : replyUpdateForm.value,
@@ -701,7 +701,7 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 		if (memberNick == 'anonymousUser'){
 		
 			alert("댓글 작성을 위해서 로그인이 필요합니다.");
-			location.href = "/memberProject/login";
+			location.href = "/healthyFoodProject/login";
 		}			
 	
 		// 댓글 폼점검 : 비어 있는지 여부 점검
@@ -735,7 +735,7 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 				
 				// 삭제를 위한 AJAX 전송
 				// 삭제할 댓글 아이디와 댓글 부모글(원글) 아이디 : 원글은 삭제 후 댓글 목록의 현황 갱신을 위한 전송 
-				axios.post(`/memberProject/board/replyDelete.do`,
+				axios.post(`/healthyFoodProject/board/replyDelete.do`,
 				{
 					boardCode : replyBoardId, // 삭제할 댓글 아이디
 					originalboardCode : originalBoardId, // 댓글 목록 갱신을 위한 원글 아이디
@@ -926,7 +926,7 @@ function deleteBoard(boardCode, memberNick) {
 				//  
 				let encodedPass = encodeURIComponent(boardDeletePass.value);
 				
-				let str = `/memberProject/board/deleteProc.do?boardCode=${boardCode}&boardPass=${encodedPass}`;
+				let str = `/healthyFoodProject/board/deleteProc.do?boardCode=${boardCode}&boardPass=${encodedPass}`;
 				
 				console.log('str : ', str);
 				

@@ -46,7 +46,7 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 			initialValue = 1,
 			allocationSize = 1)
 	@Column(name = "board_num") 
-	private int boardNum; 
+	private int boardNum;  	
 	
 	/** 게시글 작성자 */
 	@Column(name = "board_writer")
