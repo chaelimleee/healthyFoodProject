@@ -21,6 +21,13 @@
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
+<style>
+	.inner-div {
+	  width : 400px;
+	  height : 100px;
+	  /* background-color: red; */
+	}
+</style>
 <script>
 window.onload = function() {
 	
@@ -80,21 +87,26 @@ window.onload = function() {
 	
 		<div class="content_sect_pnl">
 
+		
 			<!-- 인자 현황판 이전(move) :   -->
 			
-			<h2 class="d-flex justify-content-center m-5">
-				게시글 목록
-			</h2>
-	
+			<h4 class="d-flex justify-content-left m-5">
+				<div class='inner-div'> </div>
+				<div class="p-2" style="line-height: 1.5em">커뮤니티<br>
+					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
+				</div>	
+			</h4>
+			
+				
 			<table class="table mx-2 mx-auto" style="width:50vw">
 				<thead>
-					<tr>
+					<tr>	
 						<th>
 							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
 						</th>
 						<th>번호</th>
-						<th>아이디</th>
 						<th>제목</th>
+						<th>작성자</th>
 						<th>작성일</th>
 						
 						<!-- 조회수 추가 -->
@@ -107,8 +119,11 @@ window.onload = function() {
 						<td>
 							<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
 						</td>
-						<td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td>
-						<td th:utext="${board.boardCode}"></td>
+            
+						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
+						<td th:text="${board.boardNum}"></td>
+						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
+						
 						<td>
 							<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
 							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
@@ -121,6 +136,7 @@ window.onload = function() {
 								<i class="bi bi-paperclip"></i>
 							</span>
 						</td>
+						<td th:utext="${board.boardWriter}"></td>
 						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 						
 						<!-- 조회수 추가 -->

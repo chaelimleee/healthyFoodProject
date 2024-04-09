@@ -111,7 +111,7 @@ public class BoardReplyRestController {
 			replyList = boardService.selectReplysById(boardCode);				
 			
 			// replyList.forEach(x-> { log.info("날짜 : {}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(x.getBoardDate())); });
-			replyList.forEach(x-> { log.info("날짜 : {}", x.getBoardDate()); });
+			replyList.forEach(x-> { log.info("날짜 : {}", x.getBoardDate()); });//주석 뺐음, 수정
 			
 			// 댓글들이 있다면...
 			if (replyList.size() > 0) {

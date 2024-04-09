@@ -68,6 +68,29 @@
 		}
 		
 		
+    /*
+		<table class="table table-striped"  th:if="${pageVO != null}">
+			<tr>
+				<th style="width: 150px;">총 게시글 수</th>
+				<td th:text="${pageVO.listCount}"></td>
+				<th style="width: 150px;">이전 페이지</th>
+				<td th:text="${pageVO.prePage}"></td>
+				<th style="width: 150px;">현재 페이지</th>
+				<td th:text="${pageVO.currPage}"></td>
+				<th style="width: 150px;">이후 페이지</th>
+				<td th:text="${pageVO.nextPage}"></td>
+				<th style="width: 150px;">처음 페이지</th>
+				<td th:text="${pageVO.startPage}"></td>
+				<th style="width: 150px;">마지막 페이지</th>
+				<td th:text="${pageVO.endPage}"></td>
+			</tr>
+			<tr th:if="${not #lists.isEmpty(listCount)}">
+				<th colspan="1">총 게시글 수</th>
+				<td colspan="11"><span th:text="${listCount}"></span><br></td>
+			</tr>
+		</table>
+    */
+
 	
 		/* ul.nav li.dropdown:hover > ul.dropdown-menu {
 			display: block; margin:0 ;
@@ -263,6 +286,8 @@
 
 				<!-- ///////////////////////////////////---- 카테고리 네비게이션 ----////////////////////////////////////////////////////////// -->
 			
+
+=======
 				<nav  class="p-1 navbar navbar-expand-sm bg-success-subtle " 
 							style="border-radius: 10px;"><!-- 0408 leee style="border-radius: 10px; 네비 테두리 둥글게-->
 					<div class="container-fluid p-1">
@@ -323,6 +348,8 @@
 								<li class="nav-item" sec:authorize="isAuthenticated()">
 									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">커뮤니티</a>
 								</li>
+                
+                <li><a th:href="@{/photo_board/list.do}">Photo 게시글 목록</a></li> >!-- 은수씨 수정 목록 -->
 
 							<script>
 									function showDropdownMenu(element) {
