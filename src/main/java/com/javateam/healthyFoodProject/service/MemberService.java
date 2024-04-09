@@ -17,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberService {
 
+	/**
+	 * 0401 leee 수저완 이지만 좀 더 솜 봐야함. 
+	 */
 	@Autowired
 	MemberDAO memberDAO;
 	

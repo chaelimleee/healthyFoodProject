@@ -2,20 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.Member">
 
+	<!-- 0401 leee 수정 완. -->
+
 	<!-- 회원 정보 생성 -->
 	<insert id="insertMember" parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
-		INSERT INTO member_tbl VALUES (
-		#{memberEmail},
-		#{memberPw},
-		#{memberNick},
-		#{memberMobile},
-		#{memberZip},
-		#{memberAddress1},
-		#{memberAddress2},
-		#{memberImg},
-		#{memberImgOrigin},
-		sysdate,
-		1
+		INSERT INTO member_tbl(
+			MEMBER_EMAIL,
+	        MEMBER_PW,
+	        MEMBER_NAME,
+	        MEMBER_NICK,
+	        MEMBER_MOBILE,
+	        MEMBER_BIRTH,
+	        MEMBER_ZIP,
+	        MEMBER_ADDRESS1,
+	        MEMBER_ADDRESS2
+   		 ) VALUES (
+			#{memberEmail},
+			#{memberPw},
+			#{memberName},
+			#{memberNick},
+			#{memberMobile},
+			#{memberBirthAll},
+			#{memberZip},
+			#{memberAddress1},
+			#{memberAddress2}
 		)
 	</insert>
 	  
@@ -36,25 +46,28 @@
 	<select id="selectMember" parameterType="String"
 		    resultType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		SELECT 
-		memberEmail,
-		memberPw,
-		memberNick,	
-		memberMobile,
-		memberZip,
-		memberAddress1,
-		memberAddress2,
-		memberImg,
-		memberImgOrigin,
-		joindate,		
-		enabled
-		FROM member_tbl WHERE id = #{id}
+		MEMBER_EMAIL as "memberEmail",
+		MEMBER_PW as "memberPw",
+		MEMBER_NAME as "memberName",
+		MEMBER_NICK as "memberNick",	
+		MEMBER_MOBILE as "memberMobile",
+		MEMBER_BIRTH as "memberBirth",
+		MEMBER_ZIP as "memberZip",
+		MEMBER_ADDRESS1 as "memberAddress1",
+		MEMBER_ADDRESS2 as "memberAddress2",
+		MEMBER_IMG as "memberImg",
+		MEMBER_IMG_ORIGIN as "memberImgOrigin",
+		MEMBER_DATE as "memberDate",		
+		MEMBER_ROLE as "memberRole",
+		ENABLED as "enabled"
+		FROM member_tbl WHERE MEMBER_EMAIL = #{memberEmail}
 	</select>
 	
 	<!-- 아이디/이메일/휴대폰 존재여부(중복) 점검 : 회원 정보 수정 -->
 	<select id="hasFldForUpdate" parameterType="map" resultType="int">
 		SELECT COUNT(*) FROM (
 		        SELECT ${fld} FROM member_tbl
-		        WHERE ID != #{id}
+		        WHERE MEMBER_EMAIL != #{id}
 		    )
 		WHERE ${fld} = #{val}
 	</select>
@@ -66,16 +79,15 @@
 			parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		UPDATE member_tbl
 		<set>
-			<if test="password != null">password = #{password},</if>
-			<if test="email != null">email = #{email},</if>
-			<if test="mobile != null">mobile = #{mobile},</if>
-			<if test="phone != null">phone = #{phone},</if>
-			<if test="zip != null">zip = #{zip},</if>
-			<if test="roadAddress != null">road_address = #{roadAddress},</if>
-			<if test="jibunAddress != null">jibun_address = #{jibunAddress},</if>
-			<if test="detailAddress != null">detail_address = #{detailAddress}</if>
+			<if test="memberPw != null">password = #{password},</if>
+			<if test="memberNick != null">memberNick = #{memberNick},</if>
+			<if test="memberMobile != null">memberMobile = #{memberMobile},</if>
+			<if test="memberZip != null">memberZip = #{memberZip},</if>
+			<if test="memberAddress1 != null">memberAddress1 = #{memberAddress1},</if>
+			<if test="memberAddress2 != null">memberAddress2 = #{memberAddress2},</if>
+			<if test="memberImg != null">memberImg = #{memberImg},</if>
 		</set>
-		WHERE id = #{id}
+		WHERE MEMBER_EMAIL = #{id}
 	</update>
 
 	<!-- 전체 회원 수 -->
@@ -86,26 +98,27 @@
 	<!-- 전체 회원 정보 조회 (페이징) -->
 	<select id="selectMembersByPaging" parameterType="map" 
 			resultType="com.javateam.healthyFoodProject.domain.MemberDTO">
-		SELECT  id,
-				password,
-				name,	
-				gender,
-				email,
-				mobile,
-				phone,
-				zip,
-				road_address as "roadAddress",
-				jibun_address as "jibunAddress",
-				detail_address as "detailAddress",
-				birthday,
-				joindate,		
-				enabled
+		SELECT  
+				MEMBER_EMAIL as "memberEmail",
+				MEMBER_PW as "memberPw",
+				MEMBER_NAME as "memberName",
+				MEMBER_NICK as "memberNick",	
+				MEMBER_MOBILE as "memberMobile",
+				MEMBER_BIRTH as "memberBirth",
+				MEMBER_ZIP as "memberZip",
+				MEMBER_ADDRESS1 as "memberAddress1",
+				MEMBER_ADDRESS2 as "memberAddress2",
+				MEMBER_IMG as "memberImg",
+				MEMBER_IMG_ORIGIN as "memberImgOrigin",
+				MEMBER_DATE as "memberDate",		
+				MEMBER_ROLE as "memberRole",
+				ENABLED as "enabled"
 		FROM (SELECT m.*,  
 		             FLOOR((ROWNUM - 1) / ${limit} + 1) page  
 		      FROM (
 		             SELECT *
 					 FROM member_tbl					 
-		             ORDER BY id DESC
+		             ORDER BY memberEmail DESC
 		           ) m  
 		      )  
 		WHERE page = #{page}
@@ -120,14 +133,14 @@
 			      	 SELECT 
 			      	 DISTINCT m.*,
 					 (
-					    SELECT LISTAGG(r2.role, ',') WITHIN GROUP (ORDER BY m2.id) 
+					    SELECT LISTAGG(r2.role, ',') WITHIN GROUP (ORDER BY m2.MEMBER_EMAIL) 
 					    FROM member_tbl m2, user_roles r2  
-					    WHERE r2.username = m2.id
-					    AND r2.username = m.id
+					    WHERE r2.username = m2.MEMBER_EMAIL
+					    AND r2.username = m.MEMBER_EMAIL
 					 ) AS "ROLE"           
 					 FROM member_tbl m, user_roles r
-					 WHERE m.id = r.username
-		             ORDER BY id DESC
+					 WHERE m.MEMBER_EMAIL = r.username
+		             ORDER BY MEMBER_EMAIL DESC
 		          ) m  
 		      )  
 		WHERE page = #{page}
@@ -151,7 +164,7 @@
 	
 	<!-- 회원 정보 삭제 -->
 	<delete id="deleteMemberById" parameterType="map">
-		DELETE FROM member_tbl WHERE id = #{id}
+		DELETE FROM member_tbl WHERE MEMBER_EMAIL = #{id}
 	</delete>
 	
 	<!-- 검색 회원 정보 수 -->
@@ -165,34 +178,34 @@
 		</if>
 		WHERE
 		<if test="searchKey == 'address'">
-			road_address like '%${searchWord}%' 
-	   		OR jibun_address like '%${searchWord}%'
-	   		OR detail_address like '%${searchWord}%'
+			MEMBER_ADDRESS1 like '%${searchWord}%' 
+	   		OR MEMBER_ADDRESS2 like '%${searchWord}%'
   		</if>
   		<if test="searchKey == 'name' and searchKey != 'address'">
-			 name like '%${searchWord}%'
+			 MEMBER_NAME like '%${searchWord}%'
    		 </if>
   		<if test="searchKey != 'name' and searchKey != 'address'">
 			${searchKey} = #{searchWord}
   		</if>
 	</select>
 	
+	<!-- 멤버 롤 빼도될 듯. 여기서 합쳐짐. -->
 	<!-- 회원 정보 키워드 검색(조회) (페이징) : 아이디 중심 내림차순 정렬 -->
 	<select id="selectMembersWithRolesBySearching" parameterType="map" resultType="map">
-		SELECT  id,
-				password,
-				name,	
-				gender,
-				email,
-				mobile,
-				phone,
-				zip,
-				road_address,
-				jibun_address,
-				detail_address,
-				birthday,
-				joindate,		
-				enabled,
+		SELECT  
+				MEMBER_EMAIL,
+				MEMBER_PW ,
+				MEMBER_NAME ,
+				MEMBER_NICK ,	
+				MEMBER_MOBILE ,
+				MEMBER_BIRTH ,
+				MEMBER_ZIP ,
+				MEMBER_ADDRESS1 ,
+				MEMBER_ADDRESS2 ,
+				MEMBER_IMG ,
+				MEMBER_IMG_ORIGIN ,
+				MEMBER_DATE ,	
+				ENABLED ,
 				role,
 		        page   
 		FROM (SELECT m.*,  
@@ -201,20 +214,19 @@
 			      	 SELECT 
 			      	 DISTINCT m.*,
 					 (
-					    SELECT LISTAGG(r2.role, ',') WITHIN GROUP (ORDER BY m2.id) 
+					    SELECT LISTAGG(r2.role, ',') WITHIN GROUP (ORDER BY m2.MEMBER_EMAIL) 
 					    FROM member_tbl m2, user_roles r2  
-					    WHERE r2.username = m2.id
-					    AND r2.username = m.id
+					    WHERE r2.username = m2.MEMBER_EMAIL
+					    AND r2.username = m.MEMBER_EMAIL
 					 ) AS "ROLE"           
 					 FROM member_tbl m, user_roles r
-					 WHERE m.id = r.username
+					 WHERE m.MEMBER_EMAIL = r.username
 					 <if test="searchKey == 'address'">
-						 AND road_address like '%${searchWord}%'
-			    		 OR jibun_address like '%${searchWord}%'
-			    		 OR detail_address like '%${searchWord}%'
+						 AND MEMBER_ADDRESS1 like '%${searchWord}%'
+						 OR MEMBER_ADDRESS2 like '%${searchWord}%'
 		    		 </if>
 		    		 <if test="searchKey == 'name' and searchKey != 'address'">
-						 AND name like '%${searchWord}%'
+						 AND MEMBER_NAME like '%${searchWord}%'
 		    		 </if>
 		    		 <if test="searchKey != 'name' and searchKey != 'address'">
 						 AND ${searchKey} = #{searchWord}
@@ -227,8 +239,8 @@
 	
 	<!-- 회원 활동/휴면  상태(enabled) 변경 -->
 	<update id="changeEnabled" parameterType="map">
-		UPDATE member_tbl SET enabled = #{enabled} 
-		WHERE id = #{id}
+		UPDATE member_tbl SET ENABLED = #{enabled} 
+		WHERE MEMBER_EMAIL = #{id}
 	</update>
 	
 </mapper>

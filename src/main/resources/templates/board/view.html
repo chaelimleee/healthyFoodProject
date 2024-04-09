@@ -15,6 +15,9 @@
 }
 </style>
 
+<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+
+
 <!-- bootstrap icons -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
@@ -30,24 +33,24 @@
 window.onload = () => {
 		
 	// 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
-	let boardNum = '[[${board.boardNum}]]';
+	let boardCode = '[[${board.boardCode}]]';
 	
 	// 전체 댓글 로딩(불러오기) : board_view.js 파일로 함수 분리
-	// getAllReplies(boardNum);
+	// getAllReplies(boardCode);
 	// 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정) : 인자 추가
-	getAllReplies(boardNum, '[[${#authentication.name}]]');
+	getAllReplies(boardCode, '[[${#authentication.name}]]');
 
 	// 댓글 작성 함수 : board_view.js 파일로 함수 분리
- 	writeReply(boardNum, '[[${#authentication.name}]]');
+ 	writeReply(boardCode, '[[${#authentication.name}]]');
 	
 	// 댓글 수정 함수 : 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-	// updateReply(boardNum, '[[${#authentication.name}]]');
+	// updateReply(boardCode, '[[${#authentication.name}]]');
 	
 	// 댓글 삭제 함수 : 2024.3 : 댓글 삭제 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-	// deleteReplies(boardNum, '[[${#authentication.name}]]');
+	// deleteReplies(boardCode, '[[${#authentication.name}]]');
 	
 	// (원)글 삭제 함수
-	deleteBoard(boardNum, '[[${#authentication.name}]]');
+	deleteBoard(boardCode, '[[${#authentication.name}]]');
 	
 } // onload
 </script>
@@ -59,23 +62,23 @@ window.onload = () => {
 
 		<div class="content_sect_pnl">
 
-			<h2 class="d-flex justify-content-center">게시글 보기</h2>
+			<h4 class="d-flex justify-content-center">커뮤니티 게시글 보기</h4>
 
 			<table class="table mx-auto mt-4" style="width: 800px;">
 			
 				<tr>
 					<th scope="col" class="col-2">게시글 번호</th>
-					<td th:text="${board.boardNum}" class="col-10"></td>
+					<td th:text="${board.boardCode}" class="col-10"></td>
 				</tr>
 
 				<tr>
 					<th scope="col">작성자</th>
-					<td th:utext="${board.boardWriter}"></td>
+					<td th:utext="${board.memberEmail}"></td>
 				</tr>
 
 				<tr>
 					<th scope="col">제목</th>
-					<td th:utext="${board.boardSubject}"></td>
+					<td th:utext="${board.boardTitle}"></td>
 				</tr>
 
 				<tr>
@@ -132,17 +135,17 @@ window.onload = () => {
 					
 					<!-- 댓글 패쓰워드 -->
 					<!-- 정렬 교정 -->
-					<input type="text" th:id="${'board_pass_' + board.boardNum}" 
-						   th:name="${'board_pass_' + board.boardNum}" required 
+					<input type="text" th:id="${'board_pass_' + board.boardCode}" 
+						   th:name="${'board_pass_' + board.boardCode}" required 
 						   class="form-control form-control-sm h-100 w-25 me-2">
 					
 					<!-- 댓글 메뉴 -->
-					<a href="#" th:id="${'reply_write_btn_' + board.boardNum}" class="btn btn-sm btn-outline-primary my-2 me-2">댓글 등록</a>
+					<a href="#" th:id="${'reply_write_btn_' + board.boardCode}" class="btn btn-sm btn-outline-primary my-2 me-2">댓글 등록</a>
 					
 					<!-- 댓글 수정/삭제 댓글 영역으로 이관 : 2024.3 -->
 					<!-- 
-					<a href="#" th:id="${'reply_update_btn_' + board.boardNum}" class="btn btn-outline-primary my-2 me-2">댓글 수정</a>
-					<a href="#" th:id="${'reply_delete_btn_' + board.boardNum}" class="btn btn-outline-primary my-2">댓글 삭제</a>
+					<a href="#" th:id="${'reply_update_btn_' + board.boardCode}" class="btn btn-outline-primary my-2 me-2">댓글 수정</a>
+					<a href="#" th:id="${'reply_delete_btn_' + board.boardCode}" class="btn btn-outline-primary my-2">댓글 삭제</a>
 					-->
 					
 				</div>	
@@ -159,14 +162,14 @@ window.onload = () => {
 				<!-- 글수정 링크 추가 -->
 				<!-- 글 작성자만 글수정/삭제하도록 조건 처리 -->
 				<div sec:authorize="isAuthenticated()">
-					<span th:if="${board.boardWriter == #authentication.name}">
+					<span th:if="${board.memberEmail == #authentication.name}">
 					
 						<a type="button" class="btn btn-primary" 
-							th:href="@{'/board/update.do?boardNum='+${board.boardNum}}">글수정</a>
+							th:href="@{'/board/update.do?boardCode='+${board.boardCode}}">글수정</a>
 							
 						<!-- (원)글삭제 링크 추가 -->
 						<a type="button" class="btn btn-primary ms-2" 
-						    th:id="${'board_delete_btn_' + board.boardNum}"
+						    th:id="${'board_delete_btn_' + board.boardCode}"
 							href="#">글삭제</a>
 						
 					</span>	

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko-kr" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보 수정</title>
@@ -47,9 +50,9 @@
                 <!-- 회원 아이디-->	
                 <div id="id_fld_pnl">	
                     <div class="fld_label">
-                        <label for="id">아이디</label>
+                        <label for="memberEmail">아이디</label>
                     </div>
-                    <div class="fld_content" th:text="*{id}"></div>							
+                    <div class="fld_content" th:text="*{memberEmail}"></div>							
                 </div>
                 <!--// 회원 아이디-->
                
@@ -85,8 +88,8 @@
                     <div class="fld_content" th:text="*{name}"></div>    
                 </div>
                 <!--// 회원 이름 -->
-                
-                <!-- 회원  성별 -->	
+                <!-- 
+                회원  성별	
                 <div id="gender_fld_pnl">	
                     <div class="fld_label">
                         <label for="gender">성별</label>
@@ -95,9 +98,9 @@
                     	<span th:text="${session.memberUpdateDTO.gender == 'm' ? '남자 ' : '여자'}"></span>                        
                     </div>
                 </div>                     
-                <!--// 회원 성별 -->
+                // 회원 성별
                     
-                <!-- 회원  이메일 -->	
+                회원  이메일	
                 <div id="email_fld_pnl">	
                     <div class="fld_label">
                         <label for="email">
@@ -110,28 +113,28 @@
                     </div>
                 </div>
                     
-                <!-- 회원 이메일 에러 메시징 -->
+                회원 이메일 에러 메시징
                 <div id="email_fld_err_pnl">
                 </div>
-                <!--// 회원 이메일 -->
-                    
+                // 회원 이메일
+                     -->
                 <!-- 회원  연락처(휴대폰) -->	
-                <div id="mobile_fld_pnl">	
+                <div id="memberMobile_fld_pnl">	
                     <div class="fld_label">
-                        <label for="mobile">휴대폰</label>
+                        <label for="memberMobile">휴대폰</label>
                     </div>
                     <div class="fld_content">
-                        <input type="text" id="mobile" name="mobile" th:value="*{mobile}"/>
+                        <input type="text" id="memberMobile" name="memberMobile" th:value="*{memberMobile}"/>
                         ex) 010-1234-5678
                     </div>    
                 </div>                    
                 
                 <!-- 회원 연락처(휴대폰) 에러 메시징 -->
-                <div id="mobile_fld_err_pnl">
+                <div id="memberMobile_fld_err_pnl">
                 </div>
                 <!--// 회원 연락처(휴대폰) -->
                 
-                <!-- 회원  연락처(집전화) -->	
+               <!--  <!-- 회원  연락처(집전화) -->	
                 <div id="phone_fld_pnl">	
                     <div class="fld_label">
                         <label for="phone">집전화</label>
@@ -142,18 +145,18 @@
                     </div>    
                 </div>                    
                 
-                <!-- 회원  연락처(집전화) 에러 메시징 -->
+                회원  연락처(집전화) 에러 메시징
                 <div id="phone_fld_err_pnl">
                 </div>
-                <!--// 회원  연락처(집전화) -->
-                    
+                // 회원  연락처(집전화)
+                     -->
                 <!-- 회원  우편번호 -->	
                 <div id="zip_fld_pnl">	
                     <div class="fld_label">
-                        <label for="zip">우편번호</label>
+                        <label for="memberZip">우편번호</label>
                     </div>
                     <div class="fld_content">
-                        <input type="text" id="zip" name="zip" style="width:100px;" th:value="*{zip}" readonly />
+                        <input type="text" id="memberZip" name="memberZip" style="width:100px;" th:value="*{memberZip}" readonly />
                         
                         <!-- 주소 검색 -->
                         <button type="button" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button>
@@ -165,15 +168,15 @@
                 <!-- 회원  기본 주소 -->	
                 <div id="address1_fld_pnl">	
                     <div class="fld_label">
-                        <label for="address1">기본주소</label>
+                        <label for="memberAddress1">기본주소</label>
                     </div>
                     <div class="fld_content">
-                        <input type="text" id="address1" name="address1" style="width:500px" readonly th:value="*{address1}" />
+                        <input type="text" id="memberAddress1" name="memberAddress1" style="width:500px" readonly th:value="*{memberAddress1}" />
                     </div>
                 </div>
                 <!--// 회원 기본 주소 -->
-                
-                <!-- 회원 상세 주소  -->	
+                <!-- 
+                회원 상세 주소 	
                 <div id="address2_fld_pnl">	
                     <div class="fld_label">
                         <label for="address2">상세주소</label>
@@ -183,18 +186,18 @@
                     </div>
                 </div>
                 
-                <!-- 회원 상세주소 에러 메시징 : 우편번호/기본주소 입력시 상세주소 미입력할 경우 -->
+                회원 상세주소 에러 메시징 : 우편번호/기본주소 입력시 상세주소 미입력할 경우
                 <div id="address_fld_err_pnl">
                 </div>
-                <!--// 회원 상세주소 -->
+                // 회원 상세주소 -->
                 
                 <!-- 회원  생일 -->	
                 <div id="birthday_fld_pnl">	
                     <div class="fld_label">
-                        <label for="birthday">생일</label>
+                        <label for="memberBirth">생일</label>
                     </div>    
                     <div class="fld_content" 
-                    	 th:text="${#dates.format(session.memberUpdateDTO.birthday, 'yyyy년 MM월 dd일')}"></div>
+                    	 th:text="${#dates.format(session.memberUpdateDTO.memberBirth, 'yyyy년 MM월 dd일')}"></div>
                 </div>                
                 <!--// 회원 생일 -->
                 
@@ -204,7 +207,7 @@
 						<label>가입일</label>
 					</div>
 					<div class="fld_content"
-				    	th:text="${#dates.format(session.memberUpdateDTO.joindate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></div>
+				    	th:text="${#dates.format(session.memberUpdateDTO.memberDate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></div>
 				</div>
 				<!--// 가입일 -->
 				

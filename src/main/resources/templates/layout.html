@@ -9,82 +9,16 @@
 <title>home</title>
 
 <!-- bootstrap -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Grandiflora+One&family=IBM+Plex+Sans+KR&family=Jua&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
-<style>
-body {
-	margin:0;
-	overflow:hidden; /* 내용 넘침 방지 */
-}
+<link th:href="@{/css/layout.css}" rel="stylesheet" />
 
-/* 상단 menu 레이아웃 패널 */
-div.header_sect_pnl {
-	background-color: #ccc; 
-	color: #fff; 
-	height: 100px;
-}
+<!-- 0404 leee style 수정 -->
 
-
-/* 중앙 content 레이아웃 패널  */ 
-div.main_sect_pnl {
-	background-color: cyan; 
-	height:calc(100vh - 200px); 
-	
-	/* 컨텐츠 중앙 정렬 */
-	display : flex;
-	align-items:center;
-	justify-content:center; 
-} 
-
-/* 중앙 content 레이아웃 "컨텐츠" 패널  */
-div.content_sect_pnl {
-	width:100%;
-	height:100%;
-	overflow:auto;
-	background-color:#fff;
-	padding-left:20px; /* 좌측만 여백 할당 */
-	padding-top:20px;  /* 좌측만 여백 할당 */		
-} 
-
-/* 하단 footer 레이아웃 패널 */
-div.footer_sect_pnl {
-	background-color:#000; 
-	color:#fff;
-	height:100px;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	
-}
-
-ul#main_menu {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #333;
-	width: 100vw;
-}
-
-ul#main_menu li {
-	float: left;
-}
-
-ul#main_menu li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 40px;
-	text-decoration: none;
-}
-
-ul#main_menu li a:hover {
-	background-color: white;
-	color: black;
-	font-weight: bold;
-}
-</style>
 
 </head>
 <body>

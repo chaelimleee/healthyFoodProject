@@ -23,7 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class BoardService {
-	
+	/**
+	 * 0401 leee 수정 완.
+	 * 
+	 */
 	@Autowired
 	BoardDAO boardDAO;
 	
@@ -42,22 +45,22 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsByPaging(int currPage, int limit) {
 				
-		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardDate"));
 		return boardDAO.findAll(pageable).getContent();
 	} //
 
 	@Transactional(readOnly = true)
-	public BoardVO selectBoard(int boardNum) {
+	public BoardVO selectBoard(int boardCode) {
 		
-		return boardDAO.findById(boardNum);
+		return boardDAO.findById(boardCode);
 	}
 
 	@Transactional(readOnly = true)
 	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
 
 		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") : 
-		return searchKey.equals("board_subject") ? boardDAO.countByboardTitleContaining(searchWord) :
-			   searchKey.equals("board_content") ? boardDAO.countByBoardContentContaining(searchWord) : 
+		return searchKey.equals("BOARD_TITLE") ? boardDAO.countByboardTitleContaining(searchWord) :
+			   searchKey.equals("BOARD_CONTENT") ? boardDAO.countByBoardContentContaining(searchWord) : 
 			   boardDAO.countBymemberEmailContaining(searchWord);	
 		
 	}
@@ -65,11 +68,11 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsBySearching(int currPage, int limit, String searchKey, String searchWord) {
 		
-		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		
 		// return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectLike("%"+searchWord+"%", pageable).getContent() : 
-		return searchKey.equals("board_subject") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
-			   searchKey.equals("board_content") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
+		return searchKey.equals("BOARD_TITLE") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
+			   searchKey.equals("BOARD_CONTENT") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
 			   boardDAO.findBymemberEmailContaining(searchWord, pageable).getContent();
 	}
 	
@@ -143,9 +146,9 @@ public class BoardService {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public List<BoardVO> selectReplysById(int boardNum) {
+	public List<BoardVO> selectReplysById(int boardCode) {
 		
-		return boardDAO.findByBoardReSeq(boardNum);
+		return boardDAO.findByBoardReSeq(boardCode);
 	}
 	
 	@Transactional(readOnly = true)
@@ -157,18 +160,18 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsByPagingWithoutReplies(int currPage, int limit) {
 				
-		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		// return boardDAO.findAll(pageable).getContent();
 		return boardDAO.findByBoardReSeq(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(rollbackFor = Exception.class)
-	public boolean deleteReplysById(int boardNum) {
+	public boolean deleteReplysById(int boardCode) {
 		
 		boolean result = false;
 		
 		try {
-			boardDAO.deleteById(boardNum);
+			boardDAO.deleteById(boardCode);
 			result = true;
 		} catch (Exception e) {
 			log.error("deleteReplyById error : {}", e);
@@ -180,20 +183,20 @@ public class BoardService {
 	
 	// 댓글 수량 조회
 	@Transactional(readOnly = true)
-	public int selectBoardsCountWithReplies(int boardNum) {
+	public int selectBoardsCountWithReplies(int boardCode) {
 		
-		return (int)boardDAO.countByBoardReSeq(boardNum); // 댓글의 갯수 추출 : board_re_ref = boardNum
+		return (int)boardDAO.countByBoardReSeq(boardCode); // 댓글의 갯수 추출 : board_re_ref = boardCode
 	} //
 	
 	
 	// 게시글(원글) 삭제
 	@Transactional(rollbackFor = Exception.class)
-	public boolean deleteById(int boardNum) {
+	public boolean deleteById(int boardCode) {
 		
 		boolean result = false;
 		
 		try {
-			boardDAO.deleteById(boardNum);
+			boardDAO.deleteById(boardCode);
 			result = true;
 		} catch (Exception e) {
 			log.error("deleteById error : {}", e);
@@ -205,15 +208,15 @@ public class BoardService {
 	
 	// 게시글 조회수 갱신
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateBoardReadcountByBoardCode(int boardNum) {
+	public boolean updateBoardReadcountByBoardCode(int boardCode) {
 		
 		boolean result = false;
 		
 		try {
-			boardDAO.updateBoardReadcountByBoardCode(boardNum);
+			boardDAO.updateBoardReadcountByBoardCode(boardCode);
 			result = true;
 		} catch (Exception e) {
-			log.error("updateBoardReadcountByBoardNum error : {}", e);
+			log.error("updateBoardReadcountByboardCode error : {}", e);
 			result = false;
 		}
 		
