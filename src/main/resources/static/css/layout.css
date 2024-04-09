@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+body {
+	margin:0;
+	font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+	/*overflow:hidden;*//* 내용 넘침 방지 */ 
+}
+
+/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
+h1 {
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 700;
+  font-style: normal;
+	color:#9dbfa7 ;
+}
+
+
+/* 상단 menu 레이아웃 패널 */
+/* div.header_sect_pnl {
+	background-color: #ccc; 
+	color: #fff; 
+	height: 100px;
+} */
+
+
+/* 중앙 content 레이아웃 패널  */ 
+div.main_sect_pnl {
+	/* background-color: whitesmoke;  */
+	/* background-color: pink; */
+	height:calc(100vh - 200px); 
+	width:100%;
+	
+	/* 컨텐츠 중앙 정렬 */
+	display : flex;
+	margin-top: 1em;
+	/* align-items:center; */
+	justify-content:center; 
+} 
+
+
+/* 중앙 content 레이아웃 "컨텐츠" 패널  */
+div.content_sect_pnl {
+	width:100%;
+	height:100%;
+	overflow:auto;
+	background-color:#fff;
+	padding-left:20px; /* 좌측만 여백 할당 */
+	padding-top:20px;  /* 좌측만 여백 할당 */		
+} 
+
+/* 하단 footer 레이아웃 패널 */
+div.footer_sect_pnl {
+	background-color:#000; 
+	color:#fff;
+	height:100px;
+	display:flex;
+	margin-top:100px;
+	align-items:center;
+	justify-content:center;
+}
+
+ul#main_menu {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+	width: 100vw;
+}
+
+ul#main_menu li {
+	float: left;
+}
+
+ul#main_menu li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 40px;
+	text-decoration: none;
+}
+
+ul#main_menu li a:hover {
+	background-color: white;
+	color: black;
+	font-weight: bold;
+}
