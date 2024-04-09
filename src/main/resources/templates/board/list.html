@@ -5,6 +5,9 @@
 	layout:decorate="~{layout}"
 	lang="ko-kr">
 <head>
+
+<!-- 0401 leee 수정완... 이긴한데 좀 더 손봐 -->
+
 <meta charset="UTF-8">
 <title>관리자 화면</title>
 
@@ -58,9 +61,9 @@ window.onload = function() {
 			
 			if (checkboxes[i].checked == true) {
 				
-				let boardNum = checkboxes[i].id.substring('check_'.length)
-				deleteExpectedBoardIds.push(boardNum) // 삭제할 아이디 배열에 등록(적재)
-				// console.log("삭제할 게시글 아이디 :", boardNum);
+				let boardCode = checkboxes[i].id.substring('check_'.length)
+				deleteExpectedBoardIds.push(boardCode) // 삭제할 아이디 배열에 등록(적재)
+				// console.log("삭제할 게시글 아이디 :", boardCode);
 				
 			} //
 		} //
@@ -75,6 +78,7 @@ window.onload = function() {
 	
 } //
 </script>
+
 </head>
 <body>
 
@@ -113,14 +117,15 @@ window.onload = function() {
 					<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
 						th:each="board, st : ${boardList}">
 						<td>
-							<input type="checkbox" th:id="${'check_'+ board.boardNum}" th:name="${'check_'+ board.boardNum}">
+							<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
 						</td>
+            
 						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
 						<td th:text="${board.boardNum}"></td>
 						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
 						
 						<td>
-							<a th:href="@{'/board/view.do/'+ ${board.boardNum}}" th:utext="${board.boardSubject}"></a>
+							<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
 							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
 							<span th:if="${#strings.contains(board.boardContent, 'img')}">
 								<i class="bi bi-card-image"></i>
@@ -183,9 +188,12 @@ window.onload = function() {
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<li class="page-item active"><a class="page-link"
-							th:href="@{'/board/list.do?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li>
+						<!-- 0404 leee 삼항 연산자 : 참 거짓 둘 다 넣어야함. -->
+						<!-- 0404 leee 쿼리 링크 물음표 들어가야함. 문자열하고 num을 분리 시킴. num이 0보다 크다는 조건을 주면 num-1안해도됨.  -->
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
@@ -227,9 +235,11 @@ window.onload = function() {
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
+
 				    <li class="page-item active">
 				    	<a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
+						
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
@@ -262,9 +272,9 @@ window.onload = function() {
 					
 					<div id="select_pnl" class="col-2 pe-0">
 						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
-						  <option selected value="board_subject">글제목</option>
+						  <option selected value="BOARD_TITLE">글제목</option>
 						  <option value="board_content">내용</option>
-						  <option value="board_writer">작성자</option>
+						  <option value="MEMBER_EMAIL">작성자</option>
 						</select>
 					</div>
 					

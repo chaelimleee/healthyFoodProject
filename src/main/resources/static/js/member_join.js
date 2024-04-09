@@ -11,13 +11,11 @@ function getPostcodeAddress() {
             // 각 주소의 노출 규칙에 따라 주소를 조합한다.
             // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
             var fullAddr = ''; // 최종 주소 변수(도로명 주소)
-            var fullAddrJibun = ''; // 최종 주소 변수(지번 주소)
             var extraAddr = ''; // 조합형 주소 변수
             
             ////////////////////////////////////////////////////////////////
             
             console.log("도로명 주소 : " + data.roadAddress);
-            console.log("지번 주소 : " + data.jibunAddress);
             console.log("지번 주소(자동처리 : 지번 미출력시 자동 입력처리) : " + data.autoJibunAddress);
 
             // javateacher) 이 부분을 생략하여 도로명과 지번이 같이 넘어가도록 조치
@@ -26,7 +24,7 @@ function getPostcodeAddress() {
             /*
             if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                 
-                fullAddr = data.roadAddress;
+                fullAddr = data.memberAddress1;
 
             } else { // 사용자가 지번 주소를 선택했을 경우(J)
                 // fullAddr = data.jibunAddress;
@@ -34,9 +32,9 @@ function getPostcodeAddress() {
             }
             */
 
-            fullAddr = data.roadAddress;
+            /*fullAddr = data.memberAddress1;
             // 지번 미입력시 : 자동 입력 지번 주소 활용(data.autoJibunAddress)
-            fullAddrJibun = data.jibunAddress == '' ? data.autoJibunAddress : data.jibunAddress;
+            fullAddrJibun = data.jibunAddress == '' ? data.autoJibunAddress : data.jibunAddress;*/
 
 
             // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
@@ -76,22 +74,23 @@ function getPostcodeAddress() {
 
             // javateacher) 본 회원가입 코드에서는 도로명으로 선택하든 지번 주소로 선택하든
             // 일괄적으로 도로명으로 기본주소가 들어가도록 설정하였습니다.
+
+
             
-            let zipFld = document.getElementById('zip');
-            let roadAddressFld = document.getElementById('roadAddress');
-            let jibunAddressFld = document.getElementById('jibunAddress');
-			let detailAddressFld = document.getElementById('detailAddress');
+            let memberZipFld = document.getElementById('memberZip');
+            let memberAddress1Fld = document.getElementById('memberAddress1');
+			let memberAddress2Fld = document.getElementById('memberAddress2');
             let addressFldErrPnl = document.getElementById('address_fld_err_pnl');
 
-            zipFld.value = data.zonecode; // 5자리 우편번호 사용
-            roadAddressFld.value = fullAddr; // 도로명 주소
-			jibunAddressFld.value = fullAddrJibun; // 지번 주소
+            memberZipFld.value = data.zonecode; // 5자리 우편번호 사용
+			memberAddress1Fld.value = data.roadAddress;// 도로명 주소
+			//jibunAddressFld.value = fullAddrJibun; // 지번 주소
             
             // 커서를 상세주소 필드로 이동한다.
-            detailAddressFld.focus();                        
+            memberAddress2Fld.focus();                        
 
             // 주소 필드 점검
-            isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+            isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl);
         }   
     }).open();
 }
@@ -133,7 +132,7 @@ function isCheckFldValid(fld, regex, initVal, errPnl, errMsg) {
         // 기존 필드 데이터 초기화
         // fld.value = "";
         fld.value = initVal;
-        fld.focus(); // 재입력 준비     
+        //fld.focus(); // 재입력 준비 //0402 수정. 이걸 없애면 재입력 할 수 있게 됨. !!!
         
         fldCheckFlag = false;
 
@@ -195,14 +194,13 @@ function isCheckGenderFldValid(genderFld, errPnl, errMsg) {
 ////////////////////////////////////////////////////
 
 // 우편번호/주소 필드 점검
-function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl) {
+function isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl) {
 
     let resultFlag = false;
 
-	let zipFldVal = zipFld.value;
-	let roadAddressFldVal = roadAddressFld.value;
-	let jibunAddressFldVal = jibunAddressFld.value;
-	let detailAddressFldVal = detailAddressFld.value;
+	let memberZipFldVal = memberZipFld.value;
+	let memberAddress1FldVal = memberAddress1Fld.value;
+	let memberAddress2FldVal = memberAddress2Fld.value;
     
 
     // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
@@ -215,16 +213,15 @@ function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailA
 
 	console.log("\n----------------------------------\n")
 	
-	console.log("우편번호 필드(길이) : " + zipFldVal.length);
-	console.log("도로명 주소 필드(길이) : " + roadAddressFldVal.length);
-	console.log("지번 주소 필드(길이) : " + jibunAddressFldVal.length);
-	console.log("상세 주소 필드(길이) : " + detailAddressFldVal.length);
+	console.log("우편번호 필드(길이) : " + memberZipFldVal.length);
+	console.log("도로명 주소 필드(길이) : " + memberAddress1FldVal.length);
+	console.log("상세 주소 필드(길이) : " + memberAddress2FldVal.length);
 	
 	// 주소 필드들의 길이로 점검
 	
     // 1) 상세주소 미입력시
-    if (zipFldVal.length != 0 && roadAddressFldVal.length != 0 && 
-		jibunAddressFldVal.length != 0 && detailAddressFldVal.length == 0) {  
+    if (memberZipFldVal.length != 0 && memberAddress1FldVal.length != 0 && 
+		memberAddress2FldVal.length == 0) {  
 			
 		console.log("주소 필드 에러 메시지 : 상세주소를 넣지 않았습니다.")	
     
@@ -232,8 +229,8 @@ function isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailA
         addressFldErrPnl.innerHTML = "상세 주소를 입력하십시오.";
 
     // 2) 기본주소 미입력시(주소 미검색)
-	} else if (zipFldVal.length == 0 && roadAddressFldVal.length == 0 && 
-			   jibunAddressFldVal.length == 0 && detailAddressFldVal.length != 0) {
+	} else if (memberZipFldVal.length == 0 && memberAddress1FldVal.length == 0 && 
+                memberAddress2FldVal.length != 0) {
 				
 		console.log("주소 필드 에러 메시지 : 주소 검색을 통해서 우편번호와 기본주소를 입력하십시오.")
 		
@@ -297,19 +294,19 @@ window.onload = () => {
 
     // 아이디 필드 폼 점검(form validation)
     // 아이디 필드 인식
-    let idFld = document.getElementById("id");
+    let idFld = document.getElementById("memberEmail");//0402 수정
 
     // 아이디 에러 패널 인식
     let idFldErrPnl = document.getElementById("id_fld_err_pnl");
 
     // 패쓰워드 필드 인식
-    let pwFld = document.getElementById("password");
+    let pwFld = document.getElementById("memberPw");//0402 수정
 
     // 패쓰워드 에러 패널 인식
     let pwFldErrPnl = document.getElementById("password_fld_err_pnl");
 
     // 이름 필드 인식
-    let nameFld = document.getElementById("name");
+    let nameFld = document.getElementById("memberName");//0402 수정
 
     // 이름 에러 패널 인식
     let nameFldErrPnl = document.getElementById("name_fld_err_pnl");
@@ -327,7 +324,7 @@ window.onload = () => {
     let emailFldErrPnl = document.getElementById("email_fld_err_pnl");
 
     // 연락처(휴대폰) 필드 인식
-    let mobileFld = document.getElementById("mobile");
+    let mobileFld = document.getElementById("memberMobile");//0402 수정
 
     // 연락처(휴대폰) 필드 에러 패널 인식
     let mobileFldErrPnl = document.getElementById("mobile_fld_err_pnl");
@@ -339,19 +336,19 @@ window.onload = () => {
     let phoneFldErrPnl = document.getElementById("phone_fld_err_pnl");
 
     // 우편번호/주소 필드 인식
-    let zipFld = document.getElementById("zip");
+    let memberZipFld = document.getElementById("memberZip");
 
-    let roadAddressFld = document.getElementById("roadAddress");
+    let memberAddress1Fld = document.getElementById("memberAddress1");
 
     let jibunAddressFld = document.getElementById("jibunAddress");
 
-	let detailAddressFld = document.getElementById("detailAddress");
+	let memberAddress2Fld = document.getElementById("memberAddress2");
 
     // 주소 필드 에러 패널 인식
     let addressFldErrPnl = document.getElementById("address_fld_err_pnl");
 
     // 생일 필드 인식
-    let birthdayFld = document.getElementById("birthday");
+    let birthdayFld = document.getElementById("memberBirth");
 
     // 생일 필드 에러 패널 인식
     let birthdayFldErrPnl = document.getElementById("birthday_fld_err_pnl");
@@ -378,14 +375,22 @@ window.onload = () => {
                        영문 대소문자/숫자로 입력하십시오.
         */   
         // 아이디 정규표현식(regex)
-        const regexId = /^[a-zA-Z]{1}\w{7,19}$/;
+        // const regexId = /^[a-zA-Z]{1}\w{7,19}$/; // 기존의 아이디 방법
+
+        // 이메일 아이디 정규표현식. // https://jh-tr.tistory.com/166
+        const regexId = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+            if(!email_regex.test(regexId)){ 
+                return false; 
+            }else{
+                return true;
+            }
 
         // 폼 유효성 점검(test)
         console.log(`점검 여부 : ${regexId.test(idFld.value)}`);
 
         if (regexId.test(idFld.value) == false) {
 
-            let idErrMsg = "회원 아이디는 8~20사이의 영문으로 시작하여 영문 대소문자/숫자로 입력하십시오.";
+            let idErrMsg = "회원 아이디는 이메일로 적어주십시오.";
 
             // 에러 패널 메시지 표시 : alert => 에러 패널
             // : 패널 높이(50px), 메시지(red)
@@ -416,10 +421,10 @@ window.onload = () => {
 
         console.log("아이디 온키업");
         idCheckFlag = isCheckFldValid(idFld, 
-                        /^[a-zA-Z]{1}\w{7,19}$/,
+                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i,
                         idFld.value,
                         idFldErrPnl,
-                        "회원 아이디는 8~20사이의 영문으로 시작하여 영문 대소문자/숫자로 입력하십시오.");
+                        "회원 아이디는 이메일로 적어주십시오.");
     } // idFld.onkeyup ... 
 
     //////////////////////////////////////           
@@ -523,7 +528,7 @@ window.onload = () => {
             3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
         */
         mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010-\d{4}-\d{4}$/,
+                        /^010\d{4}\d{4}$/, // 0402 하이픈 없게 수정했는데 일단 되는지 확인해봐야할듯
                         mobileFld.value,
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
@@ -556,7 +561,7 @@ window.onload = () => {
     // 2) 필수 사항이 아닐 경우는 다 비워져 있는 경우는 문제가 안되며, 그렇지 않고 필드 한개가 누락된 경우는
     //    폼 점검 에러를 유발하도록 구성합니다.
 
-    detailAddressFld.onblur = (e) => {
+    memberAddress2Fld.onblur = (e) => {
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
         
@@ -568,11 +573,11 @@ window.onload = () => {
 
         console.log("주소 필드에러 메시지 : " + addressFldErrPnl.innerHTML);
 
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl);
 
     } //
 
-    detailAddressFld.onkeyup = (e) => {
+    memberAddress2Fld.onkeyup = (e) => {
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
 
@@ -584,7 +589,7 @@ window.onload = () => {
 
         console.log("주소 필드에러 메시지 : " + addressFldErrPnl.innerHTML);
 
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl);
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl);
        
     } //
 
@@ -597,9 +602,9 @@ window.onload = () => {
 
         console.log("주소 삭제");
 
-        zip.value = "";
-        roadAddressFld.value = "";
-        jibunAddressFld.value = "";
+        memberZip.value = "";
+        memberAddress1Fld.value = "";
+        // jibunAddressFld.value = "";
 
 		// 주소 에러 메시지 제거
 		addressFldErrPnl.innerHTML = ""; // 에러 메시지 삭제
@@ -607,6 +612,7 @@ window.onload = () => {
 
     /////////////////////////////////////////////////////////////////
 
+    // 셀렉트 박스로 수정해야함. 0402
     // 생일 필드 입력 후 이벤트 처리 : onkeyup
     birthdayFld.onkeyup = (e) => {
 
@@ -619,12 +625,39 @@ window.onload = () => {
             2) regex(정규표현식) : /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
             3) 메시징 : 회원 생일을 제시된 예와 같이 작성해주세요.
         */
-       birthdayCheckFlag = isCheckFldValid(birthdayFld,
-                        /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/,
-                        birthdayFld.value,
-                        birthdayFldErrPnl,
-                        "회원 생일을 제시된 예와 같이 작성해주세요.");
-    } //     
+    //    birthdayCheckFlag = isCheckFldValid(birthdayFld,
+    //                     /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/,
+    //                     birthdayFld.value,
+    //                     birthdayFldErrPnl,
+    //                     "회원 생일을 제시된 예와 같이 작성해주세요.");
+        
+        /*$(document).ready(function(){            
+            var now = new Date();
+            var year = now.getFullYear();
+            var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
+            var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+            //년도 selectbox만들기               
+            for(var i = 1900 ; i <= year ; i++) {
+                $('#year').append('<option value="' + i + '">' + i + '년</option>');    
+            }
+            
+            // 월별 selectbox 만들기            
+            for(var i=1; i <= 12; i++) {
+                var mm = i > 9 ? i : "0"+i ;            
+                $('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
+            }
+            
+            // 일별 selectbox 만들기
+            for(var i=1; i <= 31; i++) {
+                var dd = i > 9 ? i : "0"+i ;            
+                $('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
+            }
+            $("#year  > option[value="+year+"]").attr("selected", "true");        
+            $("#month  > option[value="+mon+"]").attr("selected", "true");    
+            $("#day  > option[value="+day+"]").attr("selected", "true");       
+            
+        })*/
+    } //
 
     /////////////////////////////////////////////////////////////////
 
@@ -655,7 +688,7 @@ window.onload = () => {
 		console.log(`아이디 중복 점검 : ${idFld.value}`);
 		
 		idCheckFlag = isCheckFldValid(idFld, 
-                        /^[a-zA-Z]{1}\w{7,19}$/,
+                        /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/,
                         idFld.value,
                         idFldErrPnl,
                         "회원 아이디는 8~20사이의 영문으로 시작하여 영문 대소문자/숫자로 입력하십시오.");
@@ -672,7 +705,7 @@ window.onload = () => {
 					console.log("response.data : ", response.data);
 					// console.log("response.data : ", typeof(response.data));
 	
-					let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 아이디가 존재합니다" : "사용가능한 아이디입니다"				   
+					let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
 					console.log(idDupErrMsg);
 					
 					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
@@ -684,7 +717,7 @@ window.onload = () => {
 						
 				 })
 				 .catch(function(err) {
-					console.error("아이디 중복 점검 중 서버 에러가 발견되었습니다.");
+					console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
 					//idDuplicatedCheckFlag = false;
 				 });
 			
@@ -800,7 +833,7 @@ window.onload = () => {
 		console.log(`연락처(집전화) 점검 플래그(phoneCheckFlag) : ${phoneCheckFlag}`);
 		
         // 주소 필드 점검 플래그
-        addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl); 
+        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl); 
 
         console.log(`주소 점검 플래그(addressCheckFlag) : ${addressCheckFlag}`);
 
@@ -921,10 +954,10 @@ window.onload = () => {
             // 우편번호/주소 필드 재점검
             if (addressCheckFlag == false) {
                 
-                addressCheckFlag = isCheckAddressFldValid(zipFld, roadAddressFld, jibunAddressFld, detailAddressFld, addressFldErrPnl); 
+                addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl); 
             } //
 
-            // 생일 필드 재점검
+            /*// 생일 필드 재점검
             if (birthdayCheckFlag == false) {
 
                 birthdayCheckFlag = isCheckFldValid(birthdayFld,
@@ -932,7 +965,7 @@ window.onload = () => {
                                     birthdayFld.value,
                                     birthdayFldErrPnl,
                                     "회원 생일을 제시된 예와 같이 작성해주세요.");
-            } //
+            } //*/
 
 			// 아이디/이메일/연락처(휴대폰) 중복 재점검에 따른 최종 메시징			
 			if (idDuplicatedCheckFlag == true) {

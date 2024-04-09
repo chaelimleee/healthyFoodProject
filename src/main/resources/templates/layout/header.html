@@ -1,19 +1,74 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-	<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" -->
+<html lang="ko" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> -->
+<!-- bootstrap icons :  -->
+<head>
+	<!-- 0405 leee 메인화면 상단 로고 글꼴 추가 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
 	
-<div th:fragment="header">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
+	<style>
+	
+		/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
+		h1 {
+		  font-family: "Nanum Myeongjo", serif;
+		  font-weight: 700;
+		  font-style: normal;
+		}
 
-	<!-- //////////////////////////////////////////////////////////// -->
+		/* div.header_sect_pnl div.header_menus a {
+			vertical-align: bottom; 
+			float: right;
+			margin:17px 5px 17px 5px ;
+		} */
 
-	<!--
-		인자 현황판 (collapse) : 교정 : list.html로 부터 이전 및 교정(작동 이상) : 2024.3
-		: 교정 사항 : 인자(pageVO, boardList)가 있을 경우에만 표현 
-		: https://getbootstrap.com/docs/5.3/components/collapse/ 
-	-->
-	<div id="args_board" class="collapse">
+		li.dropdown:hover > ul.dropdown-menu{display:block; margin:0;}
+
+		.head{
+			position: relative;
+			height: 70px;
+		}
+
+		.loginHeader{
+			position:absolute; 
+			bottom:0px;
+		}
+
+		.mypageHeader{
+			position:absolute; 
+			bottom:0px;
+		}
 		
+		.header_sect_pnl{
+		
+			height: 100px;
+			width: 100%;
+			background-color:blue;
+		}
+
+		.navbar-nav{ 
+			padding: 26px 25px ;
+			border-radius: 50%;
+		}
+		
+
+		.navbar {
+    	height: 60px !important;
+    	align-items:center;
+			justify-content:center;
+		}
+		
+		.navbar-nav li {
+			margin: 0 auto;
+		}
+		
+		
+    /*
 		<table class="table table-striped"  th:if="${pageVO != null}">
 			<tr>
 				<th style="width: 150px;">총 게시글 수</th>
@@ -34,107 +89,342 @@
 				<td colspan="11"><span th:text="${listCount}"></span><br></td>
 			</tr>
 		</table>
+    */
+
 	
-		<!-- 인증정보/회원정보 인자 확인  -->
-		<div th:if="${#authentication != null}">
+		/* ul.nav li.dropdown:hover > ul.dropdown-menu {
+			display: block; margin:0 ;
+		} */
+		
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	
+	<div th:fragment="header" style="width:90em; margin : auto;"> <!-- 90em : 네비게이션 가로 길이.  -->
+		
+		<!-- //////////////////////////////////////////////////////////// -->
+		
+		<!--
+			인자 현황판 (collapse) : 교정 : list.html로 부터 이전 및 교정(작동 이상) : 2024.3
+			: 교정 사항 : 인자(pageVO, boardList)가 있을 경우에만 표현 
+			: https://getbootstrap.com/docs/5.3/components/collapse/ 
+		-->
+		<div id="args_board" class="collapse">
 			
-			<table class="table table-striped">
+			<table class="table table-striped"  th:if="${pageVO != null}">
 				<tr>
-					<th style="width:120px">인증정보</th>
-					<td>[[${#authentication}]]</td>
+					<th style="width: 150px;">총 게시글 수</th>
+					<td th:text="${pageVO.listCount}"></td>
+					<th style="width: 150px;">이전 페이지</th>
+					<td th:text="${pageVO.prePage}"></td>
+					<th style="width: 150px;">현재 페이지</th>
+					<td th:text="${pageVO.currPage}"></td>
+					<th style="width: 150px;">이후 페이지</th>
+					<td th:text="${pageVO.nextPage}"></td>
+					<th style="width: 150px;">처음 페이지</th>
+					<td th:text="${pageVO.startPage}"></td>
+					<th style="width: 150px;">마지막 페이지</th>
+					<td th:text="${pageVO.endPage}"></td>
+				</tr>
+				<tr th:each="board, st : ${boardList}" th:if="${not #lists.isEmpty(boardList)}">
+					<th colspan="1">게시글 정보</th>
+					<td colspan="11"><span th:text="${board}"></span><br></td>
 				</tr>
 			</table>
 			
-		</div>
-		
-		<div th:if="${memberDTO != null}">
-		
-			<table class="table table-striped">
-				<tr>
-					<th style="width:120px">회원정보(인자)</th>
-					<td>[[${memberDTO}]]</td>
-				</tr>
-			</table>
-			
-		</div>
-		
-		<div th:if="${board != null}">
-			
-			<table class="table table-striped">
-				<tr>
-					<th style="width:120px">게시글 정보</th>
-					<td>[[${board}]]</td>
-				</tr>
-			</table>
-			 
-		</div>		
-		
-		<div th:if="${session.boardUpdateSess != null}">
-			
-			<table class="table table-striped">
-				<tr>
-					<th style="width:120px">기존 게시글 정보(세션)</th>
-					<td>[[${session.boardUpdateSess}]]</td>
-				</tr>
-			</table>
-			 
-		</div>		
+			<!-- 인증정보/회원정보 인자 확인  -->
+			<div th:if="${#authentication != null}">
 				
-	</div>
-	
-	<!-- //////////////////////////////////////////////////////////// -->
-	
-	<div class="header_sect_pnl">
-	
-			<!-- 
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">인증정보</th>
+						<td>[[${#authentication}]]</td>
+					</tr>
+				</table>
+				
+			</div>
 			
-			- Spring Security/Thymeleaf
-			: https://github.com/thymeleaf/thymeleaf-extras-springsecurity
-			
-			- Spring Security : Auth Method(인증/인가 관련 메서드)
-			: https://cafe.naver.com/ezbigjava1/508
-			
-			-->
-	
-		<ul id="main_menu">
+			<div th:if="${memberDTO != null}">
 		
-			<!-- 인자 현황 보기/가리기 버튼(추가) : 2024.3 -->
-			<li>
-				<div class="d-flex mt-2">
-					<a href="#args_board" class="btn btn-primary p-2 mt-4 mx-4" 
-					   data-bs-toggle="collapse" data-bs-target="#args_board" 
-					   aria-expanded="false" aria-controls="args_board">
-					   인자현황
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">회원정보(인자)</th>
+						<td>[[${memberDTO}]]</td>
+					</tr>
+				</table>
+				
+			</div>
+			
+			<div th:if="${board != null}">
+				
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">게시글 정보</th>
+						<td>[[${board}]]</td>
+					</tr>
+				</table>
+				
+			</div>		
+			
+			<div th:if="${session.boardUpdateSess != null}">
+				
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">기존 게시글 정보(세션)</th>
+						<td>[[${session.boardUpdateSess}]]</td>
+					</tr>
+				</table>
+				
+			</div>		
+			
+		</div>
+		
+		<!-- //////////////////////////////////////////////////////////// -->
+			<div class="head" style="float: right;">
+			
+				<!-- 로그인 안했을 때 보이는 목록.  leee 0404-->
+				
+				<!-- <form class="d-flex m-2" style="vertical-align: bottom;float: left;">
+					<a class="btn btn-outline-success" href="http://localhost:8181/healthyFoodProject/login" 
+						role="button" sec:authorize="isAnonymous()" style="vertical-align: bottom;">
+						로그인
+					</a>
+				</form>	 -->
+				
+				<!-- <form class="d-flex m-2" style="vertical-align: bottom; float: left;">
+					<a class="btn btn-outline-success" href="http://localhost:8181/healthyFoodProject/member/join.do" 
+						role="button" sec:authorize="isAnonymous()" style="vertical-align: bottom;">
+					회원가입 
+					</a>
+				</form>
+					
+				<form class="d-flex m-2" style="vertical-align: bottom; float: left;">
+					<a class="btn btn-outline-success" th:href="@{/logout}"
+						role="button" sec:authorize="isAuthenticated()"  style="vertical-align: bottom;">
+						로그아웃
+					</a>
+				</form>	 -->
+
+				<!-- 사람 이모티콘// 마이 페이지 leee 0404 -->
+				<!-- <div class="mypageHeader" style="float: left; margin:10px;">
+					<a href="http://localhost:8181/healthyFoodProject/member/view.do" style="vertical-align: bottom;">
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-person-circle" viewBox="0 0 16 16">
+							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+						</svg>
 					</a>
 				</div>
-			</li>
+				<script>
+					var i = 0;
+					$('i').on('click',function(){
+						if(i==0){
+							window.location.href = "http://localhost:8181/healthyFoodProject/member/view.do";
+						}else if(i==1){
+							$(this).removeClass('bi-person-circle');
+							$(this).addClass('bi-person-circle');
+							i--;
+					}	
+				});
+				</script> -->
+			</div>
 		
-			<li><a th:href="@{/}">Home</a></li>
+		
+		
+			<!-- 	<div class=" bs-success-subtle header_sect_pnl "> -->
+			<!-- ///////////////////////////////////---- 메인 헤더 ----////////////////////////////////////////////////////////// -->
 			
-			<!-- 로그인 인증이 안되었을 때  -->
-			<li sec:authorize="isAnonymous()"><a th:href="@{/login}">로그인</a></li>
-			
-			<li sec:authorize="isAnonymous()"><a th:href="@{/member/join.do}">회원 가입</a></li>
+			<div class="header_sect_pnl" style="float: right;">
+
+				<div class="header_menus" style="width:90em; float: right;">
+
+					<h1 class="m-2 p-1" style="float: left; margin:10px;">healthFood</h1>
+
+					<a class="btn btn-outline-success" 
+						href="http://localhost:8181/healthyFoodProject/login"
+						style="vertical-align: bottom; float: right;	margin:17px 5px 17px 5px ;" 
+						role="button" sec:authorize="isAnonymous()" >
+						로그인
+					</a>
+					<a class="btn btn-outline-success" 
+						href="http://localhost:8181/healthyFoodProject/member/join.do" 
+						style="vertical-align: bottom; float: right;	margin:17px 5px 17px 5px ;" 
+						role="button" sec:authorize="isAnonymous()" >
+						회원가입 
+					</a>
+					
+					<a class="btn btn-outline-success" th:href="@{/logout}"
+						style="vertical-align: bottom; float: right;	margin:17px 5px 17px 5px ;" 	
+						role="button" sec:authorize="isAuthenticated()">
+						로그아웃
+					</a>
 						
-			<!-- 로그인 인증되었을 때   -->
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/welcome}">MyPage</a></li>
+					<!-- 사람 이모티콘// 마이 페이지 leee 0404 -->
+					<div class="mypageHeader" ></div>
+						<a href="http://localhost:8181/healthyFoodProject/member/view.do" style="vertical-align: bottom; float: right;	margin:20px 5px 17px 5px ;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-person-circle" viewBox="0 0 16 16">
+								<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+							</svg>
+						</a>
+					</div>	
+					<script>
+						var i = 0;
+						$('i').on('click',function(){
+							if(i==0){
+								window.location.href = "http://localhost:8181/healthyFoodProject/member/view.do";
+							}else if(i==1){
+								$(this).removeClass('bi-person-circle');
+								$(this).addClass('bi-person-circle');
+								i--;
+						}	
+					});
+					</script>
+				</div>
+
+				<!-- ///////////////////////////////////---- 카테고리 네비게이션 ----////////////////////////////////////////////////////////// -->
 			
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">로그아웃</a></li>
+
+=======
+				<nav  class="p-1 navbar navbar-expand-sm bg-success-subtle " 
+							style="border-radius: 10px;"><!-- 0408 leee style="border-radius: 10px; 네비 테두리 둥글게-->
+					<div class="container-fluid p-1">
+					<!-- 	<a class="navbar-brand" href="#"> healthyFood </a> -->
+						<div  class="collapse navbar-collapse" id="navbarTogglerDemo02">
+							<ul class="p-2 navbar-nav me-auto mb-2 mb-lg-0">
+
+								<!-- <a class="navbar-brand" th:href="@{/}">healthyFood</a> -->
+								
+								<li class="nav-item">
+									<a  class="nav-link active" 
+										  aria-current="page" 
+										  th:href="@{/}">
+										<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-house-fill" viewBox="0 0 16 16">
+											<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+											<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+										</svg>
+									</a>
+								</li>
+								
+								<!-- 로그인 인증되었을 때   -->
+								
+								<!-- <li class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">MyPage</a>
+								</li> -->
+
+								<li class="nav-item dropdown" 
+										sec:authorize="isAuthenticated()">
+									<a  class="btn nav-link active dropdown-toggle"  
+										 	role="button" 
+											data-bs-toggle="dropdown" 
+											aria-expanded="false" 
+											th:href="@{/welcome}">
+											나의 맞춤 건강식
+									</a>
+									<ul class="dropdown-menu " 
+											style="display: none;"  
+											onmouseover="showDropdownMenu(this)" 
+											onmouseout="hideDropdownMenu(this)">
+										<li><a class="dropdown-item" href="#">사상체질 맞춤 건강식</a></li>
+										<li><a class="dropdown-item" href="#">건강상태 맞춤 건강식</a></li>
+									</ul>
+								</li>
+								
+								<li class="nav-item" 
+										sec:authorize="isAuthenticated()">
+									<a  class="nav-link active"
+											aria-current="page" 
+											th:href="@{/welcome}">
+											건강식 레시피
+									</a>
+								</li>
+								
+								<li class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">영양성분</a>
+								</li>
+								
+								<li class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">커뮤니티</a>
+								</li>
+                
+                <li><a th:href="@{/photo_board/list.do}">Photo 게시글 목록</a></li> >!-- 은수씨 수정 목록 -->
+
+							<script>
+									function showDropdownMenu(element) {
+											var dropdownMenu = element.querySelector('.dropdown-menu');
+											dropdownMenu.style.display = 'block';
+									}
+							
+									function hideDropdownMenu(element) {
+											var dropdownMenu = element.querySelector('.dropdown-menu');
+											dropdownMenu.style.display = 'none';
+									}
+							</script>
+<!-- 
+								<li class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/member/view.do}">회원 정보 조회</a>
+								</li>
+								
+								<l class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/member/update.do}">회원 정보 수정</a>
+								</l -->
+								
+								<!-- 게시판 링크 -->
+								<li class=" nav-item">
+									<a class="nav-link active" aria-current="page" th:href="@{/board/list.do}">게시글 목록</a>
+								</li>
+								<!-- 
+								
+								- Spring Security/Thymeleaf
+				: https://github.com/thymeleaf/thymeleaf-extras-springsecurity
+				
+				- Spring Security : Auth Method(인증/인가 관련 메서드)
+				: https://cafe.naver.com/ezbigjava1/508
+				
+			-->
 			
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/member/view.do}">회원 정보 조회</a></li>
-			
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/member/update.do}">회원 정보 수정</a></li>
-			
-			<!-- 게시판 링크 -->
-			<li><a th:href="@{/board/list.do}">게시글 목록</a></li>
-			<!--Photo 게시판 링크 -->
-			<li><a th:href="@{/photo_board/list.do}">Photo 게시글 목록</a></li>
-			
+			<!-- <ul id="main_menu"> -->
+				
+				<!-- 인자 현황 보기/가리기 버튼(추가) : 2024.3 -->
+				<li class="nav-item">
+					<!-- <div class="d-flex mt-2">/ -->
+						<a href="#args_board" class="nav-link active"
+						data-bs-toggle="collapse" data-bs-target="#args_board" aria-expanded="false" aria-controls="args_board">
+						인자현황
+					</a>
+					<!-- </div> -->
+				</li>
+				
+				<!-- <div class="sub-menu">
+					<ul class="menu">
+						<li>
+							<a href="/signin">로그인</a>
+						</li>
+					</ul>
+					<div class="search">
+						<input type="text" />
+						<div class="material-icons">검색하기</div>
+					</div>
+				</div>
+			-->
 			<!-- 등급(롤:role)이 관리자일 경우 -->
-			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/viewAllWithRoles.do}">회원 관리</a></li>
-			
+			<li class=" nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+				<a class="nav-link active" aria-current="page" th:href="@{/admin/viewAllWithRoles.do}">회원 관리</a>
+			</li>
 		</ul>
-
+		
+		<!-- <div class="d-flex"> -->
+						<form class="d-flex m-2" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success col-3 " type="submit" > 검색 </button>
+						</form>	
+						<!-- </div> -->
+						
+					</div>
+				</div>
+			</nav>	
+		</div>
 	</div>
-
-</div>
+</body>

@@ -39,7 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("board")
 @Slf4j
 public class BoardController { 
-	
+	/**
+	 * leee
+	 * 0401 수정 완.
+	 * 0402 BoardVO 게터세터 바꿔서 대문자 소문자 수정 완. 
+	 */
 	@Autowired
 	BoardService boardService;
 	
@@ -54,10 +58,10 @@ public class BoardController {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
 		return "/board/write";
-	} //
+	} // 
 	
 	// DTO 대신 Map 형태의 인자 수신 
-	@PostMapping("/writeProc.do")
+	@PostMapping("/writeProc.do") 
 	public String writeProc(@RequestParam Map<String, Object> map, 
 							@RequestPart(value="boardFile") MultipartFile boardFile, 
 							Model model) {
@@ -80,7 +84,7 @@ public class BoardController {
 			boardVO.setBoardFile(actualUploadFilename);
 
 			// 첨부 파일이 있을 때만 저장
-			msg = fileUPloadService.storeUploadFile(boardVO.getBoardNum(), boardFile, boardVO.getBoardFile());
+			msg = fileUPloadService.storeUploadFile(boardVO.getBoardCode(), boardFile, boardVO.getBoardFile());
 			log.info("msg : {}", msg);
 		} 
 		
@@ -105,16 +109,16 @@ public class BoardController {
 		return "/error/error"; 
 	} //
 	
-	@GetMapping("/view.do/{boardNum}")
-	public String view(@PathVariable("boardNum") int boardNum, Model model) {
-		
-		BoardVO boardVO =boardService.selectBoard(boardNum);
+	@GetMapping("/view.do/{boardCode}")
+	public String view(@PathVariable("boardCode") int boardCode, Model model) {
+		 
+		BoardVO boardVO =boardService.selectBoard(boardCode);
 		log.info("BoardVO : {}", boardVO);
 		
 		model.addAttribute("board", boardVO);
 		
 		// 조회할 때마다 조회수 갱신(+)
-		boardService.updateBoardReadcountByBoardNum(boardNum);
+		boardService.updateBoardReadcountByBoardCode(boardCode);
 		
 		return "/board/view";
 	}

@@ -25,6 +25,9 @@ import com.javateam.healthyFoodProject.util.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * leee
+ * 0402 게터세터 없던거 다 넣음. 수정완.
+ * 0403 leee enabled 없앰. > DB컬럼에 없고, 없애도 될듯.
  * @author oracle
  *
  */
@@ -37,6 +40,21 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	/**
 	 * 
+	 * 	BOARD_CODE	       게시글 번호
+		MEMBER_EMAIL	   회원 이메일
+		MEMBER_NICK	       회원 별명
+		MEMBER_IMG	       회원 이미지
+		BOARD_ORIGIN	   원게시글 번호
+		BOARD_RE_SEQ	   답글 순서
+		BOARD_TITLE	       게시글 제목
+		BOARD_CONTENT	   게시글 내용
+		BOARD_IMG	       게시글 썸네일
+		BOARD_IMG_ORIGIN   게시글 썸네일 원본
+		BOARD_FILE	       게시글 파일
+		BOARD_FILE_ORIGIIN 게시글 파일 원본
+		BOARD_DATE	       게시글 등록일
+		BOARD_READ_COUNT   게시글 조회수
+		ENABLED	   게시글 활성화
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -49,93 +67,122 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 			sequenceName = "board_seq",
 			initialValue = 1,
 			allocationSize = 1)
-	@Column(name = "board_num") 
-	private int boardNum; 
+	@Column(name = "BOARD_CODE") 
+	private int boardCode; 
 	
-	/** 게시글 작성자 */
-	@Column(name = "board_writer")
-	private String boardWriter; 
+	/** 게시글 작성자 이메일 아이디*/
+	@Column(name = "MEMBER_EMAIL")
+	private String memberEmail; 
 	
-	/** 게시글 비밀번호 */
-	@Column(name = "board_pass")
-	private String boardPass; 
+	/** 게시글 작성자 별명*/
+	@Column(name = "MEMBER_NICK")
+	private String memberNick; 
+
+	/** 게시글 작성자 이미지*/
+	@Column(name = "MEMBER_IMG")
+	private String memberImg; 
 	
-	/** 게시글 제목 */
-	@Column(name = "board_subject")
-	private String boardSubject; 
-	
-	/** 게시글 내용 */
-	@Column(name = "board_content")
-	private String boardContent; 
-	
-	/** 첨부 파일(원래 파일명) */
-	@Column(name = "board_original_file")
-	private String boardOriginalFile; 
-	
-	/** 첨부 파일(인코딩된 파일명) */
-	@Column(name = "board_file")
-	private String boardFile; 
-	
-	/** 게시글 답글의 원 게시글(관련글) 번호 */
-	@Column(name = "board_re_ref")
-	private int boardReRef; 
-	
-	/** 게시글 답글 레벨 */
-	@Column(name = "board_re_lev")
-	private int boardReLev; 
+	/** 원게시글 번호 */
+	@Column(name = "BOARD_ORIGIN")
+	private int boardOrigin; 
 	
 	/** 게시글 답글 순서 */
-	@Column(name = "board_re_seq")
+	@Column(name = "BOARD_RE_SEQ")
 	private int boardReSeq; 
 	
-	/** 게시글 조회수 */
-	@Column(name = "board_readcount")
-	private int boardReadCount = 0; 
+	/** 게시글 제목 */
+	@Column(name = "BOARD_TITLE")
+	private String boardTitle; 
+	
+	/** 게시글 내용 */
+	@Column(name = "BOARD_CONTENT")
+	private String boardContent; 
+	
+	/** 게시글 썸네일 */
+	@Column(name = "BOARD_IMG")
+	private String boardImg; 
+	
+	/** 게시글 썸네일 원본 */
+	@Column(name = "BOARD_IMG_ORIGIN")
+	private String boardImgOrigin; 
+	
+	/** 첨부 파일(인코딩된 파일명) */
+	@Column(name = "BOARD_FILE") 
+	private String boardFile; 
+	
+	/** 첨부 파일(원래 파일명) */
+	@Column(name = "BOARD_FILE_ORIGIN") 
+	private String boardFileOrigin; 
 	
 	/** 게시글 작성일자 */
-	@Column(name = "board_date")
 	@CreationTimestamp // 작성 날짜(기본값) 생성
+  @Column(name = "BOARD_DATE")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul") // JSON 변환시 "년월일 및 시분초"까지 모두 출력 
 	private Date boardDate;
 	
+	/** 게시글 조회수 */
+	@Column(name = "BOARD_READ_COUNT")
+	private int boardReadCount = 0; 
+
+//	/** 활성화 여부 */
+//	@Column(name = "ENABLED")
+//	private int enabled; 
+	
 	public BoardVO() {}
 	
+	/**
+	 * 수정 완. 0328 lee
+	 * 멤버 닉네임, 이미지는 굳이 외래키 해야하는지 의문. 
+	 * 그냥 이메일만 받아오면 닉네임이랑 이미지 둘 다 알 수 있는 거 아닌가?
+	 * 
+	 * -->0401 강사님 말씀. 제약사항에 너무 얽매이지 말고 일단 하고 나중에 add하셈.
+	 * @param board
+	 */
 	// BoardDTO -> BoardVO
     public BoardVO(BoardDTO board) {
         
-        this.boardNum = board.getBoardNum();
-        this.boardWriter = board.getBoardWriter();
-        this.boardPass = board.getBoardPass();
-        this.boardSubject = board.getBoardSubject();
+        this.boardCode = board.getBoardCode();
+        this.memberEmail = board.getMemberEmail();
+        this.memberNick = board.getMemberNick();
+        this.memberImg = board.getMemberImg();
+        this.boardOrigin = board.getBoardOrigin();
+        this.boardReSeq = board.getBoardReSeq(); 
+        this.boardTitle = board.getBoardTitle();
         this.boardContent = board.getBoardContent();
-        this.boardOriginalFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
+        this.boardImg= board.getBoardImg();
+        this.boardImgOrigin= board.getBoardImgOrigin();
+        this.boardFileOrigin = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         this.boardFile = board.getBoardFile().getOriginalFilename(); // 파일명 저장
         
         // 첨부 파일 유무 : 없으면 => "", 있으면 => 암호화 
         this.boardFile = board.getBoardFile().getOriginalFilename().trim().equals("") ?
         		"" : FileUploadUtil.encodeFilename(board.getBoardFile().getOriginalFilename());
         		
-        this.boardReRef = board.getBoardReRef();
-        this.boardReLev = board.getBoardReLev();
-        this.boardReSeq = board.getBoardReSeq();
-        this.boardReadCount = board.getBoardReadCount();
         this.boardDate = board.getBoardDate();
+        this.boardReadCount = board.getBoardReadCount();
+//        this.enabled = board.getEnabled();
     }
     
+    /**
+     * 수정 완. 0328 lee
+     * @param map
+     */
     // 게시글 수정시 : Map<String, Object> => BoardVO
     public BoardVO(Map<String, Object> map) {
 
     	log.info("BoardVO 오버로딩 생성자 : Map to VO");
     	
-    	this.boardNum = Integer.parseInt(map.get("boardNum").toString());
-        this.boardWriter = (String)map.get("boardWriter");
-        this.boardPass = (String)map.get("boardPass");
-        this.boardSubject = (String)map.get("boardSubject");
+    	this.boardCode = Integer.parseInt(map.get("boardCode").toString());
+        this.memberEmail = (String)map.get("memberEmail");
+        this.memberNick = map.get("memberNick").toString();
+        this.memberImg = map.get("memberImg").toString();
+        this.boardOrigin = (int) map.get("boardOrigin");
+        this.boardImg= (String) map.get("boardImg");
+        this.boardImgOrigin= (String) map.get("boardImgOrigin");
+        this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
-        this.boardOriginalFile = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
+        this.boardFileOrigin = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
         // this.boardFile = (MultipartFile)map.get("boardFile") == null ? "" : ((MultipartFile)map.get("boardFile")).getOriginalFilename(); // 파일명 저장
-        this.boardReRef = Integer.parseInt(map.get("boardReRef").toString());
-        this.boardReLev = Integer.parseInt(map.get("boardReLev").toString());
         this.boardReSeq = Integer.parseInt(map.get("boardReSeq").toString());
         // this.boardReadCount = Integer.parseInt(map.get("boardReadCount").toString()); // 조회수 제외
         this.boardDate = (Date)map.get("boardDate");
@@ -148,12 +195,11 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
     	log.info("BoardVO 오버로딩 생성자 : Map to VO");
     	
     	// 교정 : 2024.3
-    	// this.boardNum = Integer.parseInt(map.get("boardNum").toString());
-    	this.boardNum = map.get("boardNum") == null ? 0 : Integer.parseInt(map.get("boardNum").toString());
+    	// this.boardCode = Integer.parseInt(map.get("boardCode").toString());
+    	this.boardCode = map.get("boardCode") == null ? 0 : Integer.parseInt(map.get("boardCode").toString());
     	
-        this.boardWriter = (String)map.get("boardWriter");
-        this.boardPass = (String)map.get("boardPass");
-        this.boardSubject = (String)map.get("boardSubject");
+        this.memberEmail = (String)map.get("memberEmail");
+        this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         
         ////////////////////////////////////////////////////////
@@ -163,7 +209,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         
         if (boardFile.isEmpty() == false) {
         
-	        this.boardOriginalFile = boardFile.getOriginalFilename(); // 파일명 저장
+	        this.boardFileOrigin = boardFile.getOriginalFilename(); // 파일명 저장
 	        
 	        // 암호화 파일 부분 추가
 	        // 첨부 파일 유무 : 없으면 => "", 있으면 => 암호화 
@@ -172,117 +218,24 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 
         ////////////////////////////////////////////////////////
         
-        this.boardReRef = map.get("boardReRef") == null ? 0 : Integer.parseInt(map.get("boardReRef").toString());
-        this.boardReLev = map.get("boardReLev") == null ? 0 : Integer.parseInt(map.get("boardReLev").toString());
         this.boardReSeq = map.get("boardReSeq") == null ? 0 : Integer.parseInt(map.get("boardReSeq").toString());
         this.boardDate = (Date)map.get("boardDate");
     }
     
-	public int getBoardNum() {
-		return boardNum;
-	}
-
-	public void setBoardNum(int boardNum) {
-		this.boardNum = boardNum;
-	}
-
-	public String getBoardWriter() {
-		return boardWriter;
-	}
-
-	public void setBoardWriter(String boardWriter) {
-		this.boardWriter = boardWriter;
-	}
-
-	public String getBoardPass() {
-		return boardPass;
-	}
-
-	public void setBoardPass(String boardPass) {
-		this.boardPass = boardPass;
-	}
-
-	public String getBoardSubject() {
-		return boardSubject;
-	}
-
-	public void setBoardSubject(String boardSubject) {
-		this.boardSubject = boardSubject;
-	}
-
-	public String getBoardContent() {
-		return boardContent;
-	}
-
-	public void setBoardContent(String boardContent) {
-		this.boardContent = boardContent;
-	}
-
-	public String getBoardOriginalFile() {
-		return boardOriginalFile;
-	}
-
-	public void setBoardOriginalFile(String boardOriginalFile) {
-		this.boardOriginalFile = boardOriginalFile;
-	}
-
-	public String getBoardFile() {
-		return boardFile;
-	}
-
-	public void setBoardFile(String boardFile) {
-		this.boardFile = boardFile;
-	}
-
-	public int getBoardReRef() {
-		return boardReRef;
-	}
-
-	public void setBoardReRef(int boardReRef) {
-		this.boardReRef = boardReRef;
-	}
-
-	public int getBoardReLev() {
-		return boardReLev;
-	}
-
-	public void setBoardReLev(int boardReLev) {
-		this.boardReLev = boardReLev;
-	}
-
-	public int getBoardReSeq() {
-		return boardReSeq;
-	}
-
-	public void setBoardReSeq(int boardReSeq) {
-		this.boardReSeq = boardReSeq;
-	}
-
-	public int getBoardReadCount() {
-		return boardReadCount;
-	}
-
-	public void setBoardReadCount(int boardReadCount) {
-		this.boardReadCount = boardReadCount;
-	}
-
-	public Date getBoardDate() {
-		return boardDate;
-	}
-
-	public void setBoardDate(Date boardDate) {
-		this.boardDate = boardDate;
-	}
+	
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BoardVO [boardNum=").append(boardNum).append(", boardWriter=").append(boardWriter)
-				.append(", boardPass=").append(boardPass).append(", boardSubject=").append(boardSubject)
-				.append(", boardContent=").append(boardContent).append(", boardOriginalFile=").append(boardOriginalFile)
-				.append(", boardFile=").append(boardFile).append(", boardReRef=").append(boardReRef)
-				.append(", boardReLev=").append(boardReLev).append(", boardReSeq=").append(boardReSeq)
-				.append(", boardReadCount=").append(boardReadCount).append(", boardDate=").append(boardDate)
+		builder.append("BoardVO [boardCode=").append(boardCode)
+				.append(", memberEmail=").append(memberEmail)
+				.append(", boardTitle=").append(boardTitle)
+				.append(", boardContent=").append(boardContent)
+				.append(", boardFileOrigin=").append(boardFileOrigin)
+				.append(", boardFile=").append(boardFile)
+				.append(", boardReSeq=").append(boardReSeq)
+				.append(", boardReadCount=").append(boardReadCount)
+				.append(", boardDate=").append(boardDate)
 				.append("]");
 		return builder.toString();
 	}
@@ -295,15 +248,135 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		int result = 1;
 		result = prime * result + ((boardContent == null) ? 0 : boardContent.hashCode());
 		result = prime * result + ((boardFile == null) ? 0 : boardFile.hashCode());
-		result = prime * result + boardNum;
-		result = prime * result + ((boardOriginalFile == null) ? 0 : boardOriginalFile.hashCode());
-		result = prime * result + ((boardPass == null) ? 0 : boardPass.hashCode());
-		result = prime * result + ((boardSubject == null) ? 0 : boardSubject.hashCode());
-		result = prime * result + ((boardWriter == null) ? 0 : boardWriter.hashCode());
+		result = prime * result + boardCode;
+		result = prime * result + ((boardFileOrigin == null) ? 0 : boardFileOrigin.hashCode());
+		result = prime * result + ((boardTitle == null) ? 0 : boardTitle.hashCode());
+		result = prime * result + ((memberEmail == null) ? 0 : memberEmail.hashCode());
 		return result;
 	}
-
 	
+	
+	
+	public int getBoardCode() {
+		return boardCode;
+	}
+
+	public void setBoardCode(int boardCode) {
+		this.boardCode = boardCode;
+	}
+
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+
+	public String getMemberNick() {
+		return memberNick;
+	}
+
+	public void setMemberNick(String memberNick) {
+		this.memberNick = memberNick;
+	}
+
+	public String getMemberImg() {
+		return memberImg;
+	}
+
+	public void setMemberImg(String memberImg) {
+		this.memberImg = memberImg;
+	}
+
+	public int getBoardOrigin() {
+		return boardOrigin;
+	}
+
+	public void setBoardOrigin(int boardOrigin) {
+		this.boardOrigin = boardOrigin;
+	}
+
+	public int getBoardReSeq() {
+		return boardReSeq;
+	}
+
+	public void setBoardReSeq(int boardReSeq) {
+		this.boardReSeq = boardReSeq;
+	}
+
+	public String getBoardTitle() {
+		return boardTitle;
+	}
+
+	public void setBoardTitle(String boardTitle) {
+		this.boardTitle = boardTitle;
+	}
+
+	public String getBoardContent() {
+		return boardContent;
+	}
+
+	public void setBoardContent(String boardContent) {
+		this.boardContent = boardContent;
+	}
+
+	public String getBoardImg() {
+		return boardImg;
+	}
+
+	public void setBoardImg(String boardImg) {
+		this.boardImg = boardImg;
+	}
+
+	public String getBoardImgOrigin() {
+		return boardImgOrigin;
+	}
+
+	public void setBoardImgOrigin(String boardImgOrigin) {
+		this.boardImgOrigin = boardImgOrigin;
+	}
+
+	public String getBoardFile() {
+		return boardFile;
+	}
+
+	public void setBoardFile(String boardFile) {
+		this.boardFile = boardFile;
+	}
+
+	public String getBoardFileOrigin() {
+		return boardFileOrigin;
+	}
+
+	public void setBoardFileOrigin(String boardFileOrigin) {
+		this.boardFileOrigin = boardFileOrigin;
+	}
+
+	public Date getBoardDate() {
+		return boardDate;
+	}
+
+	public void setBoardDate(Date boardDate) {
+		this.boardDate = boardDate;
+	}
+
+	public int getBoardReadCount() {
+		return boardReadCount;
+	}
+
+	public void setBoardReadCount(int boardReadCount) {
+		this.boardReadCount = boardReadCount;
+	}
+
+//	public int getEnabled() {
+//		return enabled;
+//	}
+//
+//	public void setEnabled(int enabled) {
+//		this.enabled = enabled;
+//	}
+
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용
 	@Override
 	public boolean equals(Object obj) {
@@ -332,36 +405,29 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		} else if (!boardFile.equals(other.boardFile)) {
 			return false;
 		}
-		if (boardNum != other.boardNum) {
+		if (boardCode != other.boardCode) {
 			return false;
 		}
-		if (boardOriginalFile == null) {
-			if (other.boardOriginalFile != null) {
+		if (boardFileOrigin == null) {
+			if (other.boardFileOrigin != null) {
 				return false;
 			}
-		} else if (!boardOriginalFile.equals(other.boardOriginalFile)) {
+		} else if (!boardFileOrigin.equals(other.boardFileOrigin)) {
 			return false;
 		} 
 		
-		if (boardPass == null) {
-			if (other.boardPass != null) {
+		if (boardTitle == null) {
+			if (other.boardTitle != null) {
 				return false;
 			}
-		} else if (!boardPass.equals(other.boardPass)) {
+		} else if (!boardTitle.equals(other.boardTitle)) {
 			return false;
 		}
-		if (boardSubject == null) {
-			if (other.boardSubject != null) {
+		if (memberEmail == null) {
+			if (other.memberEmail != null) {
 				return false;
 			}
-		} else if (!boardSubject.equals(other.boardSubject)) {
-			return false;
-		}
-		if (boardWriter == null) {
-			if (other.boardWriter != null) {
-				return false;
-			}
-		} else if (!boardWriter.equals(other.boardWriter)) {
+		} else if (!memberEmail.equals(other.memberEmail)) {
 			return false;
 		}
 		return true;
