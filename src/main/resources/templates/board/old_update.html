@@ -190,15 +190,15 @@ window.onload = function() {
 					<tr>
 						<th scope="col" class="col-2">게시글 번호</th>
 						<td>
-							<input type="text" class="form-control" id="boardNum" name="boardNum" 
-								th:value="${board.boardNum}" th:field="*{boardNum}" readonly />
+							<input type="text" class="form-control" id="boardCode" name="boardCode" 
+								th:value="${board.boardCode}" th:field="*{boardCode}" readonly />
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="col">작성자</th>
-						<td><input type="text" class="form-control" id="boardWriter"
-							name="boardWriter" th:value="${board.boardWriter}" th:field="*{boardWriter}" readonly /></td>
+						<td><input type="text" class="form-control" id="memberNick"
+							name="memberNick" th:value="${board.memberNick}" th:field="*{memberNick}" readonly /></td>
 					</tr>
 
 					<tr>

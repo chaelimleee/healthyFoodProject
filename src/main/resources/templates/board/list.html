@@ -121,7 +121,7 @@ window.onload = function() {
 						</td>
             
 						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
-						<td th:text="${board.boardNum}"></td>
+						<td th:text="${board.boardCode}"></td>
 						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
 						
 						<td>
@@ -136,7 +136,7 @@ window.onload = function() {
 								<i class="bi bi-paperclip"></i>
 							</span>
 						</td>
-						<td th:utext="${board.boardWriter}"></td>
+						<td th:utext="${board.memberNick}"></td>
 						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 						
 						<!-- 조회수 추가 -->

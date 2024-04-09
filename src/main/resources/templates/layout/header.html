@@ -287,7 +287,6 @@
 				<!-- ///////////////////////////////////---- 카테고리 네비게이션 ----////////////////////////////////////////////////////////// -->
 			
 
-=======
 				<nav  class="p-1 navbar navbar-expand-sm bg-success-subtle " 
 							style="border-radius: 10px;"><!-- 0408 leee style="border-radius: 10px; 네비 테두리 둥글게-->
 					<div class="container-fluid p-1">
@@ -348,9 +347,11 @@
 								<li class="nav-item" sec:authorize="isAuthenticated()">
 									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">커뮤니티</a>
 								</li>
-                
-                <li><a th:href="@{/photo_board/list.do}">Photo 게시글 목록</a></li> >!-- 은수씨 수정 목록 -->
 
+								<li class="nav-item" sec:authorize="isAuthenticated()">
+									<a class="nav-link active" aria-current="page" th:href="@{/photo_board/list.do}">Photo 게시글 목록</a><!-- 은수씨 수정 목록 -->
+								</li>
+                
 							<script>
 									function showDropdownMenu(element) {
 											var dropdownMenu = element.querySelector('.dropdown-menu');

@@ -3,9 +3,9 @@
  */
 
 // 댓글 목록 읽어오기
-function getAllReplies(originalBoardId, boardWriter) {
+function getAllReplies(originalBoardId, memberNick) {
 	
-	axios.get(`/memberProject/board/getRepliesAll.do?boardNum=${originalBoardId}`) 
+	axios.get(`/memberProject/board/getRepliesAll.do?boardCode=${originalBoardId}`) 
 		 .then(function(response) {
 			 
 			// alert("전체 댓글 가져오기");
@@ -27,7 +27,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 				/* ------------------------------------------------------------------------------------------------------ */
 				
 				// 개별 게시글 동적 패널
-				replyData = `<div id="reply_${reply.boardNum}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
+				replyData = `<div id="reply_${reply.boardCode}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
 								
 								<div class="d-flex flex-row py-2">
 								
@@ -43,12 +43,12 @@ function getAllReplies(originalBoardId, boardWriter) {
 									<!-- 참고 : https://getbootstrap.com/docs/5.3/components/badge/#positioned -->
 									
 									<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->
-									<div id="reply_actual_writer_${reply.boardNum}" class="d-flex align-items-center ms-1 mt-1">
+									<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 									
 										<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-										<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-info position-relative">
+										<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
 											
-											${reply.boardWriter}
+											${reply.memberNick}
 							
 										  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
 										    	작성자
@@ -66,7 +66,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 								<div class="my-1 d-flex flow">
 								
 									<!-- 댓글 제어의 원활하게 하기 위해 div에 ID 할당 -->
-									<div id="boardContent_${reply.boardNum}">
+									<div id="boardContent_${reply.boardCode}">
 										${reply.boardContent}
 									</div>
 									
@@ -85,11 +85,11 @@ function getAllReplies(originalBoardId, boardWriter) {
 									<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 									<div class="col-8 d-flex justify-content-end">
 									
-										<a href="#" id="reply_update_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
-										   onClick="updateReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">수정</a>
+										<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+										   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 							
-										<a href="#" id="reply_delete_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary mb-1 me-3"
-										   onClick="deleteReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">삭제</a>
+										<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+										   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 						
 									</div>
 									<!--// 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
@@ -119,7 +119,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // 댓글 작성 : 인자 변경
-function writeReply(originalBoardId, boardWriter) {
+function writeReply(originalBoardId, memberNick) {
 	
 	console.log("originalBoardId : ", originalBoardId);
 	
@@ -145,7 +145,7 @@ function writeReply(originalBoardId, boardWriter) {
 	replyWriteBtn.addEventListener('click', function(e) { // 함수 내부에는 이와 같은 표현 권장	
 		
 		//로그인 미인증 시 알림창 띄우고 페이지 이동 없음
-		if (boardWriter == 'anonymousUser'){
+		if (memberNick == 'anonymousUser'){
 		
 			alert("댓글 작성을 위해서 로그인이 필요합니다.");
 			//location.href = "/memberProject/login";
@@ -171,9 +171,9 @@ function writeReply(originalBoardId, boardWriter) {
 			// 참고) 위와 같이 조치해보면 로그인된 아이디가 분리된 JS 파일에서는 인식되지 않는 것을 확인할 수 있습니다. 
 			
 			// 현재 로그인 한 회원
-			// let boardWriter = '[[${#authentication.name}]]';
+			// let memberNick = '[[${#authentication.name}]]';
 			 			
-			console.log("댓글 작성자 : ", boardWriter);
+			console.log("댓글 작성자 : ", memberNick);
 			
 			// 댓글 폼점검
 			// 댓글 한계량을 100자 이내로 한정합니다.
@@ -202,9 +202,9 @@ function writeReply(originalBoardId, boardWriter) {
 	 				// 전송			  
 	 				axios.post('/memberProject/board/replyWrite.do', 
 	 					{
-							boardNum : originalBoardId,
+							boardCode : originalBoardId,
 							boardContent : replyWriteForm.value,
-							boardWriter : boardWriter,
+							memberNick : memberNick,
 							boardPass : boardPass.value,
 	 					}
 	 				)
@@ -228,7 +228,7 @@ function writeReply(originalBoardId, boardWriter) {
 	 						/* ------------------------------------------------------------------------------------------------------ */
 	 									 
 							// 개별 게시글 동적 패널
-							replyData = `<div id="reply_${reply.boardNum}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
+							replyData = `<div id="reply_${reply.boardCode}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
 											
 											<div class="d-flex flex-row py-2">
 											
@@ -244,12 +244,12 @@ function writeReply(originalBoardId, boardWriter) {
 												<!-- 참고 : https://getbootstrap.com/docs/5.3/components/badge/#positioned -->
 												
 												<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->
-												<div id="reply_actual_writer_${reply.boardNum}" class="d-flex align-items-center ms-1 mt-1">
+												<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 												
 													<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-													<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-info position-relative">
+													<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
 														
-														${reply.boardWriter}
+														${reply.memberNick}
 														
 													  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
 													    	작성자
@@ -267,7 +267,7 @@ function writeReply(originalBoardId, boardWriter) {
 											<div class="my-1 d-flex flow">
 											
 												<!-- 댓글 제어의 원활하게 하기 위해 div에 ID 할당 -->
-												<div id="boardContent_${reply.boardNum}">
+												<div id="boardContent_${reply.boardCode}">
 													${reply.boardContent}
 												</div>
 												
@@ -286,11 +286,11 @@ function writeReply(originalBoardId, boardWriter) {
 												<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 												<div class="col-8 d-flex justify-content-end">
 												
-													<a href="#" id="reply_update_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
-													   onClick="updateReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">수정</a>
+													<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+													   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 										
-													<a href="#" id="reply_delete_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary mb-1 me-3"
-													   onClick="deleteReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">삭제</a>
+													<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+													   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 									
 												</div>
 												<!--// 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
@@ -327,9 +327,9 @@ function writeReply(originalBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // 댓글 수정 : 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-function updateReply(originalBoardId, replyBoardId, boardWriter) {
+function updateReply(originalBoardId, replyBoardId, memberNick) {
 	
-	console.log("원글 아이디, 댓글 아이디, 글 작성자 : " + originalBoardId + "," + replyBoardId +"," + boardWriter);
+	console.log("원글 아이디, 댓글 아이디, 글 작성자 : " + originalBoardId + "," + replyBoardId +"," + memberNick);
 	
 	// 수정할 기존 댓글 내용
 	let boardContent = document.getElementById("boardContent_" + replyBoardId);
@@ -426,7 +426,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 		
 		replyActualWriter = replyActualWriter.substring("reply_writer_".length); // 실제 작성자 아이디 추출				
 		
-		console.log("작성자 아이디 : ", boardWriter);
+		console.log("작성자 아이디 : ", memberNick);
 		console.log("실제 작성자 아이디 : ", replyActualWriter);
 		
 		
@@ -437,9 +437,9 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 			replyUpdateForm.value = ""; // 값 초기화
 			replyUpdateForm.focus(); // 입력 대기
 			
-		} else if (replyActualWriter != boardWriter) { // 회원이 실제 댓글 작성자가 아니라면 차단 !
+		} else if (replyActualWriter != memberNick) { // 회원이 실제 댓글 작성자가 아니라면 차단 !
 			
-		 	console.log("작성자 아이디 : ", boardWriter);
+		 	console.log("작성자 아이디 : ", memberNick);
 			console.log("실제 작성자 아이디 : ", replyActualWriter);
 			
 			alert("실제 댓글 작성자만 댓글을 수정할 수 있습니다.");
@@ -457,7 +457,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 			
 			console.log("수정할 댓글의 아이디 : ", replyBoardId);
 			console.log("수정할 댓글의 '원글' 아이디 : ", originalBoardId);
-			console.log("작성자 아이디 : ", boardWriter);
+			console.log("작성자 아이디 : ", memberNick);
 			console.log("수정할 댓글 패쓰워드 : ", boardUpdatePass.value);
 			console.log("댓글 내용 : ", replyUpdateForm.value.trim());
 			
@@ -471,12 +471,12 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 			} else {	
 			
 				// 전송	
-				// 주의) 여기서 boardNum 댓글 자체의 아이디입니다.		  
+				// 주의) 여기서 boardCode 댓글 자체의 아이디입니다.		  
  				axios.post('/memberProject/board/replyUpdate.do', 
  					{
-					    boardNum : replyBoardId,
+					    boardCode : replyBoardId,
 						boardContent : replyUpdateForm.value,
-						boardWriter : boardWriter,
+						memberNick : memberNick,
 						boardPass : boardUpdatePass.value,
 						boardReRef : originalBoardId,
  					}
@@ -501,7 +501,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
  						///////////////////////////////////////////////////////////////////////////////////////////////////////
  									 
 						// 개별 게시글 동적 패널
-						replyData = `<div id="reply_${reply.boardNum}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
+						replyData = `<div id="reply_${reply.boardCode}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
 										
 										<div class="d-flex flex-row py-2">
 										
@@ -516,12 +516,12 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 											<!-- 작성자 : bootstrap badge(뱃지) 적용 -->
 											<!-- 참고 : https://getbootstrap.com/docs/5.3/components/badge/#positioned -->
 											<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->
-											<div id="reply_actual_writer_${reply.boardNum}" class="d-flex align-items-center ms-1 mt-1">
+											<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 											
 												<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-												<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-info position-relative">
+												<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
 													
-													${reply.boardWriter}
+													${reply.memberNick}
 													
 												  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
 												    	작성자
@@ -539,7 +539,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 										<div class="my-1 d-flex flow">
 										
 											<!-- 댓글 제어의 원활하게 하기 위해 div에 ID 할당 -->
-											<div id="boardContent_${reply.boardNum}">
+											<div id="boardContent_${reply.boardCode}">
 												${reply.boardContent}
 											</div>
 											
@@ -558,11 +558,11 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 											<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 											<div class="col-8 d-flex justify-content-end">
 											
-												<a href="#" id="reply_update_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
-												   onClick="updateReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">수정</a>
+												<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+												   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 									
-												<a href="#" id="reply_delete_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary mb-1 me-3"
-												   onClick="deleteReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">삭제</a>
+												<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+												   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 								
 											</div>
 											<!--// 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
@@ -626,9 +626,9 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // 댓글 삭제 : 2024.3 : 댓글 삭제 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-function deleteReply(originalBoardId, replyBoardId, boardWriter) {
+function deleteReply(originalBoardId, replyBoardId, memberNick) {
 
-	console.log("원글 아이디, 댓글 아이디, 글 작성자 : " + originalBoardId + "," + replyBoardId +"," + boardWriter);
+	console.log("원글 아이디, 댓글 아이디, 글 작성자 : " + originalBoardId + "," + replyBoardId +"," + memberNick);
 	
 	// 댓글 삭제를 위해 게시글 목록 해당 게시글 패널 하단에 입력 패널 생성 및 내용 삽입			
 	let replyPnl = document.getElementById("reply_" + replyBoardId);
@@ -698,19 +698,19 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	replySubmitBtn.onclick = () => {	
 		
 		//로그인 미인증 시 로그인 페이지 이동
-		if (boardWriter == 'anonymousUser'){
+		if (memberNick == 'anonymousUser'){
 		
 			alert("댓글 작성을 위해서 로그인이 필요합니다.");
 			location.href = "/memberProject/login";
 		}			
 	
 		// 댓글 폼점검 : 비어 있는지 여부 점검
-		// 유의) 여기서는 "댓글 삭제" 버튼을 직접 이용하기 때문에 원글(boardNum) 버튼을 활용 
+		// 유의) 여기서는 "댓글 삭제" 버튼을 직접 이용하기 때문에 원글(boardCode) 버튼을 활용 
 		let boardDeletePass = document.getElementById(`board_pass_${replyBoardId}`);
 		
-		if (replyActualWriter != boardWriter) { // 회원이 실제 댓글 작성자가 아니라면 차단 !
+		if (replyActualWriter != memberNick) { // 회원이 실제 댓글 작성자가 아니라면 차단 !
 			
-		 	console.log("작성자 아이디 : ", boardWriter);
+		 	console.log("작성자 아이디 : ", memberNick);
 			console.log("실제 작성자 아이디 : ", replyActualWriter);
 			
 			alert("실제 댓글 작성자만 댓글을 삭제할 수 있습니다.");
@@ -737,8 +737,8 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 				// 삭제할 댓글 아이디와 댓글 부모글(원글) 아이디 : 원글은 삭제 후 댓글 목록의 현황 갱신을 위한 전송 
 				axios.post(`/memberProject/board/replyDelete.do`,
 				{
-					boardNum : replyBoardId, // 삭제할 댓글 아이디
-					originalBoardNum : originalBoardId, // 댓글 목록 갱신을 위한 원글 아이디
+					boardCode : replyBoardId, // 삭제할 댓글 아이디
+					originalboardCode : originalBoardId, // 댓글 목록 갱신을 위한 원글 아이디
 					boardPass : boardDeletePass.value // 삭제할 댓글 패쓰워드
 					
 				}) 
@@ -765,7 +765,7 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 						/* ------------------------------------------------------------------------------------------------------ */
 						
 						// 개별 게시글 동적 패널
-						replyData = `<div id="reply_${reply.boardNum}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
+						replyData = `<div id="reply_${reply.boardCode}" class="border-bottom border-dark-1 bg-light w-100 ps-4">
 										
 										<div class="d-flex flex-row py-2">
 										
@@ -781,12 +781,12 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 											<!-- 참고 : https://getbootstrap.com/docs/5.3/components/badge/#positioned -->
 											
 											<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->
-											<div id="reply_actual_writer_${reply.boardNum}" class="d-flex align-items-center ms-1 mt-1">
+											<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 											
 												<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-												<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-info position-relative">
+												<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
 													
-													${reply.boardWriter}
+													${reply.memberNick}
 									
 												  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
 												    	작성자
@@ -808,7 +808,7 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 											</div>
 											
 											<!-- 댓글 제어의 원활하게 하기 위해 div에 ID 할당 -->
-											<div id="boardContent_${reply.boardNum}">
+											<div id="boardContent_${reply.boardCode}">
 												${reply.boardContent}
 											</div>
 											
@@ -827,11 +827,11 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 											<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 											<div class="col-8 d-flex justify-content-end">
 											
-												<a href="#" id="reply_update_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
-												   onClick="updateReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">수정</a>
+												<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+												   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 									
-												<a href="#" id="reply_delete_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary mb-1 me-3"
-												   onClick="deleteReply(${originalBoardId}, ${reply.boardNum}, '${boardWriter}')">삭제</a>
+												<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+												   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 								
 											</div>
 											<!--// 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
@@ -890,20 +890,20 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // (원)글 삭제
-function deleteBoard(boardNum, boardWriter) {
+function deleteBoard(boardCode, memberNick) {
 	
-	// console.log("boardNum : ", boardNum, ", boardWriter : ", boardWriter);
-	// console.log("삭제할 게시글(원글) 아이디 : ",boardNum);
+	// console.log("boardCode : ", boardCode, ", memberNick : ", memberNick);
+	// console.log("삭제할 게시글(원글) 아이디 : ",boardCode);
 	
 	// 게시글 삭제 버튼
-	let boardDeleteBtn = document.getElementById(`board_delete_btn_${boardNum}`);
+	let boardDeleteBtn = document.getElementById(`board_delete_btn_${boardCode}`);
 	
 	// 삭제할 게시글 패쓰워드
-	let boardDeletePass = document.getElementById(`board_pass_${boardNum}`);
+	let boardDeletePass = document.getElementById(`board_pass_${boardCode}`);
 	
 	boardDeleteBtn.onclick = function() {
 		
-		console.log("삭제할 게시글 아이디 : ", boardNum);
+		console.log("삭제할 게시글 아이디 : ", boardCode);
 		console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass.value);
 		
 		// 게시글 삭제 의사 재점검
@@ -926,7 +926,7 @@ function deleteBoard(boardNum, boardWriter) {
 				//  
 				let encodedPass = encodeURIComponent(boardDeletePass.value);
 				
-				let str = `/memberProject/board/deleteProc.do?boardNum=${boardNum}&boardPass=${encodedPass}`;
+				let str = `/memberProject/board/deleteProc.do?boardCode=${boardCode}&boardPass=${encodedPass}`;
 				
 				console.log('str : ', str);
 				

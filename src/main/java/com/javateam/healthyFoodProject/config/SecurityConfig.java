@@ -87,7 +87,6 @@ public class SecurityConfig {
 				.requestMatchers("/board/replyWrite.do").permitAll()
 				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 				.requestMatchers("/content1", "/content2").permitAll()
-				.requestMatchers("/login", "/").permitAll()
 				//
 				 // 게시판 관련 링크 추가 
         //240405-es-song- photo_board 추가(permitAll(),authenticated())

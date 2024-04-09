@@ -52,12 +52,12 @@ public class FileUploadService {
 	/**
 	 * 파일 업로드 서비스
 	 * 
-	 * @param boardNum 게시글 번호
+	 * @param boardCode 게시글 번호
 	 * @param file 업로드할 파일
 	 * @param encodingFilename 업로드될 실제 파일명(암호화 처리)
 	 * @return 업로드 결과 메시지
 	 */
-	public String storeUploadFile(int boardNum, MultipartFile file, String encodingFilename) {
+	public String storeUploadFile(int boardCode, MultipartFile file, String encodingFilename) {
 		
 		log.info("FileUploadService.storeUploadFile");
 		
@@ -94,7 +94,7 @@ public class FileUploadService {
 				}
 			} //
 		   
-		    log.info("###### 게시글 번호 : {}", boardNum);
+		    log.info("###### 게시글 번호 : {}", boardCode);
 		     
 		    try {
 	    	 	// 업로드 파일 형식 변환(시작) : 추가

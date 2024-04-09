@@ -205,8 +205,8 @@ window.onload = function() {
 					<tr>
 						<th scope="col">작성자</th>
 						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 -->
-						<td><input type="text" class="form-control" id="boardWriter"
-							name="boardWriter" th:value="${#authentication.name}" readonly /></td>
+						<td><input type="text" class="form-control" id="memberNick"
+							name="memberNick" th:value="${#authentication.name}" readonly /></td>
 					</tr>
 
 					<!-- <tr>

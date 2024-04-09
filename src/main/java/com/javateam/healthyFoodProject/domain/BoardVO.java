@@ -116,7 +116,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	/** 게시글 작성일자 */
 	@CreationTimestamp // 작성 날짜(기본값) 생성
-  @Column(name = "BOARD_DATE")
+	@Column(name = "BOARD_DATE")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul") // JSON 변환시 "년월일 및 시분초"까지 모두 출력 
 	private Date boardDate;
 	
