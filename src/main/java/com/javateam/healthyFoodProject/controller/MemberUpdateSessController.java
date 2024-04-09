@@ -96,14 +96,14 @@ public class MemberUpdateSessController {
 		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
 		
 		String id = customUser.getUsername();
-		memberUpdateDTO.setEmail(id);
+		memberUpdateDTO.setMemberEmail(id);
 		
 		// 신규 패쓰워드가 공백이 아니라면 패쓰워드 변경
 		// 공백이면 패쓰워드 변경 의사가 없는 것으로 간주하여 기존 패쓰워드 그대로 사용
 		if (memberUpdateDTO.getPassword1().trim().equals("") != true) {
 			// 패쓰워드 암호화		
 			// 주의) 변경된 패쓰워드(password1 혹은 password2) => 암호화 => 기존 패쓰워드(password)에 대입  
-			memberUpdateDTO.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword1()));				
+			memberUpdateDTO.setMemberPw(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword1()))	;			
 		}
 		
 		log.info("updateProc.do-1(암호화 이후) : {}", memberUpdateDTO);

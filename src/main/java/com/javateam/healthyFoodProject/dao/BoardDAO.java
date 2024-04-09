@@ -23,34 +23,34 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 
 	Page<BoardVO> findAll(Pageable pageable);
 	
-	BoardVO findById(int boardNum);
+	BoardVO findById(int boardCode);
 	
-	int countByBoardSubjectLike(String boardSubject); // Like
-	int countByBoardSubjectContaining(String boardSubject); // Containing
+	int countByboardTitleLike(String boardTitle); // Like
+	int countByboardTitleContaining(String boardTitle); // Containing
 	int countByBoardContentContaining(String boardContent);
-	int countByBoardWriterContaining(String boardWriter);
+	int countBymemberEmailContaining(String memberEmail);
 	
-	Page<BoardVO> findByBoardSubjectLike(String boardSubject, Pageable pageable); // Like
-	Page<BoardVO> findByBoardSubjectContaining(String boardSubject, Pageable pageable); // Containing
+	Page<BoardVO> findByboardTitleLike(String boardTitle, Pageable pageable); // Like
+	Page<BoardVO> findByboardTitleContaining(String boardTitle, Pageable pageable); // Containing
 	Page<BoardVO> findByBoardContentContaining(String boardContent, Pageable pageable);
-	Page<BoardVO> findByBoardWriterContaining(String boardWriter, Pageable pageable);
+	Page<BoardVO> findBymemberEmailContaining(String memberEmail, Pageable pageable);
 	
 	// 원글에 따른 소속 댓글들 가져오기
-	List<BoardVO> findByBoardReRef(int boardReRef); 
+	List<BoardVO> findByBoardReSeq(int boardReSeq); 
 	
-	// 댓글 제외한 원글들만의 게시글 수 : boardReRef = 0
-	long countByBoardReRef(int boardReRef);
+	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
+	long countByBoardReSeq(int boardReSeq);
 	
-	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReRef = 0
-	Page<BoardVO> findByBoardReRef(int boardReRef, Pageable pageable); 
+	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
+	Page<BoardVO> findByBoardReSeq(int boardReSeq, Pageable pageable); 
 	
 	// 게시글 조회수 갱신
 	@Modifying
 	@Query(value = "UPDATE board_tbl SET " + 
-				   "board_readcount = board_readcount + 1 " + 
-				   "WHERE board_num = :boardNum", nativeQuery = true)
-	void updateBoardReadcountByBoardNum(@Param("boardNum") int boardNum);
+				   "BOARD_READ_COUNT = BOARD_READ_COUNT + 1 " + 
+				   "WHERE BOARD_CODE = :boardCode", nativeQuery = true)
+	void updateBoardReadcountByBoardCode(@Param("boardCode") int boardCode);
 
 	// 게시글 삭제
-	void deleteById(int boardNum);
+	void deleteById(int boardCode);
 }

@@ -56,9 +56,9 @@ public class BoardService {
 	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
 
 		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") : 
-		return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectContaining(searchWord) :
+		return searchKey.equals("board_subject") ? boardDAO.countByboardTitleContaining(searchWord) :
 			   searchKey.equals("board_content") ? boardDAO.countByBoardContentContaining(searchWord) : 
-			   boardDAO.countByBoardWriterContaining(searchWord);	
+			   boardDAO.countBymemberEmailContaining(searchWord);	
 		
 	}
 
@@ -68,9 +68,9 @@ public class BoardService {
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
 		
 		// return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectLike("%"+searchWord+"%", pageable).getContent() : 
-		return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectContaining(searchWord, pageable).getContent() :
+		return searchKey.equals("board_subject") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
 			   searchKey.equals("board_content") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
-			   boardDAO.findByBoardWriterContaining(searchWord, pageable).getContent();
+			   boardDAO.findBymemberEmailContaining(searchWord, pageable).getContent();
 	}
 	
 	// imgUploadPath = /board/image/
@@ -145,13 +145,13 @@ public class BoardService {
 	@Transactional(rollbackFor = Exception.class)
 	public List<BoardVO> selectReplysById(int boardNum) {
 		
-		return boardDAO.findByBoardReRef(boardNum);
+		return boardDAO.findByBoardReSeq(boardNum);
 	}
 	
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithoutReplies() {
 		
-		return (int)boardDAO.countByBoardReRef(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return (int)boardDAO.countByBoardReSeq(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(readOnly = true)
@@ -159,7 +159,7 @@ public class BoardService {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
 		// return boardDAO.findAll(pageable).getContent();
-		return boardDAO.findByBoardReRef(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return boardDAO.findByBoardReSeq(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(rollbackFor = Exception.class)
@@ -182,7 +182,7 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithReplies(int boardNum) {
 		
-		return (int)boardDAO.countByBoardReRef(boardNum); // 댓글의 갯수 추출 : board_re_ref = boardNum
+		return (int)boardDAO.countByBoardReSeq(boardNum); // 댓글의 갯수 추출 : board_re_ref = boardNum
 	} //
 	
 	
@@ -205,12 +205,12 @@ public class BoardService {
 	
 	// 게시글 조회수 갱신
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateBoardReadcountByBoardNum(int boardNum) {
+	public boolean updateBoardReadcountByBoardCode(int boardNum) {
 		
 		boolean result = false;
 		
 		try {
-			boardDAO.updateBoardReadcountByBoardNum(boardNum);
+			boardDAO.updateBoardReadcountByBoardCode(boardNum);
 			result = true;
 		} catch (Exception e) {
 			log.error("updateBoardReadcountByBoardNum error : {}", e);

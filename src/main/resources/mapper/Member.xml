@@ -5,15 +5,17 @@
 	<!-- 회원 정보 생성 -->
 	<insert id="insertMember" parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		INSERT INTO member_tbl VALUES (
-		#{MEMBER_EMAIL},
-		#{MEMBER_PW},
-		#{MEMBER_NICK},
-		#{MEMBER_MOBILE},
-		#{MEMBER_ZIP},
-		#{MEMBER_ADDRESS_1},
-		#{MEMBER_ADDRESS_2},
-		,
-		,
+		#{memberEmail},
+		#{memberPw},
+		#{memberNick},
+		#{memberMobile},
+		#{memberZip},
+		#{memberAddress1},
+		#{memberAddress2},
+		#{memberImg},
+		#{memberImgOrigin},
+		sysdate,
+		1
 		)
 	</insert>
 	  
@@ -34,18 +36,15 @@
 	<select id="selectMember" parameterType="String"
 		    resultType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		SELECT 
-		id,
-		password,
-		name,	
-		gender,
-		email,
-		mobile,
-		phone,
-		zip,
-		road_address as "roadAddress",
-		jibun_address as "jibunAddress",
-		detail_address as "detailAddress",
-		birthday,
+		memberEmail,
+		memberPw,
+		memberNick,	
+		memberMobile,
+		memberZip,
+		memberAddress1,
+		memberAddress2,
+		memberImg,
+		memberImgOrigin,
 		joindate,		
 		enabled
 		FROM member_tbl WHERE id = #{id}
