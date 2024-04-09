@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * leee
  * 0402 게터세터 없던거 다 넣음. 수정완.
  * 0403 leee enabled 없앰. > DB컬럼에 없고, 없애도 될듯.
+ * 0409 leee 수정
  * @author oracle
  *
  */
