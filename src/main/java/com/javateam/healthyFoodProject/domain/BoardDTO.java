@@ -18,7 +18,7 @@ public class BoardDTO {
 	private int boardReLev; // 게시글 답글 레벨
 	private int boardReSeq; // 게시글 답글 순서
 	private int boardReadCount = 0; // 게시글 조회수
-	private Date boardDate; // 게시글 작성일자
+	private Date boardDate; // 게시글 작성일자  
 	private String textMulti = "text"; // 텍스트 모드(text:기본값) / 멀티미디어 모드(multi)
 	
 	// 업로드 파일(파일명을 확인할 수 있도록 파일명 인쇄) : boardFile.getOriginalFilename()
