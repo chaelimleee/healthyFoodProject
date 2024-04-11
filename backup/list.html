@@ -12,46 +12,16 @@
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
 <style>
-
-	article{
-		float:left;
-	}
-
 	.inner-div {
 	  width : 400px;
 	  height : 100px;
 	  /* background-color: red; */
 	}
 	
-	img{
-		display:block;
-	}
-	
  /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
 	.trclass:hover{
             background-color:#FEE6FD;
         }
-        
-    .tablePhoto{
-			display: grid;
-			/* grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); */
-			/* gap: 56px 20px; */
-			overflow-x: hidden;
-			place-items: center;
-			 grid-template-columns: repeat(4, 300px); 
-			 grid-gap: 20px;
-			/* grid-template-rows: minmax(100px, auto); */
-
-    } 
-    
-    .item {
-	    padding: 10px;
-	    border: 5px solid #000;
-	    font-size: 20px;
-	    font-weight: bold;
-	    text-align: center;
-	    background-color: #ff0;
-	}
        
 </style>
 <script>
@@ -63,7 +33,7 @@ window.onload = function() {
 	
 	// 삭제 버튼을 눌렀을 경우 
 //	let boardDeletebtn = document.getElementById("board_delete_btn");	
-//  let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let boardDeletebtn = document.getElementById("board_delete_btn");	
 	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
 	
 	mainCheckbox.onclick = function() {
@@ -80,7 +50,6 @@ window.onload = function() {
 	// console.log("boardDeletebtn : ", boardDeletebtn);
 	
 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
-	/*
 	boardDeletebtn.onclick = function() {
 		
 		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
@@ -103,42 +72,68 @@ window.onload = function() {
 		} // for
 		
 	} //
-	*/
 	
 } //
 </script>
 </head>
 <body>
-	
+
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
+	
+		<div class="content_sect_pnl">
+
+		
+			<!-- 인자 현황판 이전(move) :   -->
 			
-			<!-- 갤러리 게시판 grid 시작.   -->
-			<div class="content_sect_pnl" style="width: auto;"><!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
+			<h4 class="d-flex justify-content-left m-5">
+				<div class='inner-div'> </div>
+				<div class="p-2" style="line-height: 1.5em">커뮤니티<br>
+					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
+				</div>	
+			</h4>
 			
-					<div class="tablePhoto "  
-						th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
-						th:each="photo : ${photoList}">
-						
-						<div class="items p-2"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
-							<div style="width:300px; height:300px; overflow : hidden;" th:utext="${photo.boardContent}"></div>
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-				</div>
-				<!--// 갤러리 게시판 grid 끝.   -->
 				
+			<table class="table mx-2 mx-auto" style="width:50vw">
+				<thead>
+					<tr>	
+						<th>
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						
+						<!-- 조회수 추가 -->
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
+						th:each="board, st : ${boardList}">
+						<td>
+							<input type="checkbox" th:id="${'check_'+ board.boardNum}" th:name="${'check_'+ board.boardNum}">
+						</td>
+						<td th:text="${board.boardNum}"></td>
+						
+						<td>
+                            <!--글의 댓글 갯수 표시  -->						 
+							<a th:href="@{'/photo_board/view.do/'+ ${board.boardNum}}" th:utext="${board.boardSubject}" th:text="${board.boardReRef}"></a> 
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(board.boardContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+						</td>
+						<td th:utext="${board.boardWriter}"></td>
+						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 추가 -->
+						<td th:utext="${board.boardReadCount}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
 			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
@@ -184,6 +179,7 @@ window.onload = function() {
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
 							<a class="page-link"
 							th:href="@{'/photo_board/list.do?currPage='+${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>

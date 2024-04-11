@@ -86,6 +86,7 @@ public class MemberController {
 	public String view(Model model) {
 		
 		// Spring Security Pricipal(Session) 조회
+		// 0411 leee 세션에서 가져옴. 아이디를. 
 		Object principal = SecurityContextHolder.getContext()
 											.getAuthentication()
 											.getPrincipal();
@@ -184,5 +185,14 @@ public class MemberController {
 			
 		return movePath; 
 	}	
+	
+	@GetMapping("/delete.do")
+	public String memberDelete(Model model) {		
+		log.info("join.do");		
+		
+		model.addAttribute("memberDTO", new MemberDTO());
+		
+		return "/member/delete";
+	}
 	
 }

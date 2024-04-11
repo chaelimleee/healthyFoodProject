@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- layout dialect -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout}"
+	  lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>관리자 화면</title>
+
+<!-- bootstrap -->
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- bootstrap icons :  -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
+<!-- AJAX library axios -->
+<script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
+
+</head>
+<body>
+<div layout:fragment="content" class="main_sect_pnl"> <!-- 이거 달아야 됨   -->
+
+
+    <div><h2>모든 회원 정보와 내역이 삭제됩니다.</h2></div>
+    <div>계속하시겠습니까?</div>
+
+    <!-- 회원  정보 삭제/취소 버튼 -->	
+    <!-- <div id="buttons_fld_pnl" th:if="${not #lists.isEmpty(members) && pageVO.listCount > 0}"
+						th:each="member, st : ${members}">
+       <!-- 회원  정보 삭제/취소 버튼 -->	
+    <div id="buttons_fld_pnl">  
+        
+        <button id="submit_btn" type="submit" style="width:150px;">확인</button>&nbsp;
+        <button id="reset_btn" type="reset">뒤로</button>
+        </div>
+    <!--// 회원 정보 삭제/취소 버튼 -->
+    
+    </div>
+</body>
+</html>

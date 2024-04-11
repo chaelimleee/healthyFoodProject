@@ -66,9 +66,9 @@ public class BoardListController {
 
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("boardList", boardList);
-		model.addAttribute("listCount", listCount);//추가 및 수정
-		
-		//0404 leee 페이지네이션 위해서 현재 페이지에 보여줄 시작 페이지, 마지막 페이지 list.html에 보냄
+		model.addAttribute("listCount", listCount);// 추가 및 수정
+
+		// 0404 leee 페이지네이션 위해서 현재 페이지에 보여줄 시작 페이지, 마지막 페이지 list.html에 보냄
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 

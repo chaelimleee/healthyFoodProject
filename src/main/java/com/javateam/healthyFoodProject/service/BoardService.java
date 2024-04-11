@@ -41,7 +41,7 @@ public class BoardService {
 		
 		return (int)boardDAO.count();
 	} //
-
+	
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsByPaging(int currPage, int limit) {
 				

@@ -12,57 +12,105 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javateam.healthyFoodProject.domain.PageVO;
 import com.javateam.healthyFoodProject.domain.PhotoVO;
+import com.javateam.healthyFoodProject.domain.UploadFile;
 import com.javateam.healthyFoodProject.service.PhotoService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("photo_board")
+@RequestMapping("/photo_board")
 @Slf4j
 public class PhotoListController {
-	
+
 	@Autowired
 	PhotoService photoService;
 
-	@GetMapping("list.do")
-	public String list(@RequestParam(value="currPage", defaultValue="1") int currPage,
-					   @RequestParam(value="limit", defaultValue="10") int limit,
-					   Model model) {
+	@GetMapping("/list.do")
+	public String list(@RequestParam(value = "currPage", defaultValue = "1") int currPage,
+			@RequestParam(value = "limit", defaultValue = "10") int limit,
+			Model model) {
+
+		PhotoVO photovo = new PhotoVO();
+//		UploadFile filevo = new UploadFile();
 		
 		log.info("게시글 목록");
 		List<PhotoVO> photoList = new ArrayList<>();
-		
+		List<String> selectImg = new ArrayList<>();
+
 		// 총 게시글 수 (댓글들을 제외한)
 		int listCount = photoService.selectBoardsCountWithoutReplies();
+		
 		// 댓글들 제외
 		photoList = photoService.selectBoardsByPagingWithoutReplies(currPage, limit);
 		
+//		for(PhotoVO photoVO : photoList) {
+		for(int i = 0 ; i < photoList.size() ; i++) {
+			
+			PhotoVO photoVO = photoList.get(i);
+			
+			// grid에 맞게 width : 300px으로 변경. 
+			
+			String temp = photoVO.getBoardContent();
+			// before ==> style="width: 686.021px;" 
+			// after ==> style="width: 300px;" 문자열 가공. 
+			int index = temp.lastIndexOf("width");
+			int endIndex = temp.lastIndexOf("px");
+			String result = temp.substring(index, endIndex + 2);
+			temp = temp.replaceAll(result, "width:300px");
+			log.info("result ==> " + result);
+			log.info("temp ==> " + temp); //<img src="/healthyFoodProject/photo_board/image/4" style="width: 686.021px;"><br>
+			
+			photoList.get(i).setBoardContent(temp);
+			
+//			photoList.set(i, photoVO);
+			log.info("photoVO == > " + photoList.get(i));
+		}
+		
+		log.info("포토 보드 번호 >>>" + photovo.getBoardNum());
+		log.info("photoList 이미지 o인덱스 >>>" + photoList.get(0).getBoardSubject() +  photoList.get(0).getBoardContent());
+		log.info("photoList 이미지 1인덱스>>>" + photoList.get(1).getBoardContent());
+		
+		//leee 0409 이미지 이름 가져오기 
+//		selectImg = photoService.selectBoardsImg(filevo.getBoardNum());
+		
+		selectImg = photoService.selectBoardsImg(photovo.getBoardNum());
+//		selectImg = photoService.selectPhotoAndFileName(photovo.getBoardNum()); // 0411 leee 수정
+		
+		log.info("selectImg 포토 보드 번호 더 길게 >>>" + selectImg.toString());
+		//selectImg 포토 보드 번호 더 길게 >>> [PhotoVO [boardNum=1, boardWriter=user1234@naver.com, boardPass=users112!, 
+//					boardSubject=바게트빵, boardContent=<img style="width: 685.903px;" 
+//					src="/healthyFoodProject/photo_board/image/1"><br>, boardReRef=0, 
+//					boardReLev=0, boardReSeq=0, boardReadCount=0, boardDate=2024-04-09]]
+		
 		// 총 페이지 수
-   		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
+		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
 		int maxPage = PageVO.getMaxPage(listCount, limit);
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
-   		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
+		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
 		int startPage = PageVO.getStartPage(currPage, limit);
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-   	    int endPage = startPage + 10;
-   	    
-   	    if (endPage> maxPage) endPage = maxPage;
-   	    
-   	    PageVO pageVO = new PageVO();
+		int endPage = startPage + 10;
+
+		if (endPage > maxPage)
+			endPage = maxPage;
+
+		PageVO pageVO = new PageVO();
 		pageVO.setEndPage(endPage);
 		pageVO.setListCount(listCount);
 		pageVO.setMaxPage(maxPage);
 		pageVO.setCurrPage(currPage);
 		pageVO.setStartPage(startPage);
-		
-		pageVO.setPrePage(pageVO.getCurrPage()-1 < 1 ? 1 : pageVO.getCurrPage()-1);
-		pageVO.setNextPage(pageVO.getCurrPage()+1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage()+1);
-	
+
+		pageVO.setPrePage(pageVO.getCurrPage() - 1 < 1 ? 1 : pageVO.getCurrPage() - 1);
+		pageVO.setNextPage(pageVO.getCurrPage() + 1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage() + 1);
+
 		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("boardList", photoList);
+		model.addAttribute("photoList", photoList);
 		model.addAttribute("listCount", listCount);
-		
-		return "/photo_board/list";		
+		model.addAttribute("selectImg", selectImg);
+		log.info("포토 보드 번호 >>>" + selectImg);
+
+		return "/photo_board/list";
 	} //
-	
+
 }

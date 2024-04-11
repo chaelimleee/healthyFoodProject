@@ -1,11 +1,14 @@
 package com.javateam.healthyFoodProject.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javateam.healthyFoodProject.domain.MemberDTO;
 import com.javateam.healthyFoodProject.domain.MemberUpdateDTO;
+import com.javateam.healthyFoodProject.domain.PageVO;
 import com.javateam.healthyFoodProject.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -293,5 +297,39 @@ public class MemberRestController {
 		
 		return responseEntity;		
 	} //
+	
+//	// 회원 탈퇴
+//	@GetMapping("/delete.do/{id}")
+//	public ResponseEntity<Boolean> memberDelete(@Parameter(name="id", required = true) 
+//	@PathVariable(value="id", required = true) String id) {
+//		
+//		log.info("회원 탈퇴 및 정보 삭제  : {}", id);
+//		ResponseEntity<Boolean> responseEntity = null; 
+//		
+//		try { 
+//			boolean result = memberService.deleteMember(id); 
+//			
+//			log.info("--- result : {}", result);
+//			
+//			if (result == true) {
+//				// 성공 코드(200)
+//				responseEntity = new ResponseEntity<>(result, HttpStatus.OK); 
+//			} else {
+//				// 실패 코드(204)
+//				responseEntity = new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+//			}
+//			
+//		} catch (Exception e) {
+//			log.error("deleteMember error : {}", e);
+//			e.printStackTrace();
+//			
+//			// 실패 코드(417) : 내부 서버 에러
+//			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		return responseEntity;		
+//	} //
+	
+	
 	
 }

@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -28,6 +31,11 @@ public class UploadFile {
     	    allocationSize = 1)
     @Column(name = "id")
     int id;
+    
+//    @OneToOne // 엔티티 간의 일대일 관계 매핑. 
+//    @JoinTable(name = "photo_tbl",
+//    			joinColumns = @JoinColumn(name = "id"),inverseJoinColumns = @JoinColumn(name = "board_num")) // 외부 키 지정.  id 컬럼을 외부 키로 사용하여 업로드파일 tbl과 연결. 
+//    private PhotoVO photovo;
 
     @Column(name = "filename")
     String fileName;
