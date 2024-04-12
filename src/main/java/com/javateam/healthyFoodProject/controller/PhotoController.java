@@ -27,7 +27,6 @@ public class PhotoController {
 	
 	@GetMapping("/write.do")
 	public String write(Model model) {
-		
 		model.addAttribute("PhotoVO", new PhotoVO());
 		return "/photo_board/write";
 	} //

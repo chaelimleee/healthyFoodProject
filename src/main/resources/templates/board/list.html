@@ -14,19 +14,30 @@
 <!-- bootstrap -->
 <!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
 
-<!-- <link rel="stylesheet"
-	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
 <style>
-	.inner-div {
-	  width : 400px;
-	  height : 100px;
-	  /* background-color: red; */
-	}
+/* 
+.inner-div {
+  width : 400px;
+  height : 100px;
+} */
+  /* background-color: red; */
+
+table{
+
+	width : 600px;
+	
+}
+
+td {
+	text-decoration: none; /* 텍스트 링크 밑줄 없애기 */ 
+}
+
 </style>
 <script>
 window.onload = function() {
@@ -90,15 +101,26 @@ window.onload = function() {
 		
 			<!-- 인자 현황판 이전(move) :   -->
 			
-			<h4 class="d-flex justify-content-left m-5">
+			<!-- 은수씨의 커뮤니티 전체글. -->
+			<!-- <h4 class="d-flex justify-content-left m-5">
 				<div class='inner-div'> </div>
 				<div class="p-2" style="line-height: 1.5em">커뮤니티<br>
 					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
 				</div>	
-			</h4>
+			</h4> -->
+			
+			<!-- 0412 leee 커뮤니티 전체글 수정함.  -->
+			<figure>
+			
+	        <figcaption >
+					<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
+						<p class="mx-2 mx-auto" style="width:70vw;"  >커뮤니티<br>전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글</p>
+						<!-- 0412 leee p 태그 안에 class="mx-2 mx-auto" 이걸 넣어줘야 margin이 적용 됨. div에 해도 소용 없음. -->
+					</div>	
+			</figcaption>
 			
 				
-			<table class="table mx-2 mx-auto" style="width:50vw">
+			<table class="table mx-2 mx-auto" style="width:70vw;">
 				<thead>
 					<tr>	
 						<th>
@@ -113,17 +135,22 @@ window.onload = function() {
 						<th>조회수</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="table-group-divider">
 					<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
 						th:each="board, st : ${boardList}">
+						
+						<!-- 체크박스  -->
 						<td>
 							<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
 						</td>
             
 						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
-						<td th:text="${board.boardCode}"></td>
+						
+						<!-- 번호  -->
+						<td style="text-decoration: none;" th:text="${board.boardCode}" ></td>
 						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
 						
+						<!-- 제목(글내용)  -->
 						<td>
 							<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
 							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
@@ -136,7 +163,11 @@ window.onload = function() {
 								<i class="bi bi-paperclip"></i>
 							</span>
 						</td>
+			
+						<!-- 작성자 -->
 						<td th:utext="${board.memberNick}"></td>
+			
+						<!-- 작성일-->
 						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 						
 						<!-- 조회수 추가 -->
@@ -145,6 +176,7 @@ window.onload = function() {
 				</tbody>
 	
 			</table>
+			</figure>
 			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         

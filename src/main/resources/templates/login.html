@@ -11,6 +11,22 @@
 <style>
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
+#submit_box{
+	margin-top : 60px; 
+}
+
+
+
+/* input{
+	height : 35px;
+} */
+
+/* #id_box input: focus{
+	border-color:#0982f0;
+    outline: none;
+}
+ */
+
 </style>
 
 <link th:href="@{'/css/login.css'}" rel="stylesheet" />
@@ -32,7 +48,8 @@
 		<!-- 1. 로그인 박스 시작 -->
 		<div id="login_box" >
 
-			<h2 class="p-2 ">로그인</h2>
+			<h2 class="p-2 " style=" color : #9dbfa7; margin : 30px;">로그인</h2>
+			
 			<form id="login_frm" method="post" th:action="@{'/login'}">
 				
 				<!-- 2. 아이디 필드 섹션 시작 -->
@@ -47,8 +64,13 @@
 						5) 최대 입력 글자수 : 20
 						6) 내부 라벨(초기값) : 아이디
 					-->
+					<!-- <label for="inputEmail" class="form-label" style="margin-top:20px; ">Email</label> -->
 					
-					<label for="inputEmail" class="form-label" style="margin-top:20px; ">Email</label>
+					<!-- 로그인 아이콘  -->
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-person" viewBox="0 0 16 16">
+					  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+					</svg>
+					
 					<input type="text" id="memberEmail" name="memberEmail" size="30"
 						maxlength="20" placeholder="아이디">
 
@@ -71,8 +93,14 @@
 	               5) 최대 입력 글자수 : 20
 	               6) 내부 라벨(초기값) : 패쓰워드
 	           -->
-					<label for="inputPassword" class="form-label" style="margin-top:20px; ">pawwword</label>
+					<!-- <label for="inputPassword" class="form-label" style="margin-top:20px; ">pawwword</label> -->
 					<!-- <input type="password" id="password" name="password" size="30" maxlength="20" placeholder="패쓰워드"> -->
+					
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-key" viewBox="0 0 16 16">
+					  <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
+					  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+					</svg>
+					
 					<input type="text" id="memberPw" name="memberPw" size="30"
 						maxlength="20" placeholder="패쓰워드">
 
@@ -83,7 +111,7 @@
 				<!-- 3. 패쓰워드 필드 섹션 끝 -->
 
 				<!-- 4. 전송 버튼 필드 섹션 시작 -->
-				<div id="submit_box">
+				<div id="submit_box" >
 
 					<!-- 
 		               4. 전송 버튼
@@ -113,7 +141,17 @@
 				</div>
 				<!-- 5. 전송 버튼 필드 섹션 끝 -->
 
+			<!-- 구분선 0412 leee  -->
+			<hr style="width : 25em; margin:30px auto;">
+			
 			</form>
+			
+			<div class="naverLogin">
+			
+				<img th:src="@{/img/naver/btnG_naver2.png}" style="width:60px;height:60px; float : left; margin : 10px 10px 100px 100px;">
+			
+			</div>
+			
 
 		</div>
 		<!-- 1. 로그인 박스 끝 -->

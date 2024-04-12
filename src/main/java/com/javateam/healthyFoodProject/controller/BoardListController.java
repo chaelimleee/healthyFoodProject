@@ -41,6 +41,7 @@ public class BoardListController {
 		int listCount = boardService.selectBoardsCountWithoutReplies();
 		// 댓글들 제외
 		boardList = boardService.selectBoardsByPagingWithoutReplies(currPage, limit);
+		log.info("boardList 리스트 확인 ==> ");
 
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리

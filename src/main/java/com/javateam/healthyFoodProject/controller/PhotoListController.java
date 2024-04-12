@@ -60,7 +60,7 @@ public class PhotoListController {
 			log.info("result ==> " + result);
 			log.info("temp ==> " + temp); //<img src="/healthyFoodProject/photo_board/image/4" style="width: 686.021px;"><br>
 			
-			photoList.get(i).setBoardContent(temp);
+			photoList.get(i).setBoardContent(temp); // temp가 width가 바뀐 상태 였기 때문에 result가 아닌 temp를 넣어야 한다 .
 			
 //			photoList.set(i, photoVO);
 			log.info("photoVO == > " + photoList.get(i));

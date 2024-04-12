@@ -39,11 +39,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("sasang")
 @Slf4j
 public class SasangController { 
-//	/**
-//	 * leee
-//	 * 0401 수정 완.
-//	 * 0402 BoardVO 게터세터 바꿔서 대문자 소문자 수정 완. 
-//	 */
+	
+	/**
+	 * 0412 leee 사상체질 진단 페이지 이동 
+	 * @param model
+	 * @return
+	 */
+
+	@GetMapping("/sasang.do")
+	public String sasangPage(Model model) {
+		
+		log.info("sasang 첫 페이지 ");
+		model.addAttribute("arg", "인자");
+		
+		return "/sasang/sasang_list";
+	}
+	
+	
 //	@Autowired
 //	BoardService boardService;
 //	

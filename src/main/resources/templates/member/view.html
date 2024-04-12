@@ -8,25 +8,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
+
+<!-- 구글 폰트 0412 leee  -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
 <link th:href="@{/css/member_join.css}" rel="stylesheet" />
+<link rel="stylesheet" th:href="@{/css/aside.css}">
 <style>
-
-
-	header {
-		/* for sticky header */
-		position: fixed;
-		top: 0;
-	}
-	
-	#content-wrap{
-		/* background-color: yellow; */
-		/* height:calc(100vh - 100px); */
-		width:100%;
-		display : flex;
-		justify-content: flex-start;
-		z-index:10;
-		margin-top:200px;
-	}
 
 	/* clearfix */
 	#content-wrap:after {
@@ -35,70 +25,22 @@
 		clear: both;
 	}
 	
-	aside {
-		/* for fixed side bar */
-		/* position: fixed; */
-		/* top: 78px;
-		bottom: 120px; */
-		height:calc(100vh - 130px);
-		width: 300px;
-		padding-top: 25px;
-		background-color: pink;
-		/* visibility: hidden; */
-	}
-	
-		/* aside navigation */
-	aside > ul {
-		width: 300px;
-		list-style:none;
-		padding-left:0px;
-	}
-	aside > ul > li > a {
-		display: block;
-		color: #fff;
-		padding: 10px 0 10px 20px;
-		text-decoration-line:none;
-	}
-	aside > ul > li > a.active {
-		background-color: palevioletred;
-	}
-	aside > ul > li > a:hover:not(.active) {
-		background-color: #555;
-	}
-	aside > h1 {
-		padding: 20px 0 20px 20px;
-		color: #fff;
-	}
-	
 	article {
 		margin: 10px;
 		padding: 25px;
 		background-color: white;
 	}
 	
-	section {
-		/* margin-top: 80px; */
-		/* float: right; */
-		/* margin-left: 500px; */
-		/* height:100vh; */
-		display:flex;
-		align-items:center;
-		justify-content:center;
-		/* width:calc(100wh - 450px); */
-		width:100%;
-		margin-bottom:100px;
-		/* background-color: cyan; */
-	}
-	
+		
 	#wrap {
 		/* margin-top = header height */
 		margin-top: 100px;
 	}
 
-	h1 { font-size: 1.8em; }
+	/* h1 { font-size: 1.8em; }
 	h1, h2, h3, h4, h5, h6, p {
 		margin: 10px 5px;
-	}
+	} */
 </style>
 </head>
 <body>
@@ -114,9 +56,9 @@
 <!-- layout -->
 <div layout:fragment="content" class="main_sect_pnl">
 
-<div id="content-wrap">
+<!-- <div id="content-wrap"> -->
 	<aside>
-		<h1> 회원정보메뉴</h1>
+		<p> 회원정보메뉴</p>
 		<ul>
 			<li><a href="#" class="active">내정보수정</a></li>
 			<li><a href="#" >내가 쓴 글</a></li>
@@ -226,7 +168,7 @@
 			</section>
 	<!--// layout -->
 	
-</div><!--// content-wrap -->
+<!-- </div> --><!--// content-wrap -->
 
 
 

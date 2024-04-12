@@ -3,16 +3,17 @@
 body {
 	margin:0;
 	font-family: "IBM Plex Sans KR", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+	font-weight: 400;
+	font-style: normal;
 	/*overflow:hidden;*//* 내용 넘침 방지 */ 
 }
 
 /* 0405 leee 메인화면 상단 로고 글꼴 추가  */
 h1 {
-  font-family: "Nanum Myeongjo", serif;
-  font-weight: 700;
-  font-style: normal;
+
+	font-family: "Nanum Myeongjo", serif;
+	font-weight: 700;
+	font-style: normal;
 	color:#9dbfa7 ;
 }
 
