@@ -15,6 +15,7 @@
     <title>회원 정보 수정</title>
     
     <link th:href="@{/css/member_join.css}" rel="stylesheet" />
+	<link rel="stylesheet" th:href="@{/css/aside.css}">
     
     <!-- AJAX library axios -->
     <script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
@@ -42,6 +43,15 @@
 
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
+	
+	<aside>
+		<p> 회원정보메뉴</p>
+		<ul>
+			<li><a th:href="@{update.do}">내정보수정</a></li>
+			<li><a th:href="@{../board/list.do}">내가 쓴 글</a></li>
+			<li><a th:href="@{delete.do}" >탈퇴하기</a></li>
+		</ul>
+	</aside>
 	
 		<div class="content_sect_pnl">
 

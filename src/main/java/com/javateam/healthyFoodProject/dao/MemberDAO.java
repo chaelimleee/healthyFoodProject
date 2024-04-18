@@ -134,14 +134,19 @@ public class MemberDAO {
 		sqlSession.update("mapper.Member.changeEnabled", map);
 	}
 
-	public void deleteRolesById(String id) {
+	public void deleteRolesByEmail(String email) {
 		
-		sqlSession.delete("mapper.Member.deleteRolesById", id);
+		sqlSession.delete("mapper.Member.deleteRolesByEmail", email);
 	}
 	
 	public void deleteMemberById(String id) {
 		
 		sqlSession.delete("mapper.Member.deleteMemberById", id);
+	}
+
+	public void deleteMemberByEmail(String email) {
+
+		sqlSession.delete("mapper.Member.deleteMemberByEmail", email);
 	}
 	
 }

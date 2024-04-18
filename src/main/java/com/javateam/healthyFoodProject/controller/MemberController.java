@@ -1,6 +1,8 @@
 package com.javateam.healthyFoodProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -37,7 +39,7 @@ public class MemberController {
 		log.info("join.do");		
 		
 		model.addAttribute("memberDTO", new MemberDTO());
-		return "/member/join";
+		return "/member/join2";
 	}
 	
 	@PostMapping("/joinProc.do")
@@ -185,14 +187,53 @@ public class MemberController {
 			
 		return movePath; 
 	}	
-	
+
 	@GetMapping("/delete.do")
-	public String memberDelete(Model model) {		
-		log.info("join.do");		
-		
-		model.addAttribute("memberDTO", new MemberDTO());
-		
+	// public String memberDelete(@ModelAttribute("memberDTO") MemberDTO memberDTO)
+	// {
+	public String memberDelete() {
+		log.info("delete.do");
+
+		// Spring Security Pricipal(Session) 조회
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		CustomUser customUser = (CustomUser) principal;
+		log.info("principal : {}", principal);
+		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
+
+		// String id = customUser.getUsername(); // email
+
+		// memberService.deleteMember(id);
+
 		return "/member/delete";
+		
 	}
+	
+	@GetMapping("/memberDelete")
+	public String memberDeleteOk() {
+		log.info("memberDeleteOk");
+
+		// Spring Security Pricipal(Session) 조회
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		CustomUser customUser = (CustomUser) principal;
+		log.info("principal : {}", principal);
+		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
+
+		// String id = customUser.getUsername(); // email
+
+		// memberService.deleteMember(email);
+
+		return "/member/delete";
+		
+	}
+
+	// Id 중복 확인 khk	
+//    @ResponseBody // 값 변환을 위해 꼭 필요함
+//	@GetMapping("idCheck") // 아이디 중복확인을 위한 값으로 따로 매핑
+//	public int overlappedID(MemberDTO memberDTO) throws Exception{
+//		int result = memberService.overlappedID(memberDTO); // 중복확인한 값을 int로 받음
+//		return result;
+//	}
 	
 }

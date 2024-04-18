@@ -12,6 +12,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HomeController {
 	
+	@GetMapping("/home2")
+	public String home() {
+		
+		log.info("home2");
+		
+		return "home2"; 
+		
+		// return "redirect:/member/join.do";
+	} //
+	
 	@GetMapping("/")
 	public String home(Model model) {
 		

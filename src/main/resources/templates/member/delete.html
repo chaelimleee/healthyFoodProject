@@ -11,7 +11,8 @@
 
 <!-- bootstrap -->
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+<link rel="stylesheet" th:href="@{/css/aside.css}">
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.bundle.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
@@ -23,6 +24,15 @@
 </head>
 <body>
 <div layout:fragment="content" class="main_sect_pnl"> <!-- 이거 달아야 됨   -->
+
+	<aside>
+		<p> 회원정보메뉴</p>
+		<ul>
+			<li><a th:href="@{update.do}">내정보수정</a></li>
+			<li><a th:href="@{../board/list.do}">내가 쓴 글</a></li>
+			<li><a th:href="@{delete.do}" >탈퇴하기</a></li>
+		</ul>
+	</aside>
 
 
     <div><h2>모든 회원 정보와 내역이 삭제됩니다.</h2></div>

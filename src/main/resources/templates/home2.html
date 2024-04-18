@@ -1,114 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko" 
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> -->
-<!-- bootstrap icons :  -->
-<head>
-	<!-- 0405 leee 메인화면 상단 로고 글꼴 추가 -->
-	<!-- layout.html 로 이전함.  -->
-	<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script> 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet"> -->
-	
-	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"> -->
- 
-	<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
-	<style>
-	
-		/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
-		h1 {
-		  font-family: "Nanum Myeongjo", serif;
-		  font-weight: 700;
-		  font-style: normal;
-		}
+<!-- thymeleaf dialect -->
+<html lang="ko-kr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<meta charset="UTF-8">
+<title>home</title>
+<!-- bootstrap -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Grandiflora+One&family=IBM+Plex+Sans+KR&family=Jua&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 
-		/* div.header_sect_pnl div.header_menus a {
-			vertical-align: bottom; 
-			float: right;
-			margin:17px 5px 17px 5px ;
-		} */
+<!-- 0405 leee 메인화면 상단 로고 글꼴 추가 -->
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-		li.dropdown:hover > ul.dropdown-menu{display:block; margin:0;}
+<link th:href="@{/css/layout.css}" rel="stylesheet" />
 
-		.head{
-			position: relative;
-			height: 70px;
-		}
+<!-- 0404 leee style 수정 -->
 
-		.loginHeader{
-			position:absolute; 
-			bottom:0px;
-		}
-
-		.mypageHeader{
-			position:absolute; 
-			bottom:0px;
-		}
-		
-		.header_sect_pnl{
-		
-			height: 100px;
-			max-width: 90em;
-			background-color:blue;
-		}
-
-		.navbar-nav{ 
-			padding: 26px 25px ;
-			border-radius: 50%;
-		}
-		
-
-		.navbar {
-	    	height: 60px !important;
-	    	align-items:center;
-			justify-content:center;
-		}
-		
-		.navbar-nav li {
-			margin: 0 auto;
-		}
-		
-		
-    /*
-		<table class="table table-striped"  th:if="${pageVO != null}">
-			<tr>
-				<th style="width: 150px;">총 게시글 수</th>
-				<td th:text="${pageVO.listCount}"></td>
-				<th style="width: 150px;">이전 페이지</th>
-				<td th:text="${pageVO.prePage}"></td>
-				<th style="width: 150px;">현재 페이지</th>
-				<td th:text="${pageVO.currPage}"></td>
-				<th style="width: 150px;">이후 페이지</th>
-				<td th:text="${pageVO.nextPage}"></td>
-				<th style="width: 150px;">처음 페이지</th>
-				<td th:text="${pageVO.startPage}"></td>
-				<th style="width: 150px;">마지막 페이지</th>
-				<td th:text="${pageVO.endPage}"></td>
-			</tr>
-			<tr th:if="${not #lists.isEmpty(listCount)}">
-				<th colspan="1">총 게시글 수</th>
-				<td colspan="11"><span th:text="${listCount}"></span><br></td>
-			</tr>
-		</table>
-    */
-
-	
-		/* ul.nav li.dropdown:hover > ul.dropdown-menu {
-			display: block; margin:0 ;
-		} */
-		
-	</style> 
-	
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.bundle.min.js}" charset="UTF-8"></script>
 </head>
 
 <body>
 	
-		<div th:fragment="header" style="max-width:90em; margin : auto;"> <!-- 90em : 네비게이션 가로 길이.  -->
+	<div th:fragment="header" style="width:90em; margin : auto;"> <!-- 90em : 네비게이션 가로 길이.  -->
 		
 		<!-- //////////////////////////////////////////////////////////// -->
 		
@@ -187,7 +103,7 @@
 			
 			<!-- grid 정보 -->	
 			<div>
-				<div class="tablePhoto"  
+				<div class="tablePhoto "  
 					th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
 					th:each="photo : ${photoList}">
 					<span th:text="${photo.boardSubject}"></span>,
@@ -255,11 +171,11 @@
 			<!-- 	<div class=" bs-success-subtle header_sect_pnl "> -->
 			<!-- ///////////////////////////////////---- 메인 헤더 ----////////////////////////////////////////////////////////// -->
 			
-			<div class="header_sect_pnl" style="float: left;">
+			<div class="header_sect_pnl" style="float: right;">
 
 				<div class="header_menus" style="width:90em; float: right;">
 
-					<h1 class="m-2 p-1" style="float: left; margin: 10px 100px 10px 100px;">
+					<h1 class="m-2 p-1" style="float: left; margin:10px;">
 						<a th:href="@{/}" style="text-decoration-line: none;"> 
 							healthFood 
 						</a>
@@ -328,7 +244,7 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">				
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0" style="line-height: 40px;"><!-- khk : style="line-height" 추가, 내비 메뉴 수직정렬 -->
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0" style="line-height: 40px"><!-- khk : style="line-height" 추가, 내비 메뉴 수직정렬 -->
 
 						<!-- 로그인 인증되었을 때   -->
 
@@ -410,23 +326,30 @@
 				</div>
 		</div>
 	</nav>
+
+	<!-- 네비게이션바 -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+		<div class="container-fluid">
+					<a class="nav-link active" aria-current="page" th:href="@{/}">
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-house-fill" viewBox="0 0 16 16">
+						<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+						<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
+						</svg>
+					</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link" href="#">계정생성</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">로그인</a></li>
+				</ul>
+			</div>
 		</div>
-	<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@latest"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
- -->
- </body>
+	</nav>
 
-<script>
-	function showDropdownMenu(element) {
-		var dropdownMenu = element
-				.querySelector('.dropdown-menu');
-		dropdownMenu.style.display = 'block';
-	}
+</body>
 
-	function hideDropdownMenu(element) {
-		var dropdownMenu = element
-				.querySelector('.dropdown-menu');
-		dropdownMenu.style.display = 'none';
-	}
-</script>
+
+</html>

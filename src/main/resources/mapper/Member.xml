@@ -164,7 +164,7 @@
 	
 	<!-- 회원 정보 삭제 -->
 	<delete id="deleteMemberById" parameterType="map">
-		DELETE FROM member_tbl WHERE MEMBER_EMAIL = #{id}
+		DELETE FROM member_tbl WHERE MEMBER_EMAIL = #{email}
 	</delete>
 	
 	<!-- 검색 회원 정보 수 -->
@@ -241,6 +241,13 @@
 	<update id="changeEnabled" parameterType="map">
 		UPDATE member_tbl SET ENABLED = #{enabled} 
 		WHERE MEMBER_EMAIL = #{id}
-	</update>
+	</update>	
+	
+	<!-- 아이디 중복체크 khk -->
+   <!--  <select id="emailCheck" parameterType="MemberDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER_TBL
+		WHERE MEMBER_EMAIL = #{id}
+	</select> -->
 	
 </mapper>

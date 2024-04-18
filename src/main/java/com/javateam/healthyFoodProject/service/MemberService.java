@@ -1,5 +1,6 @@
 package com.javateam.healthyFoodProject.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -211,31 +212,45 @@ public class MemberService {
 	}
 
 	@Transactional
-	public boolean deleteMember(String id) {
+	public boolean deleteMember(String email) {
 		
 		boolean result = false;
 		
 		try {
-			memberDAO.deleteRolesById(id);
+			memberDAO.deleteRolesByEmail(email);
 			result = true;
 		} catch (Exception e) {
 			result = false;
 			log.error("MemberService.deleteMember-1 (role) : {}", e);
 			e.printStackTrace();
-		} //
+		}
 		
 		result = false; // 두번째 단계 위한 플래그 변수 초기화 : 순수 회원 정보 삭제
 		
 		try {
-			memberDAO.deleteMemberById(id);
+			memberDAO.deleteMemberByEmail(email);
 			result = true;
 		} catch (Exception e) {
 			result = false;
 			log.error("MemberService.deleteMember-2 (member_info) : {}", e);
 			e.printStackTrace();
-		} //
+		}
 			
 		return result;
 	}
+	
+//	//email 중복 검사
+//    public HashMap<String, Object> usernameOverlap(String username) {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("result", memberRepository.existsByUsername(username));
+//        return map;
+//    }
+//
+//    //닉네임 중복 검사
+//    public HashMap<String, Object> nicknameOverlap(String nickname) {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("result", memberRepository.existsByNickname(nickname));
+//        return map;
+//    }
 		
 }
