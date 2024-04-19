@@ -13,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 <link rel="stylesheet" th:href="@{/css/sasang_list.css}">
@@ -20,12 +23,13 @@
 
 <style>
 	
+	.flex-container{
+		display: flex;
+	}
+	
 
 </style>
-
-
 </head>
-
 <!-- 
 	0412 leee 선배님이 해주신 진단 페이지 프로젝트 파일에 적용.  
 	0412 leee css, js 파일명 변경 및 경로 변경. 
@@ -34,10 +38,12 @@
 <body>
 
 	<!-- layout -->
-	<div layout:fragment="content" class="main_sect_pnl">
-	
-		<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
-		<aside>
+	<div layout:fragment="content" class="main_sect_pnl" >
+	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
+
+	<article style="width:80%;">
+		<div class="flex-container">
+		<aside class="flex-item" style="width:auto;margin: 0 auto;">
 			<p>사상체질 목록</p>
 				<ul>
 					<li><a href="#" class="active">사상체질이란?</a></li>
@@ -46,10 +52,9 @@
 					<li><a href="#" ></a></li>
 				</ul>
 		</aside>
-
-	  <div class="content_sect_pnl" style="width: auto;">
-		<h1 class="p-2 " style=" color : #9dbfa7; margin : 30px;">사상체질 자가진단 테스트</h1>
-		  <form id="testForm" style="width:800px;">  
+	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 auto;">
+		<h1 class="p-2" style=" color : #9dbfa7; ">사상체질 자가진단 테스트</h1>
+		  <form th:id="'testForm_'+${#authentication.name}" style="width:800px; "> 
  		     <fieldset>
 		      <legend>자가진단 테스트 문항</legend>
 		      <p><b>다음 질문에 답변해주세요.</b></p>
@@ -485,19 +490,21 @@
 		        -->
 		      <fieldset>
 		        <legend>자가진단 결과확인</legend>
-		        <a class="btn btn-outline-success" 
+		       <!--  <a class="btn btn-outline-success" 
 						style="margin:17px 5px 17px 5px ;" 
-						role="button" >
+						role="button" 
+						th:id="'resultButton_'+${#authentication.name}">
 						결과확인
-				</a>
-		        <!-- <button id = "resultButton" type="submit" onsubmit="showResult()">결과확인</button> -->
+				</a> -->
 		      </fieldset>
 		      <div id="result">
 		      </div>
 		    </form>    
 		    <script th:src="@{/js/sasang_list.js}"></script>
+			</article>
     	</div>
-    	</div>
+    	</div> 
+    	</div> 
 	<!--// layout -->	
 </body>
 </html>

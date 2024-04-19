@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+
+<!-- 0415 leee 건강식 레시피 조회 게시판 완.20개씩 보여주고싶다.. -->
+
+<meta charset="UTF-8">
+<title>건강식 레시피</title>
+
+<!-- bootstrap -->
+<!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
+
+<!-- <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
+<style>
+
+
+	article{
+		float:left;
+	}
+
+	.inner-div {
+	  width : 400px;
+	  height : 100px;
+	  /* background-color: red; */
+	}
+	
+	img{
+		display:block;
+	}
+	
+	a{
+		text-align:center;
+	}
+	
+ /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
+	.trclass:hover{
+            background-color:#FEE6FD;
+        }
+        
+    .tablePhoto{
+			display: grid;
+			/* grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); */
+			/* gap: 56px 20px; */
+			overflow-x: hidden;
+			place-items: center;
+			grid-template-columns: repeat(4, 300px); 
+			grid-gap: 20px;
+			margin-right: 5px; /* 우측 간격 조절 */
+    		margin-left: 5px; /* 좌측 간격 조절 */
+			/* grid-template-rows: minmax(100px, auto); */
+
+    } 
+    
+    .item {
+	    padding: 10px;
+	    border: 5px solid #000;
+	    font-size: 20px;
+	    font-weight: bold;
+	    text-align: center;
+	    background-color: #ff0;
+	}
+       
+</style>
+<script>
+window.onload = function() {
+	
+	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
+	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
+	let mainCheckbox = checkboxes[0];
+	
+	// 삭제 버튼을 눌렀을 경우 
+	let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
+	
+	mainCheckbox.onclick = function() {
+		
+		// 메인 체크 박스 상태 파악 : 체크 여부
+		console.log("메인 체크박스 체크 여부 : ", mainCheckbox.checked);
+				
+ 		for (check of checkboxes) {
+			check.checked = mainCheckbox.checked; // 메인 체크 박스의 상태를 그대로 다른 체크박스들에도 반영
+		} //
+		
+	} //
+	
+	// console.log("boardDeletebtn : ", boardDeletebtn);
+	
+/* 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
+	boardDeletebtn.onclick = function() {
+		
+		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
+		// 메인 체크 박스(i=0)는 제외 : 개별체크 박스(i=1부터 시작)에서 삭제할 게시글 아이디 추출		
+		for (let i=1; i<checkboxes.length-1; i++) {
+			
+			if (checkboxes[i].checked == true) {
+				
+				let boardCode = checkboxes[i].id.substring('check_'.length)
+				deleteExpectedBoardIds.push(boardCode) // 삭제할 아이디 배열에 등록(적재)
+				// console.log("삭제할 게시글 아이디 :", boardCode);
+				
+			} //
+		} //
+		
+		// 삭제할 게시글 아이디들 확인
+		for (deleteExpectedBoardId of deleteExpectedBoardIds) {
+			
+			console.log("삭제할(선택된) 게시글 아이디 : ", deleteExpectedBoardId);
+		} // for
+		
+	} // */
+	
+} //
+</script>
+
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+			
+			<!-- 갤러리 게시판 grid 시작.   -->
+			<div class="content_sect_pnl" style="width: 80%;"><!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
+				<div class="row"> <!-- qnxmtmxmfoq rmflem tltmxpadml god.  --><!-- col-md-3 : 각 열을 나타냄. 중간 크기 화면에 각 열이 1/4 ckwlgkehfhrgka.  -->
+					<div class="tableFood col btn"  
+						th:if="${not #lists.isEmpty(foodList) && pageVO.listCount > 0}"
+						th:each="food : ${foodList}" role="button">
+						
+						<!-- items p-2 를 p-1로 바꾸니까 서로 간격 좁아짐. 굳 -->
+						<div class="items p-1"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
+							<!-- <div style="width:300px; height:300px; overflow : hidden;" th:text="${food.foodImg}"></div> -->
+							<a th:href="@{'view.do/'+ ${food.foodCode}}" >
+								<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+							</a>
+							<a th:text="${food.foodName}" ></a>
+						</div>
+				</div>
+			</div>
+				<!--// 갤러리 게시판 grid 끝.   -->
+				
+			
+			<!-- 게시판 메뉴 :
+		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
+			-->
+			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
+				 
+				 <a th:href="@{/food/write.do}" class="btn btn-primary me-2" 
+				 	sec:authorize="isAuthenticated()">
+				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
+			 	 </a>	
+			 	 
+			 	 <!-- 게시글 목록 -->
+			 	 <a class="btn btn-primary" th:href="@{/food/list.do}">
+					게시글 목록
+				 </a>			
+			</div>
+	
+			<!-- 페이징 -->
+			<!-- 검색이 아닌 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+	
+						<!--  첫 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{/food/list.do?currPage=1}" aria-label="Start">
+								<span aria-hidden="true">&Lt;</span>
+						</a></li>
+	
+						<!-- 이전 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/food/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<a class="page-link"
+							th:href="@{'/food/list.do?currPage='+${pageVO.prePage}}"
+							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
+						</a>
+						</li>
+	
+						<!-- 현재 페이지 -->
+						<li class="page-item active"><a class="page-link"
+							th:href="@{'/food/list.do?currPage='+${pageVO.currPage}}"
+							th:utext="${pageVO.currPage}"></a></li>
+	
+						<!-- 다음 페이지 -->
+						<li class="page-item">
+							<a class="page-link"
+							th:href="@{'/food/list.do?currPage='+${pageVO.nextPage}}"
+							aria-label="Next"> <span aria-hidden="true">&gt;</span>
+						</a>
+						</li>
+	
+						<!-- 마지막 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/food/list.do?currPage='+${pageVO.endPage}}"
+							aria-label="End"> <span aria-hidden="true">&Gt;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--// 검색이 아닌 경우 -->
+			
+			<!-- 검색인 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${!#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    
+				    <!--  첫 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" 
+				      	 th:href="@{'/food/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				        <span aria-hidden="true">&Lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 이전 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				        <span aria-hidden="true">&lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 현재 페이지 -->
+				    <li class="page-item active">
+				    	<a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+			    	</li>
+				    
+				    <!-- 다음 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				        <span aria-hidden="true">&gt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 마지막 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				        <span aria-hidden="true">&Gt;</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
+			</div>	
+			<!--// 검색인 경우 -->	
+			<!--// 페이징 -->
+			
+			<!-- 검색 -->
+			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
+			<form th:action="@{/food/searchList.do}" method="get">
+			
+				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
+				
+					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
+					<div class="col-3">
+					</div>
+					
+					<div id="select_pnl" class="col-2 pe-0">
+						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
+						  <option selected value="board_subject">글제목</option>
+						  <option value="board_content">내용</option>
+						  <option value="board_writer">작성자</option>
+						</select>
+					</div>
+					
+					<div id="search_pnl" class="col-4">
+					
+						<input type="text" class="form-control" id="searchWord" name="searchWord" />
+					</div>
+					
+					<div id="search_btn_pnl" class="col-1 ps-0">
+						<button id="search_btn" class="btn btn-primary">
+							<!-- bootstrap icon
+							     : https://icons.getbootstrap.com/icons/search/  -->
+							<i class="bi bi-search"></i>
+						</button>
+					
+					</div>
+					
+				</div>
+				
+			</form>
+			<!--// 검색 -->
+			
+		</div>
+		<!--// content -->	
+		
+	</div>
+	<!--// layout -->	
+</body>
+</html>

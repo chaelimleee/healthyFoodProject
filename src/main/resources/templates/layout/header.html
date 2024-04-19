@@ -108,7 +108,7 @@
 
 <body>
 	
-	<div th:fragment="header" style="width:90em; margin : auto;"> <!-- 90em : 네비게이션 가로 길이.  -->
+	<div th:fragment="header" style="width:1440px; margin : auto;"> <!-- 1440px(em은 글자에서 사용.) min-width필요하다면 // px이나%로 잡는게 좋다 . : 네비게이션 가로 길이.  -->
 		
 		<!-- //////////////////////////////////////////////////////////// -->
 		
@@ -147,6 +147,17 @@
 					<tr>
 						<th style="width:120px">인증정보</th>
 						<td>[[${#authentication}]]</td>
+					</tr>
+				</table>
+				
+			</div>
+			
+			<div th:if="${#authentication != null}">
+				
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">이메일</th>
+						<td>[[${#authentication.name}]]</td>
 					</tr>
 				</table>
 				
@@ -294,20 +305,18 @@
 						</a>
 					</div>	
 					<script>
-						$(function(){
+						/* $(function(){
 							
-							var i = 0;
-							
-							$('i').on('click',function(){
-								if(i==0){
+							$('#headerIdx').on('click',function(){
+								if(headerIdx==0){
 									window.location.href = "http://localhost:8181/healthyFoodProject/member/view.do";
-								}else if(i==1){
+								}else if(headerIdx==1){
 									$(this).removeClass('bi-person-circle');
 									$(this).addClass('bi-person-circle');
 									i--;
 								}	
 							});
-						});
+						}); */
 					</script>
 				</div>
 
@@ -376,7 +385,7 @@
 										sec:authorize="isAuthenticated()">
 									<a  class="nav-link active"
 											aria-current="page" 
-											th:href="@{/welcome}">
+											th:href="@{/food/list.do}">
 											건강식 레시피
 									</a>
 								</li>

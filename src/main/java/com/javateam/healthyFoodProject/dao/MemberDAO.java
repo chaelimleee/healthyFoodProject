@@ -39,6 +39,14 @@ public class MemberDAO {
 		sqlSession.insert("mapper.Member.insertRole", role);
 	}
 	
+//	public void insertMemberSasang(String sasang) {
+//		sqlSession.insert("mapper.Member.insertMemberSasang", sasang);
+//	}
+	
+	public void updateMemberSasang(MemberDTO memberDTO) {
+		sqlSession.insert("mapper.Member.updateMemberSasang", memberDTO);
+	}
+	
 	public boolean hasFld(String fld, String val) {
 		
 		Map<String, String> map = new HashMap<>();
@@ -64,7 +72,7 @@ public class MemberDAO {
 	} //
 	
 	public void updateMember(MemberDTO memberDTO) {
-		sqlSession.insert("mapper.Member.updateMember", memberDTO);
+		sqlSession.update("mapper.Member.updateMember", memberDTO);
 	}
 	
 	public int selectMembersCount() {
@@ -142,6 +150,12 @@ public class MemberDAO {
 	public void deleteMemberById(String id) {
 		
 		sqlSession.delete("mapper.Member.deleteMemberById", id);
+	}
+	
+	// 회원 탈퇴 email
+	public void deleteMemberByEmail(String memberEmail) {
+		sqlSession.delete("mapper.Member.deleteMemberByEmail", memberEmail);
+
 	}
 	
 }

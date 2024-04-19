@@ -6,7 +6,7 @@
 	lang="ko-kr">
 <head>
 <meta charset="UTF-8">
-<title>관리자 화면</title>
+<title>사진 커뮤니티</title>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
@@ -33,24 +33,25 @@
         }
         
     .tablePhoto{
-			display: grid;
+			/* display: grid; */
 			/* grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); */
 			/* gap: 56px 20px; */
 			overflow-x: hidden;
 			place-items: center;
-			 grid-template-columns: repeat(4, 300px); 
-			 grid-gap: 20px;
+			/* grid-template-columns: repeat(4, 300px);  */
+			grid-gap: 20px;
 			/* grid-template-rows: minmax(100px, auto); */
 
     } 
     
     .item {
-	    padding: 10px;
+	    /* padding: 10px; */
 	    border: 5px solid #000;
 	    font-size: 20px;
 	    font-weight: bold;
 	    text-align: center;
 	    background-color: #ff0;
+	    margin: -50px 0 0 -50px;
 	}
        
 </style>
@@ -111,31 +112,28 @@ window.onload = function() {
 <body>
 	
 	<!-- layout -->
-	<div layout:fragment="content" class="main_sect_pnl">
+	<div layout:fragment="content" class="main_sect_pnl" style="width:1440px;">
 			
 			<!-- 갤러리 게시판 grid 시작.   -->
-			<div class="content_sect_pnl" style="width: auto;"><!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
-			
-					<div class="tablePhoto "  
+			<div class="mx-auto" style="overflow:hidden; min-height:60vh;"><!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
+				<!--  content_sect_pnl -->
+				<div class="row bg-info mt-3" style="margin:0 auto;">
+				
+					<div class="tablePhoto col-12 d-flex justify-content-center" style="min-height:40vh;"
+						 th:if="${#lists.isEmpty(photoList) && pageVO.listCount == 0}">
+						게시글 내용이 없습니다. 
+					</div> 
+					
+					<div class="tablePhoto col-3"
 						th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
 						th:each="photo : ${photoList}">
 						
-						<div class="items p-2"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
-							<div style="width:300px; height:300px; overflow : hidden;" th:utext="${photo.boardContent}"></div>
-							<a th:text="${photo.boardSubject}"></a>
+						<div class="items"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
+							<!-- margin:auto; : 가운데 정렬.  -->
+							<div style="width:300px; height:300px; overflow : hidden; margin:auto; " th:utext="${photo.boardContent}"></div>
+							<a style="display: block; text-align: center;" th:text="${photo.boardSubject}"></a>
 						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
-						<div class="items p-2">
-							<img  th:each="img : ${selectImg}" th:src="@{'/img/' + ${img}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							<a th:text="${photo.boardSubject}"></a>
-						</div>
+					</div>
 				</div>
 				<!--// 갤러리 게시판 grid 끝.   -->
 				

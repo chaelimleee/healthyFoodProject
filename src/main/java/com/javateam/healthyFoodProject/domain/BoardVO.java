@@ -230,6 +230,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		StringBuilder builder = new StringBuilder();
 		builder.append("BoardVO [boardCode=").append(boardCode)
 				.append(", memberEmail=").append(memberEmail)
+				.append(", memberNick=").append(memberNick)
 				.append(", boardTitle=").append(boardTitle)
 				.append(", boardContent=").append(boardContent)
 				.append(", boardFileOrigin=").append(boardFileOrigin)
@@ -240,6 +241,9 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 				.append("]");
 		return builder.toString();
 	}
+	
+	
+	
 
 	
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용

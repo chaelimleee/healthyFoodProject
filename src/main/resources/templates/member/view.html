@@ -42,6 +42,25 @@
 		margin: 10px 5px;
 	} */
 </style>
+
+<!-- 아이디 자삭 선생님 코칭 khk -->
+<script>
+	function chooseDelete() {
+		
+		if (confirm("삭제하시겠습니까?")) {
+			
+			alert("삭제!")
+			location.href="delete.do"
+			
+		} else {
+			
+			alert("취소...")
+			
+		}
+	}
+
+</script> 
+
 </head>
 <body>
 
@@ -63,7 +82,7 @@
 			<li><a href="#" class="active">내정보수정</a></li>
 			<li><a href="#" >내가 쓴 글</a></li>
 			<li><a href="#" >비밀번호 변경</a></li>
-			<li><a th:href="@{delete.do}" >탈퇴하기</a></li>
+			<li><a onclick="chooseDelete()">탈퇴하기</a></li>
 		</ul>
 	</aside>
 	
