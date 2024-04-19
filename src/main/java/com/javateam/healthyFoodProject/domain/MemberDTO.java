@@ -52,7 +52,8 @@ public class MemberDTO {
 		MERBER_IMG_ORIGIN 회원 이미지 원본
 		MERBER_DATE	      회원 가입일
 		MEMBER_ROLE	      회원 권한
-		ENABLED	  회원 활성화
+		ENABLED	          회원 활성화
+		MEMBER_SASANG     회원 체질
 	 */
 	
 	/** 1. 회원 이메일 아이디 */
@@ -110,6 +111,9 @@ public class MemberDTO {
 	/** 14. 회원 활성화 여부 */
 	private int enabled;
 	
+	/** 15. 회원 체질 */
+	private String memberSasang;
+
 	public static String formatBirthAll(String memberYear, String memberMonth, String memberDay) {
 		return memberYear + "-" + memberMonth +"-" + memberDay ;
 	}

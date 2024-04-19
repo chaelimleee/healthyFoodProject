@@ -75,7 +75,7 @@ dependencies {
 	
 	// REST Test springdoc(swagger)
 	// https://springdoc.org/
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 	
 	// AJAX axios
 	implementation 'org.webjars.npm:axios:1.5.0'	

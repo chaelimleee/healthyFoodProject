@@ -26,7 +26,7 @@ public class BoardListController {
 
 	@GetMapping("list.do")
 	public String list(@RequestParam(value = "currPage", defaultValue = "1") int currPage,
-			@RequestParam(value = "limit", defaultValue = "10") int limit,
+			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 
 		log.info("게시글 목록");
@@ -41,7 +41,7 @@ public class BoardListController {
 		int listCount = boardService.selectBoardsCountWithoutReplies();
 		// 댓글들 제외
 		boardList = boardService.selectBoardsByPagingWithoutReplies(currPage, limit);
-		log.info("boardList 리스트 확인 ==> ");
+		log.info("boardList 리스트 확인 ==> " + boardList.get(0).toString());
 
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
@@ -50,7 +50,7 @@ public class BoardListController {
 		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
 		int startPage = PageVO.getStartPage(currPage, limit);
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-		int endPage = startPage + 10;
+		int endPage = startPage + 20;
 
 		if (endPage > maxPage)
 			endPage = maxPage;
@@ -76,4 +76,4 @@ public class BoardListController {
 		return "/board/list";
 	} //
 
-}
+} 

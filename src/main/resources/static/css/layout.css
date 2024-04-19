@@ -30,7 +30,7 @@ h1 {
 div.main_sect_pnl {
 	/* background-color: whitesmoke;  */
 	/* background-color: pink; */
-	height:calc(100vh - 200px); 
+	min-height:calc(100vh - 350px); 
 	width:100%;
 	
 	/* 컨텐츠 중앙 정렬 */
@@ -38,6 +38,7 @@ div.main_sect_pnl {
 	margin-top: 1em;
 	/* align-items:center; */
 	justify-content:center; 
+	margin:auto;/*가운데 정렬 !!! 0418 leee*/
 } 
 
 
@@ -48,7 +49,8 @@ div.content_sect_pnl {
 	overflow:auto;
 	background-color:#fff;
 	padding-left:20px; /* 좌측만 여백 할당 */
-	padding-top:20px;  /* 좌측만 여백 할당 */		
+	padding-top:20px;  /* 좌측만 여백 할당 */
+	margin:auto;		
 } 
 
 /* 하단 footer 레이아웃 패널 */

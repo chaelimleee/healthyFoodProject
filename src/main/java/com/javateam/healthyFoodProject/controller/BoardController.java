@@ -112,7 +112,7 @@ public class BoardController {
 	@GetMapping("/view.do/{boardCode}")
 	public String view(@PathVariable("boardCode") int boardCode, Model model) {
 		 
-		BoardVO boardVO =boardService.selectBoard(boardCode);
+		BoardVO boardVO = boardService.selectBoard(boardCode);
 		log.info("BoardVO : {}", boardVO);
 		
 		model.addAttribute("board", boardVO);

@@ -93,9 +93,9 @@ window.onload = () => {
 					<td>
 						<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
 						
-						<a th:href="@{'/board/download/'+${board.boardOriginalFile}+'/'+${board.boardFile}}" 
-						   th:if="${!#strings.isEmpty(board.boardOriginalFile)}" 
-						   th:utext="${board.boardOriginalFile}"></a> 
+						<a th:href="@{'/board/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
+						   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
+						   th:utext="${board.boardFileOrigin}"></a> 
 					</td>
 				</tr> 
 				

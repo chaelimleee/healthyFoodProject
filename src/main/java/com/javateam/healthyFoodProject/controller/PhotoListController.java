@@ -35,7 +35,7 @@ public class PhotoListController {
 		
 		log.info("게시글 목록");
 		List<PhotoVO> photoList = new ArrayList<>();
-		List<String> selectImg = new ArrayList<>();
+		List<PhotoVO> selectImg = new ArrayList<>();
 
 		// 총 게시글 수 (댓글들을 제외한)
 		int listCount = photoService.selectBoardsCountWithoutReplies();
@@ -43,45 +43,76 @@ public class PhotoListController {
 		// 댓글들 제외
 		photoList = photoService.selectBoardsByPagingWithoutReplies(currPage, limit);
 		
-//		for(PhotoVO photoVO : photoList) {
-		for(int i = 0 ; i < photoList.size() ; i++) {
+		if(photoList.size() > 0) {
 			
-			PhotoVO photoVO = photoList.get(i);
+			for(int i = 0 ; i < photoList.size() ; i++) {
+				
+				PhotoVO photoVO = photoList.get(i);
+				
+				// grid에 맞게 width : 300px으로 변경. 
+				
+				String temp = photoVO.getBoardContent();
+				// before ==> style="width: 686.021px;" 
+				// after ==> style="width: 300px;" 문자열 가공. 
+				int index = temp.lastIndexOf("width");
+				
+				int endIndex = temp.lastIndexOf("px");
+				
+				String result = "";
+				
+				// case1 : 단위가 %일 경우. 
+				if(endIndex == -1) {
+					
+					endIndex = temp.lastIndexOf("%");
+					result = temp.substring(index, endIndex + 1);
+					log.info("result ==> " + result);
+
+				} else {
+
+					// case2 : 단위가 px일 경우. 
+					result = temp.substring(index, endIndex + 2);
+					log.info("result ==> " + result);
+				}
+
+				temp = temp.replaceAll(result, "width:300px");
+				
+				log.info("temp ==> " + temp); //<img src="/healthyFoodProject/photo_board/image/4" style="width: 686.021px;"><br>
+				log.info("index==> " + index );
+				log.info("endIndex==> " + endIndex );
+				
+				//그림만 출력하도록 다른 컨텐츠 삭제 및 배제. 전제 조건 : 그림이 한개만 들어가는 상황.
+				int contentBeginIdx = temp.indexOf("<img");
+				//int contentEndIdx = temp.indexOf("\">");
+				//temp = temp.substring(contentBeginIdx, contentEndIdx + 1); // 뒤에 endindex 없애야 함 .
+				temp = temp.substring(contentBeginIdx);
+				log.info("temp ==> " + temp); //<img src="/healthyFoodProject/photo_board/image/4" style="width: 686.021px;"><br>
+				log.info("index==> " + index );
+				log.info("endIndex==> " + endIndex );
+				
+				photoList.get(i).setBoardContent(temp); // temp가 width가 바뀐 상태 였기 때문에 result가 아닌 temp를 넣어야 한다 .
+				
+//				photoList.set(i, photoVO);
+				log.info("photoVO == > " + photoList.get(i));
+			}
 			
-			// grid에 맞게 width : 300px으로 변경. 
+			log.info("포토 보드 번호 >>>" + photovo.getBoardNum());
+			log.info("photoList 이미지 o인덱스 >>>" + photoList.get(0).getBoardSubject() +  photoList.get(0).getBoardContent());
+//			log.info("photoList 이미지 1인덱스>>>" + photoList.get(1).getBoardContent());
 			
-			String temp = photoVO.getBoardContent();
-			// before ==> style="width: 686.021px;" 
-			// after ==> style="width: 300px;" 문자열 가공. 
-			int index = temp.lastIndexOf("width");
-			int endIndex = temp.lastIndexOf("px");
-			String result = temp.substring(index, endIndex + 2);
-			temp = temp.replaceAll(result, "width:300px");
-			log.info("result ==> " + result);
-			log.info("temp ==> " + temp); //<img src="/healthyFoodProject/photo_board/image/4" style="width: 686.021px;"><br>
+			//leee 0409 이미지 이름 가져오기 
+//			selectImg = photoService.selectBoardsImg(filevo.getBoardNum());
+			selectImg = photoService.findSubjectAndFileNameByBoardNum(photoList.get(0).getBoardNum());
+//			selectImg = photoService.selectBoardsImg(photovo.getBoardNum());
+//			selectImg = photoService.selectPhotoAndFileName(photovo.getBoardNum()); // 0411 leee 수정
 			
-			photoList.get(i).setBoardContent(temp); // temp가 width가 바뀐 상태 였기 때문에 result가 아닌 temp를 넣어야 한다 .
-			
-//			photoList.set(i, photoVO);
-			log.info("photoVO == > " + photoList.get(i));
-		}
-		
-		log.info("포토 보드 번호 >>>" + photovo.getBoardNum());
-		log.info("photoList 이미지 o인덱스 >>>" + photoList.get(0).getBoardSubject() +  photoList.get(0).getBoardContent());
-		log.info("photoList 이미지 1인덱스>>>" + photoList.get(1).getBoardContent());
-		
-		//leee 0409 이미지 이름 가져오기 
-//		selectImg = photoService.selectBoardsImg(filevo.getBoardNum());
-		
-		selectImg = photoService.selectBoardsImg(photovo.getBoardNum());
-//		selectImg = photoService.selectPhotoAndFileName(photovo.getBoardNum()); // 0411 leee 수정
-		
-		log.info("selectImg 포토 보드 번호 더 길게 >>>" + selectImg.toString());
-		//selectImg 포토 보드 번호 더 길게 >>> [PhotoVO [boardNum=1, boardWriter=user1234@naver.com, boardPass=users112!, 
-//					boardSubject=바게트빵, boardContent=<img style="width: 685.903px;" 
-//					src="/healthyFoodProject/photo_board/image/1"><br>, boardReRef=0, 
-//					boardReLev=0, boardReSeq=0, boardReadCount=0, boardDate=2024-04-09]]
-		
+			log.info("selectImg 포토 보드 번호 더 길게 >>>" + selectImg.toString());
+			//selectImg 포토 보드 번호 더 길게 >>> [PhotoVO [boardNum=1, boardWriter=user1234@naver.com, boardPass=users112!, 
+//						boardSubject=바게트빵, boardContent=<img style="width: 685.903px;" 
+//						src="/healthyFoodProject/photo_board/image/1"><br>, boardReRef=0, 
+//						boardReLev=0, boardReSeq=0, boardReadCount=0, boardDate=2024-04-09]]
+
+		} // if(photoList.size() > 0) {
+				
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
 		int maxPage = PageVO.getMaxPage(listCount, limit);

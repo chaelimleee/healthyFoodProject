@@ -75,7 +75,7 @@ public class SecurityConfig {
 				// security 적용 예외 URL 등록와의 중복 부분 제외 => "/"만 적용
 				// .requestMatchers("/", "/css/**", "/webjars/**", "/images/**", "/js/**",
 				// "/axios/**", "/bootstrap-icons/**").permitAll()
-				.requestMatchers("/").permitAll()
+				.requestMatchers("/","/demo").permitAll()
 				.requestMatchers("/swagger-resources/**", "/swagger/**", "/swagger-ui.html").permitAll()
 				.requestMatchers("/member/hasFld/**", "/member/view.do").permitAll()
 				.requestMatchers("/member/update.do", "/member/updateProc.do").authenticated()
@@ -90,7 +90,10 @@ public class SecurityConfig {
 				//
 				 // 게시판 관련 링크 추가 
         //240405-es-song- photo_board 추가(permitAll(),authenticated())
-        .requestMatchers("/board/view.do/**","/board/list.do/**","/board/searchList.do",
+		// /board/view.do/** 비회원만 볼 수 있는 상황. 로그인 한 사용자는 볼 수 없는 것 수정해야함. 0415 leee
+		//  게시글 보기 해결함!!!! permitAll을 view.do만 따로 줬더니 잘 들어가짐 !!!!!0415 leee
+        .requestMatchers("/board/view.do/**").permitAll()
+        		.requestMatchers("/board/list.do/**","/board/searchList.do",
                 "/board/image", "/board/image/**",
                 "/board/getRepliesAll.do","/board/download/**",
                 "/photo_board/view.do/**","/photo_board/list.do/**","/photo_board/searchList.do",
@@ -103,7 +106,6 @@ public class SecurityConfig {
                   "/board/replyUpdate.do", 
                  "/board/replyDelete.do",
                  "/board/deleteProc.do",
-
                  "/photo_board/write.do","/photo_board/writeProc.do",
                  "/photo_board/update.do", "/photo_board/updateProc.do",
                  "/photo_board/replyWrite.do",
@@ -111,6 +113,9 @@ public class SecurityConfig {
                  "/photo_board/replyDelete.do",
                  "/photo_board/deleteProc.do"
                  ).authenticated()
+        
+        .requestMatchers("/sasang/**").authenticated()
+        
         .anyRequest().authenticated()); 
 
 		http.formLogin(formLogin -> formLogin

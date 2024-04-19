@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.Map;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -55,8 +56,12 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	// 0411 leee 파일 이름을 가져오기 위해 조인을 사용하기 위해 관계 설정 필드. 
 //	@OneToOne // 엔티티 간의 일대일 관계 매핑. 
 //    @JoinColumn(name = "") // 외부 키 지정.  id 컬럼을 외부 키로 사용하여 업로드파일 tbl과 연결. 
-	@Transient
-    private UploadFile uploadFile;
+	@OneToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
+	    @JoinColumn(name = "board_num", referencedColumnName = "id")
+	    private UploadFile uploadFile;
+	
+//	@Transient
+//    private UploadFile uploadFile;
 	
 	/** 게시글 작성자 */
 	@Column(name = "board_writer")

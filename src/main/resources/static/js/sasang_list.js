@@ -34,13 +34,18 @@ class getSasangInfo {
 
 
 // 폼 요소 가져오기
-var form = document.getElementById('testForm');
+//var form = document.getElementById('testForm');
+var form = document.querySelector('[id^=testForm]');
 
 // 클릭 이벤트에 대한 핸들러 할당
 form.addEventListener('click', function(event) {
+	
+	let memberEmail = form.id.split('_')[1];
+	//alert("memberEmail 다시 확인 >> " + memberEmail );
+	
     // 클릭된 요소가 내부의 라디오 버튼이면 submitHandler 함수 호출
     if (event.target.type === 'radio') {
-        submitHandler();
+        submitHandler(memberEmail);
     }
 });
 
@@ -51,15 +56,8 @@ form.addEventListener('submit', function(event) {
     // 아무 동작도 수행하지 않음
 });
 
-// 결과 확인 버튼에 대한 이벤트 핸들러 할당
-var resultButton = document.getElementById('resultButton');
-resultButton.addEventListener('click', function(event) {
-    // showResult 함수 호출
-    showResult();
-});
-
 // submitHandler 함수
-function submitHandler() {
+function submitHandler(memberEmail) {
     var selectedAnswers = {}; // 선택된 답변을 저장할 객체
 
     // 각 질문에 대해 사용자가 선택한 답변 확인
@@ -86,33 +84,63 @@ function submitHandler() {
             alert("판정이 불가능하오니 다시 한번 생각해보시고 자가 진단 질문에 답해주세요.");
         } else {
             // showResult 함수 호출
-            showResult(maxAnswer, maxCount);
+            let sasangName = showResult(memberEmail, maxAnswer, maxCount);
+			const sasangArray = ['소음인','소양인','태음인','태양인'];
+		
+			if(sasangName in sasangArray){
+				console.log("전송:"+sasangName +" , memberEmail : "+memberEmail);
+			} else {
+				alert("판정이 잘못되었습니다.");
+			}// if
         }
     }
 }
 
 // showResult 함수
-function showResult(maxAnswer, maxCount) {
+function showResult(memberEmail, maxAnswer, maxCount) {
     const percentage = (maxCount / 20) * 100;
-    if (percentage >= 60) {
+    
+	if (percentage >= 60) {
         const sasangInfo = new getSasangInfo(maxAnswer);
         const resultText = `
-    <div id="result">
-        <fieldset>
-        <legend>결과확인</legend>
-		<h2>당신은 <span id="percentage">${percentage}%의 확률로</span> <span id="sasangType">${sasangInfo.name}</span> 체질입니다.</h2>
-		<p>체질 명</p>
-        <ul id="name">${sasangInfo.name}</ul>
-        <p>체질 설명</p>
-		<ul id="description">${sasangInfo.description}</ul>
-        <p>건강 관리 방법:</p>
-        <ul id="healthTips">${sasangInfo.healthManagement}</ul>
-        <p>추천 음식:</p>
-        <ul id="foodRecommend">${sasangInfo.foodRecommend}</ul>
-        </fieldset>
-     </div>
+		        <fieldset>
+		        <legend>결과확인</legend>
+				<h2>당신은 <span id="percentage">${percentage}%의 확률로</span> <span id="sasangType">${sasangInfo.name}</span> 체질입니다.</h2>
+				<p>체질 명</p>
+		        <ul id="name">${sasangInfo.name}</ul>
+		        <p>체질 설명</p>
+				<ul id="description">${sasangInfo.description}</ul>
+		        <p>건강 관리 방법:</p>
+		        <ul id="healthTips">${sasangInfo.healthManagement}</ul>
+		        <p>추천 음식:</p>
+		        <ul id="foodRecommend">${sasangInfo.foodRecommend}</ul>
+		        </fieldset>
         `;
-        // 결과 출력
-        document.getElementById("result").innerHTML = resultText;
-    }
-}
+
+		axios.get(`/healthyFoodProject/sasang/saveSasang.do/${memberEmail}/${sasangInfo.name}`)
+				 .then(function(response) {
+					
+						let responseData = response.data;
+						console.log("response.data : ", responseData);
+						
+						// alert(responseData);
+						
+						if(responseData == '회원정보 체질 수정에 성공하셨습니다.'){
+							let result = document.getElementById('result');
+							result.innerHTML=resultText;
+						} else {
+							result.innerHTML='';
+						}
+					 })
+					 .catch(function(err) {
+						console.error("서버 에러가 발생했습니다. >> " + err);
+						alert(err);
+						result.innerHTML='';
+					 }
+			 );
+			 // axios
+	
+		return sasangInfo.name;
+	} // if
+	
+} // showResult

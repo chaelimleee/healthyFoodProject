@@ -186,13 +186,36 @@ public class MemberController {
 		return movePath; 
 	}	
 	
+//	@GetMapping("/delete.do")
+//	public String memberDelete(Model model) {		
+//		log.info("join.do");		
+//		
+//		model.addAttribute("memberDTO", new MemberDTO());
+//		
+//		return "/member/delete";
+//	}
+	
+	//회원 탈퇴
 	@GetMapping("/delete.do")
-	public String memberDelete(Model model) {		
-		log.info("join.do");		
-		
-		model.addAttribute("memberDTO", new MemberDTO());
-		
-		return "/member/delete";
+	// public String memberDelete(@ModelAttribute("memberDTO") MemberDTO memberDTO)
+	// {
+	public String memberDelete() {
+		log.info("delete.do");
+
+		// Spring Security Pricipal(Session) 조회
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		CustomUser customUser = (CustomUser) principal;
+		log.info("principal : {}", principal);
+		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
+
+		String id = customUser.getUsername(); // email
+		log.info("id 확인 : {}",id); // 로그인 아이디
+
+		// 삭제할 아이디 전송. 0418 leee
+		memberService.deleteMember(id);
+
+		return "/welcome";
 	}
 	
 }
