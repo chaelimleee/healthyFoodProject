@@ -6,16 +6,16 @@
 	lang="ko-kr">
 <head>
 
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
 <!-- 0401 leee 수정완... 이긴한데 좀 더 손봐 -->
 
 <meta charset="UTF-8">
-<title>관리자 화면</title>
+<title>게시글 목록</title>
 
 <!-- bootstrap -->
 <!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
-
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
@@ -176,7 +176,10 @@ window.onload = function() {
 							</span>
 						</td>
 			
-						<!-- 작성자 -->
+						<!-- 작성자 --><!-- 0419 leee memberNick >> memberEmail로 변경함 .-->
+						<!-- <td th:utext="${board.memberEmail}"></td> -->
+
+						<!-- 작성자 --><!-- 0419 leee memberNick >> memberEmail로 변경함 .-->
 						<td th:utext="${board.memberNick}"></td>
 			
 						<!-- 작성일-->

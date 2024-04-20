@@ -51,7 +51,8 @@ public class CustomProvider
 	    	return (CustomUser)jdbcTemplate.queryForObject(
 	    			  // "SELECT * FROM member_tbl WHERE id=?", 
 	    			  // 0402 수정함. as password 로 수정 
-	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW as password, enabled FROM member_tbl WHERE MEMBER_EMAIL=?",
+	    			  "SELECT MEMBER_EMAIL as username , MEMBER_PW as password, enabled, member_nick as memberNick "
+	    			  + "FROM member_tbl WHERE MEMBER_EMAIL=?",
 				     new BeanPropertyRowMapper<CustomUser>(CustomUser.class),
 				     new Object[]{ username });
 	    } catch (EmptyResultDataAccessException e) {

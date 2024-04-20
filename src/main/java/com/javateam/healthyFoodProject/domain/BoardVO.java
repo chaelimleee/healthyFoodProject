@@ -203,6 +203,9 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         
+        // 0419 leee 추가. 위에 map만 받아오는 생성자에는 있지만 정작. BoardController 에서는 인자가 두개인 생성자를 부르기 때문에 이 부분에 memberNick을 추가해야했다. 결정적인 부분. ////
+        this.memberNick = map.get("memberNick").toString();
+        
         ////////////////////////////////////////////////////////
         //
         // 교정 : 2024.3 
@@ -221,6 +224,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         
         this.boardReSeq = map.get("boardReSeq") == null ? 0 : Integer.parseInt(map.get("boardReSeq").toString());
         this.boardDate = (Date)map.get("boardDate");
+        
     }
     
 	
