@@ -5,21 +5,7 @@
 	  layout:decorate="~{layout}" lang="ko-kr">
 <head>
 <meta charset="UTF-8">
-<title>게시글 쓰기</title>
-
-
-
-<!-- 0401 leee 수정완. 그러나 손봐야함. -->
-
-<!-- 0419 leee 레이아웃에는 안넣고 각자 필요한 곳에 따로따로 적용을 시켜야지 드롭다운과 인자현황 잘 닫히는 현상을 동시에 해결 할 수 있따.  -->
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
-<!-- / 0419 드롭다운 인자현황 현상 끝.// -->
-
-<!-- bootstrap -->
-<!-- <link rel="stylesheet"
-	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
+<title>qna 게시글 쓰기</title>
 
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
@@ -45,7 +31,8 @@ function sendFile(file, el) {
 	  
     data: formData,
     type: "POST", // 업로드시 필수사항
-    url: '/healthyFoodProject/board/image',
+    url: '/healthyFoodProject/qna/image',
+    // song 0412 경로 수정 healthyFoodProject->healthyFoodProject, image->image2->image(0418 song)
     cache: false,
     contentType: false,
     enctype: 'multipart/form-data', // 업로드시 필수사항 
@@ -57,8 +44,6 @@ function sendFile(file, el) {
     
     	$(el).summernote('editor.insertImage', url);
     	
-     	// $('#imageBoard').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
-     	
     } //
     
   });
@@ -67,11 +52,7 @@ function sendFile(file, el) {
 
 $(function() {
 	
-	// case-1
-	// $('#boardContent').summernote(
-			
-	// case-2
-	$('#boardContentDiv').summernote(
+	$('#qnaContentDiv').summernote(// 0416 song #boardContentDiv->#qnaContentDiv로 변경
 			{
 				placeholder : '글 내용을 작성하십시오',
 				tabsize : 2,
@@ -122,27 +103,25 @@ window.onload = function() {
 	fileDeleteBtn.onclick = () => {
 		
 		alert("첨부 파일을 삭제합니다");
-		let boardFile = document.getElementById("boardFile");
-		boardFile.value = "";
+		let qnaFile = document.getElementById("qnaFile");
+		qnaFile.value = "";
 	} //	
 	
 	// TODO
 	// case-2
-	// 게시글 내용
-	let boardContentDiv= document.getElementById("boardContentDiv");
-	let boardContentHidden = document.getElementById("boardContent");
-	let boardForm = document.getElementById("board_write_frm");
 	
-	// case-2
+	// 게시글 내용
+	let qnaContentDiv= document.getElementById("qnaContentDiv");//0416 song board->qna
+	let qnaContentHidden = document.getElementById("qnaContent");//0416 song board->qna
+	let qnaForm = document.getElementById("qna_write_frm");//0416 song board->qna
+	
 	// 폼점검
-	boardForm.onsubmit = function(e) {
+	qnaForm.onsubmit = function(e) {//0416 song board->qna
 		
 		// summernote actual component : 썸머노트의 실제 글내용 컴포넌트
 		// F12 → Elements 탭 메뉴 코너에서 확인할 수 있습니다.
-		// let summernoteActualContent = document.querySelector(".note-editable");
 		let summernoteActualContent = document.querySelector(".note-editable");
 		
-		// TODO
 		let content = summernoteActualContent.innerHTML;
 		
 		// 주의) summernote
@@ -158,7 +137,7 @@ window.onload = function() {
 					     .trim()
 					     
 	    // 실제 전송용 hiddedn 필드에 입력
-		boardContentHidden.value = content;   
+		qnaContentHidden.value = content;   
 		
 		console.log("content : ", content.length);
 		
@@ -170,21 +149,20 @@ window.onload = function() {
 			// 전송 취소
 			return false;
 		} 
-		
 		// 파일 업로드 사이즈 체크 : 10MB 보다 큰지 점검
-		let boardFile = document.getElementById("boardFile");
+		let qnaFile = document.getElementById("qnaFile"); //0418 song board->qna
 
 		//let uploadFileSize = boardFile.files[0].size;
 		// 빈 파일일 경우
-		let uploadFileSize = (boardFile.value == "") ? 0 : boardFile.files[0].size;
+		let uploadFileSize = (qnaFile.value == "") ? 0 : qnaFile.files[0].size;
 
 		const maxUploadFileSize = 10 * 1024 * 1024; // 10MB
 		
 		if (uploadFileSize > maxUploadFileSize) {
 			
 			alert("10 MB 보다 큰 파일은 올릴 수 없습니다.");
-			boardFile.value = ""; // 초기화
-			boardFile.focus(); // 재입력 대기
+			qnaFile.value = ""; // 초기화  //0418 song board->qna
+			qnaFile.focus(); // 재입력 대기//0418 song board->qna
 			
 			return false;
 		} //
@@ -201,53 +179,38 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 
-			<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
-				encType="multipart/form-data" method="post">
+			<form id="qna_write_frm" th:action="@{'/qna/writeProc.do'}" encType="multipart/form-data" method="post">
 
-				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
+				<h2 class="d-flex justify-content-center"> 게시글 쓰기</h2>
 
 				<table class="table mx-auto mt-4" style="width: 800px;">
 
 					<tr>
 						<th scope="col">작성자</th>
-						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 --><!-- memberNick >>> memberEmail 로 변경. 0419 leee -->
+						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 -->
 						<td><input type="text" class="form-control" id="memberEmail"
 							name="memberEmail" th:value="${#authentication.name}" readonly /></td>
 					</tr>
 
-					<tr>
-						<!-- 0419 leee authentication.name >>> authentication.principal.memberNick 로 변경.  -->
-						<!--  readonly 해야함. -->
-						<th scope="col">닉네임</th>
-						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 --><!-- memberNick >>> memberEmail 로 변경. 0419 leee -->
-						<td><input type="text" class="form-control" id="memberNick"
-							name="memberNick" th:value="${#authentication.principal.memberNick}" readonly /></td>
-					</tr>
-
-					<!-- <tr>
-						<th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="boardPass"
-							name="boardPass" required 
+					<!-- <tr> -->
+						<!-- <th scope="col">패쓰워드</th>
+						<td><input type="text" class="form-control" id="qnaPass"
+							name="qnaPass" required 
 							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr> -->
+					</tr>  -->
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardTitle"
-							name="boardTitle" required title="글제목을 입력하십시오" /></td>
+						<td><input type="text" class="form-control" id="qnaTitle"
+							name="qnaTitle" required title="글제목을 입력하십시오" /></td>
 					</tr>
 
 					<tr>
 						<th scope="col">내용</th>
 						<td>							
-							<!-- case-1 -->
-							<!-- <textarea class="form-control" id="boardContent"
-								name="boardContent" required></textarea> -->
-														
-							<!-- case-2 -->
-							<div id="boardContentDiv"></div>
-							<input type="hidden" id="boardContent" name="boardContent" />
-							<!-- <input type="text" id="boardContent" name="boardContent" readonly /> -->
+							<div id="qnaContentDiv"></div>
+							<!--0416 song input type에서 hidden->text로 변경->일단 hidden 유지  -->
+							<input type="hidden" id="qnaContent" name="qnaContent" />
 						</td>
 					</tr>
 
@@ -257,8 +220,8 @@ window.onload = function() {
 							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
 							<div class="row">
 								<div class="col-10">
-									<input class="form-control" type="file" id="boardFile"
-										name="boardFile">
+									<input class="form-control" type="file" id="qnaFile"
+										name="qnaFile">
 								</div>	
 								<div class="col-2">
 									<a href="#" class="btn btn-sm btn-primary mt-1" id="fileDeleteBtn">첨부 삭제</a>
@@ -283,9 +246,5 @@ window.onload = function() {
 	</div>
 	<!--// layout -->
 	
-	<!-- summernote test div -->
-	<!-- <div id="imageBoard">
-	</div> -->
-
 </body>
 </html>

@@ -6,58 +6,17 @@
 	lang="ko-kr">
 <head>
 <meta charset="UTF-8">
-<title>사진 커뮤니티</title>
-
-<!-- 밑에 두개를 달면 인잔현황이 안닫히지만 드롭다운은 잘 됨.  -->
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+<title>관리자 화면</title>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
 <style>
-
-	article{
-		float:left;
-	}
-
 	.inner-div {
 	  width : 400px;
 	  height : 100px;
 	  /* background-color: red; */
 	}
-	
-	img{
-		display:block;
-	}
-	
- /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
-	.trclass:hover{
-            background-color:#FEE6FD;
-        }
-        
-    .tablePhoto{
-			/* display: grid; */
-			/* grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); */
-			/* gap: 56px 20px; */
-			overflow-x: hidden;
-			place-items: center;
-			/* grid-template-columns: repeat(4, 300px);  */
-			grid-gap: 20px;
-			/* grid-template-rows: minmax(100px, auto); */
-
-    } 
-    
-    .item {
-	    /* padding: 10px; */
-	    border: 5px solid #000;
-	    font-size: 20px;
-	    font-weight: bold;
-	    text-align: center;
-	    background-color: #ff0;
-	    margin: -50px 0 0 -50px;
-	}
-       
 </style>
 <script>
 window.onload = function() {
@@ -67,8 +26,7 @@ window.onload = function() {
 	let mainCheckbox = checkboxes[0];
 	
 	// 삭제 버튼을 눌렀을 경우 
-//	let boardDeletebtn = document.getElementById("board_delete_btn");	
-//  let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let boardDeletebtn = document.getElementById("board_delete_btn");	
 	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
 	
 	mainCheckbox.onclick = function() {
@@ -85,7 +43,6 @@ window.onload = function() {
 	// console.log("boardDeletebtn : ", boardDeletebtn);
 	
 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
-	/*
 	boardDeletebtn.onclick = function() {
 		
 		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
@@ -94,8 +51,8 @@ window.onload = function() {
 			
 			if (checkboxes[i].checked == true) {
 				
-				let boardNum = checkboxes[i].id.substring('check_'.length)
-				deleteExpectedBoardIds.push(boardNum) // 삭제할 아이디 배열에 등록(적재)
+				let qnaCode = checkboxes[i].id.substring('check_'.length)// song 0412 boardNum-->qnaCode
+				deleteExpectedBoardIds.push(qnaCode) // 삭제할 아이디 배열에 등록(적재)
 				// console.log("삭제할 게시글 아이디 :", boardNum);
 				
 			} //
@@ -108,52 +65,82 @@ window.onload = function() {
 		} // for
 		
 	} //
-	*/
 	
 } //
 </script>
 </head>
 <body>
-	
+
 	<!-- layout -->
-	<div layout:fragment="content" class="main_sect_pnl" style="width:1440px;">
+	<div layout:fragment="content" class="main_sect_pnl">
+	
+		<div class="content_sect_pnl">
+
+		
+			<!-- 인자 현황판 이전(move) :   -->
 			
-			<!-- 갤러리 게시판 grid 시작.   -->
-			<div class="mx-auto" style="overflow:hidden; min-height:60vh;"><!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
-				<!--  content_sect_pnl -->
-				<div class="row bg-info mt-3" style="margin:0 auto;">
+			<h4 class="d-flex justify-content-left m-5">
+				<div class='inner-div'> </div>
+				<div class="p-2" style="line-height: 1.5em">1:1 문의게시판<br>
+					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
+				</div>	
+			</h4>
+			
 				
-					<div class="tablePhoto col-12 d-flex justify-content-center" style="min-height:40vh;"
-						 th:if="${#lists.isEmpty(photoList) && pageVO.listCount == 0}">
-						게시글 내용이 없습니다. 
-					</div> 
-					
-					<div class="tablePhoto col-3"
-						th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
-						th:each="photo : ${photoList}">
+			<table class="table mx-2 mx-auto" style="width:50vw">
+				<thead>
+					<tr>	
+						<th>
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
 						
-						<div class="items"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
-							<!-- margin:auto; : 가운데 정렬.  -->
-							<div style="width:300px; height:300px; overflow : hidden; margin:auto; " th:utext="${photo.boardContent}"></div>
-							<a style="display: block; text-align: center;" th:text="${photo.boardSubject}"></a>
-						</div>
-					</div>
-				</div>
-				<!--// 갤러리 게시판 grid 끝.   -->
-				
+						<!-- 조회수 추가 -->
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty(qnaList) && pageVO.listCount > 0}"
+						th:each="qna, st : ${qnaList}">
+						<td>
+							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
+						</td>
+						<td th:text="${qna.qnaCode}"></td>
+						<td>
+							<a th:href="@{'/qna/view.do/'+ ${qna.qnaCode}}" th:utext="${qna.qnaTitle}"></a>
+							<!--song 0412 링크를 view.do->qna_view.do로 변경 애매함& 주소에 맞는 폴더 만들어야 할 듯-->
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(qna.qnaContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+						</td>
+						<td th:utext="${qna.memberEmail}"></td>
+						
+						
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 추가 -->
+						<td th:utext="${qna.qnaReadCount}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
 			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
 			-->
-			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
+			<div id="qna_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
 				 
-				 <a th:href="@{/photo_board/write.do}" class="btn btn-primary me-2" 
+				 <a th:href="@{/qna/write.do}" class="btn btn-primary me-2" 
 				 	sec:authorize="isAuthenticated()">
 				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
 			 	 </a>	
 			 	 
 			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-primary" th:href="@{/photo_board/list.do}">
+			 	 <a class="btn btn-primary" th:href="@{/qna/list.do}">
 					게시글 목록
 				 </a>			
 			</div>
@@ -166,35 +153,36 @@ window.onload = function() {
 	
 						<!--  첫 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{/photo_board/list.do?currPage=1}" aria-label="Start">
+							th:href="@{/qna/list.do?currPage=1}" aria-label="Start">
 								<span aria-hidden="true">&Lt;</span>
 						</a></li>
 	
 						<!-- 이전 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.prePage}}"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
 						</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
 						<li class="page-item active"><a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage}}"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.currPage}}"
 							th:utext="${pageVO.currPage}"></a></li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
 							<a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.nextPage}}"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>
 						</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.endPage}}"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.endPage}}"
 							aria-label="End"> <span aria-hidden="true">&Gt;</span>
 						</a></li>
 					</ul>
@@ -210,33 +198,33 @@ window.onload = function() {
 				    <!--  첫 페이지 -->
 				    <li class="page-item">
 				      <a class="page-link" 
-				      	 th:href="@{'/photo_board/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				      	 th:href="@{'/qna/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
 				        <span aria-hidden="true">&Lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
 				        <span aria-hidden="true">&gt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -248,7 +236,7 @@ window.onload = function() {
 			
 			<!-- 검색 -->
 			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
-			<form th:action="@{/photo_board/searchList.do}" method="get">
+			<form th:action="@{/qna/searchList.do}" method="get">
 			
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				
@@ -258,9 +246,9 @@ window.onload = function() {
 					
 					<div id="select_pnl" class="col-2 pe-0">
 						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
-						  <option selected value="board_subject">글제목</option>
-						  <option value="board_content">내용</option>
-						  <option value="board_writer">작성자</option>
+						  <option selected value="qnaTitle">글제목</option>
+						  <option value="qnaContent">내용</option>
+						  <option value="memberEmail">작성자</option>
 						</select>
 					</div>
 					

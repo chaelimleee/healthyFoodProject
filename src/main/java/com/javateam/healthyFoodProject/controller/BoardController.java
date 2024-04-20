@@ -71,6 +71,7 @@ public class BoardController {
 			log.info("{}", arg);
 		});
 		
+		//0419 leee 인자를 두개 받고 있기 때문에 vo에서 인자 두개 짜리 생성자를 봐야함. 
 		BoardVO boardVO = new BoardVO(map, boardFile); // Map → VO
 		
 		// 첨부 파일이 있다면...				
