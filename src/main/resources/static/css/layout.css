@@ -35,7 +35,8 @@ div.main_sect_pnl {
 	
 	/* 컨텐츠 중앙 정렬 */
 	display : flex;
-	margin-top: 1em;
+	/*margin-top: 1em;*/
+	padding-top: 70px;
 	/* align-items:center; */
 	justify-content:center; 
 	margin:auto;/*가운데 정렬 !!! 0418 leee*/

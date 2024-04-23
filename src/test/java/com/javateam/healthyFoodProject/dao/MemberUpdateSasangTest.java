@@ -22,4 +22,11 @@ public class MemberUpdateSasangTest {
 		memberDTO.setMemberSasang("소음인");
 		memberDAO.updateMemberSasang(memberDTO);
 	}
+	
+	@Test
+	public void test2() {
+		
+		
+		
+	}
 }
