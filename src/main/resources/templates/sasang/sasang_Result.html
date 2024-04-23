@@ -28,7 +28,48 @@
 
 	.flex-container{
 		display: flex;
-		
+	}
+	
+	article{
+		float:left;
+	}
+
+	.inner-div {
+	  width : 400px;
+	  height : 100px;
+	  /* background-color: red; */
+	}
+	
+	img{
+		display:block;
+	}
+	
+ /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
+	.trclass:hover{
+            background-color:#FEE6FD;
+        }
+        
+    .tablePhoto{
+			/* display: grid; */
+			/* grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); */
+			/* gap: 56px 20px; */
+			overflow-x: hidden;
+			place-items: center;
+			/* grid-template-columns: repeat(4, 300px);  */
+			grid-gap: 20px;
+			/* grid-template-rows: minmax(100px, auto); */
+
+    } 
+    
+    .item {
+	    /* padding: 10px; */
+	    border: 5px solid #000;
+	    font-size: 20px;
+	    font-weight: bold;
+	    text-align: center;
+	    background-color: #ff0;
+	    margin: -50px 0 0 -50px;
+	    
 	}
 	
 </style>
@@ -69,47 +110,43 @@
          <li>진단결과 월등한 체질 성향이 안나타나신 분은 뒤로 돌아가 상대적으로 자신과 가까운 답안을 골라 다시 한번 검사해보시기 바랍니다</li>
         </ul>
 
-    </p>   
+       
     <p><strong>체질 설명: </strong></p>
     <p id="description">${description}</p>
+    
     <p><strong>건강 관리 방법: </strong></p>
     <p id="healthManagement">${healthManagement}</p>
-    <p><strong>추천 좋은 음식 리스트 :</strong></p>
-    <p id="goodFoodList">${goodFoodList}</p>
+    
+    <!-- <p><strong>추천 좋은 음식 리스트 :</strong></p>
+    <p id="goodFoodList">${goodFoodList}</p> -->
+    
     <p><strong>좋은 음식 및 피해야 할 음식재료 목록  :</strong></p>
-    <ul id="foodRecommend"></ul>
+    <ul id="foodRecommend"></ul><br>
     </p>
+    
    </div><!-- // id = "resultForm" 끝 -->
    
-   <!-- 하단 체질 음식 추천 -->
-   <div>
-   	<p><span id="sasangType">${sasangType}</span>인 당신에게 추천하는 레시피</p>
-   	
-   		<div class="row"> <!-- qnxmtmxmfoq rmflem tltmxpadml god.  --><!-- col-md-3 : 각 열을 나타냄. 중간 크기 화면에 각 열이 1/4 ckwlgkehfhrgka.  -->
-					<div class="tableFood col btn"  
-						th:if="${not #lists.isEmpty(sasangFoodList) && pageVO.listCount > 0}"
-						th:each="food : ${sasangFoodList}" role="button">
-						
-						<!-- items p-2 를 p-1로 바꾸니까 서로 간격 좁아짐. 굳 -->
-						<div class="items p-1"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
-							<!-- <div style="width:300px; height:300px; overflow : hidden;" th:text="${food.foodImg}"></div> -->
-							<a th:href="@{'view.do/'+ ${food.foodCode}}" >
-								<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-							</a>
-							<a th:text="${food.foodName}" ></a>
-						</div>
-				</div>
-			</div>
    
+   <!-- 해당 체질에 맞는 음식 추천! 0423 leee -->
+   <div class="row bg-info mt-3" style="margin:0 auto;">
+   <div class="tablePhoto col-3" th:each="food : ${sasangFoodList}">
+   	<div class="items">
+	 <!-- <div style="width:300px; height:300px; overflow : hidden; margin:auto; " th:text="${food.foodImg}"></div> -->
+	 <img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+	 <a style="display: block; text-align: center;" th:text="${food.foodName}"></a>
+	</div>
    </div>
+   </div>
+   <!-- //해당음식에 맞는 음식 추천 끝 -->
+   
    
 </div><!-- //class="content_sect_pnl flex-item" 끝 -->
 
 <script th:src="@{/js/result.js}"></script>
 
+</div>
 </article>
 
 </div><!-- // layout:fragment="content" 끝 -->
-
 </body>
 </html>

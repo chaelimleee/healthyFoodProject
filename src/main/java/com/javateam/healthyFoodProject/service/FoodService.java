@@ -43,6 +43,20 @@ public class FoodService {
 		return foodDAO.findAllByFoodIngredientMainInside(sasang);
 		
 	}
+
+	// 0423 leee 추가함. 
+	public List<String> findSasangGoodIngredientMainBySasangName(String sasang){
+		log.info("sasang 서비스 이름 확인 1 : " + sasang);
+		return foodDAO.findSasangGoodIngredientMainBySasangName(sasang);
+		
+	}
+
+	// 0423 leee 추가함. 
+	public List<FoodVO> findByFoodIngredientMainInsideIn(List<String> sasang){
+		log.info("sasang 서비스 이름 확인 2: " + sasang);
+		return foodDAO.findByFoodIngredientMainInsideIn(sasang);
+		
+	}
 	
 	@Transactional(readOnly = true)
 	public int selectFoodsCount() {

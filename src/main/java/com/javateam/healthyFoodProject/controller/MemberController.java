@@ -40,6 +40,13 @@ public class MemberController {
 		return "/member/join";
 	}
 	
+    @ResponseBody // 값 변환을 위해 꼭 필요함
+	@GetMapping("idCheck") // 아이디 중복확인을 위한 값으로 따로 매핑
+	public int overlappedID(MemberDTO memberDTO) throws Exception{
+		int result = memberService.overlappedID(memberDTO); // 중복확인한 값을 int로 받음
+		return result;
+	}
+	
 	@PostMapping("/joinProc.do")
 	public String joinProc(@ModelAttribute("memberDTO") MemberDTO memberDTO, 
 						RedirectAttributes ra) {

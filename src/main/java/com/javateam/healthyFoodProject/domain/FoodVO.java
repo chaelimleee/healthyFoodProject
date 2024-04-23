@@ -8,14 +8,18 @@ import java.sql.Date;
 import java.util.Map;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 //import org.springframework.data.annotation.CreatedDate;
@@ -96,7 +100,9 @@ public class FoodVO implements Serializable { // 10.25 (sesssion으로 변환할
 	private String foodIngredientSubView; 
 	
 	/** 음식 조리법 */
-	@Column(name = "FOOD_RECIPE") 
+	//@Lob @Type(org.hibernate.type.TextType.class) @Basic(fetch = FetchType.EAGER)
+	//@Basic(fetch = FetchType.EAGER)
+	@Column(name = "FOOD_RECIPE",columnDefinition = "text") 
 	private String foodRecipe; 
 	
 	/** 음식 등록일 */

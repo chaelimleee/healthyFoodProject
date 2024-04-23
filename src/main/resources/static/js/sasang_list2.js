@@ -127,7 +127,7 @@ function showResult(memberEmail, maxAnswer, maxCount,selectedAnswers) {
         localStorage.setItem("foodRecommend", JSON.stringify(type.foodRecommend));
 
 
-		axios.get(`/healthyFoodProject/sasang/saveSasang.do/${memberEmail}/${type.name}`)
+		axios.get(`/healthyFoodProject/sasang/sasangResult.do/${type.name}`)
 				 .then(function(response) {
 					
 						let responseData = response.data;
@@ -145,7 +145,7 @@ function showResult(memberEmail, maxAnswer, maxCount,selectedAnswers) {
 					 .catch(function(err) {
 						console.error("서버 에러가 발생했습니다. >> " + err);
 						alert(err);
-						result.innerHTML='';
+						//result.innerHTML='';
 					 }
 			 );
 			 // axios

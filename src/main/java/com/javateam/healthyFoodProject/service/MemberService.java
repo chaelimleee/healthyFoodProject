@@ -276,5 +276,13 @@ public class MemberService {
 			
 		return result;
 	}
+	
+//    public int overlappedID(MemberDTO memberDTO) throws Exception{
+//    	
+//		int result = memberDAO.overlappedID(memberDTO);
+//		return result;
+//	}
+    
+    
 		
 }

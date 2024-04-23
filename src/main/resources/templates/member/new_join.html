@@ -39,6 +39,7 @@
 		width:800px;
 		margin:auto;
 	}
+	
 	</style>
 </head>
 <body>
@@ -66,7 +67,12 @@
 		                    
 		                    <div class="fld_content col-6">
 		                        <input type="text" id="id" name="id" class="form-control" maxlength="20" th:field="*{id}" />       
-		                    </div>			
+		                    </div>	
+		                    
+		                    <div>
+		                    	<button id="overlappedID" type="button">중복확인</button><br>
+								<span id="olmessage"></span>
+		                    </div>		
 		                    				
 		                </div>						
 		                

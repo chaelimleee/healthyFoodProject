@@ -68,7 +68,16 @@ public class SasangController {
 		log.info("sasang 첫 페이지 ");
 		model.addAttribute("arg", "인자");
 		
-		return "/sasang/sasang_list";
+		return "sasang/sasang_home";
+	}
+
+	@GetMapping("/sasangTest.do")
+	public String sasangPTestPage(Model model) {
+		
+		log.info("sasang 첫 페이지 ");
+		model.addAttribute("arg", "인자");
+		
+		return "sasang/sasang_list";
 	}
 	
 	@GetMapping("/sasangResult.do/{sasang}")
@@ -76,15 +85,17 @@ public class SasangController {
 		
 		log.info("sasang 결과 페이지");
 		
-		List<FoodVO> sasangFoodList = new ArrayList<>();
+		List<String> sasangFoodListName = new ArrayList<>();
+		sasangFoodListName = foodService.findSasangGoodIngredientMainBySasangName(sasang);
 		
-		sasangFoodList = foodService.findAllByFoodIngredientMainInside(sasang);
+		log.info("sasang 음식 잘 나오는지 확인 >> " + sasangFoodListName.get(0));
 		
-		log.info("sasang 음식 잘 나오는지 확인 >> " + sasangFoodList.get(0).getFoodName());
+		List<FoodVO> sasangFoodList = foodService.findByFoodIngredientMainInsideIn(sasangFoodListName);
+		log.info("sasangFoodList 음식 잘 나오는지 확인 >> " + sasangFoodList.get(0));
 		
 		model.addAttribute("sasangFoodList", sasangFoodList);
 		
-		return "/sasang/sasang_Result";
+		return "sasang/sasang_Result";
 	}
 	
 	
