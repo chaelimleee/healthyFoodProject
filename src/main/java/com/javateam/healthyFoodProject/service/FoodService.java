@@ -37,6 +37,13 @@ public class FoodService {
 		return foodDAO.findAllByOrderByFoodCodeDesc();
 	}
 	
+	// 0423 leee 추가함. 
+	public List<FoodVO> findAllByFoodIngredientMainInside(String sasang){
+		log.info("sasang 서비스 이름 확인 : " + sasang);
+		return foodDAO.findAllByFoodIngredientMainInside(sasang);
+		
+	}
+	
 	@Transactional(readOnly = true)
 	public int selectFoodsCount() {
 		

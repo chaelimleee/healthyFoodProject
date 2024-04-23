@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>사상체질 자가진단 결과 페이지</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- 구글 폰트 0412 leee  -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+<link rel="stylesheet" th:href="@{/css/sasang_list.css}">
+<link rel="stylesheet" th:href="@{/css/aside.css}">
+
+<style>
+
+	.flex-container{
+		display: flex;
+		
+	}
+	
+</style>
+
+</head>
+<body>
+
+<div layout:fragment="content" class="main_sect_pnl" >
+
+<article style="width:100%;">
+		<div class="flex-container">
+		<aside class="flex-item" style="width:auto;margin: 0 auto;">
+			<p>사상체질 목록</p>
+				<ul>
+					<li><a href="#" class="active">사상체질이란?</a></li>
+					<li><a href="#" >사상체질 자가진단</a></li>
+					<li><a href="#" >체질 별 음식</a></li>
+					<li><a href="#" ></a></li>
+				</ul>
+		</aside>
+		
+<div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 auto;">
+ 
+<div id = "resultForm">
+    <h1>사상체질 판정결과</h1>
+    <h1>
+        <strong>당신의 사상체질 결과는 <span id="percentage">${percentage}</span>% 확률로 
+        <span id="sasangType">${sasangType}</span>체질 입니다.</strong>
+    </h1>
+    <br>
+    <p>
+       <strong>      
+       이번 자가 진단에서 나타난 당신의 체질 성향은
+       </strong>
+        
+       <ul> 
+        <li>당신의 체질은 태음인 성향이 <span id="Taeumin">${typeB}</span>%, 소양인 성향이 <span id="Soyangin">${typeD}</span>%, 소음인 성향이 <span id="Soumin">${typeC}</span>%, 태양인 성향이 <span id="Taeyangin">${typeA})</span>%입니다.</li>
+         <li>진단결과 월등한 체질 성향이 안나타나신 분은 뒤로 돌아가 상대적으로 자신과 가까운 답안을 골라 다시 한번 검사해보시기 바랍니다</li>
+        </ul>
+
+    </p>   
+    <p><strong>체질 설명: </strong></p>
+    <p id="description">${description}</p>
+    <p><strong>건강 관리 방법: </strong></p>
+    <p id="healthManagement">${healthManagement}</p>
+    <p><strong>추천 좋은 음식 리스트 :</strong></p>
+    <p id="goodFoodList">${goodFoodList}</p>
+    <p><strong>좋은 음식 및 피해야 할 음식재료 목록  :</strong></p>
+    <ul id="foodRecommend"></ul>
+    </p>
+   </div><!-- // id = "resultForm" 끝 -->
+   
+   <!-- 하단 체질 음식 추천 -->
+   <div>
+   	<p><span id="sasangType">${sasangType}</span>인 당신에게 추천하는 레시피</p>
+   	
+   		<div class="row"> <!-- qnxmtmxmfoq rmflem tltmxpadml god.  --><!-- col-md-3 : 각 열을 나타냄. 중간 크기 화면에 각 열이 1/4 ckwlgkehfhrgka.  -->
+					<div class="tableFood col btn"  
+						th:if="${not #lists.isEmpty(sasangFoodList) && pageVO.listCount > 0}"
+						th:each="food : ${sasangFoodList}" role="button">
+						
+						<!-- items p-2 를 p-1로 바꾸니까 서로 간격 좁아짐. 굳 -->
+						<div class="items p-1"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
+							<!-- <div style="width:300px; height:300px; overflow : hidden;" th:text="${food.foodImg}"></div> -->
+							<a th:href="@{'view.do/'+ ${food.foodCode}}" >
+								<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+							</a>
+							<a th:text="${food.foodName}" ></a>
+						</div>
+				</div>
+			</div>
+   
+   </div>
+   
+</div><!-- //class="content_sect_pnl flex-item" 끝 -->
+
+<script th:src="@{/js/result.js}"></script>
+
+</article>
+
+</div><!-- // layout:fragment="content" 끝 -->
+
+</body>
+</html>
