@@ -46,15 +46,7 @@
 
 	<article style="width:100%;">
 		<div class="flex-container">
-		<aside class="flex-item" >
-			<p>사상체질 목록</p>
-				<ul>
-					<li><a th:href="@{/sasang/sasang.do}" class="active" >사상체질이란?</a></li>
-					<li><a th:href="@{/sasang/sasangTest.do}" role="button" >사상체질 자가진단</a></li>
-					<li><a href="#" >체질 별 음식</a></li>
-					<li><a href="#" ></a></li>
-				</ul>
-		</aside>
+		<div th:replace="sasang/sasang_aside :: aside"></div>
 	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 auto;">
 		<h1 class="p-2" style=" color : #9dbfa7; ">사상체질 자가진단 테스트</h1>
 		  <form th:id="'testForm_'+${#authentication.name}" style="width:800px; "> 
@@ -503,10 +495,9 @@
 		      </div> -->
 		    </form>    
 		    <script th:src="@{/js/sasang_list2.js}"></script>
-			</article>
     	</div>
-    	</div> 
-    	</div> 
+    	</div>
+		</article>
 	<!--// layout -->	
 </body>
 </html>

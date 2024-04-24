@@ -1,4 +1,4 @@
-package com.javateam.healthyFoodProject.controller.food;
+package com.javateam.healthyFoodProject.controller.photo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.javateam.healthyFoodProject.domain.FoodVO;
 import com.javateam.healthyFoodProject.domain.PageVO;
-import com.javateam.healthyFoodProject.service.FoodService;
+import com.javateam.healthyFoodProject.domain.PhotoVO;
+import com.javateam.healthyFoodProject.service.PhotoService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("food")
+@RequestMapping("photo_board")
 @Slf4j
-public class FoodSearchController {
+public class PhotoSearchController {
 	
 	@Autowired
-	FoodService foodService;
+	PhotoService photoService;
 
 	@GetMapping("searchList.do")
 	public String list(@RequestParam(value="currPage", defaultValue="1") int currPage,
@@ -35,13 +35,13 @@ public class FoodSearchController {
 		log.info("검색 구분 : {}", searchKey);
 		log.info("검색어 : {}", searchWord);
 		
-		List<FoodVO> foodList = new ArrayList<>();
+		List<PhotoVO> boardList = new ArrayList<>();
 		
 		// 검색시는 "댓글"도 검색에 반영 (기존 대비 변경 없음)
 		// 총 "검색" 게시글 수
-		int listCount = foodService.selectFoodsCountBySearching(searchKey, searchWord.trim());
+		int listCount = photoService.selectBoardsCountBySearching(searchKey, searchWord.trim());
 		
-		foodList = foodService.selectFoodsBySearching(currPage, limit, searchKey, searchWord.trim());	
+		boardList = photoService.selectBoardsBySearching(currPage, limit, searchKey, searchWord.trim());	
 		
 		// 총 페이지 수
 		int maxPage = PageVO.getMaxPage(listCount, limit);
@@ -62,12 +62,12 @@ public class FoodSearchController {
 		pageVO.setNextPage(pageVO.getCurrPage()+1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage()+1);
 	
 		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("foodList", foodList);
-		
+		model.addAttribute("boardList", boardList);	
+
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/food/food_list";		
+		return "/photo_board/photo_list";		
 	} //
 
 }
