@@ -1,6 +1,5 @@
 HELP.md
 .gradle
-.gitignore
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -14,6 +13,10 @@ build/
 .settings
 .springBeans
 .sts4-cache
+upload/
+img/upload_image_We3/
+.gitignore
+khk_01.md
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/

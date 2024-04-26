@@ -17,6 +17,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 	
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+	
 	<!-- layout.html 로 이전함.  -->
 	<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -410,7 +414,7 @@
 						</a>
 						<!-- 사상체질 진단 테스트 카테고리  -->
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" th:href="@{/sasang/sasang.do}">사상체질 맞춤 건강식</a></li>
+							<li><a class="dropdown-item" th:href="@{/sasang/sasangHome.do}">사상체질 맞춤 건강식</a></li>
 							<li><a class="dropdown-item" href="#">건강상태 맞춤 건강식</a></li>
 						</ul>
 			          </li>

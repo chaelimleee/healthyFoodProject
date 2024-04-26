@@ -121,7 +121,7 @@
 						</span>
 						<br>
 						<br>
-						<a th:text="${food.foodIntroduce}" style="font-size: 20px;"></a>
+						<a th:utext="${food.foodIntroduce}" style="font-size: 20px;"></a>
 					</div>
 					
 					<div class="box box1"> 
@@ -140,7 +140,7 @@
 					<div class="box box2"> 
 						<span style="font-size:30px;">기본 재료</span>
 						<hr style="border:0; height:10px; background: #83a68d;">
-						<a th:text="${food.foodIngredientMainView}" 
+						<a th:utext="${food.foodIngredientMainView}" 
 						   style="font-size: 20px;"
 						   id="ingredientView">
 						</a>
@@ -148,7 +148,7 @@
 					<div class="box box3"> 
 						<span style="font-size:30px;">양념 재료</span>
 						<hr style="border:0; height:10px; background: #83a68d;">
-						<a th:text="${food.foodIngredientSubView}" 
+						<a th:utext="${food.foodIngredientSubView}" 
 						   style="font-size: 20px;"
 						   id="ingredientView">
 						</a>
@@ -156,7 +156,7 @@
 					<div class="box box4"> 
 						<span style="font-size:30px;">조리 방법</span>
 						<hr style="border:0; height:10px; background: #83a68d;">
-						<a th:text="${food.foodRecipe}" 
+						<a th:utext="${food.foodRecipe}" 
 						   style="font-size: 20px;"
 						   id="ingredientView">
 						</a>
