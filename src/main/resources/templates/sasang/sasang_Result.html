@@ -117,27 +117,32 @@
     <p><strong>건강 관리 방법: </strong></p>
     <p id="healthManagement">${healthManagement}</p>
     
-    <!-- <p><strong>추천 좋은 음식 리스트 :</strong></p>
-    <p id="goodFoodList">${goodFoodList}</p> -->
     
     <p><strong>좋은 음식 및 피해야 할 음식재료 목록  :</strong></p>
     <ul id="foodRecommend"></ul><br>
     </p>
     
-   </div><!-- // id = "resultForm" 끝 -->
-   
-   
+    <p><strong>추천 좋은 음식 리스트 :</strong></p>
+    <p id="goodFoodList">${goodFoodList}</p>
+    
    <!-- 해당 체질에 맞는 음식 추천! 0423 leee -->
    <div class="row bg-info mt-3" style="margin:0 auto;">
-   <div class="tablePhoto col-3" th:each="food : ${sasangFoodList}">
-   	<div class="items">
+   <div class="tablePhoto col-3 btn" th:each="food : ${sasangFoodList}" role="button">
+   	<div class="items p-1">
 	 <!-- <div style="width:300px; height:300px; overflow : hidden; margin:auto; " th:text="${food.foodImg}"></div> -->
-	 <img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+	 <!-- leee 0424 레시피 누르면 이동하게끔 .. -->
+	 <a th:href="@{'/food/view.do/'+${food.foodCode}}" >
+		<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+	 </a>
 	 <a style="display: block; text-align: center;" th:text="${food.foodName}"></a>
 	</div>
    </div>
    </div>
    <!-- //해당음식에 맞는 음식 추천 끝 -->
+    
+   </div><!-- // id = "resultForm" 끝 -->
+   
+   
    
    
 </div><!-- //class="content_sect_pnl flex-item" 끝 -->

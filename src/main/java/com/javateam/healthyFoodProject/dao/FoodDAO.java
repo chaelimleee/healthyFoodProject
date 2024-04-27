@@ -71,9 +71,41 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 //	List<FoodVO> findByFoodIngredientMainInsideIn(Collection<String> foodIngredientMainInside);
 	List<FoodVO> findByFoodIngredientMainInsideIn(List<String> foodIngredientMainInside);
 	
-	@Query(value= "SELECT SASANG_GOOD_INGREDIENT_MAIN "	+ 
-				  "FROM SASANG_GOOD_MAIN_TBL WHERE SASANG_NAME = :sasangName", nativeQuery = true)
-	List<String> findSasangGoodIngredientMainBySasangName(@Param("sasangName") String sasangName);
+	//0423 leee 추가함. 해당 체질의 주재료들 가져옴. //   . 
+//	@Query(value= "SELECT SASANG_GOOD_INGREDIENT_MAIN "	+ 
+//				  "FROM SASANG_GOOD_MAIN_TBL "  + 
+//				  "WHERE SASANG_NAME = :sasangName", nativeQuery = true)
+	
+	//0424 leee 한개의 데이터만 있는 컬럼 말고 여러개 있는거에서도 가져오는 쿼리 // 부적합한 열 유형 나와서 컬럼 다 써줌. 된다된다
+	//0424 leee 스트림 에러 :: 레시피를 맨 마지막에 넣으니까 바로 해결됨 
+	@Query(value="SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE,"
+			+ "FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE,"
+			+ "FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+			+ "FROM food_tbl f "
+			+ "WHERE EXISTS ( "
+			+ "    SELECT s.SASANG_GOOD_INGREDIENT_MAIN "
+			+ "    FROM SASANG_GOOD_MAIN_TBL s "
+			+ "    WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'  "
+			+ "    and s.sasang_name = :sasangName "
+			+ ") and f.food_ingredient_main_inside is not null",nativeQuery = true)
+	List<FoodVO> findSasangGoodIngredientMainBySasangName(@Param("sasangName") String sasangName);
+	
+//	@Query(value="SELECT * "
+//				+ "FROM food_tbl f "
+//				+ "WHERE EXISTS ("
+//				+ "    SELECT s.SASANG_GOOD_INGREDIENT_MAIN "
+//				+ "    FROM SASANG_GOOD_MAIN_TBL s "
+//				+ "    WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%' "
+//				+ "    and s.sasang_name = :sasangName )", nativeQuery = true)
+	@Query(value="SELECT f.food_ingredient_main_inside "
+				+ "FROM food_tbl f "
+				+ "WHERE EXISTS ( "
+				+ "    SELECT s.SASANG_GOOD_INGREDIENT_MAIN "
+				+ "    FROM SASANG_GOOD_MAIN_TBL s "
+				+ "    WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'  "
+				+ "    and s.sasang_name = :sasangName "
+				+ ") and f.food_ingredient_main_inside is not null",nativeQuery = true)
+	List<FoodVO> findByFoodName(@Param("sasangName") String sasangName);
 	
 	// 원글에 따른 소속 댓글들 가져오기
 //	List<FoodVO> findByFoodCode(int foodCode); 

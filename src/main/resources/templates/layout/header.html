@@ -9,12 +9,13 @@
 	
 	<!-- 4월 19일 layout에서 옮김.  -->
 	<!-- bootstrap -->
+	<link href="css/style.css" rel="stylesheet">
 
 		
 	<!-- 0405 leee 메인화면 상단 로고 글꼴 추가 -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap" rel="stylesheet"> -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 	
 	<!-- layout.html 로 이전함.  -->
@@ -31,7 +32,10 @@
 	<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
 	<style>
 	
+	@import url(https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap 	);
 	
+	/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
+
 	 .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -108,13 +112,7 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
-	
-		/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
-		h1 {
-		  font-family: "Nanum Myeongjo", serif;
-		  font-weight: 700;
-		  font-style: normal;
-		}
+
 
 		/* div.header_sect_pnl div.header_menus a {
 			vertical-align: bottom; 
@@ -151,11 +149,13 @@
 		}
 
 		.navbar-nav{ 
+			order: 2;
+			display: flex;
 			padding: 26px 25px ;
 			border-radius: 50%;
+			
 		}
-		
-
+			
 		.navbar {
 	    	height: 60px !important;
 	    	align-items:center;
@@ -163,9 +163,16 @@
 		}
 		
 		.navbar-nav li {
-			margin: 0 auto;
+			list-style: none;
+ 			margin-left: 1.5rem;
+ 			margin-bottom: 0.5rem;
+ 			font-size: 1.2rem;
+			/* margin: 0 auto; */
 		}
 		
+		.nav-item{
+			float: right;
+		}
 		
 	</style> 
 	
@@ -392,14 +399,20 @@
 			<header data-bs-theme="#9dbfa7">
 			  <nav class="navbar navbar-expand-md fixed-top " style="background-color: #b4d9bf;">
 			    <div class="container-fluid">
-			      <a class="navbar-brand" href="#" style="color:#fff;"th:href="@{/}">healthyFood</a>
+			  	  <!-- leee 0424 로고 수정.  -->
+			      <a class="navbar-brand" href="#" 
+			         style="color:#fff; font-family: 'Gugi', sans-serif; font-size:35px; font-weight: 400;
+        			 font-style: normal; margin-left: 17px;"th:href="@{/}" >
+			         마음식탁
+			      </a>
 			      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 			        <span class="navbar-toggler-icon"></span>
 			      </button>
-			      <div class="collapse navbar-collapse" id="navbarCollapse">
-			        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-			          <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-						<a class="nav-link dropdown-toggle" 
+			      <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse" >
+			        <ul class="navbar-nav me-auto mb-2 mb-md-0 " style="float:right;">
+			        
+			    	    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<a class="mainHome nav-link dropdown-toggle" 
 						   id="navbarDropdown" 
 						   role="button" 
 						   data-bs-toggle="dropdown" 
@@ -444,11 +457,11 @@
 						</ul>
 					 </li>
 					 
-					 <li class="nav-item">
+					 <li class="nav-item ">
 						<!-- <div class="d-flex mt-2">/ -->
-							<a href="#args_board" class="nav-link active"
-							style="color:#fff;"
-							data-bs-toggle="collapse" data-bs-target="#args_board" aria-expanded="false" aria-controls="args_board">
+						<a href="#args_board" class="nav-link active"
+						   style="color:#fff;"
+						   data-bs-toggle="collapse" data-bs-target="#args_board" aria-expanded="false" aria-controls="args_board">
 							인자현황
 						</a>
 						<!-- </div> -->
@@ -490,12 +503,12 @@
 						</ul>
 			        </li>
 			        </ul>
+			      </div>
 			        
 			        <form class="d-flex" role="search">
 			          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 			          <button class="btn btn-outline-success" type="submit">Search</button>
 			        </form>
-			      </div>
 			    </div>
 			  </nav>
 			</header>

@@ -64,6 +64,8 @@ public class PhotoController {
 	@GetMapping("/view.do/{boardNum}")
 	public String view(@PathVariable("boardNum") int boardNum, Model model) {
 		
+		
+		
 		PhotoVO PhotoVO =photoService.selectBoard(boardNum);
 		log.info("PhotoVO : {}", PhotoVO);
 		

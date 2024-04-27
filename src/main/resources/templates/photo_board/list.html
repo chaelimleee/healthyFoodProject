@@ -128,11 +128,10 @@ window.onload = function() {
 						게시글 내용이 없습니다. 
 					</div> 
 					
-					<div class="tablePhoto col-3"
+					<div class="tablePhoto col-3 btn"
 						th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
-						th:each="photo : ${photoList}">
-						
-						<div class="items"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
+						th:each="photo : ${photoList}" role="button">
+						<div class="items" th:onclick="|location.href='/healthyFoodProject/photo_board/view.do/'+ ${photo.boardNum}|"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
 							<!-- margin:auto; : 가운데 정렬.  -->
 							<div style="width:300px; height:300px; overflow : hidden; margin:auto; " th:utext="${photo.boardContent}"></div>
 							<a style="display: block; text-align: center;" th:text="${photo.boardSubject}"></a>

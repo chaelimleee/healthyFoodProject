@@ -9,13 +9,13 @@ body {
 }
 
 /* 0405 leee 메인화면 상단 로고 글꼴 추가  */
-h1 {
+/*h1 {
 
-	font-family: "Nanum Myeongjo", serif;
-	font-weight: 700;
-	font-style: normal;
+    font-family: "Gugi", sans-serif;
+    font-weight: 400;
+    font-style: normal;	
 	color:#9dbfa7 ;
-}
+}*/
 
 
 /* 상단 menu 레이아웃 패널 */
@@ -56,9 +56,9 @@ div.content_sect_pnl {
 
 /* 하단 footer 레이아웃 패널 */
 div.footer_sect_pnl {
-	background-color:#000; 
-	color:#fff;
-	height:100px;
+	background-color:#fff; 
+	color:#000;
+	height:300px;
 	display:flex;
 	margin-top:100px;
 	align-items:center;

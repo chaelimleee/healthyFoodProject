@@ -45,7 +45,7 @@ public class FoodService {
 	}
 
 	// 0423 leee 추가함. 
-	public List<String> findSasangGoodIngredientMainBySasangName(String sasang){
+	public List<FoodVO> findSasangGoodIngredientMainBySasangName(String sasang){
 		log.info("sasang 서비스 이름 확인 1 : " + sasang);
 		return foodDAO.findSasangGoodIngredientMainBySasangName(sasang);
 		
@@ -55,6 +55,12 @@ public class FoodService {
 	public List<FoodVO> findByFoodIngredientMainInsideIn(List<String> sasang){
 		log.info("sasang 서비스 이름 확인 2: " + sasang);
 		return foodDAO.findByFoodIngredientMainInsideIn(sasang);
+	}
+	
+	// 0424 leee 추가함. 쉼표로 컬럼 내용이 많이 들어간 애들을 다 비교해서 가져옴  
+	public List<FoodVO> findByFoodIngredientMainInsideLike(String sasang){
+		log.info("sasang find 서비스 재료 확인 >>: " + sasang);
+		return foodDAO.findByFoodName(sasang);
 		
 	}
 	

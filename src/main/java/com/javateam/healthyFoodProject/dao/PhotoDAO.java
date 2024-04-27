@@ -20,7 +20,7 @@ public interface PhotoDAO extends PagingAndSortingRepository<PhotoVO, Integer> {
 	Page<PhotoVO> findAll(Pageable pageable);
 
 	PhotoVO findById(int boardNum);
-
+	
 	int countByBoardSubjectLike(String boardSubject); // Like
 
 	int countByBoardSubjectContaining(String boardSubject); // Containing

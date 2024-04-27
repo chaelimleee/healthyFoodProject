@@ -85,15 +85,21 @@ public class SasangController {
 		
 		log.info("sasang 결과 페이지");
 		
-		List<String> sasangFoodListName = new ArrayList<>();
+		//0424 leee 추가 추천 레시피 뜨게 함. 
+		List<FoodVO> sasangFoodListName = new ArrayList<>();
 		sasangFoodListName = foodService.findSasangGoodIngredientMainBySasangName(sasang);
 		
-		log.info("sasang 음식 잘 나오는지 확인 >> " + sasangFoodListName.get(0));
+		//log.info("sasang 재료 잘 나오는지 확인 >> " + sasangFoodListName.get(0).toString());
 		
-		List<FoodVO> sasangFoodList = foodService.findByFoodIngredientMainInsideIn(sasangFoodListName);
-		log.info("sasangFoodList 음식 잘 나오는지 확인 >> " + sasangFoodList.get(0));
+		// 재료가 컬럼 안에 하나만 있는 것만 가져옴 
+//		List<FoodVO> sasangFoodList = foodService.findByFoodIngredientMainInsideIn(sasangFoodListName);
 		
-		model.addAttribute("sasangFoodList", sasangFoodList);
+		//재료를 잘 뺴왔으면 food_tbl 의 재료들에서 포함하는 레시피들을 모두 가져와야함.0424 
+		//List<FoodVO> sasangFoodList = foodService.findByFoodIngredientMainInsideLike(sasang);
+		//log.info("sasangFoodList 음식 잘 나오는지 확인 >> " + sasangFoodListName.get(0));
+		
+		model.addAttribute("sasangFoodList", sasangFoodListName);
+		model.addAttribute("sasangName", sasang);
 		
 		return "sasang/sasang_Result";
 	}

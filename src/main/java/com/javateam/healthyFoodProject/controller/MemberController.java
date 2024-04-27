@@ -40,12 +40,12 @@ public class MemberController {
 		return "/member/join";
 	}
 	
-    @ResponseBody // 값 변환을 위해 꼭 필요함
-	@GetMapping("idCheck") // 아이디 중복확인을 위한 값으로 따로 매핑
-	public int overlappedID(MemberDTO memberDTO) throws Exception{
-		int result = memberService.overlappedID(memberDTO); // 중복확인한 값을 int로 받음
-		return result;
-	}
+//    @ResponseBody // 값 변환을 위해 꼭 필요함
+//	@GetMapping("idCheck") // 아이디 중복확인을 위한 값으로 따로 매핑
+//	public int overlappedID(MemberDTO memberDTO) throws Exception{
+//		int result = memberService.overlappedID(memberDTO); // 중복확인한 값을 int로 받음
+//		return result;
+//	}
 	
 	@PostMapping("/joinProc.do")
 	public String joinProc(@ModelAttribute("memberDTO") MemberDTO memberDTO, 
@@ -57,6 +57,7 @@ public class MemberController {
 		// 패쓰워드 암호화
 		bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		memberDTO.setMemberPw(bCryptPasswordEncoder.encode(memberDTO.getMemberPw()));
+		log.info("joinProc.do : {}", memberDTO.getMemberPw());
 		boolean result = memberService.insertMemberRole(memberDTO);
 		
 		String msg = "";		

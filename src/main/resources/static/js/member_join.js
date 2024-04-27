@@ -18,28 +18,6 @@ function getPostcodeAddress() {
             console.log("도로명 주소 : " + data.roadAddress);
             console.log("지번 주소(자동처리 : 지번 미출력시 자동 입력처리) : " + data.autoJibunAddress);
 
-            // javateacher) 이 부분을 생략하여 도로명과 지번이 같이 넘어가도록 조치
-            
-            // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-            /*
-            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                
-                fullAddr = data.memberAddress1;
-
-            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                // fullAddr = data.jibunAddress;
-                fullAddrJibun = data.jibunAddress;
-            }
-            */
-
-            /*fullAddr = data.memberAddress1;
-            // 지번 미입력시 : 자동 입력 지번 주소 활용(data.autoJibunAddress)
-            fullAddrJibun = data.jibunAddress == '' ? data.autoJibunAddress : data.jibunAddress;*/
-
-
-            // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
-            // if(data.userSelectedType === 'R'){
-                
             // 법정동명이 있을 경우 추가한다.
             if(data.bname !== ''){
                 extraAddr += data.bname;
@@ -75,8 +53,6 @@ function getPostcodeAddress() {
             // javateacher) 본 회원가입 코드에서는 도로명으로 선택하든 지번 주소로 선택하든
             // 일괄적으로 도로명으로 기본주소가 들어가도록 설정하였습니다.
 
-
-            
             let memberZipFld = document.getElementById('memberZip');
             let memberAddress1Fld = document.getElementById('memberAddress1');
 			let memberAddress2Fld = document.getElementById('memberAddress2');
@@ -122,10 +98,12 @@ function isCheckFldValid(fld, regex, initVal, errPnl, errMsg) {
     console.log(`체크 대상 필드 값 : ${fld.value}`);
 
     // 폼 유효성 점검(test)
-    console.log(`점검 여부 : ${regex.test(fld.value)}`);
+    console.log(`폼 유효성 점검 여부 : ${regex.test(fld.value)}`);
 
     if (regex.test(fld.value) == false) {
-
+		
+		console.log("폼 점검 오류 발생!");
+				
         errPnl.style.height = "50px"; 
         errPnl.innerHTML = errMsg; 
 
@@ -135,6 +113,8 @@ function isCheckFldValid(fld, regex, initVal, errPnl, errMsg) {
         //fld.focus(); // 재입력 준비 //0402 수정. 이걸 없애면 재입력 할 수 있게 됨. !!!
         
         fldCheckFlag = false;
+
+		console.log("폼 점검 오류 발생 처리 끝!");
 
     } else { // 정상
 
@@ -150,48 +130,6 @@ function isCheckFldValid(fld, regex, initVal, errPnl, errMsg) {
 
 ////////////////////////////////////////////////////
 
-// 성별 필드 점검 이벤트 처리
-// 에러 메시징 보완
-// function isCheckGenderFldValid(genderFld) {
-function isCheckGenderFldValid(genderFld, errPnl, errMsg) { 
-
-    console.log("isCheckGenderFldValid");
-    
-    let resultFlag = false; 
-
-    console.log(`남자 성별 체크 여부 : ${genderFld[0].checked}`);
-    console.log(`여자 성별 체크 여부 : ${genderFld[1].checked}`);
-
-    console.log(`genderFld[0].checked : ${genderFld[0].checked}`)
-    console.log(`genderFld[1].checked : ${genderFld[1].checked}`)
-
-    console.log("유효 조건 : " + (genderFld[0].checked ^ genderFld[1].checked));
-    
-    // if ((genderFld[0].checked == true && genderFld[1].checked == false) ||
-    //    (genderFld[0].checked == false && genderFld[1].checked == true)) {
-    if ((genderFld[0].checked ^ genderFld[1].checked) == 1) {
-
-        // 에러 패널 초기화
-        errPnl.style.height = "0"; 
-        errPnl.innerHTML = "";
-
-        resultFlag = true;
-    }
-
-    // 에러 메시징 누락 보완
-    else {
-
-        errPnl.style.height = "50px"; 
-        errPnl.innerHTML = errMsg; 
-        
-        resultFlag = false;
-    }
-
-
-    return resultFlag;
-} //
-
-////////////////////////////////////////////////////
 
 // 우편번호/주소 필드 점검
 function isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl) {
@@ -265,14 +203,8 @@ window.onload = () => {
     // 이름 점검 플래그
     let nameCheckFlag = false;
 
-    // 성별 점검 플래그
-    let genderCheckFlag = false;
-
-    // 이메일 점검 플래그
-    let emailCheckFlag = false;
-
-	// 이메일 중복 점검 플래그
-	let emailDuplicatedCheckFlag = false;
+    // 닉네임 점검 플래그
+    let nickNameCheckFlag = false;
 
     // 연락처 점검 플래그
     let mobileCheckFlag = false;
@@ -280,17 +212,11 @@ window.onload = () => {
 	// 연락처(휴대폰) 중복 점검 플래그
 	let mobileDuplicatedCheckFlag = false;
 	
-	// 연락처(집전화) 점검 플래그
-	let phoneCheckFlag = false;
-	
     // 주소 점검 플래그
     // 주소에 대한 사항이 필수가 아니라 선택 사항인 경우는 
     // 입력하지 않아도 무관하기 때문에 초기 상태(무입력 상태)도 true로 간주하여
     // 초기값 true 설정
     let addressCheckFlag = true;
-
-    // 생일 점검 플래그
-    let birthdayCheckFlag = false;
 
     // 아이디 필드 폼 점검(form validation)
     // 아이디 필드 인식
@@ -311,17 +237,11 @@ window.onload = () => {
     // 이름 에러 패널 인식
     let nameFldErrPnl = document.getElementById("name_fld_err_pnl");
 
-    // 성별 필드 인식
-    let genderFld = document.querySelectorAll("[name='gender']");
+    // 닉네임 필드 인식
+    let nickNameFld = document.getElementById("memberNick");
 
-    // 성별 필드 에러 패널 인식
-    let genderFldErrPnl = document.getElementById("gender_fld_err_pnl");
-
-    // 이메일 필드 인식
-    let emailFld = document.getElementById("email");
-
-    // 이메일 필드 에러 패널 인식
-    let emailFldErrPnl = document.getElementById("email_fld_err_pnl");
+    // 닉네임 에러 패널 인식
+    let nickNameFldErrPnl = document.getElementById("nickName_fld_err_pnl");
 
     // 연락처(휴대폰) 필드 인식
     let mobileFld = document.getElementById("memberMobile");//0402 수정
@@ -329,36 +249,27 @@ window.onload = () => {
     // 연락처(휴대폰) 필드 에러 패널 인식
     let mobileFldErrPnl = document.getElementById("mobile_fld_err_pnl");
 
-	// 연락처(집전화) 필드 인식
-    let phoneFld = document.getElementById("phone");
-
-	// 연락처(집전화) 필드 에러 패널 인식
-    let phoneFldErrPnl = document.getElementById("phone_fld_err_pnl");
-
     // 우편번호/주소 필드 인식
     let memberZipFld = document.getElementById("memberZip");
 
     let memberAddress1Fld = document.getElementById("memberAddress1");
-
-    let jibunAddressFld = document.getElementById("jibunAddress");
 
 	let memberAddress2Fld = document.getElementById("memberAddress2");
 
     // 주소 필드 에러 패널 인식
     let addressFldErrPnl = document.getElementById("address_fld_err_pnl");
 
-    // 생일 필드 인식
-    let birthdayFld = document.getElementById("memberBirth");
-
-    // 생일 필드 에러 패널 인식
-    let birthdayFldErrPnl = document.getElementById("birthday_fld_err_pnl");
-
     ////////////////////////////////////////////////////////////////////////
-
+	// 입력필드들에서 엔터키누를 때 전송 방지. 0426 
+	document.addEventListener('keydown', function(event) {
+	  if (event.keyCode === 13) {
+	    event.preventDefault();
+	  };
+	}, true);
+	
     // 아이디 필드 입력 후 이벤트 처리
     idFld.onblur = (e) => {
 
-        // console.log("id fld blur");
         // 아이디 필드 값 확인
         console.log(`아이디 필드 값 : ${idFld.value}`);
 
@@ -374,64 +285,63 @@ window.onload = () => {
             6) 메시징 : 회원 아이디는 8~20사이의 영문으로 시작하여 
                        영문 대소문자/숫자로 입력하십시오.
         */   
-        // 아이디 정규표현식(regex)
-        // const regexId = /^[a-zA-Z]{1}\w{7,19}$/; // 기존의 아이디 방법
-
-        // 이메일 아이디 정규표현식. // https://jh-tr.tistory.com/166
-        const regexId = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-            if(!email_regex.test(regexId)){ 
-                return false; 
-            }else{
-                return true;
-            }
-
+		idCheckFlag = isCheckFldValid(idFld, 
+                            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i,
+                            idFld.value,
+                            idFldErrPnl,
+                            "회원 아이디는 이메일로 적어주십시오.");
+		
+		idDuplicatedCheckFlag = false;
+		
         // 폼 유효성 점검(test)
-        console.log(`점검 여부 : ${regexId.test(idFld.value)}`);
+		console.log("idCheckFlag => " + idCheckFlag);
+		console.log("idDuplicatedCheckFlag => " + idDuplicatedCheckFlag);
 
-        if (regexId.test(idFld.value) == false) {
+        if (idCheckFlag == true && idDuplicatedCheckFlag == false) {
 
-            let idErrMsg = "회원 아이디는 이메일로 적어주십시오.";
-
-            // 에러 패널 메시지 표시 : alert => 에러 패널
-            // : 패널 높이(50px), 메시지(red)
-            idFldErrPnl.style.height = "50px"; 
+			console.log("아이디 중복 점검 진입");
+			
+			// 아이디(이메일) 중복 점검
+			axios.get(`/healthyFoodProject/member/hasFld/MEMBER_EMAIL/${idFld.value}`)
+				 .then(function(response) {
+					
+					alert("중복 점검 아이디!!");
+					
+					idDuplicatedCheckFlag = response.data;
+					
+					console.log("response.data : ", response.data);
 	
-            // 기존 필드 데이터 초기화
-            idFld.value = "";
-            idFld.focus(); // 재입력 준비     
-            
-            // 에러 점검 플래그
-            idCheckFlag = false;
-
-        } else { // 정상
-
+					let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
+					console.log(idDupErrMsg);
+					
+					alert(idDupErrMsg);
+					
+					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
+					if (idDuplicatedCheckFlag == true) {
+					
+						idFld.value = "";
+					}					
+						
+				 })
+				 .catch(function(err) {
+					console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
+				 });
+			
             // 에러 패널 초기화
             idFldErrPnl.style.height = "0"; 
             idFldErrPnl.innerHTML = "";
 
             // 에러 점검 플래그
             idCheckFlag = true;
-
-        } // if
+        } // if 아이디 중복 점검
 
     } // idFld.onblur ...
-
-    // 아이디 점검 키보드 입력시 실시간 점검
-    idFld.onkeyup = () => {
-
-        console.log("아이디 온키업");
-        idCheckFlag = isCheckFldValid(idFld, 
-                        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i,
-                        idFld.value,
-                        idFldErrPnl,
-                        "회원 아이디는 이메일로 적어주십시오.");
-    } // idFld.onkeyup ... 
 
     //////////////////////////////////////           
 
     // 패쓰워드 필드 입력 후 이벤트 처리 : blur
     pwFld.onblur = (e) => {
-
+		
         // console.log("패쓰워드 필드 blur")
         // 패쓰워드 필드 유효성 점검(validation)
         // 기준)
@@ -452,8 +362,8 @@ window.onload = () => {
                         "1개이상 포함하여 8~20자로 작성하십시오.");
     } //     
 
-    // 패쓰워드 필드 입력 후 이벤트 처리 : keyup
-    pwFld.onkeyup = (e) => {
+    // 패쓰워드 필드 입력 후 이벤트 처리 : keyup: 다 완성했다는 보장은 없음(실시간) // onblur 다 입력하고 빠져나갈 떼
+    pwFld.onblur = (e) => { 
 
         console.log("패쓰워드 필드 keyup")
         pwCheckFlag = isCheckFldValid(pwFld,                                 
@@ -467,7 +377,6 @@ window.onload = () => {
 
     // 이름 필드 입력 후 이벤트 처리 : blur
     nameFld.onblur = (e) => {
-
         console.log("이름 필드 blur")
         // 이름 필드 유효성 점검(validation)
         // 기준)
@@ -485,73 +394,49 @@ window.onload = () => {
     } //     
 
     // 이름 필드 입력 후 이벤트 처리 : keyup
-    nameFld.onkeyup = (e) => {
-
+    nameFld.onblur = (e) => {
         console.log("이름 필드 blur")
-        nameCheckFlag = isCheckFldValid(nameFld,                                 
-                        /^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,
+                        /*/^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,*/
+        nameCheckFlag = isCheckFldValid(nameFld,  
+						/^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,                            
                         nameFld.value,
                         nameFldErrPnl,
                         "회원 이름은 한글 이름만 허용됩니다. 제시된 예와 같이 작성해주세요.");
     } //    
 
+    ///////////////////////////////////////////////////////////////////////
+	
+	// 닉네임 필드 입력 후 이벤트 처리 : keyup
+    nickNameFld.onblur = (e) => {
+        console.log("닉네임 필드 blur")
+        nickNameCheckFlag = isCheckFldValid(nickNameFld,
+					    /[\w가-힣]{2,16}/,    	                          
+                        nickNameFld.value,
+                        nickNameFldErrPnl,
+						"회원 닉네임은 한글 혹은 영문 2~16자 이내로 작성해주세요.");
+                        
+    } //    
     
     ///////////////////////////////////////////////////////////////////////
 
-    // 이메일 필드 입력 후 이벤트 처리 : onkeyup
-    emailFld.onkeyup = (e) => {
-
-        console.log("이메일 필드 onkeyup")
-        // 이메일 필드 유효성 점검(validation)
-        // 기준)
-        /*
-            1) "@", "." 포함여부 점검
-            2) regex(정규표현식) : /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/
-            3) 메시징 : 회원 이메일을 제시된 예와 같이 작성해주세요.
-        */
-        emailCheckFlag = isCheckFldValid(emailFld,
-                        /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/,
-                        emailFld.value,
-                        emailFldErrPnl,
-                        "회원 이메일을 제시된 예와 같이 작성해주세요.");
-    } //     
-
-    // 연락처(휴대폰) 필드 입력 후 이벤트 처리 : onkeyup
-    mobileFld.onkeydown = (e) => {
-
-        console.log("연락처(휴대폰) 필드 onkeyup")
+    // 연락처(휴대폰) 필드 입력 후 이벤트 처리 : onkeyup --> onblur 수정0426
+    /*mobileFld.onblur = (e) => {
+		alert("blur");
+        console.log("연락처(휴대폰) 필드 onkeyup");
         // 연락처 필드 유효성 점검(validation)
         // 기준)
-        /*
-            1) 휴대폰 입력 예시 : ex) 010-1234-5678
-            2) regex(정규표현식) : /^010-\d{4}-\d{4}$/
-            3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
-        */
+        
+        //    1) 휴대폰 입력 예시 : ex) 010-1234-5678
+        //    2) regex(정규표현식) : /^010-\d{4}-\d{4}$/
+        //    3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
+        
         mobileCheckFlag = isCheckFldValid(mobileFld,
                         /^010\d{4}\d{4}$/, // 0402 하이픈 없게 수정했는데 일단 되는지 확인해봐야할듯
                         mobileFld.value,
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
-    } //     
+    } //*/     
 
-
-    // 연락처(집전화) 필드 입력 후 이벤트 처리 : onkeyup
-    phoneFld.onkeyup = (e) => {
-
-        console.log("연락처(집전화) 필드 onkeyup")
-        // 연락처 필드 유효성 점검(validation)
-        // 기준)
-        /*
-            1) 휴대폰 입력 예시 : ex) 02-111-5678
-            2) regex(정규표현식) : /^0\d{1,2}-\d{3,4}-\d{4}$/
-            3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
-        */
-        phoneCheckFlag = isCheckFldValid(phoneFld,
-                        /^0\d{1,2}-\d{3,4}-\d{4}$/,
-                        phoneFld.value,
-                        phoneFldErrPnl,
-                        "회원 연락처(집전화)를 제시된 예와 같이 작성해주세요.");
-    } //     
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -562,6 +447,8 @@ window.onload = () => {
     //    폼 점검 에러를 유발하도록 구성합니다.
 
     memberAddress2Fld.onblur = (e) => {
+	
+		alert("상세주소");
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
         
@@ -575,22 +462,6 @@ window.onload = () => {
 
         addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl);
 
-    } //
-
-    memberAddress2Fld.onkeyup = (e) => {
-
-        // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
-
-        // 1) 우편번호/기본주소가 채워져 있는데 상세주소가 비워져 있는 경우
-        //    - 에러 메시지 : 상세 주소를 입력하십시오.
-
-        // 2) 우편번호/기본주소가 비워져 있는데 상세주소가 채워져 있는 경우
-        //    - 에러 메시지 : 주소 검색을 통해서 우편번호와 기본주소를 입력하십시오.
-
-        console.log("주소 필드에러 메시지 : " + addressFldErrPnl.innerHTML);
-
-        addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl);
-       
     } //
 
     ///////////////////////////////////////////////////////////////////////
@@ -612,193 +483,49 @@ window.onload = () => {
 
     /////////////////////////////////////////////////////////////////
 
-    // 셀렉트 박스로 수정해야함. 0402
-    // 생일 필드 입력 후 이벤트 처리 : onkeyup
-    birthdayFld.onkeyup = (e) => {
-
-        console.log("생일 필드 onkeyup")
-
-        // 생일 필드 유효성 점검(validation)
-        // 기준)
-        /*
-            1) 생일 입력 예시 : ex) 2000-01-01
-            2) regex(정규표현식) : /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
-            3) 메시징 : 회원 생일을 제시된 예와 같이 작성해주세요.
-        */
-    //    birthdayCheckFlag = isCheckFldValid(birthdayFld,
-    //                     /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/,
-    //                     birthdayFld.value,
-    //                     birthdayFldErrPnl,
-    //                     "회원 생일을 제시된 예와 같이 작성해주세요.");
-        
-        /*$(document).ready(function(){            
-            var now = new Date();
-            var year = now.getFullYear();
-            var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
-            var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
-            //년도 selectbox만들기               
-            for(var i = 1900 ; i <= year ; i++) {
-                $('#year').append('<option value="' + i + '">' + i + '년</option>');    
-            }
-            
-            // 월별 selectbox 만들기            
-            for(var i=1; i <= 12; i++) {
-                var mm = i > 9 ? i : "0"+i ;            
-                $('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
-            }
-            
-            // 일별 selectbox 만들기
-            for(var i=1; i <= 31; i++) {
-                var dd = i > 9 ? i : "0"+i ;            
-                $('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
-            }
-            $("#year  > option[value="+year+"]").attr("selected", "true");        
-            $("#month  > option[value="+mon+"]").attr("selected", "true");    
-            $("#day  > option[value="+day+"]").attr("selected", "true");       
-            
-        })*/
-    } //
-
-    /////////////////////////////////////////////////////////////////
-
-    // 성별 필드 점검 이벤트 처리 : onblur
-    // 남자 필드(radio1)
-    genderFld[0].onblur = (e) => {
-
-        genderCheckFlag = isCheckGenderFldValid(genderFld, 
-                                                genderFldErrPnl,
-                                                "성별 정보를 입력하세요.");
-    } //       
-    
-    // 여자 필드(radio2)
-    genderFld[1].onblur = (e) => {
-
-        genderCheckFlag = isCheckGenderFldValid(genderFld, 
-                                                genderFldErrPnl,
-                                                "성별 정보를 입력하세요.");
-    } //            
-
-
-    /////////////////////////////////////////////////////////////////
-
-	// 아이디/이메일/연락처(휴대폰) 중복 점검
-	// 아이디 중복 점검 : AJAX axios
-	idFld.onblur = (e) => {
-		
-		console.log(`아이디 중복 점검 : ${idFld.value}`);
-		
-		idCheckFlag = isCheckFldValid(idFld, 
-                        /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/,
-                        idFld.value,
-                        idFldErrPnl,
-                        "회원 아이디는 8~20사이의 영문으로 시작하여 영문 대소문자/숫자로 입력하십시오.");
-
-		if (idCheckFlag == true) {
-		 
-			axios.get(`/healthyFoodProject/member/hasFld/id/${idFld.value}`)
-				 .then(function(response) {
-					
-					// console.log("서버 응답 : " + JSON.stringify(response));
-					
-					idDuplicatedCheckFlag = response.data;
-					
-					console.log("response.data : ", response.data);
-					// console.log("response.data : ", typeof(response.data));
-	
-					let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
-					console.log(idDupErrMsg);
-					
-					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
-					if (idDuplicatedCheckFlag == true) {
-					
-						alert(idDupErrMsg);
-						idFld.value = "";
-					}					
-						
-				 })
-				 .catch(function(err) {
-					console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
-					//idDuplicatedCheckFlag = false;
-				 });
-			
-		} // if	
-			
-	} //
-	
-	// 이메일 중복 점검 : AJAX axios
-	emailFld.onblur = (e) => {
-		
-		console.log("이메일 중복 점검");
-		
-		emailCheckFlag = isCheckFldValid(emailFld,
-                        /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/,
-                        emailFld.value,
-                        emailFldErrPnl,
-                        "회원 이메일을 제시된 예와 같이 작성해주세요.");
-		 
-		if (emailCheckFlag == true) {
-			
-			axios.get(`/healthyFoodProject/member/hasFld/email/${emailFld.value}`)
-				 .then(function(response) {
-					
-					emailDuplicatedCheckFlag = response.data;
-					console.log("response.data : ", response.data);
-	
-					let emailDupErrMsg = emailDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
-					console.log(emailDupErrMsg)
-					
-					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
-					if (emailDuplicatedCheckFlag == true) {
-					
-						alert(emailDupErrMsg);
-						emailFld.value = "";
-					}
-					
-				 })
-				 .catch(function(err) {
-					console.error("이메일 중복 점검 중 서버 에러가 발견되었습니다.");
-					//emailDuplicatedCheckFlag = false;
-				 });
-		} // if
-			
-	} //
-	
 	// 연락처(휴대폰) 중복 점검 : AJAX axios
 	mobileFld.onblur = (e) => {
 		
-		console.log("연락처(휴대폰) 중복 점검");
-		
 		mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010-\d{4}-\d{4}$/,
+                        /^010\d{4}\d{4}$/,
                         mobileFld.value,
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.")
-		
-		if (mobileCheckFlag == true) {
+
+		mobileDuplicatedCheckFlag = false;
+
+		console.log("mobileCheckFlag => " + mobileCheckFlag);
+		console.log("mobileDuplicatedCheckFlag => " + mobileDuplicatedCheckFlag);
+			
+		if (mobileCheckFlag == true && mobileDuplicatedCheckFlag == false) {
 			 
-			axios.get(`/healthyFoodProject/member/hasFld/mobile/${mobileFld.value}`)
+			console.log("mobile중복점검 진입 확인");
+			
+			// mobile ==> MEMBER_MOBILE 변경함
+			axios.get(`/healthyFoodProject/member/hasFld/MEMBER_MOBILE/${mobileFld.value}`)
 				 .then(function(response) {
 					
 					mobileDuplicatedCheckFlag = response.data;
 					console.log("response.data : ", response.data);
-	
+					
 					let mobileDupErrMsg = mobileDuplicatedCheckFlag == true ? "중복되는 연락처(휴대폰)가 존재합니다" : "사용가능한 연락처(휴대폰)입니다"			   
 					console.log(mobileDupErrMsg);
+					
+					alert(mobileDupErrMsg);
 					
 					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
 					if (mobileDuplicatedCheckFlag == true) {
 
-						alert(mobileDupErrMsg);
 						mobileFld.value = "";
 					}	
 						
 				 })
-				 .catch(function(err) {
+				 .catch(function(err) {//에러 시. 
 					console.error("연락처(휴대폰) 중복 점검 중 서버 에러가 발견되었습니다.");
 					//mobileDuplicatedCheckFlag = false;				
 				 });
 		
-		} // if
+		} // if	
 				
 	} //
 
@@ -817,15 +544,7 @@ window.onload = () => {
         console.log(`아이디 점검 플래그(idCheckFlag) : ${idCheckFlag}`);
         console.log(`패쓰워드 점검 플래그(pwCheckFlag) : ${pwCheckFlag}`);
         console.log(`이름 점검 플래그(nameCheckFlag) : ${nameCheckFlag}`);
-
-        // 성별 점검 플래그 점검
-        // 에러 메시징 보완
-        // genderCheckFlag = isCheckGenderFldValid(genderFld);
-        genderCheckFlag = isCheckGenderFldValid(genderFld, 
-                                                genderFldErrPnl,
-                                                "성별 정보를 입력하세요.");
-
-        console.log(`성별 점검 플래그(genderCheckFlag) : ${genderCheckFlag}`);            
+        console.log(`닉네임 점검 플래그(nickNameCheckFlag) : ${nickNameCheckFlag}`);
 
         // 이메일 및 연락처 점검 플래그
         console.log(`이메일 점검 플래그(emailCheckFlag) : ${emailCheckFlag}`);
@@ -836,7 +555,6 @@ window.onload = () => {
         addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2Fld, addressFldErrPnl); 
 
         console.log(`주소 점검 플래그(addressCheckFlag) : ${addressCheckFlag}`);
-
 		console.log("주소 플래그 동등 여부 " + (addressCheckFlag == false));
 
         // 생일 필드 점검 플래그
@@ -859,12 +577,9 @@ window.onload = () => {
         if (idCheckFlag == true &&
             pwCheckFlag == true &&
             nameCheckFlag == true &&
-            genderCheckFlag == true &&
-            emailCheckFlag == true &&
+            nickNameCheckFlag == true &&
             mobileCheckFlag == true &&
-            phoneCheckFlag == true &&
             addressCheckFlag == true &&
-            birthdayCheckFlag == true &&
 			idDuplicatedCheckFlag == false &&
 			emailDuplicatedCheckFlag == false &&
 			mobileDuplicatedCheckFlag == false)
@@ -884,14 +599,14 @@ window.onload = () => {
             if (idCheckFlag == false) {
 
                 idCheckFlag = isCheckFldValid(idFld, 
-                            /^[a-zA-Z]{1}\w{7,19}$/,
+                            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i,
                             idFld.value,
                             idFldErrPnl,
-                            "회원 아이디는 8~20사이의 영문으로 시작하여 영문 대소문자/숫자로 입력하십시오.");
+                            "회원 아이디는 이메일로 적어주십시오.");
             } //
 
             // 패쓰워드 필드 재점검
-            if (idCheckFlag == false) {
+            if (pwCheckFlag == false) {
 
                 pwCheckFlag = isCheckFldValid(pwFld,                                 
                             /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/,
@@ -911,44 +626,27 @@ window.onload = () => {
                                 "회원 이름은 한글 이름만 허용됩니다. 제시된 예와 같이 작성해주세요.");
 
             } //
-            
-            // 성별 필드 재점검
-            if (genderCheckFlag == false) {
 
-                genderCheckFlag = isCheckGenderFldValid(genderFld, 
-                                                    genderFldErrPnl,
-                                                    "성별 정보를 입력하세요.");
-            } //    
+            // 닉네임 필드 재점검
+            if (nickNameCheckFlag == false) {
 
-            // 이메일 필드 재검검
-            if (emailCheckFlag == false) {
-                
-                emailCheckFlag = isCheckFldValid(emailFld,
-                                /^[a-zA-Z0-9_+.-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/,
-                                emailFld.value,
-                                emailFldErrPnl,
-                                "회원 이메일을 제시된 예와 같이 작성해주세요.");
+                nickNameCheckFlag = isCheckFldValid(nickNameFld,
+					    /[\w가-힣]{2,16}/,    	                          
+                        nickNameFld.value,
+                        nickNameFldErrPnl,
+						"회원 닉네임은 한글 혹은 영문 2~16자 이내로 작성해주세요.");
 
-            } //    
+            } //nickNameCheckFlag
+               
 
             // 연락처 필드 재점검
             if (mobileCheckFlag == false) {
 
                 mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010-\d{4}-\d{4}$/,
+                        /^010\d{4}\d{4}$/,
                         mobileFld.value,
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
-            } // 
-
- 			// 연락처(집전화) 필드 재점검
-            if (phoneCheckFlag == false) {
-
-                phoneCheckFlag = isCheckFldValid(phoneFld,
-                        /^0\d{1,2}-\d{3,4}-\d{4}$/,
-                        phoneFld.value,
-                        phoneFldErrPnl,
-                        "회원 연락처(집전화)를 제시된 예와 같이 작성해주세요.");
             } // 
 
             // 우편번호/주소 필드 재점검
@@ -957,23 +655,9 @@ window.onload = () => {
                 addressCheckFlag = isCheckAddressFldValid(memberZipFld, memberAddress1Fld, jibunAddressFld, memberAddress2Fld, addressFldErrPnl); 
             } //
 
-            /*// 생일 필드 재점검
-            if (birthdayCheckFlag == false) {
-
-                birthdayCheckFlag = isCheckFldValid(birthdayFld,
-                                    /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/,
-                                    birthdayFld.value,
-                                    birthdayFldErrPnl,
-                                    "회원 생일을 제시된 예와 같이 작성해주세요.");
-            } //*/
-
 			// 아이디/이메일/연락처(휴대폰) 중복 재점검에 따른 최종 메시징			
 			if (idDuplicatedCheckFlag == true) {
 				alert("중복되는 아이디가 존재합니다");
-			}
-			
-			if (emailDuplicatedCheckFlag == true) {
-				alert("중복되는 이메일이 존재합니다");
 			}
 			
 			if (mobileDuplicatedCheckFlag == true) {
