@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>사상체질 자가진단 페이지.</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- 구글 폰트 0412 leee  -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+<link rel="stylesheet" th:href="@{/css/sasang_list.css}">
+<link rel="stylesheet" th:href="@{/css/aside.css}">
+
+<style>
+	
+	.flex-container{
+		display: flex;
+	}
+	
+
+</style>
+</head>
+<!-- 
+	0412 leee 선배님이 해주신 진단 페이지 프로젝트 파일에 적용.  
+	0412 leee css, js 파일명 변경 및 경로 변경. 
+-->
+
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl" >
+	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
+
+	<article style="width:100%;">
+		<div class="flex-container">
+		<aside class="flex-item" >
+			<p>사상체질 목록</p>
+				<ul>
+					<li><a th:href="@{/sasang/sasang.do}" >사상체질이란?</a></li>
+					<li><a th:href="@{/sasang/sasangTest.do}" role="button" >사상체질 자가진단</a></li>
+					<li><a href="#" >체질 별 음식</a></li>
+					<li><a href="#" ></a></li>
+				</ul>
+		</aside>
+		      
+		      </div> -->
+		    <script th:src="@{/js/sasang_list2.js}"></script>
+			</article>
+    	</div> 
+	<!--// layout -->	
+</body>
+</html>

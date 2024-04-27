@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 .gitignore
+**/upload_image_we3
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

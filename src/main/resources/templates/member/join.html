@@ -146,8 +146,8 @@
 		                </div>
 		                <!--// 회원 이름 -->
 		                
-		                <!-- 별명 중복 처리 할 건지. -->			
-		                <!-- 회원 별명 -->	
+		                <!-- 닉네임 중복 처리 할 건지. -->			
+		                <!-- 회원 닉네임 -->	
 		                <div id="nick_fld_pnl">	
 		                    <div class="fld_label">
 		                        <label for="memberNick">닉네임</label>
@@ -155,7 +155,12 @@
 		                    <div class="fld_content">
 		                        <input type="text" id="memberNick" name="memberNick" maxlength="20" th:field="*{memberNick}" />       
 		                    </div>							
-		                </div>						
+		                </div>	
+		                
+		                <!-- 회원 닉네임 에러 메시징 -->
+		                <div id="nickName_fld_err_pnl">
+		                </div>
+		                <!--// 회원 닉네임 -->					
 		                 
 		                <!-- 회원  연락처(휴대폰) -->	
 		                <div id="mobile_fld_pnl">	

@@ -19,6 +19,7 @@ public class HomeController {
 		model.addAttribute("arg", "인자");
 		
 		return "home"; 
+//		return "home3"; 
 		
 		// return "redirect:/member/join.do";
 	} //

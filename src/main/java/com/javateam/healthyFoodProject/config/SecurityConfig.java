@@ -51,9 +51,11 @@ public class SecurityConfig {
 		// swagger 항목 예외(열외) 추가 :
 		// 참고) /v2/api-docs : swagger의 전체적인 환경설정 정보를 JSON 형식으로 보여주는 페이지
 		// /v2/api-docs, /swagger-resources/**, /swagger/**, swagger-ui.html
-		// axios 항목 예외 추가
+		// axios 항목 예외 추가 
+		// /swagger/** ==> /swagger-ui/** 변경함. 
+		// /swagger-ui.html  ==>  /swagger-ui/index.html 변경함. 
 		return (web) -> web.ignoring().requestMatchers("/css/**", "/webjars/**", "/img/**",
-				"/images/**", "/js/**", "/v2/api-docs", "/swagger-resources/**", "/swagger/**", "/swagger-ui.html",
+				"/images/**", "/js/**", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/swagger-ui/index.html",
 				"/axios/**", "/bootstrap-icons/**", "/bootstrap/**",
 				"/summernote/**");
 	}
@@ -76,7 +78,10 @@ public class SecurityConfig {
 				// .requestMatchers("/", "/css/**", "/webjars/**", "/images/**", "/js/**",
 				// "/axios/**", "/bootstrap-icons/**").permitAll()
 				.requestMatchers("/","/demo").permitAll()
-				.requestMatchers("/swagger-resources/**", "/swagger/**", "/swagger-ui.html").permitAll()
+				
+				// /swagger/** ==> /swagger-ui/** 변경함. 
+				// /swagger-ui.html  ==>  /swagger-ui/index.html 변경함. 
+				.requestMatchers("/swagger-resources/**", "/swagger-ui/**", "/swagger-ui/index.html").permitAll()
 				.requestMatchers("/member/hasFld/**", "/member/view.do").permitAll()
 				.requestMatchers("/member/update.do", "/member/updateProc.do").authenticated()
 				.requestMatchers("/member/updateSess.do", "/member/updateSessProc.do").authenticated()
