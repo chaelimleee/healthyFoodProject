@@ -246,10 +246,10 @@ window.onload = function(e) {
 	let pw2Fld = document.getElementById("password2");
 	
     // 패쓰워드 에러 패널 인식
-    let pwFldErrPnl = document.getElementById("memberPw_fld_err_pnl");
+    let pwFldErrPnl = document.getElementById("password_fld_err_pnl");
 
     // 연락처(휴대폰) 필드 인식
-    let mobileFld = document.getElementById("memberMobile");
+    let mobileFld = document.getElementById("mobile");
 
     // 연락처(휴대폰) 필드 에러 패널 인식
     let mobileFldErrPnl = document.getElementById("mobile_fld_err_pnl");
@@ -407,6 +407,27 @@ window.onload = function(e) {
 
     ///////////////////////////////////////////////////////////////////////////////////////////
    
+    // 연락처(휴대폰) 필드 입력 후 이벤트 처리 : onblur
+    mobileFld.onblur = () => {
+
+        console.log("연락처(휴대폰) 필드 onblur")
+        // 연락처 필드 유효성 점검(validation)
+        // 기준)
+        /*
+            1) 휴대폰 입력 예시 : ex) 01012345678
+            2) regex(정규표현식) : /^010\d{4}\d{4}$/
+            3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
+        */
+        mobileCheckFlag = isCheckFldValid(mobileFld,
+                        /^010\d{4}\d{4}$/,
+                        mobileFld.value,
+                        mobileFldErrPnl,
+                        "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
+    } //     
+
+
+    ///////////////////////////////////////////////////////////////////////
+
     // 주소 필드 입력 후 이벤트 처리 : 상세주소 필드 => onblur
     // 점검 사항 :
     // 1) 주소 필드의 경우 필수 사항인 경우는 우편번호/기본주소/상세주소가 다 들어가는지 점검해야 합니다.
@@ -467,56 +488,36 @@ window.onload = function(e) {
     /////////////////////////////////////////////////////////////////
 
 	// 연락처(휴대폰) 중복 점검 : AJAX axios
-	mobileFld.onblur = () => {
+	mobileFld.onblur = (e) => {
 		
 		console.log("연락처(휴대폰) 중복 점검");
 		
-		 // 연락처 필드 유효성 점검(validation)
-        // 기준)
-        /*
-            1) 휴대폰 입력 예시 : ex) 01012345678
-            2) regex(정규표현식) : /^010\d{4}\d{4}$/
-            3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
-        */
-        mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010\d{4}\d{4}$/,
-                        mobileFld.value,
-                        mobileFldErrPnl,
-                        "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
-		
-		mobileDuplicatedCheckFlag = false;
-		
-		console.log("mobileCheckFlag => " + mobileCheckFlag);
-		console.log("mobileDuplicatedCheckFlag => " + mobileDuplicatedCheckFlag);
-		
 		// 중복 점검 REST 주소(회원 정보 수정 전용)/인자(id 추가) 변경
 		var idFld = document.getElementById("id"); // 아이디 필드
-		
-		if (mobileCheckFlag == true && mobileDuplicatedCheckFlag == false) {
-		
-			axios.get(`/healthyFoodProject/member/hasFldForUpdate/${idFld.value}/MEMBER_MOBILE/${mobileFld.value}`)
-			 	 .then(function(response) {
+	
+		axios.get(`/healthyFoodProject/member/hasFldForUpdate/${idFld.value}/mobile/${mobileFld.value}`)
+			 .then(function(response) {
 				
-					mobileDuplicatedCheckFlag = response.data;
-					console.log("response.data : ", response.data);
+				mobileDuplicatedCheckFlag = response.data;
+				console.log("response.data : ", response.data);
 
-					let mobileDupErrMsg = mobileDuplicatedCheckFlag == true ? "중복되는 연락처(휴대폰)가 존재합니다" : "사용가능한 연락처(휴대폰)입니다"				   
+				let mobileDupErrMsg = mobileDuplicatedCheckFlag == true ? "중복되는 연락처(휴대폰)가 존재합니다" : "사용가능한 연락처(휴대폰)입니다"				   
 
-					if (mobileDuplicatedCheckFlag == true) {
-						mobileFldErrPnl.innerHTML = mobileDupErrMsg;
-						// CSS 상하 여백 조정
-						mobileFldErrPnl.style.paddingBottom = '20px';
-					} else {
-						mobileFldErrPnl.innerHTML = ""; // 메시지 초기화
-						mobileFldErrPnl.style.paddingBottom = 0; // 메시지 패널 크기 초기화
-					}	
+				if (mobileDuplicatedCheckFlag == true) {
+					mobileFldErrPnl.innerHTML = mobileDupErrMsg;
+					// CSS 상하 여백 조정
+					mobileFldErrPnl.style.paddingBottom = '20px';
+				} else {
+					mobileFldErrPnl.innerHTML = ""; // 메시지 초기화
+					mobileFldErrPnl.style.paddingBottom = 0; // 메시지 패널 크기 초기화
+				}	
 					
-				 })
-			 	.catch(function(err) {
-					console.error("연락처(휴대폰) 중복 점검 중 서버 에러가 발견되었습니다.");
-					// mobileDuplicatedCheckFlag = false;				
-			 	});
-		}// if	
+			 })
+			 .catch(function(err) {
+				console.error("연락처(휴대폰) 중복 점검 중 서버 에러가 발견되었습니다.");
+				// mobileDuplicatedCheckFlag = false;				
+			 });
+			
 	} //
 
 

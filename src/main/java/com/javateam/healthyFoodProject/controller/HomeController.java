@@ -59,12 +59,15 @@ public class HomeController {
     	
 		// Spring CustomProvider 인증(Auth) 에러 메시지 처리
 		Object secuSess = session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+		
+		if(secuSess != null) {
+			log.info("#### 인증 오류 메시지-1 : " + secuSess);
+			log.info("#### 인증 오류 메시지-2 : " + secuSess.toString());
+
+			model.addAttribute("error", "true");
+			model.addAttribute("msg", secuSess);
+		}
 	
-		log.info("#### 인증 오류 메시지-1 : " + secuSess);
-		log.info("#### 인증 오류 메시지-2 : " + secuSess.toString());
-	
-		model.addAttribute("error", "true");
-		model.addAttribute("msg", secuSess);
 	
 		return "login";
 	}	

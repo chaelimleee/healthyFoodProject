@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
-public class PasswordEncoderGenerator {
+public class PwTest {
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -20,17 +20,10 @@ public class PasswordEncoderGenerator {
 	public void test() {
 		
 		log.info("test");
-		int i = 0;
+		String pw2 = "$2a$10$cmzKcHSAro494SZThxumH.XXkoBvz8hEWSL8Oyjl5HWSnzgJa3gCm";
+		String pw = "User12345!";
 		
-		while (i < 10) {
-			String password = "#Abcd1234";
-			
-			String hashedPassword = passwordEncoder.encode(password);
-	
-			log.info("hashedpassword : "+hashedPassword);
-			i++;
-		}
-		
+		assertTrue(passwordEncoder.matches(pw, pw2));
 		
 	} //	
 

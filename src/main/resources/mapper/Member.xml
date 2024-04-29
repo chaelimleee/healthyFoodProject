@@ -89,16 +89,15 @@
 	<!-- 동적 SQL 추가(조거/선택적 update)
 	     동적 SQL : https://mybatis.org/mybatis-3/ko/dynamic-sql.html#trim-where-set -->
 	<update id="updateMember" 
-			parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
+				parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		UPDATE member_tbl
 		<set>
-			<if test="memberPw != null">password = #{password},</if>
-			<if test="memberNick != null">memberNick = #{memberNick},</if>
-			<if test="memberMobile != null">memberMobile = #{memberMobile},</if>
-			<if test="memberZip != null">memberZip = #{memberZip},</if>
-			<if test="memberAddress1 != null">memberAddress1 = #{memberAddress1},</if>
-			<if test="memberAddress2 != null">memberAddress2 = #{memberAddress2},</if>
-			<!-- <if test="memberImg != null">memberImg = #{memberImg}</if> -->
+			<if test="memberPw != null">member_pw = #{memberPw},</if>
+			<if test="memberNick != null">member_nick = #{memberNick},</if>
+			<if test="memberMobile != null">member_mobile = #{memberMobile},</if>
+			<if test="memberZip != null">member_zip = #{memberZip},</if>
+			<if test="memberAddress1 != null">member_address1 = #{memberAddress1},</if>
+			<if test="memberAddress2 != null">member_address2 = #{memberAddress2}</if>
 		</set>
 		WHERE MEMBER_EMAIL = #{memberEmail}
 	</update>

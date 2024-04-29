@@ -82,6 +82,8 @@ public class MemberDAO {
 	} //
 	
 	public void updateMember(MemberDTO memberDTO) {
+		log.info("memberDAO.updateMember memberDTO =>" + memberDTO);
+		log.info("memberDAO.updateMember pw =>" + (memberDTO.getMemberPw() == null));
 		sqlSession.update("mapper.Member.updateMember", memberDTO);
 	}
 	

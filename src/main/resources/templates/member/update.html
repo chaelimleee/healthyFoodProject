@@ -60,7 +60,7 @@
 		                    <div class="fld_label">
 		                        <label for="memberEmail">아이디</label>
 		                    </div>
-		                    <div class="fld_content" th:text="*{memberEmail}"></div>							
+		                    <div class="fld_content" th:text="*{memberEmail}"></div>
 		                </div>
 		                <!--// 회원 아이디-->
 		                
@@ -133,7 +133,7 @@
 		                    </div>
 		                    <div class="fld_content">
 		                        <input type="text" id="memberMobile" memberName="memberMobile" th:field="*{memberMobile}"/>
-		                        ex) 010-1234-5678
+		                        ex) 01012345678
 		                    </div>    
 		                </div>                    
 		                
@@ -230,12 +230,12 @@
 						
 						<!-- 히든 필드들  -->
 						<div>
-							<input type="hidden" id="memberEmail" memberName="memberEmail" th:field="*{memberEmail}" readonly />
-							<input type="hidden" id="memberPw" memberName="memberPw" th:field="*{memberPw}" readonly />
-							<input type="hidden" id="memberName" memberName="memberName" th:field="*{memberName}" readonly />
-							<input type="hidden" id="memberBirth" memberName="memberBirth" th:field="*{memberBirth}" readonly />
-							<input type="hidden" id="memberDate" memberName="memberDate" th:field="*{memberDate}" readonly />
-							<input type="hidden" id="enabled" memberName="enabled" th:field="*{enabled}" />
+							<input type="hidden" id="id" name="memberEmail" th:field="*{memberEmail}" readonly />
+							<input type="hidden" id="memberPw" name="memberPw" th:field="*{memberPw}" readonly />
+							<input type="hidden" id="memberName" name="memberName" th:field="*{memberName}" readonly />
+							<input type="hidden" id="memberBirth" name="memberBirth" th:field="*{memberBirth}" readonly />
+							<input type="hidden" id="memberDate" name="memberDate" th:field="*{memberDate}" readonly />
+							<input type="hidden" id="enabled" name="enabled" th:field="*{enabled}" />
 						</div>
 						<!--// 히든 필드들  -->
 		                
