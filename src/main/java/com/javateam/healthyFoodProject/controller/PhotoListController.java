@@ -121,6 +121,7 @@ public class PhotoListController {
 		int startPage = PageVO.getStartPage(currPage, limit);
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
 		int endPage = startPage + 10;
+		log.info("maxPage ==> "+ maxPage);
 
 		if (endPage > maxPage)
 			endPage = maxPage;

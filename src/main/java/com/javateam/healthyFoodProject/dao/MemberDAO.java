@@ -1,5 +1,8 @@
 package com.javateam.healthyFoodProject.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +31,17 @@ public class MemberDAO {
 //		sqlSession.insert("mapper.Member.insertMember", memberDTO);
 //	}
 	
-	public void insertMember(MemberDTO memberDTO) {
+	public void insertMember(MemberDTO memberDTO) throws ParseException {
 		String memberBirth = MemberDTO.formatBirthAll(memberDTO.getMemberYear(), memberDTO.getMemberMonth(), memberDTO.getMemberDay());
 		
-		memberDTO.setMemberBirthAll(memberBirth);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date memberD = new Date();
+		
+		memberD = format.parse(memberBirth);
+		log.info("memberBirth ==>" + memberBirth);
+		log.info("memberD ==>" + memberD);
+		memberDTO.setMemberBirthAll(memberD);
+		
 		sqlSession.insert("mapper.Member.insertMember", memberDTO);
 	}
 	

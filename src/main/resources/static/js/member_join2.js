@@ -269,8 +269,7 @@ window.onload = () => {
 	
     // 아이디 필드 입력 후 이벤트 처리
     idFld.onblur = (e) => {
-		//alert("blur");
-        // console.log("id fld blur");
+
         // 아이디 필드 값 확인
         console.log(`아이디 필드 값 : ${idFld.value}`);
 
@@ -292,70 +291,49 @@ window.onload = () => {
                             idFldErrPnl,
                             "회원 아이디는 이메일로 적어주십시오.");
 		
+		idDuplicatedCheckFlag = false;
+		
         // 폼 유효성 점검(test)
 		console.log("idCheckFlag => " + idCheckFlag);
 		console.log("idDuplicatedCheckFlag => " + idDuplicatedCheckFlag);
 
         if (idCheckFlag == true && idDuplicatedCheckFlag == false) {
 
-            let idErrMsg = "회원 아이디는 이메일로 적어주십시오.";
-
-            // 에러 패널 메시지 표시 : alert => 에러 패널
-            // : 패널 높이(50px), 메시지(red)
-            idFldErrPnl.style.height = "50px"; 
-			idFldErrPnl.innerHTML = idErrMsg;
+			console.log("아이디 중복 점검 진입");
+			
+			// 아이디(이메일) 중복 점검
+			axios.get(`/healthyFoodProject/member/hasFld/MEMBER_EMAIL/${idFld.value}`)
+				 .then(function(response) {
+					
+					alert("중복 점검 아이디!!");
+					
+					idDuplicatedCheckFlag = response.data;
+					
+					console.log("response.data : ", response.data);
 	
-            // 기존 필드 데이터 초기화
-            idFld.value = "";
-            //idFld.focus(); // 재입력 준비     
-            
+					let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
+					console.log(idDupErrMsg);
+					
+					alert(idDupErrMsg);
+					
+					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
+					if (idDuplicatedCheckFlag == true) {
+					
+						idFld.value = "";
+					}					
+						
+				 })
+				 .catch(function(err) {
+					console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
+				 });
+			
+            // 에러 패널 초기화
+            idFldErrPnl.style.height = "0"; 
+            idFldErrPnl.innerHTML = "";
+
             // 에러 점검 플래그
-            idCheckFlag = false;
-
-        } else { // 정상
-			
-			alert("아이디 중복 점검 진입");
-			
-			console.log("idCheckFlag 확인 > " + idCheckFlag);
-			console.log("idDuplicatedCheckFlag 확인 > " + idDuplicatedCheckFlag);
-						
-			if (idCheckFlag == true && idDuplicatedCheckFlag == false) {
-				
-				// 아이디(이메일) 중복 점검
-				axios.get(`/healthyFoodProject/member/hasFld/MEMBER_EMAIL/${idFld.value}`)
-					 .then(function(response) {
-						
-						alert("중복 점검 아이디!!");
-						
-						idDuplicatedCheckFlag = response.data;
-						
-						console.log("response.data : ", response.data);
-		
-						let idDupErrMsg = idDuplicatedCheckFlag == true ? "중복되는 이메일이 존재합니다" : "사용가능한 이메일입니다"				   
-						console.log(idDupErrMsg);
-						
-						alert(idDupErrMsg);
-						
-						// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
-						if (idDuplicatedCheckFlag == true) {
-						
-							idFld.value = "";
-						}					
-							
-					 })
-					 .catch(function(err) {
-						console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
-					 });
-				
-	            // 에러 패널 초기화
-	            idFldErrPnl.style.height = "0"; 
-	            idFldErrPnl.innerHTML = "";
-	
-	            // 에러 점검 플래그
-	            idCheckFlag = true;
-	        } // if 아이디 중복 점검
-
-        } // if
+            idCheckFlag = true;
+        } // if 아이디 중복 점검
 
     } // idFld.onblur ...
 
@@ -470,7 +448,7 @@ window.onload = () => {
 
     memberAddress2Fld.onblur = (e) => {
 	
-		alert("상세주소");
+		console.log("주소 필드 점검");
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
         
@@ -513,9 +491,9 @@ window.onload = () => {
                         mobileFld.value,
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.")
-		
+
 		mobileDuplicatedCheckFlag = false;
-		
+
 		console.log("mobileCheckFlag => " + mobileCheckFlag);
 		console.log("mobileDuplicatedCheckFlag => " + mobileDuplicatedCheckFlag);
 			

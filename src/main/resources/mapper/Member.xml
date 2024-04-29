@@ -98,9 +98,9 @@
 			<if test="memberZip != null">memberZip = #{memberZip},</if>
 			<if test="memberAddress1 != null">memberAddress1 = #{memberAddress1},</if>
 			<if test="memberAddress2 != null">memberAddress2 = #{memberAddress2},</if>
-			<if test="memberImg != null">memberImg = #{memberImg}</if>
+			<!-- <if test="memberImg != null">memberImg = #{memberImg}</if> -->
 		</set>
-		WHERE MEMBER_EMAIL = #{id}
+		WHERE MEMBER_EMAIL = #{memberEmail}
 	</update>
 
 	<!-- 전체 회원 수 -->

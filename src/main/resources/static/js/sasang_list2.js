@@ -126,34 +126,12 @@ function showResult(memberEmail, maxAnswer, maxCount,selectedAnswers) {
         localStorage.setItem("goodFoodList", type.goodFoodList);
         localStorage.setItem("foodRecommend", JSON.stringify(type.foodRecommend));
 
-
-		axios.get(`/healthyFoodProject/sasang/sasangResult.do/${type.name}`)
-				 .then(function(response) {
-					
-						let responseData = response.data;
-						console.log("response.data : ", responseData);
-						
-						// alert(responseData);
-						
-						/*if(responseData == '회원정보 체질 수정에 성공하셨습니다.'){
-							let result = document.getElementById('result');
-							result.innerHTML=resultText;
-						} else {
-							result.innerHTML='';
-						}*/
-					 })
-					 .catch(function(err) {
-						console.error("서버 에러가 발생했습니다. >> " + err);
-						alert(err);
-						//result.innerHTML='';
-					 }
-			 );
-			 // axios
-		window.location.href = "sasangResult.do/" + type.name;
-        //window.location.href = "sasangResult.do/"+memberEmail + "/" + type.name;
-		//window.location.href = "sasangResult.do";	
+		alert(type.name + "에 대한 사상체질 진단 요청");
+		
+		// sasangResult.do/ ==> /healthyFoodProject/sasang/sasangResult.do/ 수정함 0427 leee
+		window.location.href = "/healthyFoodProject/sasang/sasangResult.do/" + type.name;
+		
 		return type.name;
-	
         // result.html로 이동
 	} // if
 	

@@ -205,6 +205,9 @@ window.onload = () => {
 
     // 닉네임 점검 플래그
     let nickNameCheckFlag = false;
+    
+	// 닉네임 중복 점검 플래그
+    let nickNameDuplicatedCheckFlag = false;
 
     // 연락처 점검 플래그
     let mobileCheckFlag = false;
@@ -339,12 +342,10 @@ window.onload = () => {
 
     //////////////////////////////////////           
 
-    // 패쓰워드 필드 입력 후 이벤트 처리 : blur
-    pwFld.onblur = (e) => {
+    // 패쓰워드 필드 입력 후 이벤트 처리 : keyup: 다 완성했다는 보장은 없음(실시간) // onblur 다 입력하고 빠져나갈 떼
+    pwFld.onblur = (e) => { 
 		
-        // console.log("패쓰워드 필드 blur")
-        // 패쓰워드 필드 유효성 점검(validation)
-        // 기준)
+		// 기준)
         /*
             1) 길이(length) 8~20 : {8,20}
             2) 최소 1개의 숫자 포함 : (?=.*\d)
@@ -354,17 +355,7 @@ window.onload = () => {
             6) regex(정규표현식) : (?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}
             7) 메시징 : 회원 패쓰워드는 영문 대소/숫자/특수문자 1개이상 포함하여 8~20자로 작성하십시오..
         */
-        pwCheckFlag = isCheckFldValid(pwFld,                                 
-                        /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/,
-                        "",
-                        pwFldErrPnl,
-                        "회원 패쓰워드는 영문 대소/숫자/특수문자 "+ 
-                        "1개이상 포함하여 8~20자로 작성하십시오.");
-    } //     
-
-    // 패쓰워드 필드 입력 후 이벤트 처리 : keyup: 다 완성했다는 보장은 없음(실시간) // onblur 다 입력하고 빠져나갈 떼
-    pwFld.onblur = (e) => { 
-
+		
         console.log("패쓰워드 필드 keyup")
         pwCheckFlag = isCheckFldValid(pwFld,                                 
                         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/,
@@ -375,9 +366,9 @@ window.onload = () => {
 
     /////////////////////////////////////
 
-    // 이름 필드 입력 후 이벤트 처리 : blur
+    // 이름 필드 입력 후 이벤트 처리 : keyup
     nameFld.onblur = (e) => {
-        console.log("이름 필드 blur")
+		
         // 이름 필드 유효성 점검(validation)
         // 기준)
         /*
@@ -386,16 +377,9 @@ window.onload = () => {
             3) regex(정규표현식) : /^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/
             4) 메시징 : 회원 이름은 한글 이름만 허용됩니다. 제시된 예와 같이 작성해주세요.
         */
-        nameCheckFlag = isCheckFldValid(nameFld,                                 
-                        /^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,
-                        "",
-                        nameFldErrPnl,
-                        "회원 이름은 한글 이름만 허용됩니다. 제시된 예와 같이 작성해주세요.");
-    } //     
+		
+        console.log("이름 필드 점검");
 
-    // 이름 필드 입력 후 이벤트 처리 : keyup
-    nameFld.onblur = (e) => {
-        console.log("이름 필드 blur")
                         /*/^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,*/
         nameCheckFlag = isCheckFldValid(nameFld,  
 						/^[가-힣]{1,2}[\s]{1}[가-힣]{1,47}$/,                            
@@ -406,38 +390,62 @@ window.onload = () => {
 
     ///////////////////////////////////////////////////////////////////////
 	
-	// 닉네임 필드 입력 후 이벤트 처리 : keyup
+	// 닉네임 필드 입력 후 이벤트 처리 : onblur
     nickNameFld.onblur = (e) => {
+		
         console.log("닉네임 필드 blur")
         nickNameCheckFlag = isCheckFldValid(nickNameFld,
-					    /[\w가-힣]{2,16}/,    	                          
+					    /^[\w가-힣]{2,16}$/,    	                          
                         nickNameFld.value,
                         nickNameFldErrPnl,
 						"회원 닉네임은 한글 혹은 영문 2~16자 이내로 작성해주세요.");
+		
+		nickNameDuplicatedCheckFlag = false;
+		
+		// 폼 유효성 점검(test)
+		console.log("nickNameCheckFlag => " + nickNameCheckFlag);
+		console.log("nickNameDuplicatedCheckFlag => " + nickNameDuplicatedCheckFlag);
+
+        if (nickNameCheckFlag == true && nickNameDuplicatedCheckFlag == false) {
+
+			console.log("닉네임 중복 점검 진입");
+			
+			// 닉네임 중복 점검
+			axios.get(`/healthyFoodProject/member/hasFld/MEMBER_NICK/${nickNameFld.value}`)
+				 .then(function(response) {
+					
+					alert("중복 점검 닉네임!!");
+					
+					nickNameDuplicatedCheckFlag = response.data;
+					
+					console.log("response.data : ", response.data);
+	
+					let nickNameDupErrMsg = nickNameDuplicatedCheckFlag == true ? "중복되는 닉네임이 존재합니다" : "사용가능한 닉네임입니다"				   
+					console.log(nickNameDupErrMsg);
+					
+					alert(nickNameDupErrMsg);
+					
+					// 메시지 반복 출력 방지 : 출력할 메시지 있으면 출력
+					if (nickNameDuplicatedCheckFlag == true) {
+					
+						nickNameFld.value = "";
+					}					
+						
+				 })
+				 .catch(function(err) {
+					console.error("이메일아이디 중복 점검 중 서버 에러가 발견되었습니다.");
+				 });
+			
+            // 에러 패널 초기화
+            nickNameFldErrPnl.style.height = "0"; 
+            nickNameFldErrPnl.innerHTML = "";
+
+            // 에러 점검 플래그
+            nickNameCheckFlag = true;
+        } // if 아이디 중복 점검
                         
     } //    
     
-    ///////////////////////////////////////////////////////////////////////
-
-    // 연락처(휴대폰) 필드 입력 후 이벤트 처리 : onkeyup --> onblur 수정0426
-    /*mobileFld.onblur = (e) => {
-		alert("blur");
-        console.log("연락처(휴대폰) 필드 onkeyup");
-        // 연락처 필드 유효성 점검(validation)
-        // 기준)
-        
-        //    1) 휴대폰 입력 예시 : ex) 010-1234-5678
-        //    2) regex(정규표현식) : /^010-\d{4}-\d{4}$/
-        //    3) 메시징 : 회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.
-        
-        mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010\d{4}\d{4}$/, // 0402 하이픈 없게 수정했는데 일단 되는지 확인해봐야할듯
-                        mobileFld.value,
-                        mobileFldErrPnl,
-                        "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");
-    } //*/     
-
-
     ///////////////////////////////////////////////////////////////////////
 
     // 주소 필드 입력 후 이벤트 처리 : 상세주소 필드 => onblur
@@ -448,7 +456,7 @@ window.onload = () => {
 
     memberAddress2Fld.onblur = (e) => {
 	
-		alert("상세주소");
+		console.log("상세주소 폼 점검");
 
         // 점검 경우(주소 정보가 필수사항이 아닌 경우) : 점검 오류 발생 경우
         
@@ -631,7 +639,7 @@ window.onload = () => {
             if (nickNameCheckFlag == false) {
 
                 nickNameCheckFlag = isCheckFldValid(nickNameFld,
-					    /[\w가-힣]{2,16}/,    	                          
+					    /^[\w가-힣]{2,16}$/,    	                          
                         nickNameFld.value,
                         nickNameFldErrPnl,
 						"회원 닉네임은 한글 혹은 영문 2~16자 이내로 작성해주세요.");

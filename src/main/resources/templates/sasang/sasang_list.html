@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout}"
 	lang="ko-kr">
@@ -11,18 +11,19 @@
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
-<!-- 구글 폰트 0412 leee  -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- 구글 폰트 0412 leee --> 
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
+ -->
 <!-- axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- bootstrap icons :  -->
-<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 <link rel="stylesheet" th:href="@{/css/sasang_list.css}">
 <link rel="stylesheet" th:href="@{/css/aside.css}">
+<link href="img/favicon.ico" rel="icon">
 
 <style>
 	
@@ -43,6 +44,21 @@
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl" >
 	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
+	
+	<!-- Page Header Start -->
+    <!-- <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <h1 class="display-3 mb-3 animated slideInDown">About Us</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page">About Us</li>
+                </ol>
+            </nav>
+        </div>
+    </div> -->
+    <!-- Page Header End -->
 
 	<article style="width:100%;">
 		<div class="flex-container">
@@ -508,5 +524,6 @@
     	</div> 
     	</div> 
 	<!--// layout -->	
+	
 </body>
 </html>

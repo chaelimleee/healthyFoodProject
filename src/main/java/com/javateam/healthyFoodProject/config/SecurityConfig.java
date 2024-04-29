@@ -108,7 +108,7 @@ public class SecurityConfig {
         .requestMatchers("/board/write.do","/board/writeProc.do",
                  "/board/update.do", "/board/updateProc.do",
                  "/board/replyWrite.do",
-                  "/board/replyUpdate.do", 
+                 "/board/replyUpdate.do", 
                  "/board/replyDelete.do",
                  "/board/deleteProc.do",
                  "/photo_board/write.do","/photo_board/writeProc.do",

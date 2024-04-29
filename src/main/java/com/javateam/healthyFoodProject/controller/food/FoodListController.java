@@ -32,7 +32,7 @@ public class FoodListController {
 
 	@GetMapping("list.do")
 	public String list(@RequestParam(value = "currPage", defaultValue = "1") int currPage,
-			@RequestParam(value = "limit", defaultValue = "10") int limit,
+			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 
 		log.info("게시글 목록");
@@ -62,7 +62,7 @@ public class FoodListController {
 		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
 		int startPage = PageVO.getStartPage(currPage, limit);
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-		int endPage = startPage + 10;
+		int endPage = startPage + 20;
 
 		if (endPage > maxPage)
 			endPage = maxPage;

@@ -19,7 +19,6 @@
 	0402 11:22 생일 셀렉트 박스 수정. js를 스크립트로 추가함. 
 -->
 
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -53,11 +52,13 @@
 	
 	<!-- jQuery 0402 추가함 !! 생일 셀렉트 박스 사용위해서.-->
 	<script type="text/javascript">
-		$(document).ready(function(){            
+		$(document).ready(function(){
+			
 	        var now = new Date();
 	        var year = now.getFullYear();
 	        var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
-	        var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+	        var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());  
+	        
 	        //년도 selectbox만들기               
 	        for(var i = 1900 ; i <= year ; i++) {
 	            $('#year').append('<option value="' + i + '">' + i + '년</option>');    

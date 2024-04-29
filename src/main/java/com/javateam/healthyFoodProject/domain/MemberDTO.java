@@ -72,6 +72,7 @@ public class MemberDTO {
 	private String memberMobile;
 
 	/** 6. 회원 생년월일 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date memberBirth;
 	
 	/** 6. 회원 생일 년도 */ // 추가수정
@@ -84,7 +85,8 @@ public class MemberDTO {
 	private String memberDay;
 	
 	/** 6. 회원 생일 더함.  */  // 추가수정
-	private String memberBirthAll;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date memberBirthAll;
 	
 	/** 7. 회원 우편번호 */
 	private String memberZip;
@@ -132,7 +134,7 @@ public class MemberDTO {
 				
 				Method method = memberDTO.getClass().getDeclaredMethod("get"+StringUtils.capitalize(fld.getName()));
 				
-				if (fld.getName().equals("memberDate")) {
+				if (fld.getName().equals("memberBirthAll") ||fld.getName().equals("memberDate")) {
 				
 					map.put(fld.getName(), Arrays.asList(new SimpleDateFormat("yyyy-MM-dd").format(method.invoke(memberDTO))));
 					
@@ -163,7 +165,7 @@ public class MemberDTO {
 							field = this.getClass().getDeclaredField(fldName);
 							field.setAccessible(true);
 							
-							if (!fldName.equals("memberDate")) {
+							if (!fldName.equals("memberBirthAll") || !fldName.equals("memberDate")) {
 								field.set(this, requestMap.get(fldName));
 							}
 							

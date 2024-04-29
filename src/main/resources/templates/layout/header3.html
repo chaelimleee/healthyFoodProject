@@ -334,8 +334,16 @@
 			<br><br><br>
 			
 		</div> <!-- 인자현황판 -->
-			
-	<!-- Navbar Start -->
+	
+		    
+	   <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
     <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
             <div class="col-lg-6 px-5 text-start">
@@ -382,18 +390,11 @@
                         </div>
                     </div>
                     
-                    <a th:href="@{/member/update.do}" class="nav-link active">회원수정</a>
-
                     <a href="#args_board" class="nav-link active"
 					   style="color:#fff;"
 					   data-bs-toggle="collapse" data-bs-target="#args_board" aria-expanded="false" aria-controls="args_board">
 					   인자현황
 					</a>
-					
-					<a th:href="@{/logout}" class="nav-item nav-link" sec:authorize="isAuthenticated()" >
-						로그아웃
-					</a>
-					
 					<a th:href="@{/login}" class="nav-item nav-link" sec:authorize="isAnonymous()" >
 						로그인
 					</a>
@@ -412,6 +413,10 @@
             </div>
         </nav>
     </div>
+    <!-- Page Header End -->
+	
+        
+    </div>
     <!-- Navbar End -->
     
      <!-- Carousel Start -->
@@ -424,7 +429,7 @@
                         <div class="container">
                             <div class="row justify-content-start">
                                 <div class="col-lg-7">
-                                    <h1 class="display-2 mb-5 animated slideInDown">사상체질<br>맞춤 건강식 레시피</h1>
+                                    <h1 class="display-2 mb-5 animated slideInDown">사상체질 맞춤 건강식 레시피</h1>
                                     <!-- <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5"></a>
                                     <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a> -->
                                 </div>
@@ -472,4 +477,4 @@
  -->    <!-- Template Javascript -->
     <script src="js/main.js"></script>
  </body>
- </html>
+ 

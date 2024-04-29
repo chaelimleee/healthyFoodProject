@@ -26,13 +26,13 @@ public class FindByFoodIngredientMainInsideInTest {
 
 		log.info("테스트 >>");
 		
-		List<String> list3 = foodDAO.findSasangGoodIngredientMainBySasangName("태음인");
+		//List<String> list3 = foodDAO.findSasangGoodIngredientMainBySasangName("태음인");
 		
 //		List<String> list = new ArrayList<>();
 //		list.addAll(Arrays.asList(new String[]{"감자","고구마","갈치"}));
-		List<FoodVO> list2 = foodDAO.findByFoodIngredientMainInsideIn(list3);
+		//List<FoodVO> list2 = foodDAO.findByFoodIngredientMainInsideIn(list3);
 		
-		log.info("list 확인 >> " + list2.get(0));
+		//log.info("list 확인 >> " + list2.get(0));
 		
 	}
 }

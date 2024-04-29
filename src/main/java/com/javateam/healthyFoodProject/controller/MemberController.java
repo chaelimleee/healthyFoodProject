@@ -176,6 +176,7 @@ public class MemberController {
 		String movePath = "";
 				
 		boolean result = memberService.updateMember(memberUpdateDTO);
+		log.info("result Update ==> " + result); // false 나옴
 		
 		if (result == true) {
 			

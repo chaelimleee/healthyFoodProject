@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout}"
 	lang="ko-kr">
@@ -9,8 +10,7 @@
 
 <meta charset="UTF-8">
 <title>건강식 레시피</title>
-<!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
@@ -21,7 +21,8 @@
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
 
 <!-- bootstrap icons :  -->
-<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
 <style>
 
 
@@ -41,7 +42,6 @@
 	
 	a{
 		text-align:center;
-		text-decoration: none;
 	}
 	
  /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
@@ -128,84 +128,33 @@ window.onload = function() {
 
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
-	
-    <!-- Page Header End -->
-	<div class="content_sect_pnl" style="width: 80%;">
-	
-	<!-- Page Header Start -->
-    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container">
-            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
-            <nav aria-label="breadcrumb animated slideInDown">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-	
-		<!-- Product Start -->
-	    <div class="container-xxl py-5">
-	        <div class="container">
-	            <div class="row g-0 gx-5 align-items-end">
-	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
-	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
-	                    </div>
-	                </div>
-	                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
-	                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
-	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary border-2 active" data-bs-toggle="pill" href="#tab-1">Vegetable</a>
-	                        </li>
-	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-2">Fruits </a>
-	                        </li>
-	                        <li class="nav-item me-0">
-	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-3">Fresh</a>
-	                        </li>
-	                    </ul>
-	                </div>
-	            </div>
-	            <div class="tab-content">
-	                <div id="tab-1" class="tab-pane fade show p-0 active">
-	                    <div class="row g-4">
-	                        <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
-	                             th:if="${not #lists.isEmpty(foodList) && pageVO.listCount > 0}"
-								 th:each="food : ${foodList}">
-	                            <div class="product-item" th:onclick="|location.href='/healthyFoodProject/food/view.do/'+ ${food.foodCode}|">
-	                                <div class="position-relative bg-light overflow-hidden">
-	                                	<img class="img-fluid w-100" th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-	                                    <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
-	                                </div>
-	                                <div class="text-center p-4">
-	                                	<a class="d-block h5 mb-2" th:text="${food.foodName}" ></a>
-	                                    <span class="text-primary me-1">$19.00</span>
-	                                    <span class="text-body text-decoration-line-through">$29.00</span>
-	                                </div>
-	                                <div class="d-flex border-top">
-	                                    <small class="w-50 text-center border-end py-2">
-	                                        <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>View detail</a>
-	                                    </small>
-	                                    <small class="w-50 text-center py-2">
-	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
-	                                    </small>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div class="col-12 text-center">
-                            <a class="btn btn-primary rounded-pill py-3 px-5" href="">Browse More Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End -->
 			
+			<!-- 푸드 건강식 레시피 게시판 grid 시작.   -->
+			<!-- style 줘서 가운데 정렬 됐는데 어느정도 줄이면 또 왼쪽으로 감. 049 leee  -->
+			<div class="content_sect_pnl" style="width: 80%;">
+			
+				<div class="row mt-3" style="margin:0 auto;">
+				
+					<div class="tablePhoto col-12 d-flex justify-content-center" style="min-height:40vh;"
+						 th:if="${#lists.isEmpty(foodList) && pageVO.listCount == 0}">
+						게시글 내용이 없습니다. 
+					</div> 
+					
+					<div class="tablePhoto col-3 btn"
+						th:if="${not #lists.isEmpty(foodList) && pageVO.listCount > 0}"
+						th:each="food : ${foodList}" role="button">
+						<div class="items" th:onclick="|location.href='/healthyFoodProject/food/view.do/'+ ${food.foodCode}|"><!--th:utext == html 이 해석이 됨. 파싱이 됨.   -->
+							<!-- margin:auto; : 가운데 정렬.  -->
+							<div style="width:300px; height:300px; overflow : hidden; margin:auto; ">
+								<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
+							</div>
+							<a th:text="${food.foodName}" ></a>
+						</div>
+					</div>
+				</div>
+			
+				<!--// 푸드 건강식 레시피 게시판 grid 끝.   -->
+				
 			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
