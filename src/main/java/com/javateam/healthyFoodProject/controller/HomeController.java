@@ -19,7 +19,7 @@ public class HomeController {
 		model.addAttribute("arg", "인자");
 		
 //		return "home"; 
-		return "home3"; 
+		return "home4"; 
 		
 		// return "redirect:/member/join.do";
 	} //
@@ -83,7 +83,7 @@ public class HomeController {
 		log.error("403 mapping");
     	
 		model.addAttribute("errMsg", "페이지 접근 권한이 없습니다.");
-		model.addAttribute("movePage", "/welcome");
+		model.addAttribute("movePage", "/");
 	
 		return "/error/error";
 	}	

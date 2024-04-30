@@ -47,7 +47,7 @@ public class QnaDeleteController {
 		// 게시글 삭제 성공시에는 게시글 목록으로 이동(이미 삭제되었으므로 이동할 게시글이 없음)
 		// 게시글 삭제 실패시에는 게시글 보기로 이동
 		String returnPath; // 글삭제 "성공/실패" 모두 "/error/error"로 가도록 재설정
-		String movePage = "/qna/view.do/" + qnaCode; // 리턴(이동) 페이지
+		String movePage = "/qna/qna_view.do/" + qnaCode + "/yes"; // 리턴(이동) 페이지, 0423 song view.do ->qna_view.do 변경
 		
 		String msg = ""; // 메시지
 		

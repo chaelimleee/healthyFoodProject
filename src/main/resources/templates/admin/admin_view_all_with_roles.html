@@ -32,6 +32,18 @@
 	
 		<div class="content_sect_pnl">
 		
+		<!-- Page Header Start -->
+	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 300px;">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown">회원관리</h1>
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                   <!--  <li class="breadcrumb-item text-dark active" aria-current="page">관리자</li> -->
+	                </ol>
+	            </nav>
+	        </div>
+	    </div>
+	
 			<!-- (검색할) 회원 정보가 없을 경우 -->
 			<div th:if="${#lists.isEmpty(members)}">
 			
@@ -72,6 +84,7 @@
 				회원 관리
 				<!-- 인자 현황 버튼 이동 -->
 				&nbsp;<button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#demo">인자 현황</button>
+				&nbsp;<a class="btn btn-primary" th:href="@{/admin/adminQna.do}" role="button">1:1 문의 알림</a>
 			</h2>
 			
 			<!-- 회원정보 시작 -->				
@@ -79,7 +92,6 @@
 				<thead>
 					<tr>
 						<th>번호</th>
-						<th>회원이미지</th>
 						<th>아이디</th>
 						<th>닉네임</th>
 						<th>이름</th>

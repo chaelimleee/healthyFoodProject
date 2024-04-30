@@ -36,7 +36,7 @@ div.main_sect_pnl {
 	/* 컨텐츠 중앙 정렬 */
 	display : flex;
 	/*margin-top: 1em;*/
-	padding-top: 70px;
+	/*padding-top: 70px;*/
 	/* align-items:center; */
 	justify-content:center; 
 	margin:auto;/*가운데 정렬 !!! 0418 leee*/
@@ -49,8 +49,8 @@ div.content_sect_pnl {
 	height:100%;
 	overflow:auto;
 	background-color:#fff;
-	padding-left:20px; /* 좌측만 여백 할당 */
-	padding-top:20px;  /* 좌측만 여백 할당 */
+	/*padding-left:20px; *//* 좌측만 여백 할당 */
+	/*padding-top:20px;*/  /* 좌측만 여백 할당 */
 	margin:auto;		
 } 
 

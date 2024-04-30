@@ -76,7 +76,7 @@ public class MemberUpdateSessController {
 			
 		} 
 		
-		return "/member/updateSess";	
+		return "/member/member_update_sess";	
 	}
 	
 	@PostMapping("/updateSessProc.do")
@@ -129,7 +129,7 @@ public class MemberUpdateSessController {
 		ra.addFlashAttribute("msg", msg);
 				
 		return "redirect:/member/updateSess.do"; // 임시 조치
-		// return "redirect:/welcome";
+		// return "redirect:/";
 	}	
 	
 }

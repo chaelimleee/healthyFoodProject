@@ -67,7 +67,7 @@ public class BoardSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/board/list";		
+		return "/board/board_list";		
 	} //
 
 }

@@ -78,7 +78,7 @@ public class AdminSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/admin/viewAllWithRoles";
+		return "/admin/admin_view_all_with_roles";
 	} //
 	
 } //

@@ -67,7 +67,7 @@ public class QnaSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/qna/list";		
+		return "/qna/qna_list";		
 	} //
 
 }

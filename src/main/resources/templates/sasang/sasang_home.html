@@ -12,9 +12,9 @@
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- 구글 폰트 0412 leee  -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet"> -->
 
 <!-- axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -23,14 +23,47 @@
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 <link rel="stylesheet" th:href="@{/css/sasang_list.css}">
 <link rel="stylesheet" th:href="@{/css/aside.css}">
+<link href="img/favicon.ico" rel="icon">
 
 <style>
+
+	a{
+		text-decoration: none;
+	}
 	
 	.flex-container{
 		display: flex;
 	}
 	
+	.container {
+		padding: 10px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
 
+	.item {
+		padding: 20px;
+		display: block;
+		width: 49%;
+		border: 0px solid #000;
+		border-radius: 10px;
+	}
+
+	#sasangSect1 {
+		margin: 20px;
+	}
+
+	#sasangSect2 {
+		margin: 20px;
+	}
+
+	#sasangSect3 {
+		margin: 20px;
+		padding-top: 10px;
+		text-align: center;
+	}
 </style>
 </head>
 <!-- 
@@ -45,21 +78,90 @@
 	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
 
 	<article style="width:100%;">
+	<!-- Page Header Start -->
+	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown">사상체질</h1>
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+	                    <li class="breadcrumb-item text-dark active" aria-current="page">사상체질</li>
+	                </ol>
+	            </nav>
+	        </div>
+	    </div>
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-2">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+	                        <h1 class="display-6 mb-4"> 사상체질 자가진단 테스트 </h1>
+	                        <p> 나의 체질을 진단한 후 건강식을 추천 받아보세요!</p>
+	                    </div>
+	                </div>
+	            </div>
 		<div class="flex-container">
-		<aside class="flex-item" >
-			<p>사상체질 목록</p>
-				<ul>
-					<li><a th:href="@{/sasang/sasang.do}" >사상체질이란?</a></li>
-					<li><a th:href="@{/sasang/sasangTest.do}" role="button" >사상체질 자가진단</a></li>
-					<li><a href="#" >체질 별 음식</a></li>
-					<li><a href="#" ></a></li>
-				</ul>
-		</aside>
-		      
-		      </div> -->
-		    <script th:src="@{/js/sasang_list2.js}"></script>
-			</article>
-    	</div> 
-	<!--// layout -->	
+		<div th:replace="sasang/sasang_aside :: aside"></div>
+		<div class="content_sect_pnl flex-item" style="width:auto; float:right; margin: 0 auto; line-height: 200%">
+			<section id="sasangSect1">
+			<hr>
+			<h1 class="p-2" style=" color : #9dbfa7; ">사상체질이란?</h1>
+			<div>사상의학(四象醫學)의 4가지 사상체질(四象體質)에 따라 음식 섭취에 신경을 쓰면 건강에 도움이 됩니다.</div>
+			<div>음식으로 신체 불균형을 보완해 조정하는 원리입니다.</div> 
+			<div>하지만 체질에 도움이 되는 음식만 섭취하고 다른 것은 외면하는 절대적인 의미로 받아들이면 안 됩니다.</div>
+			<div>가능하면 체질에 맞는 식품을 챙겨먹고, 다른 식품을 보조적으로 보완하라는 뜻입니다.</div>
+			</section>
+			<section id="sasangSect2">
+			<hr>				
+			<h2 class="p-2" style=" color : #9dbfa7; ">사상체질에 맞는 음식 보러가기</h2>
+			<div style="background-color: #9dbfa7; display: flex; justify-content: space-around; ">
+			<a href="#">태양인 맞춤 음식</a>
+			<a href="#">태음인 맞춤 음식</a>
+			<a href="#">소양인 맞춤 음식</a>
+			<a href="#">소음인 맞춤 음식</a>				
+			</div>
+			<div class="container">
+				<div class="item item_1">
+				<a href="#">
+					<div>▶기운이 위로 상승하는 ‘태양인’</div>
+					<div>폐 기능이 좋고, 간 기능이 약한 ‘폐대간소(肺大肝小)’</div>
+				</a>
+				</div>
+				<div class="item item_2">
+				<a href="#">
+					<div>▶열이 많은 ‘소양인’</div>
+					<div>소화기능이 좋고, 신장기능이 약한 ‘비대신소(脾大腎小)’</div>
+				</a>
+				</div>
+				<div class="item item_3">
+				<a href="#">
+					<div>▶식성 좋고 에너지 저장하는 ‘태음인’</div>
+					<div>간의 기능이 좋고, 폐 기능이 약한 ‘간대폐소’</div>
+				</a>
+				</div>
+				<div class="item item_4">
+				<a href="#">
+					<div>▶찬 것 피해야 하는 ‘소음인’</div>
+					<div>신장기능은 좋지만 소화기능이 약한 ‘신대비소(腎大脾小)’</div>
+				</a>
+				</div>
+			</div>
+			<hr>				
+			</section>
+			<section id="sasangSect3">
+				<button type="button" class="btn btn-success" id="sasangTestBtn">나의 사상체질 알아보기</button>
+			</section>
+
+
+
+		</div>			
+		</div>
+		</div>
+		</div>
+	</article>
+	</div>
 </body>
 </html>

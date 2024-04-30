@@ -37,6 +37,8 @@ public class QnaListController {
 		int listCount = qnaService.selectQnasCountWithoutReplies();
 		// 댓글들 제외
 		qnaList = qnaService.selectQnasByPagingWithoutReplies(currPage, limit);
+//		log.info("qnaList 확인:" + qnaList.get(1).toString());
+//		log.info("qnaList 확인:" + qnaList);
 		
 		// 총 페이지 수
    		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
@@ -64,7 +66,7 @@ public class QnaListController {
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("listCount", listCount);
 		
-		return "/qna/list";		
+		return "/qna/qna_list";		
 	} //
 	
 }

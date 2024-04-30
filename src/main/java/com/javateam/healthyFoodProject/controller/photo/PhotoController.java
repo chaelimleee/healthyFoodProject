@@ -28,7 +28,7 @@ public class PhotoController {
 	@GetMapping("/write.do")
 	public String write(Model model) {
 		model.addAttribute("PhotoVO", new PhotoVO());
-		return "/photo_board/write";
+		return "/photo_board/photo_write";
 	} //
 	
 	// DTO 대신 Map 형태의 인자 수신 
@@ -61,7 +61,7 @@ public class PhotoController {
 		return "/error/error"; 
 	} //
 	
-	@GetMapping("/view.do/{boardNum}")
+	@GetMapping("/photo_view.do/{boardNum}")
 	public String view(@PathVariable("boardNum") int boardNum, Model model) {
 		
 		

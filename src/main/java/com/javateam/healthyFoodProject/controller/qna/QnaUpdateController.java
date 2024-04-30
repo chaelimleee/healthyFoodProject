@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date; 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -56,13 +57,13 @@ public class QnaUpdateController {
 
 		// 기존 정보 세션 생성
 		// if (session.getAttribute("qnaUpdateSess") == null) {
-		session.setAttribute("qnaUpdateSess", qnaVO);
+		session.setAttribute("QnaUpdateSess", qnaVO);
 		// }
 
 		log.info("QnaVO : {}", qnaVO);
 		model.addAttribute("qna", qnaVO);
 		
-		return "/qna/update";
+		return "/qna/qna_update";
 	} //
 
 	@PostMapping("/updateProc.do")
@@ -92,7 +93,7 @@ public class QnaUpdateController {
 		// 수정에 실패했을 때는  글수정 화면으로 이동하고, 성공하였을 때는 개별 게시글 보기로 이동하도록 변경 
 		// 성공/실패에 따라 선택적으로 화면 이동하기 위해 변수 활용(movePage)
 		// 초기 기본값 변경
-		// String returnPath = "redirect:/qna/view.do/" + map.get("qnaNum").toString(); // 리턴(이동) 페이지
+		// String returnPath = "redirect:/qna/qna_view.do/" + map.get("qnaNum").toString(); // 리턴(이동) 페이지,0423 song view.do->qna_view.do
 		
 		String returnPath; // 글수정 "성공/실패" 모두 "/error/error"로 가도록 재설정
 		String movePage = "/qna/update.do?qnaCode=" + map.get("qnaCode").toString(); // 리턴(이동) 페이지
@@ -103,7 +104,7 @@ public class QnaUpdateController {
 			log.info(x + "");
 		});
 
-		QnaVO defaultQnaVO = (QnaVO) session.getAttribute("QnaUpdateSess");
+		QnaVO defaultQnaVO = (QnaVO) session.getAttribute("QnaUpdateSess"); 
 		QnaVO updateQnaVO = new QnaVO(map);
 
 		log.info("UpdateSession(기존 정보) : {}", defaultQnaVO);
@@ -265,9 +266,9 @@ public class QnaUpdateController {
 			log.info("최종 게시글 수정 내용 : {}", updateQnaVO);
 
 			// 게시글 수정			
-			QnaVO resultVO = qnaService.updateQna(updateQnaVO);
+			Optional<QnaVO> resultVO = qnaService.updateQna(updateQnaVO); //0422 song Optional 추가
 
-			if (resultVO == null) {
+			if (resultVO.isEmpty() == true) {
 
 				msg = "게시글 수정에 실패하였습니다.";
 
@@ -278,7 +279,7 @@ public class QnaUpdateController {
 				
 				// 수정에 실패했을 때는  글수정 화면으로 이동하고, 성공하였을 때는 개별 게시글 보기로 이동하도록 변경 
 				// 게시글 수정 성공후 개별 게시글 보기로 이동
-				movePage = "/qna/qna_view.do/" + map.get("qnaCode").toString();
+				movePage = "/qna/qna_view.do/" + map.get("qnaCode").toString() + "/yes";
 			} //
 
 		} //

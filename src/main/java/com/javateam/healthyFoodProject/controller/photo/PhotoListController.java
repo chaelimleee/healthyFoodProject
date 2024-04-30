@@ -35,7 +35,7 @@ public class PhotoListController {
 		
 		log.info("게시글 목록");
 		List<PhotoVO> photoList = new ArrayList<>();
-		List<PhotoVO> selectImg = new ArrayList<>();
+//		List<PhotoVO> selectImg = new ArrayList<>();
 
 		// 총 게시글 수 (댓글들을 제외한)
 		int listCount = photoService.selectBoardsCountWithoutReplies();
@@ -101,12 +101,12 @@ public class PhotoListController {
 			
 			//leee 0409 이미지 이름 가져오기 
 //			selectImg = photoService.selectBoardsImg(filevo.getBoardNum());
-			selectImg = photoService.findSubjectAndFileNameByBoardNum(photoList.get(0).getBoardNum());
+//			selectImg = photoService.findSubjectAndFileNameByBoardNum(photoList.get(0).getBoardNum());
 //			selectImg = photoService.selectBoardsImg(photovo.getBoardNum());
 //			selectImg = photoService.selectPhotoAndFileName(photovo.getBoardNum()); // 0411 leee 수정
 			
-			log.info("selectImg 포토 보드 번호 더 길게 >>>" + selectImg.toString());
-			//selectImg 포토 보드 번호 더 길게 >>> [PhotoVO [boardNum=1, boardWriter=user1234@naver.com, boardPass=users112!, 
+//			log.info("selectImg 포토 보드 번호 더 길게 >>>" + selectImg.toString());
+//			selectImg 포토 보드 번호 더 길게 >>> [PhotoVO [boardNum=1, boardWriter=user1234@naver.com, boardPass=users112!, 
 //						boardSubject=바게트빵, boardContent=<img style="width: 685.903px;" 
 //						src="/healthyFoodProject/photo_board/image/1"><br>, boardReRef=0, 
 //						boardReLev=0, boardReSeq=0, boardReadCount=0, boardDate=2024-04-09]]
@@ -139,10 +139,14 @@ public class PhotoListController {
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("photoList", photoList);
 		model.addAttribute("listCount", listCount);
-		model.addAttribute("selectImg", selectImg);
-		log.info("포토 보드 번호 >>>" + selectImg);
+//		model.addAttribute("selectImg", selectImg);
+//		log.info("포토 보드 번호 >>>" + selectImg);
+		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티2");
+		model.addAttribute("bgImg", "carousel-3.jpg");
 
-		return "/photo_board/list";
+		return "/photo_board/photo_list";
 	} //
 
 }

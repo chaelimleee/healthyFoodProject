@@ -53,7 +53,7 @@ public class FoodController {
 	public String write(Model model) {
 		
 		model.addAttribute("foodDTO", new FoodDTO());
-		return "/food/write";
+		return "/food/food_write";
 	} // 
 	
 //	// DTO 대신 Map 형태의 인자 수신 

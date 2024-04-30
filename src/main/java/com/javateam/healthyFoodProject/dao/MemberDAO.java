@@ -114,13 +114,9 @@ public class MemberDAO {
 		return sqlSession.selectList("mapper.Member.selectRolesById", id);
 	}
 	
-	public void deleteRoleById(String id, String role) {
+	public void deleteRolesByEmail(String id) {
 		
-		Map<String, String> map = new HashMap<>();
-		map.put("id",  id);
-		map.put("role", role);
-		
-		sqlSession.delete("mapper.Member.deleteRoleById", map);
+		sqlSession.delete("mapper.Member.deleteRolesByEmail", id);
 	}
 	
 	public List<Map<String, Object>> selectMembersWithRolesBySearching(int page, int limit, String searchKey, String searchWord) {
@@ -154,15 +150,10 @@ public class MemberDAO {
 		sqlSession.update("mapper.Member.changeEnabled", map);
 	}
 
-	public void deleteRolesById(String id) {
-		
-		sqlSession.delete("mapper.Member.deleteRolesById", id);
-	}
-	
-	public void deleteMemberById(String id) {
-		
-		sqlSession.delete("mapper.Member.deleteMemberById", id);
-	}
+//	public void deleteMemberById(String id) {
+//		
+//		sqlSession.delete("mapper.Member.deleteMemberById", id);
+//	}
 	
 	// 회원 탈퇴 email
 	public void deleteMemberByEmail(String memberEmail) {

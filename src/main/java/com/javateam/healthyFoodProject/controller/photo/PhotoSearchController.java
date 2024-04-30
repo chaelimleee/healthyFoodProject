@@ -67,7 +67,7 @@ public class PhotoSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/photo_board/list";		
+		return "/photo_board/photo_list";		
 	} //
 
 }

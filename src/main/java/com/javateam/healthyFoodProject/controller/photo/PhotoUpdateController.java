@@ -58,8 +58,8 @@ public class PhotoUpdateController {
 		// }
 
 		log.info("PhotoVO : {}", photoVO);
-		model.addAttribute("photo_board", photoVO);
-		return "/board/update";
+		model.addAttribute("board", photoVO);
+		return "/photo_board/photo_update"; // 0430
 	} //
 
 	@PostMapping("/updateProc.do")
@@ -203,6 +203,9 @@ public class PhotoUpdateController {
 			// 등록일 => 최근 수정일로 변경
 			updateBoardVO.setBoardDate(new Date(System.currentTimeMillis()));
 
+			//0430
+			updateBoardVO.setBoardNum(defaultBoardVO.getBoardNum());
+			
 			log.info("최종 게시글 수정 내용 : {}", updateBoardVO);
 
 			// 게시글 수정			

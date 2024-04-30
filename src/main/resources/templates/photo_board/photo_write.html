@@ -5,7 +5,10 @@
 	  layout:decorate="~{layout}" lang="ko-kr">
 <head>
 <meta charset="UTF-8">
-<title>qna 게시글 쓰기</title>
+<title>게시글 쓰기</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
@@ -31,8 +34,7 @@ function sendFile(file, el) {
 	  
     data: formData,
     type: "POST", // 업로드시 필수사항
-    url: '/healthyFoodProject/qna/image',
-    // song 0412 경로 수정 healthyFoodProject->healthyFoodProject, image->image2->image(0418 song)
+    url: '/healthyFoodProject/photo_board/image',
     cache: false,
     contentType: false,
     enctype: 'multipart/form-data', // 업로드시 필수사항 
@@ -52,7 +54,7 @@ function sendFile(file, el) {
 
 $(function() {
 	
-	$('#qnaContentDiv').summernote(// 0416 song #boardContentDiv->#qnaContentDiv로 변경
+	$('#boardContentDiv').summernote(
 			{
 				placeholder : '글 내용을 작성하십시오',
 				tabsize : 2,
@@ -97,26 +99,13 @@ $(function() {
 
 window.onload = function() {
 	
-	// 첨부 파일 삭제 기능 추가 : 2024.3
-	let fileDeleteBtn = document.getElementById("fileDeleteBtn");	
-	
-	fileDeleteBtn.onclick = () => {
-		
-		alert("첨부 파일을 삭제합니다");
-		let qnaFile = document.getElementById("qnaFile");
-		qnaFile.value = "";
-	} //	
-	
-	// TODO
-	// case-2
-	
 	// 게시글 내용
-	let qnaContentDiv= document.getElementById("qnaContentDiv");//0416 song board->qna
-	let qnaContentHidden = document.getElementById("qnaContent");//0416 song board->qna
-	let qnaForm = document.getElementById("qna_write_frm");//0416 song board->qna
+	let boardContentDiv= document.getElementById("boardContentDiv");
+	let boardContentHidden = document.getElementById("boardContent");
+	let boardForm = document.getElementById("board_write_frm");
 	
 	// 폼점검
-	qnaForm.onsubmit = function(e) {//0416 song board->qna
+	boardForm.onsubmit = function(e) {
 		
 		// summernote actual component : 썸머노트의 실제 글내용 컴포넌트
 		// F12 → Elements 탭 메뉴 코너에서 확인할 수 있습니다.
@@ -137,7 +126,7 @@ window.onload = function() {
 					     .trim()
 					     
 	    // 실제 전송용 hiddedn 필드에 입력
-		qnaContentHidden.value = content;   
+		boardContentHidden.value = content;   
 		
 		console.log("content : ", content.length);
 		
@@ -149,26 +138,8 @@ window.onload = function() {
 			// 전송 취소
 			return false;
 		} 
-		// 파일 업로드 사이즈 체크 : 10MB 보다 큰지 점검
-		let qnaFile = document.getElementById("qnaFile"); //0418 song board->qna
-
-		//let uploadFileSize = boardFile.files[0].size;
-		// 빈 파일일 경우
-		let uploadFileSize = (qnaFile.value == "") ? 0 : qnaFile.files[0].size;
-
-		const maxUploadFileSize = 10 * 1024 * 1024; // 10MB
 		
-		if (uploadFileSize > maxUploadFileSize) {
-			
-			alert("10 MB 보다 큰 파일은 올릴 수 없습니다.");
-			qnaFile.value = ""; // 초기화  //0418 song board->qna
-			qnaFile.focus(); // 재입력 대기//0418 song board->qna
-			
-			return false;
-		} //
-		
-	} //
-	
+	}	
 }
 </script>
 </head>
@@ -178,55 +149,65 @@ window.onload = function() {
 	<div layout:fragment="content" class="main_sect_pnl">
 
 		<div class="content_sect_pnl">
+		
+			<!-- Page Header Start -->
+		    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+		        <div class="container">
+		            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
+		            <nav aria-label="breadcrumb animated slideInDown">
+		                <ol class="breadcrumb mb-0">
+		                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+		                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+		                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+		                </ol>
+		            </nav>
+		        </div>
+		    </div>
+		
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+		        <div class="container">
+		        
+		            <div class="row g-0 gx-5 align-items-end">
+		                <div class="col-lg-6">
+		                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+		                        <h1 class="display-6 mb-4"> 글 작성하기 </h1>
+		                        <p>다양한 사람들과 오늘의 한끼를 공유해보세요!</p>
+		                    </div>
+		                </div>
+		            </div>
 
-			<form id="qna_write_frm" th:action="@{'/qna/writeProc.do'}" encType="multipart/form-data" method="post">
+			<form id="board_write_frm" th:action="@{'/photo_board/writeProc.do'}" method="post">
 
-				<h2 class="d-flex justify-content-center"> 게시글 쓰기</h2>
+				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
 
 				<table class="table mx-auto mt-4" style="width: 800px;">
 
 					<tr>
 						<th scope="col">작성자</th>
 						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 -->
-						<td><input type="text" class="form-control" id="memberEmail"
-							name="memberEmail" th:value="${#authentication.name}" readonly /></td>
+						<td><input type="text" class="form-control" id="boardWriter"
+							name="boardWriter" th:value="${#authentication.name}" readonly /></td>
 					</tr>
 
-					<!-- <tr> -->
-						<!-- <th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="qnaPass"
-							name="qnaPass" required 
+					<tr>
+						<th scope="col">패쓰워드</th>
+						<td><input type="text" class="form-control" id="boardPass"
+							name="boardPass" required 
 							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr>  -->
+					</tr>
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="qnaTitle"
-							name="qnaTitle" required title="글제목을 입력하십시오" /></td>
+						<td><input type="text" class="form-control" id="boardSubject"
+							name="boardSubject" required title="글제목을 입력하십시오" /></td>
 					</tr>
 
 					<tr>
 						<th scope="col">내용</th>
 						<td>							
-							<div id="qnaContentDiv"></div>
-							<!--0416 song input type에서 hidden->text로 변경->일단 hidden 유지  -->
-							<input type="hidden" id="qnaContent" name="qnaContent" />
-						</td>
-					</tr>
-
-					<tr>
-						<th scope="col">첨부파일</th>
-						<td>
-							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control" type="file" id="qnaFile"
-										name="qnaFile">
-								</div>	
-								<div class="col-2">
-									<a href="#" class="btn btn-sm btn-primary mt-1" id="fileDeleteBtn">첨부 삭제</a>
-								</div>
-							</div>	
+							<div id="boardContentDiv"></div>
+							<input type="hidden" id="boardContent" name="boardContent" />
 						</td>
 					</tr>
 
@@ -240,6 +221,8 @@ window.onload = function() {
 
 			</form>
 
+		</div>
+		</div>
 		</div>
 		<!--// content -->
 

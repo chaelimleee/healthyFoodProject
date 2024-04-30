@@ -163,21 +163,15 @@
 		SELECT role FROM user_roles WHERE username = #{id}
 	</select>
 	
-	<!-- 회원 롤 삭제 -->
-	<delete id="deleteRoleById" parameterType="map">
-		DELETE FROM user_roles 
-		WHERE username = #{id} AND role = #{role}
-	</delete>
-	
 	<!-- 회원 롤(들)삭제 -->
-	<delete id="deleteRolesById" parameterType="String">
+	<delete id="deleteRolesByEmail" parameterType="String">
 		DELETE FROM user_roles WHERE username = #{username}
 	</delete>
-	
+
 	<!-- 회원 정보 삭제 // 탈퇴 // email.-->
 	<delete id="deleteMemberByEmail" parameterType="map">
 		DELETE FROM member_tbl WHERE MEMBER_EMAIL = #{memberEmail}
-	</delete> 
+	</delete>  
 	
 	<!-- 검색 회원 정보 수 -->
 	<select id="selectMembersCountBySearching" parameterType="map" resultType="int">

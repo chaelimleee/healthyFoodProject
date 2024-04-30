@@ -147,15 +147,15 @@ public class MemberService {
 	} //
 	
 	@Transactional
-	public boolean deleteRoleById(String id, String role) {
+	public boolean deleteRolesByEmail(String id) {
 		
 		boolean result = false;
 		
 		try {
-			memberDAO.deleteRoleById(id, role);
+			memberDAO.deleteRolesByEmail(id);
 			result = true;
 		} catch (Exception e) {
-			log.error("MemberService.deleteRoleById : {}", e);
+			log.error("MemberService.deleteRoleByEmail : {}", e);
 			e.printStackTrace();
 		}
 			
@@ -212,7 +212,7 @@ public class MemberService {
 			log.info("관리자 권한 회수");	
 			
 			String role = "ROLE_ADMIN";
-			result = this.deleteRoleById(id, role);
+			result = this.deleteRolesByEmail(id);
 		}
 				
 		return result;
@@ -263,10 +263,12 @@ public class MemberService {
 			e.printStackTrace();
 		} //
 		
+		log.info("회원 삭제 이메일 확인 ==> " + email);
+//		회원 삭제 이메일 확인 ==> team226@naver.com 잘 받아와짐. 
 		result = false; // 두번째 단계 위한 플래그 변수 초기화 : 순수 회원 정보 삭제
-		
+
 		try {
-			memberDAO.deleteMemberById(email);
+			memberDAO.deleteRolesByEmail(email);
 			result = true;
 		} catch (Exception e) {
 			result = false;

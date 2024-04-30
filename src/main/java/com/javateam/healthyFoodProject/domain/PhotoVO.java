@@ -228,7 +228,7 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PhotoVO [boardNum=").append(boardNum)
-				.append("uploadFile").append(uploadFile)
+				.append(", uploadFile").append(uploadFile)
 				.append(", boardWriter=").append(boardWriter)
 				.append(", boardPass=").append(boardPass).append(", boardSubject=").append(boardSubject)
 				.append(", boardContent=").append(boardContent)

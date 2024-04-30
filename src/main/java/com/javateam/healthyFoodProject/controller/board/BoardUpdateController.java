@@ -64,7 +64,7 @@ public class BoardUpdateController {
 		model.addAttribute("board", boardVO);
 		// model.addAttribute("boardUpdateDTO", new BoardDTO());
 
-		return "/board/update";
+		return "/board/board_update";
 	} //
 
 	@PostMapping("/updateProc.do")

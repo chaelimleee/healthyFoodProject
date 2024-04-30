@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>게시글 수정</title>
 
+<!-- 밑에 두개를 달면 인잔현황이 안닫히지만 드롭다운은 잘 됨.  -->
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 
@@ -31,7 +35,8 @@ function sendFile(file, el) {
 	  
     data: formData,
     type: "POST", // 업로드시 필수사항
-    url: '/healthyFoodProject/board/image',
+    url: '/healthyFoodProject2/qna/image',
+    //song 0412 경로 수정 healthyFoodProject->healthyFoodProject2, 0418 song board->qna
     cache: false,
     contentType: false,
     enctype: 'multipart/form-data', // 업로드시 필수사항 
@@ -57,7 +62,7 @@ $(function() {
 	// $('#boardContent').summernote(
 			
 	// case-2
-	$('#boardContent').summernote(
+	$('#qnaContent').summernote(
 			{
 				placeholder : '글 내용을 작성하십시오',
 				tabsize : 2,
@@ -109,8 +114,8 @@ window.onload = function() {
 	fileDeleteBtn.onclick = (e) => {
 		
 		alert("첨부 파일을 삭제합니다");
-		let boardFile = document.getElementById("boardFile");
-		boardFile.value = "";
+		let qnaFile = document.getElementById("qnaFile");
+		qnaFile.value = "";
 	} //	
 	
 	// "기존" 첨부 파일 삭제 기능 추가 : 2024.3
@@ -120,8 +125,8 @@ window.onload = function() {
 		
 		alert("기존 파일 삭제");
 		
-		let boardFile = document.getElementById("boardFile");		
-		boardFile.value = "";
+		let qnaFile = document.getElementById("qnaFile");		
+		qnaFile.value = "";
 		
 		let defaultFileDeleteYN = document.getElementById("defaultFileDeleteYN");
 		defaultFileDeleteYN.value = defaultFileDeleteYN.checked == true ? "true" : "false";
@@ -132,12 +137,12 @@ window.onload = function() {
 	// TODO
 	// case-1
 	// 게시글 내용
-	let boardContent = document.getElementById("boardContent");
-	let boardForm = document.getElementById("board_update_frm");
+	let qnaContent = document.getElementById("qnaContent");
+	let qnaForm = document.getElementById("qna_update_frm");
 	
 	// case-1
 	// 폼점검
-	boardForm.onsubmit = () => {
+	qnaForm.onsubmit = () => {
 
 		// summernote actual component : 썸머노트의 실제 글내용 컴포넌트
 		// F12 → Elements 탭 메뉴 코너에서 확인할 수 있습니다.
@@ -147,7 +152,7 @@ window.onload = function() {
 		let content = summernoteActualContent.innerHTML;
 				
 		// 실제 전송용 필드에 입력
-		boardContent.value = content;
+		qnaContent.value = content;
 		
 		// 주의) summernote
 		// 비어 있는 초기 상태 :  "<p><br></p>"(초기)
@@ -166,24 +171,24 @@ window.onload = function() {
 		if (content.length == 0) {
 		
 			alert("게시글 내용을 입력하십시오.");
-			boardContent.focus(); // 썸머노트의 실제 글내용 컴포넌트에 focus(입력 대기)
+			qnaContent.focus(); // 썸머노트의 실제 글내용 컴포넌트에 focus(입력 대기)
 			
 			// 전송 취소
 			return false; 
 		}
 		
 		// 파일 업로드 사이즈 체크 : 10MB 보다 큰지 점검
-		let boardFile = document.getElementById("boardFile");
+		let qnaFile = document.getElementById("qnaFile");
 		// 버그 패치 (빈 파일일 경우)
-		let uploadFileSize = (boardFile.value == "") ? 0 : boardFile.files[0].size;
+		let uploadFileSize = (qnaFile.value == "") ? 0 : qnaFile.files[0].size;
 		
 		const maxUploadFileSize = 10 * 1024 * 1024; // 10MB
 		
 		if (uploadFileSize > maxUploadFileSize) {
 			
 			alert("10 MB 보다 큰 파일은 올릴 수 없습니다.");
-			boardFile.value = ""; // 초기화
-			boardFile.focus(); // 재입력 대기
+			qna.value = ""; // 초기화
+			qnaFile.focus(); // 재입력 대기
 			
 			// 전송 취소
 			return false; 
@@ -201,15 +206,41 @@ window.onload = function() {
 	<div layout:fragment="content" class="main_sect_pnl">
 
 		<div class="content_sect_pnl">
+		
+		<!-- Page Header Start -->
+	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+	                </ol>
+	            </nav>
+	        </div>
+	    </div>
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-4">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
+	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
+	                    </div>
+	                </div>
+	            </div>
 
-			<form id="board_update_frm" th:action="@{'/board/updateProc.do'}"
-				encType="multipart/form-data" method="post" th:object="${board}">
+			<form id="qna_update_frm" th:action="@{'/qna/updateProc.do'}"
+				encType="multipart/form-data" method="post" th:object="${qna}">
 				
 				<!-- 기존 정보 전송용 히든 필드 -->
-				<input type="hidden" id="boardReRef" name="boardReRef" th:value="${board.boardReRef}" />
-				<input type="hidden" id="boardReLev" name="boardReLev" th:value="${board.boardReLev}" />
-				<input type="hidden" id="boardReRef" name="boardReRef" th:value="${board.boardReRef}" />
-				<input type="hidden" id="boardReSeq" name="boardReSeq" th:value="${board.boardReSeq}" />
+				<!-- <input type="hidden" id="qnaReRef" name="qnaReRef" th:value="${qna.qnaReRef}" />
+				<input type="hidden" id="qnaReLev" name="qnaReLev" th:value="${qna.qnaReLev}" />-->
+				<input type="hidden" id="qnaReRef" name="qnaReRef" th:value="${qna.qnaReRef}" /> 
+				<!-- <input type="hidden" id="qnaReSeq" name="qnaReSeq" th:value="${qna.qnaReSeq}" /> -->
 				<!--// 기존 정보 전송용 히든 필드 -->
 				
 				<h2 class="d-flex justify-content-center">게시글 수정</h2>
@@ -219,38 +250,41 @@ window.onload = function() {
 					<tr>
 						<th scope="col" class="col-2">게시글 번호</th>
 						<td>
-							<input type="text" class="form-control" id="boardNum" name="boardNum" 
-								th:value="${board.boardNum}" th:field="*{boardNum}" readonly />
+							<input type="text" class="form-control" id="qnaCode" name="qnaCode" 
+								th:value="${qna.qnaCode}" th:field="*{qnaCode}" readonly />
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="col">작성자</th>
-						<td><input type="text" class="form-control" id="boardWriter"
-							name="boardWriter" th:value="${board.boardWriter}" th:field="*{boardWriter}" readonly /></td>
+						<td><input type="text" class="form-control" id="memberEmail"
+							name="memberEmail" th:value="${qna.memberEmail}" th:field="*{memberEmail}" readonly /></td>
 					</tr>
+					
+					<!--0423 song memberNick hidden으로 넘김  -->
+                    <input type="hidden" id="memberNick" name="memberNick" th:value="${qna.memberNick}">
 
 					<tr>
 						<th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="boardPass"
-							name="boardPass" required 
+						<td><input type="text" class="form-control" id="qnaPass"
+							name="qnaPass" required 
 							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" 
-							th:field="*{boardPass}" /></td>
+							 /></td>
 					</tr>
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardSubject"
-							name="boardSubject" required title="글제목을 입력하십시오" th:value="${board.boardSubject}" 
-							th:field="*{boardSubject}"/></td>
+						<td><input type="text" class="form-control" id="qnaTitle"
+							name="qnaTitle" required title="글제목을 입력하십시오" th:value="${qna.qnaTitle}" 
+							th:field="*{qnaTitle}"/></td>
 					</tr>
 
 					<tr>
 						<th scope="col">내용</th>
 						<td>							
 							<!-- case-1 -->
-							<textarea class="form-control" id="boardContent"
-								name="boardContent" th:field="*{boardContent}" required>[[${board.boardContent}]]</textarea>
+							<textarea class="form-control" id="qnaContent"
+								name="qnaContent" th:field="*{qnaContent}" required>[[${qna.qnaContent}]]</textarea>
 							
 							<!-- case-2 -->
 							<!-- <div id="boardContentDiv"></div>
@@ -269,14 +303,14 @@ window.onload = function() {
 							<div class="row my-1">
 							
 								<div class="col-8">
-									<a th:href="@{'/board/download/'+${board.boardOriginalFile}+'/'+${board.boardFile}}" 
-									   th:if="${!#strings.isEmpty(board.boardOriginalFile)}" 
-									   th:utext="${board.boardOriginalFile}"></a>
+									<a th:href="@{'/qna/download/'+${qna.qnaOriginalFile}+'/'+${qna.qnaFile}}" 
+									   th:if="${!#strings.isEmpty(qna.qnaOriginalFile)}" 
+									   th:utext="${qna.qnaOriginalFile}"></a> <!-- board를 qna로 변경  -->
 								</div>   
 								
-								<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
+								<span th:if="${#strings.isEmpty(qna.qnaFile)}">첨부 파일 없음</span>
 								
-								<div class="col-4" th:if="${#strings.isEmpty(board.boardFile) == false}">
+								<div class="col-4" th:if="${#strings.isEmpty(qna.qnaFile) == false}">
 								
 									<div class="form-check form-switch">
 									  <input class="form-check-input" type="checkbox" role="switch" 
@@ -291,7 +325,7 @@ window.onload = function() {
 							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
 							<div class="row">
 								<div class="col-10">
-									<input class="form-control mt-3 mb-2" type="file" id="boardFile" name="boardFile" th:field="*{boardFile}">
+									<input class="form-control mt-3 mb-2" type="file" id="qnaFile" name="qnaFile" th:field="*{qnaFile}">
 								</div>	
 								<div class="col-2">
 									<a href="#" class="btn btn-sm btn-primary mt-3" id="fileDeleteBtn">첨부 삭제</a>
@@ -303,7 +337,7 @@ window.onload = function() {
 					
 					<tr>
 						<th scope="col">등록일</th>
-						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 					</tr>
 
 				</table>
@@ -316,6 +350,8 @@ window.onload = function() {
 
 			</form>
 
+		</div>
+		</div>
 		</div>
 		<!--// content -->
 

@@ -24,7 +24,7 @@ import com.javateam.healthyFoodProject.util.FileUploadUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Component //Component어노테이션 달았더니 홈피 실행됨 chaelimleee 0415
+//@Component //Component어노테이션 달았더니 홈피 실행됨 chaelimleee 0415
 @Entity
 @Table(name="qna_tbl")
 @Slf4j
@@ -39,16 +39,16 @@ public class QnaVO implements Serializable { // 10.25 (sesssion으로 변환할 
 	qna_pass '게시글 비밀번호';
 	qna_content '게시글 내용';
 	qna_date '게시글 작성일자';
-	qna_yesno '게시글 답변여부';
+	qna_lock_yesno '게시글 잠금여부';//0429 song
 	qna_original_file '게시글 첨부 파일(원본)';
 	qna_file '게시글 첨부 파일(암호화)';
 	qna_re_ref '게시글 댓글의 원 게시글(관련글) 번호';
 	qna_re_lev '게시글 댓글 레벨';
 	qna_re_seq '게시글 댓글 순서';
 	qna_readcount '게시글 조회수';
-	qna_re_refref'게시글 답글의 원 게시글(관련글) 번호';
-	qna_re_levlev '게시글 답글 레벨';
-	qna_re_seqseq'게시글 답글 순서';
+	//qna_re_refref'게시글 답글의 원 게시글(관련글) 번호';
+	//qna_re_levlev '게시글 답글 레벨';
+	//qna_re_seqseq'게시글 답글 순서';
 	member_nick '게시글 작성자 별명';
 	member_email'게시글 작성자 이메일';
 	qna_img '게시글 썸네일'; 
@@ -66,7 +66,7 @@ CREATE TABLE qna_tbl (
     qna_pass VARCHAR2(20) not null,
     qna_content CLOB NOT NULL,
     qna_date DATE NOT NULL,
-    qna_yesno NUMBER DEFAULT 0,
+    qna_lock_yesno NUMBER DEFAULT 0,--0429 song
 	qna_original_file NVARCHAR2(200),
 	qna_file NVARCHAR2(200),
 	qna_re_ref NUMBER NOT NULL,
@@ -99,9 +99,17 @@ CREATE TABLE qna_tbl (
 	@Column(name = "QNA_CODE") 
 	private int qnaCode; 
 	
+	/** 게시글 작성자 이메일*/
+	@Column(name = "MEMBER_EMAIL")
+	private String memberEmail;
+	
+	/** 게시글 작성자 별명*/
+	@Column(name = "MEMBER_NICK")
+	private String memberNick; 
+	
 	/** 게시글 제목*/
 	@Column(name = "QNA_TITLE")
-	private String qnaTitle; 
+	private String qnaTitle;
 	
 //	/** 게시글 비밀번호*/
 //	@Column(name = "QNA_PASS")
@@ -117,9 +125,9 @@ CREATE TABLE qna_tbl (
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul") // JSON 변환시 "년월일 및 시분초"까지 모두 출력 
 	private Date qnaDate; 	
 
-	/** 게시글 답변여부*/
-	@Column(name = "QNA_YESNO")
-	private int qnaYesno = 0;
+	/** 게시글 답변여부: 1=잠금,0=해제*/
+	@Column(name = "QNA_LOCK_YESNO")
+	private int qnaLockYesno = 0;
 	
 	/** 첨부 파일(원래 파일명) */
 	@Column(name = "QNA_ORIGINAL_FILE") 
@@ -128,6 +136,10 @@ CREATE TABLE qna_tbl (
 	/** 첨부 파일(인코딩된 파일명) */
 	@Column(name = "QNA_FILE") 
 	private String qnaFile; 
+	
+	/** 게시글/댓글 비밀번호 */
+	@Column(name = "QNA_PASS")
+	private String qnaPass;
 	
 	/** 게시글 댓글의 원 게시글(관련글) 번호 */
 	@Column(name = "QNA_RE_REF") 
@@ -144,14 +156,6 @@ CREATE TABLE qna_tbl (
 	/** 게시글 조회수 */
 	@Column(name = "QNA_READCOUNT")
 	private int qnaReadCount = 0;
-	
-	/** 게시글 작성자 별명*/
-	@Column(name = "MEMBER_NICK")
-	private String memberNick; 
-	
-	/** 게시글 작성자 이메일*/
-	@Column(name = "MEMBER_EMAIL")
-	private String memberEmail;
 	
 	/** 게시글 썸네일 */
 	@Column(name = "QNA_IMG")
@@ -175,10 +179,10 @@ CREATE TABLE qna_tbl (
         
         this.qnaCode = qna.getQnaCode();
         this.qnaTitle = qna.getQnaTitle();
- //       this.qnaPass = qna.getQnaPass();
+        this.qnaPass = qna.getQnaPass();
         this.qnaContent = qna.getQnaContent();
         this.qnaDate = qna.getQnaDate();
-        this.qnaYesno = qna.getQnaYesno();
+        this.qnaLockYesno = qna.getQnaLockYesno();
 //        this.qnaOriginalFile = qna.getQnaOriginalFile();
         this.qnaFile = qna.getQnaFile().getOriginalFilename();
         this.qnaReRef = qna.getQnaReRef();
@@ -189,6 +193,7 @@ CREATE TABLE qna_tbl (
         this.memberNick = qna.getMemberNick();
         this.qnaImg = qna.getQnaImg();
         this.qnaImgOrigin = qna.getQnaImgOrigin();
+       
         
         // 첨부 파일 유무 : 없으면 => "", 있으면 => 암호화 
         this.qnaFile = qna.getQnaFile().getOriginalFilename().trim().equals("") ?
@@ -209,18 +214,18 @@ CREATE TABLE qna_tbl (
     	//this.qnaCode = Integer.parseInt(map.get("qnaCode").toString());
     	this.qnaCode = Integer.parseInt(map.get("qnaCode").toString());
         this.memberEmail = (String)map.get("memberEmail");
-        this.memberNick = map.get("memberNick").toString();
+        this.memberNick =(String)map.get("memberNick");
     	this.qnaTitle = (String)map.get("qnaTitle");
-  //  	this.qnaPass = (String)map.get("qnaPass");
+    	this.qnaPass = (String)map.get("qnaPass");
     	this.qnaContent =(String)map.get("qnaContent");
     	this.qnaDate = (Date)map.get("qnaDate");
-    	this.qnaYesno = Integer.parseInt(map.get("qnaYesno").toString());//답변 미답변
+    	//this.qnaYesno = Integer.parseInt(map.get("qnaYesno").toString());//답변 미답변
     	this.qnaOriginalFile = (MultipartFile)map.get("qnaOriginalFile") == null ? "" : ((MultipartFile)map.get("qnaOriginalFile")).getOriginalFilename(); // 파일명 저장
     	this.qnaFile = (MultipartFile)map.get("qnaFile") == null ? "" : ((MultipartFile)map.get("qnaFile")).getOriginalFilename(); // 파일명 저장
-    	this.qnaReRef = Integer.parseInt(map.get("qnaReRef").toString());
-    	this.qnaReLev = Integer.parseInt(map.get("qnaReLev").toString());
-    	this.qnaReSeq = Integer.parseInt(map.get("qnaReSeq").toString());
-    	this.qnaReadCount = Integer.parseInt(map.get("qnaReadCount").toString());
+    	this.qnaReRef = Integer.parseInt(map.get("qnaReRef").toString());//관련 게시글번호
+    	this.qnaReLev = map.get("qnaReLev") == null ? 0 : Integer.parseInt(map.get("qnaReLev").toString()); //0423 song 변경(Null 대비)
+    	this.qnaReSeq = map.get("qnaReSeq") == null ? 0 : Integer.parseInt(map.get("qnaReSeq").toString()); //0423 song 변경(Null 대비)
+    	this.qnaReadCount = map.get("qnaReadCount") == null ? 0 : Integer.parseInt(map.get("qnaReadCount").toString()); //0423 song 변경(Null 대비)
 
 //      this.memberImg = map.get("memberImg").toString();
 //      this.boardOrigin = (int) map.get("boardOrigin");
@@ -240,8 +245,8 @@ CREATE TABLE qna_tbl (
         this.memberEmail = (String)map.get("memberEmail");
         this.qnaTitle = (String)map.get("qnaTitle");
         this.qnaContent = (String)map.get("qnaContent");
-        log.info("memberNick qna확인:{}", memberNick);
         this.memberNick = map.get("memberNick").toString();
+        log.info("memberNick qna확인:{}", memberNick);
         
         log.info("map.get(\"qnaOriginalFile\") : " + map.get("qnaOriginalFile"));
         
@@ -259,6 +264,9 @@ CREATE TABLE qna_tbl (
         
         this.qnaReSeq = map.get("qnaReSeq") == null ? 0 : Integer.parseInt(map.get("qnaReSeq").toString());
         this.qnaDate = (Date)map.get("qnaDate");
+        
+        //0429 song 게시글 잠금여부 설정
+        this.qnaLockYesno = map.get("qnaLockYesno") == null ? 0 : map.get("qnaLockYesno").toString().equals("on") ? 1 : 0;
     }
 
 	@Override
@@ -267,10 +275,10 @@ CREATE TABLE qna_tbl (
 		builder
 		.append("QnaVO [qnaCode=").append(qnaCode)
 		.append(", qnaTitle=").append(qnaTitle)
-//		.append(", qnaPass=").append(qnaPass)
+		.append(", qnaPass=").append(qnaPass)
 		.append(", qnaContent=").append(qnaContent)
 		.append(", qnaDate=").append(qnaDate)
-		.append(", qnaYesno=").append(qnaYesno)
+		.append(", qnaLockYesno=").append(qnaLockYesno)
 		.append(", qnaOriginalFile=").append(qnaOriginalFile)
 		.append(", qnaFile=").append(qnaFile)
 		.append(", qnaReRef=").append(qnaReRef)
@@ -317,13 +325,13 @@ CREATE TABLE qna_tbl (
 		this.qnaTitle = qnaTitle;
 	}
 
-//	public String getQnaPass() {
-//		return qnaPass;
-//	}
-//
-//	public void setQnaPass(String qnaPass) {
-//		this.qnaPass = qnaPass;
-//	}
+	public String getQnaPass() {
+		return qnaPass;
+	}
+
+	public void setQnaPass(String qnaPass) {
+		this.qnaPass = qnaPass;
+	}
 
 	public String getQnaContent() {
 		return qnaContent;
@@ -341,12 +349,12 @@ CREATE TABLE qna_tbl (
 		this.qnaDate = qnaDate;
 	}
 
-	public int getQnaYesno() {
-		return qnaYesno;
+	public int getQnaLockYesno() {
+		return qnaLockYesno;
 	}
 
-	public void setQnaYesno(int qnaYesno) {
-		this.qnaYesno = qnaYesno;
+	public void setQnaLockYesno(int qnaLockYesno) {
+		this.qnaLockYesno = qnaLockYesno;
 	}
 
 	public String getQnaOriginalFile() {

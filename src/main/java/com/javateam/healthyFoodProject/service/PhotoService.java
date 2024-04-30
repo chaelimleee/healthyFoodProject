@@ -36,11 +36,11 @@ public class PhotoService {
 		return (int)photoDAO.count();
 	} //
 
-	@Transactional(readOnly = true)
-	public List<PhotoVO> findSubjectAndFileNameByBoardNum(int boardNum) {
-		
-		return photoDAO.findSubjectAndFileNameByBoardNum(boardNum);
-	} //
+//	@Transactional(readOnly = true)
+//	public List<PhotoVO> findSubjectAndFileNameByBoardNum(int boardNum) {
+//		
+//		return photoDAO.findSubjectAndFileNameByBoardNum(boardNum);
+//	} //
 	
 	//0411 leee 추가 수정. 
 	@Transactional(readOnly = true)

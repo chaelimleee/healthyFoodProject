@@ -2,6 +2,7 @@ package com.javateam.healthyFoodProject.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class QnaService {
 	QnaDAO qnaDAO;
 	
 	@Transactional(rollbackFor = Exception.class)
-	public QnaVO insertQna(QnaVO qnaVO) {
+	public Optional<QnaVO> insertQna(QnaVO qnaVO) {//0422 song QnaVO-->Optional<QnaVO> (empty체크위해)
 		
 		return qnaDAO.save(qnaVO);
 	}
@@ -55,9 +56,9 @@ public class QnaService {
 	public int selectQnasCountBySearching(String searchKey, String searchWord) {
 
 		// return searchKey.equals("qna_title") ? qnaQnaDAO.countByQnaSubjectLike("%"+searchWord+"%") : 
-		return searchKey.equals("QNA_TITLE") ? qnaDAO.countByQnaTitleContaining(searchWord) :
-			   searchKey.equals("QNA_CONTENT") ? qnaDAO.countByQnaContentContaining(searchWord): 
-			   qnaDAO.countByMemberEmailContaining(searchWord);//QnaWriter->MemberEmail 수정 song 0412	
+		return searchKey.equals("qnaTitle") ? qnaDAO.countByQnaTitleContaining(searchWord) :
+			   searchKey.equals("qnaContent") ? qnaDAO.countByQnaContentContaining(searchWord): 
+			   qnaDAO.countByMemberNickContaining(searchWord);//QnaWriter->MemberEmail 수정 song 0412	
 		
 	}
 
@@ -67,9 +68,9 @@ public class QnaService {
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "qnaCode"));
 		
 		// return searchKey.equals("board_subject") ? qnaDAO.findByQnaSubjectLike("%"+searchWord+"%", pageable).getContent() : 
-		return searchKey.equals("QNA_TITLE") ? qnaDAO.findByQnaTitleContaining(searchWord, pageable).getContent() :
-			   searchKey.equals("QNA_CONTENT") ? qnaDAO.findByQnaContentContaining(searchWord, pageable).getContent() : 
-			   qnaDAO.findByMemberEmailContaining(searchWord, pageable).getContent();//song 0412 QnaWriter->MemberEmail로 수정 
+		return searchKey.equals("qnaTitle") ? qnaDAO.findByQnaTitleContaining(searchWord, pageable).getContent() :
+			   searchKey.equals("qnaContent") ? qnaDAO.findByQnaContentContaining(searchWord, pageable).getContent() : 
+			   qnaDAO.findByMemberNickContaining(searchWord, pageable).getContent();//song 0412 QnaWriter->MemberEmail로 수정 
 	}
 	
 	// imgUploadPath = /qna/image/  //song 0412 board->qna로 경로 수정
@@ -136,29 +137,31 @@ public class QnaService {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public QnaVO updateQna(QnaVO qnaVO) {
+	public Optional<QnaVO> updateQna(QnaVO qnaVO) {//0422 song QnaVO-->Optional<QnaVO> (empty체크위해)
 		
 		return qnaDAO.save(qnaVO);
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public List<QnaVO> selectReplysById(int qnaCode) {
+	public List<QnaVO> selectReplysById(int qnaReRef) {// 0422 song Seq-->Ref
 		
-//		return qnaDAO.findByQnaReRefOrderByQnaDateAsc(qnaCode);
-		return qnaDAO.findByQnaReSeq(qnaCode);
+//		return qnaDAO.findByQnaReRefOrderByQnaDateAsc(qnaCode); 
+		return qnaDAO.findByQnaReRef(qnaReRef);
+		//0422 song findByQnaReSeq-->findByQnaReRef
 	}
 	
 	@Transactional(readOnly = true)
 	public int selectQnasCountWithoutReplies() {
 		
-		return (int)qnaDAO.countByQnaReSeq(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return (int)qnaDAO.countByQnaReRef(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+												//0422 song countByQnaReRef(int qnaReRef)
 	} //
 
 	@Transactional(readOnly = true)
 	public List<QnaVO> selectQnasByPagingWithoutReplies(int currPage, int limit) {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "qnaCode"));
-		return qnaDAO.findByQnaReSeq(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return qnaDAO.findByQnaReRef(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0 //0422 song Seq->Ref
 	} //
 
 	@Transactional(rollbackFor = Exception.class)
@@ -179,9 +182,10 @@ public class QnaService {
 	
 	// 댓글 수량 조회
 	@Transactional(readOnly = true)
-	public int selectQnasCountWithReplies(int qnaCode) {
+	public int selectQnasCountWithReplies(int qnaReRef) {//0422 song qnaCode-->qnaReRef
 		
-		return (int)qnaDAO.countByQnaReSeq(qnaCode); // 댓글의 갯수 추출 : board_re_ref = qnaCode
+		return (int)qnaDAO.countByQnaReRef(qnaReRef); // 댓글의 갯수 추출 : board_re_ref = qnaCode
+													//0422 song qnaCode-->qnaReRef
 	} //
 	
 	
@@ -204,7 +208,7 @@ public class QnaService {
 	
 //	// 게시글 조회수 갱신
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateQnaReadcountByQnaCode(int qnaCode) {
+	public boolean updateQnaReadCountByQnaCode(int qnaCode) {
 		
 		boolean result = false;
 		

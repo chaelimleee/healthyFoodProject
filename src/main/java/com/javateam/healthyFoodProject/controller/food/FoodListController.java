@@ -60,7 +60,8 @@ public class FoodListController {
 		int maxPage = PageVO.getMaxPage(listCount, limit);
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
 		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
-		int startPage = PageVO.getStartPage(currPage, limit);
+		//int startPage = PageVO.getStartPage(currPage, limit);
+		int startPage = currPage == 1 ? 1 : PageVO.getStartPage(currPage, limit);//0430 수정. 
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
 		int endPage = startPage + 20;
 

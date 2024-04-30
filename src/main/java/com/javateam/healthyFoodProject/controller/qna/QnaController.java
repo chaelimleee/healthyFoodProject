@@ -1,9 +1,11 @@
 package com.javateam.healthyFoodProject.controller.qna;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.javateam.healthyFoodProject.domain.CustomUser;
 import com.javateam.healthyFoodProject.domain.QnaDTO;
 import com.javateam.healthyFoodProject.domain.QnaVO;
 import com.javateam.healthyFoodProject.service.FileUploadService;
@@ -40,7 +43,7 @@ public class QnaController {
 	public String write(Model model) {
 		
 		model.addAttribute("qnaDTO", new QnaDTO());
-		return "/qna/write";
+		return "/qna/qna_write";
 	} //
 	
 	// DTO 대신 Map 형태의 인자 수신 
@@ -55,7 +58,20 @@ public class QnaController {
 		});
 		
 		QnaVO qnaVO = new QnaVO(map, qnaFile); // Map → VO
-
+		
+		//게시글 패스워드(로그인 인증 패스워드) 설정
+		// Spring Security Pricipal(Session) 조회
+		Object principal = SecurityContextHolder.getContext()
+											.getAuthentication()
+											.getPrincipal();
+		
+		CustomUser customUser = (CustomUser)principal;
+		log.info("principal : {}", principal);
+		
+		String pw = customUser.getPassword();
+				
+		qnaVO.setQnaPass(pw);
+		
 		// 첨부 파일이 있다면...				
 		String msg = ""; // 메시지
 		
@@ -73,11 +89,13 @@ public class QnaController {
 		
 		log.info("BoardVO : {}", qnaVO);
 		
-		qnaVO = qnaService.insertQna(qnaVO);
+		Optional<QnaVO> resultVO = qnaService.insertQna(qnaVO);//0422 song Optional 추가
 		
-		log.info("----- 게시글 저장 QnaVO : {}", qnaVO);
+		log.info("----- 게시글 저장 QnaVO : {}", resultVO);
 		
-		if (qnaVO != null) {
+		//if (resultVO != null) {
+		//0422 song qna->result, isEmpty ==false추가
+		if (resultVO.isEmpty() == false) {
 			msg = "게시글 저장에 성공하였습니다.";
 		}
 		model.addAttribute("errMsg", msg);
@@ -86,18 +104,28 @@ public class QnaController {
 		return "/error/error"; 
 	} //
 	
-	@GetMapping("/view.do/{qnaCode}")
-	public String view(@PathVariable("qnaCode") int qnaCode, Model model) {
+	@GetMapping("/qna_view.do/{qnaCode}/{lockYesno}")//0423,0430 song view.do -> qna_view.do, lockYesno 추가
+	public String view(@PathVariable("qnaCode") int qnaCode, @PathVariable("lockYesno") String lockYesno, Model model) {
 		
 		QnaVO qnaVO =qnaService.selectQna(qnaCode);
 		log.info("QnaVO : {}", qnaVO);
+		String page = "/qna/qna_view";
+		
+		//잠금글 여부 점검(qnaLockYesno)
+		//잠금글인데 아직 인증 안 했을 때
+		if (qnaVO.getQnaLockYesno() == 1 && lockYesno.equals("no")) {
+			page = "/qna/qna_pass";// 잠금글 패스워드 인증 페이지
+		//잠금글인데 인증되었을 때
+		//} else if (qnaVO.getQnaLockYesno() == 1 && lockYesno.equals("yes")) {
+			
+		} else {
+			// 조회할 때마다 조회수 갱신(+)
+			qnaService.updateQnaReadCountByQnaCode(qnaCode);
+		}
 		
 		model.addAttribute("qna", qnaVO);
 		
-		// 조회할 때마다 조회수 갱신(+)
-		qnaService.updateQnaReadcountByQnaCode(qnaCode);
-		
-		return "/qna/qna_view";
+		return page;
 	}
 	
 }

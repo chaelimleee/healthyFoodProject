@@ -57,7 +57,7 @@ public class BoardController {
 	public String write(Model model) {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
-		return "/board/write";
+		return "/board/board_write";
 	} // 
 	
 	// DTO 대신 Map 형태의 인자 수신 
@@ -121,7 +121,7 @@ public class BoardController {
 		// 조회할 때마다 조회수 갱신(+)
 		boardService.updateBoardReadcountByBoardCode(boardCode);
 		
-		return "/board/view";
+		return "/board/board_view";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.javateam.healthyFoodProject.controller.member;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,7 +39,7 @@ public class MemberController {
 		log.info("join.do");		
 		
 		model.addAttribute("memberDTO", new MemberDTO());
-		return "/member/join";
+		return "/member/member_join";
 	}
 	
 //    @ResponseBody // 값 변환을 위해 꼭 필요함
@@ -115,7 +117,7 @@ public class MemberController {
 			model.addAttribute("memberDTO", memberDTO);
 		}
 		
-		return "/member/view";	
+		return "/member/member_view";	
 	}
 	
 	@GetMapping("/update.do")
@@ -152,7 +154,7 @@ public class MemberController {
 			log.info("기존 회원 정보 : {}", memberUpdateDTO);
 		}
 		
-		return "/member/update";	
+		return "/member/member_update";	
 	}
 	
 	@PostMapping("/updateProc.do")
@@ -208,7 +210,7 @@ public class MemberController {
 	@GetMapping("/delete.do")
 	// public String memberDelete(@ModelAttribute("memberDTO") MemberDTO memberDTO)
 	// {
-	public String memberDelete() {
+	public String memberDelete(Model model) {
 		log.info("delete.do");
 
 		// Spring Security Pricipal(Session) 조회
@@ -217,14 +219,27 @@ public class MemberController {
 		CustomUser customUser = (CustomUser) principal;
 		log.info("principal : {}", principal);
 		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
-
+		
 		String id = customUser.getUsername(); // email
 		log.info("id 확인 : {}",id); // 로그인 아이디
 
+		String msg = "";
+		String movePage = "/";
+		
 		// 삭제할 아이디 전송. 0418 leee
-		memberService.deleteMember(id);
+		if(memberService.deleteMember(id) == true ) {
+			msg = "회원 탈퇴가 완료되었습니다.";
+			
+			// 로그아웃 처리
+			movePage= "/logout";
+		}else {
+			msg = "회원 탈퇴가 실패했습니다.";
+			movePage = "/member/member_view";
+		}
+		model.addAttribute("errMsg", msg);
+		model.addAttribute("movePage", movePage);
 
-		return "/welcome";
+		return "/error/error";
 	}
 	
 }

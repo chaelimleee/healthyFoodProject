@@ -67,7 +67,7 @@ public class FoodSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		return "/food/list";		
+		return "/food/food_list";		
 	} //
 
 }

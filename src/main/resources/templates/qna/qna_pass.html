@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout}" lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>qna게시글 보기</title>
+
+<style>
+#reply_write_form {
+ resize:none;
+ height:5em;
+ width:100%;
+}
+</style>
+
+<!-- bootstrap icons -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
+<!-- 댓글 전송용  -->
+<!-- AJAX library axios -->
+<script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
+
+<!-- 코드 다량 발생 → 별도 파일화 -->
+<script th:src="@{'/js/qna_view.js'}"></script> <!--주소 어떻게 써야할 지 잘 모르겠음 0418 qna_board->qna  --> 
+
+<!-- 댓글 제어 -->
+<script>
+window.onload = () => {
+		
+	// 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
+	let qnaCode = '[[${qna.qnaCode}]]';
+	
+	/* 0429 song 게시글 패스워드 점검/전송 */
+	let lockPassSubmit =document.querySelector("[id=lockPassSubmit]");
+	
+	lockPassSubmit.onclick = function(e){
+		alert("전송");
+		console.log("qnaCode : ", qnaCode);
+		
+		let qnaPass = document.getElementById("qnaPass");   
+		console.log("qnaPass : ", qnaPass.value);	
+		let memberEmail = "[[${#authentication.name}]]";            
+		console.log("memberEmail : ", memberEmail); 
+		
+		let regexPw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/ //패스워드(로그인) 정규식
+		
+		if (regexPw.test(qnaPass.value) == false){
+			alert("로그인할 때 입력한 패스워드를 입력하세요");
+		} else{
+			
+			axios.post('/healthyFoodProject/qna/checkLock.do',{
+				  "qnaCode": qnaCode,
+				  "qnaPass": qnaPass.value,
+				  "memberEmail": memberEmail
+				})// 
+			 .then(function(response) {
+				 
+				let msg = response.data;
+				console.log("response.data : " + msg);
+
+				alert(msg); //메세지
+				
+				if (msg == '해당글 작성자가 맞습니다.'){
+					location.href = "/healthyFoodProject/qna/qna_view.do/" + qnaCode + "/yes";
+				}
+			 })	 				 
+			 .catch(function(err) {
+				console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+			 }); // axios
+		}//else
+	} //function
+	
+	// 전체 댓글 로딩(불러오기) : board_view.js 파일로 함수 분리
+	// 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정) : 인자 추가
+	getAllReplies(qnaCode, '[[${#authentication.name}]]');
+
+	// 댓글 작성 함수 : board_view.js 파일로 함수 분리
+	// 0422 song memberNick 추가 (필수 성분)  
+ 	writeReply(qnaCode, '[[${#authentication.name}]]','[[${#authentication.principal.memberNick}]]');
+	
+	// (원)글 삭제 함수
+	deleteBoard(qnaCode, '[[${#authentication.name}]]');
+	
+	
+}// onload
+</script>
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+
+		<div class="content_sect_pnl">
+		
+	<!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+        <div class="container">
+            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-4">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
+	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
+	                    </div>
+	                </div>
+	            </div>
+
+			<h4 class="d-flex justify-content-center">1:1 게시글 보기</h4>
+			
+			<!-- <input type="hidden" id="qnaCode" name="qnaCode" th:value="${qna.qnaPass}"> -->
+			
+			<!--게시글 패스워드 인증(잠금해제)-->
+			<div class="w-50 h-50 my-5 rounded mx-auto d-flex justify-content-center align-items-center border bg-light bg-opacity-75">
+				<div class="w-50 row">
+					<div class="col-9">
+						<input class="form-control" type="text" id="qnaPass" name="qnaPass" placeholder="게시글 패스워드를 입력하세요"> 
+					</div>
+					<div class="col-3">
+						<button type="button" id="lockPassSubmit" class="btn btn-primary">전송</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="d-flex justify-content-center mb-3"> <!-- 간격 조정 : 2024.3 -->
+				<a type="button" class="btn btn-primary" th:href="@{/qna/list.do}">게시글 목록</a>
+				&nbsp;
+
+				
+				<!-- 글수정 링크 추가 -->
+				<!-- 글 작성자만 글수정/삭제하도록 조건 처리 -->
+				<div sec:authorize="isAuthenticated()">
+					<span th:if="${qna.memberEmail == #authentication.name}">
+					
+						<a type="button" class="btn btn-primary" 
+							th:href="@{'/qna/update.do?qnaCode='+${qna.qnaCode}}">글수정</a>
+							
+						<!-- (원)글삭제 링크 추가 -->
+						<a type="button" class="btn btn-primary ms-2" 
+						    th:id="${'board_delete_btn_' + qna.qnaCode}"
+							href="#">글삭제</a>
+						
+					</span>	
+				</div>
+				<!--// 글 작성자만 글수정/삭제하도록 조건 처리 -->	
+			</div>
+
+		</div>
+		</div>
+		</div>
+		<!--// content -->
+
+	</div>
+	<!--// layout -->
+
+</body>
+</html>

@@ -360,7 +360,7 @@
 										 	role="button" 
 											data-bs-toggle="dropdown" 
 											aria-expanded="false" 
-											th:href="@{/welcome}">
+											th:href="@{/}">
 											나의 맞춤 건강식
 									</a>
 									<ul class="dropdown-menu " 
@@ -394,11 +394,11 @@
 								</li>
 								
 								<li class="nav-item" sec:authorize="isAuthenticated()">
-									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">영양성분</a>
+									<a class="nav-link active" aria-current="page" th:href="@{/}">영양성분</a>
 								</li>
 								
 								<li class="nav-item" sec:authorize="isAuthenticated()">
-									<a class="nav-link active" aria-current="page" th:href="@{/welcome}">커뮤니티</a>
+									<a class="nav-link active" aria-current="page" th:href="@{/}">커뮤니티</a>
 								</li>
 
 								<li class="nav-item" sec:authorize="isAuthenticated()">

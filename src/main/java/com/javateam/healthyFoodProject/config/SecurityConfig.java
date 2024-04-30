@@ -56,7 +56,7 @@ public class SecurityConfig {
 		// /swagger-ui.html  ==>  /swagger-ui/index.html 변경함. 
 		return (web) -> web.ignoring().requestMatchers("/css/**", "/webjars/**", "/img/**",
 				"/images/**", "/js/**", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/swagger-ui/index.html",
-				"/axios/**", "/bootstrap-icons/**", "/bootstrap/**",
+				"/axios/**", "/bootstrap-icons/**", "/bootstrap/**", "/lib/**",
 				"/summernote/**");
 	}
 
@@ -87,7 +87,7 @@ public class SecurityConfig {
 				.requestMatchers("/member/updateSess.do", "/member/updateSessProc.do").authenticated()
 				.requestMatchers("/member/join.do", "/member/joinProc.do", "/member/joinProcRest.do").permitAll()
 				.requestMatchers("/member/updateRoles/**", "/member/changeMemberState/**",
-						"/member/updateMemberByAdmin/**", "/member/deleteMemberByAdmin/**")
+						"/member/updateMemberByAdmin/**", "/member/deleteMemberByAdmin/**","/admin/adminQna.do")
 				.authenticated()
 				.requestMatchers("/board/replyWrite.do").permitAll()
 				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
@@ -104,6 +104,12 @@ public class SecurityConfig {
                 "/photo_board/view.do/**","/photo_board/list.do/**","/photo_board/searchList.do",
                 "/photo_board/image", "/photo_board/image/**",
                 "/photo_board/getRepliesAll.do").permitAll()
+        		.requestMatchers(
+        		"/qna/qna_view.do","/qna/image", "/qna/image/**",
+                "/qna/getRepliesAll.do",
+                "/qna/qna_view.do/**","/qna/list.do/**","/qna/searchList.do",
+                "/qna/image", "/qna/image/**",
+                "/qna/getRepliesAll.do").permitAll()
 
         .requestMatchers("/board/write.do","/board/writeProc.do",
                  "/board/update.do", "/board/updateProc.do",
@@ -116,7 +122,13 @@ public class SecurityConfig {
                  "/photo_board/replyWrite.do",
                  "/photo_board/replyUpdate.do", 
                  "/photo_board/replyDelete.do",
-                 "/photo_board/deleteProc.do"
+                 "/photo_board/deleteProc.do",
+                 "/qna/write.do","/qna/writeProc.do",
+                 "/qna/update.do", "/qna/updateProc.do",
+                 "/qna/replyWrite.do",
+                 "/qna/replyUpdate.do",
+                 "/qna/replyDelete.do",
+                 "/qna/deleteProc.do"
                  ).authenticated()
         
         .requestMatchers("/sasang/**").authenticated()
@@ -127,7 +139,7 @@ public class SecurityConfig {
 				.loginPage("/login")
 				.usernameParameter("memberEmail")
 				.passwordParameter("memberPw")
-				.defaultSuccessUrl("/welcome")
+				.defaultSuccessUrl("/")
 				.failureUrl("/loginError")
 				// .successHandler(new CustomAuthenticationSuccess()) // 로그인 성공 핸들러
 				// .failureHandler(new CustomAuthenticationFailure()) // 로그인 실패 핸들러
