@@ -1,4 +1,4 @@
--- 참고로 JPA의 테이블 자동 생성 기능을 사용하지 않고, 수동으로 테이블을 먼저 생성하는 방향으로 전개하겠습니다.
+-- 참고로 JPA의 테이블 자동 생성 기능을 사용하지 않고, 수동으로 테이블을 먼저 생성하는 방향으로 전개.
 
 -- 게시글 삽입 이미지 파일명 저장 테이블
 
@@ -14,7 +14,6 @@ NOCYCLE;
 -- https://learn.microsoft.com/ko-kr/windows/win32/fileio/naming-a-file?redirectedfrom=MSDN
 
 -- save_filename : 2024/03/12/02f59711d9744c139aac3c5adc1d738d.jpg
--- file_path : C:/lsh/works/project/upload/image/2024/03/12/02f59711d9744c139aac3c5adc1d738d.jpg
 
 -- 참고) content-type 중에서 MIME type 최대 사이즈 : 127 char
 -- https://datatracker.ietf.org/doc/html/rfc4288#section-4.2
