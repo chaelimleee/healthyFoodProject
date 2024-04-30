@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+
+<!-- 0401 leee 수정완... 이긴한데 좀 더 손봐 -->
+
+<meta charset="UTF-8">
+<title>관리자 화면</title>
+
+<!-- bootstrap -->
+<!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
+
+<!-- <link rel="stylesheet"
+	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
+<style>
+	.inner-div {
+	  width : 400px;
+	  height : 100px;
+	  /* background-color: red; */
+	}
+</style>
+<script>
+window.onload = function() {
+	//0425 song 
+	//검색어 불용어(특수문자 ;) 여부 점검
+	let searchForm = document.getElementById("searchForm");
+	let searchBtn = document.getElementById("searchBtn");
+	let searchWord = document.getElementById("searchWord");
+	
+	//0425 song 엔터키로 전송
+	searchWord.onkeydown = function(e){
+		
+		//console.log("키코드: " + e.keyCode);
+		if (e.keyCode == '13'){ //엔터
+			
+			let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+			
+			if (regex.test(searchWord.value) == true){
+				searchForm.submit();
+			} else {
+				alert("검색어에는 특수문자가 들어갈 수 없습니다.");
+				searchWord.value = "";// 초기화
+				searchWord.focus();
+			}
+		}
+		
+	}
+	
+	//0425 song '검색'버튼클릭으로 전송 점검
+	searchBtn.onclick = function(e){
+		
+		let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+		
+		if (regex.test(searchWord.value) == true){
+			searchForm.submit();
+		} else {
+			alert("검색어에는 특수문자가 들어갈 수 없습니다.");
+			searchWord.value = "";// 초기화
+			searchWord.focus();
+		}
+		
+	}	
+	
+	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
+	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
+	let mainCheckbox = checkboxes[0];
+	
+	// 삭제 버튼을 눌렀을 경우 
+	let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
+	
+	mainCheckbox.onclick = function() {
+		
+		// 메인 체크 박스 상태 파악 : 체크 여부
+		console.log("메인 체크박스 체크 여부 : ", mainCheckbox.checked);
+				
+ 		for (check of checkboxes) {
+			check.checked = mainCheckbox.checked; // 메인 체크 박스의 상태를 그대로 다른 체크박스들에도 반영
+		} //
+		
+	} //
+	
+	// console.log("boardDeletebtn : ", boardDeletebtn);
+	
+	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
+	boardDeletebtn.onclick = function() {
+		
+		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
+		// 메인 체크 박스(i=0)는 제외 : 개별체크 박스(i=1부터 시작)에서 삭제할 게시글 아이디 추출		
+		for (let i=1; i<checkboxes.length-1; i++) {
+			
+			if (checkboxes[i].checked == true) {
+				
+				let boardCode = checkboxes[i].id.substring('check_'.length)
+				deleteExpectedBoardIds.push(boardCode) // 삭제할 아이디 배열에 등록(적재)
+				// console.log("삭제할 게시글 아이디 :", boardCode);
+				
+			} //
+		} //
+		
+		// 삭제할 게시글 아이디들 확인
+		for (deleteExpectedBoardId of deleteExpectedBoardIds) {
+			
+			console.log("삭제할(선택된) 게시글 아이디 : ", deleteExpectedBoardId);
+		} // for
+		
+	} //
+	
+
+} //
+</script>
+
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+	
+		<div class="content_sect_pnl">
+
+		
+			<!-- 인자 현황판 이전(move) :   -->
+			
+			<h4 class="d-flex justify-content-left m-5">
+				<div class='inner-div'> </div>
+				<div class="p-2" style="line-height: 1.5em">커뮤니티<br>
+					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
+				</div>	
+			</h4>
+			
+				
+			<table class="table mx-2 mx-auto" style="width:50vw">
+				<thead>
+					<tr>	
+						<th>
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						
+						<!-- 조회수 추가 -->
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
+						th:each="board, st : ${boardList}">
+						<td>
+							<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
+						</td>
+            
+						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
+						<td th:text="${board.boardCode}"></td>
+						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
+						
+						<td>
+							<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(board.boardContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+														
+							<!-- 업로드 파일 존재 여부 -->
+							<span th:if="${!#strings.isEmpty(board.boardFile)}">
+								<i class="bi bi-paperclip"></i>
+							</span>
+						</td>
+						<td th:utext="${board.memberNick}"></td>
+						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 추가 -->
+						<td th:utext="${board.boardReadCount}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
+			
+			<!-- 게시판 메뉴 :
+		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
+			-->
+			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
+				 
+				 <!-- 게시글 목록에서 바로 삭제 못하도록 임시 생략 처리-->
+				 <!-- <a href="#" id="board_delete_btn" class="btn btn-primary me-2" 
+				 	sec:authorize="isAuthenticated()">삭제</a> -->
+				 
+				 <a th:href="@{/board/write.do}" class="btn btn-primary me-2" 
+				 	sec:authorize="isAuthenticated()">
+				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
+			 	 </a>	
+			 	 
+			 	 <!-- 게시글 목록 -->
+			 	 <a class="btn btn-primary" th:href="@{/board/list.do}">
+					게시글 목록
+				 </a>			
+			</div>
+	
+			<!-- 페이징 -->
+			<!-- 검색이 아닌 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+	
+						<!--  첫 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{/board/list.do?currPage=1}" aria-label="Start">
+								<span aria-hidden="true">&Lt;</span>
+						</a></li>
+	
+						<!-- 이전 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<a class="page-link"
+							th:href="@{'/board/list.do?currPage='+${pageVO.prePage}}"
+							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
+						</a>
+						</li>
+	
+						<!-- 현재 페이지 -->
+						<!-- 0404 leee 삼항 연산자 : 참 거짓 둘 다 넣어야함. -->
+						<!-- 0404 leee 쿼리 링크 물음표 들어가야함. 문자열하고 num을 분리 시킴. num이 0보다 크다는 조건을 주면 num-1안해도됨.  -->
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>
+	
+						<!-- 다음 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
+							<a class="page-link"
+							th:href="@{'/board/list.do?currPage='+${pageVO.nextPage}}"
+							aria-label="Next"> <span aria-hidden="true">&gt;</span>
+						</a>
+						</li>
+	
+						<!-- 마지막 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/board/list.do?currPage='+${pageVO.endPage}}"
+							aria-label="End"> <span aria-hidden="true">&Gt;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--// 검색이 아닌 경우 -->
+			
+			<!-- 검색인 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${!#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    
+				    <!--  첫 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" 
+				      	 th:href="@{'/board/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				        <span aria-hidden="true">&Lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 이전 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				        <span aria-hidden="true">&lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 현재 페이지 -->
+
+				    <li class="page-item active">
+				    	<a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+			    	</li>
+						
+				    
+				    <!-- 다음 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				        <span aria-hidden="true">&gt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 마지막 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				        <span aria-hidden="true">&Gt;</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
+			</div>	
+			<!--// 검색인 경우 -->	
+			<!--// 페이징 -->
+			
+			<!-- 검색 -->
+			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
+			<form id="searchForm" th:action="@{/board/searchList.do}" method="get">
+			
+				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
+				
+					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
+					<div class="col-3">
+					</div>
+					
+					<div id="select_pnl" class="col-2 pe-0">
+						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
+						  <option selected value="boardTitle">글제목</option>
+						  <option value="boardContent">내용</option>
+						  <option value="memberNick">작성자</option>
+						</select>
+					</div>
+					
+					<div id="search_pnl" class="col-4">
+					
+						<input type="text" class="form-control" id="searchWord" name="searchWord" />
+					</div>
+					
+					<div id="search_btn_pnl" class="col-1 ps-0">
+						<button id="searchBtn" type="button" class="btn btn-primary">
+							<!-- bootstrap icon
+							     : https://icons.getbootstrap.com/icons/search/  -->
+							<i class="bi bi-search"></i>
+						</button>
+					
+					</div>
+					
+					<!-- 글쓰기 옆으로 이동 -->
+					<!-- <div id="list_btn_pnl" class="col-3 ps-0">
+						<a class="btn btn-primary" th:href="@{/board/list.do}">
+							게시글 목록
+						</a>
+					</div> -->
+				</div>
+				
+			</form>
+			<!--// 검색 -->
+			
+		</div>
+		<!--// content -->	
+		
+	</div>
+	<!--// layout -->	
+</body>
+</html>
