@@ -51,6 +51,32 @@ public class FoodService {
 		
 	}
 
+	// 0501 사상체질 별 음식 보여주기 .
+	public List<FoodVO> findSasangFoodByTaeumin(String sasang){
+		return foodDAO.findSasangGoodIngredientMainBySasangName(sasang);
+	}
+
+	// 0501 사상체질 별 음식 보여주기 .
+	public int countSasangFoodByTaeumin(String sasang){
+		return foodDAO.countSasangGoodIngredientMainBySasangName(sasang);
+	}
+
+	// 0501 음식 유형 에 따라 보여주기. 
+	public List<FoodVO> findByFoodTypeAndFoodCateCode(int page, int limit, int foodType){
+		
+		if(foodType == 0) {
+			Pageable pageable = PageRequest.of(page-1, limit, Sort.by(Direction.DESC, "foodCode"));
+			return foodDAO.findAll(pageable).getContent(); 
+		}else {
+			return foodDAO.findByFoodTypeAndFoodCateCode(page, limit, foodType);
+		}
+	}
+
+	// 0501 - PAGING 사상체질 별 음식 보여주기 .
+	public List<FoodVO> findSasangGoodIngredientMainBySasangNameAndPaging(int page, int limit, String sasang){
+		return foodDAO.findSasangGoodIngredientMainBySasangNameAndPaging(page, limit, sasang);
+	}
+
 	// 0423 leee 추가함. 
 	public List<FoodVO> findByFoodIngredientMainInsideIn(List<String> sasang){
 		log.info("sasang 서비스 이름 확인 2: " + sasang);
@@ -84,12 +110,25 @@ public class FoodService {
 	}
 
 	@Transactional(readOnly = true)
-	public int selectFoodsCountBySearching(String searchKey, String searchWord) {
+	public int selectFoodsCountBySearching(String searchKey, String searchWord, int foodType) {
+		
+		if(foodType == 0) {//전체검색
+			
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.countByFoodNameContainingFoodTypeAll(searchWord);
+			} else { // 재료명 검색
+				return foodDAO.countByFoodIngredientContainingFoodTypeAll(searchWord);
+			}
 
-		// return searchKey.equals("food_subject") ? foodDAO.countByFoodSubjectLike("%"+searchWord+"%") : 
-		return searchKey.equals("FOOD_NAME") ? foodDAO.countByfoodNameContaining(searchWord) :
-//			   searchKey.equals("BOARD_CONTENT") ? foodDAO.countByFoodContentContaining(searchWord) : 
-			   foodDAO.countByfoodIngredientMainViewContaining(searchWord);	//0415 leee 수정
+		} else {// 카테고리별 검색
+
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.countByFoodNameContainingAndFoodType(searchWord, foodType);
+			} else { // 재료명 검색
+				return foodDAO.countByFoodIngredientContainingAndFoodType(searchWord, foodType);
+			}
+			
+		}		
 		
 	}
 
@@ -98,10 +137,26 @@ public class FoodService {
 		
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "foodCode"));
 		
-		// return searchKey.equals("food_subject") ? foodDAO.findByFoodSubjectLike("%"+searchWord+"%", pageable).getContent() : 
 		return searchKey.equals("FOOD_NAME") ? foodDAO.findByfoodNameContaining(searchWord, pageable).getContent() :
-//			   searchKey.equals("BOARD_CONTENT") ? foodDAO.findByFoodContentContaining(searchWord, pageable).getContent() : 
 			   foodDAO.findByfoodIngredientMainViewContaining(searchWord, pageable).getContent(); // 0415 leee 수정
+	}
+	
+//	//0501 건강식 레시피 검색 
+//	@Transactional(readOnly = true)
+//	public List<FoodVO> findBySeachingAndPaging(int currPage, int limit, String searchKey, String searchWord) {
+//		
+//		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "foodCode"));
+//		
+//		return searchKey.equals("FOOD_NAME") ? foodDAO.findBySeachingAndPaging(currPage, limit, searchKey, searchWord):
+//			foodDAO.findByfoodIngredientMainViewContaining(searchWord, pageable).getContent(); // 0415 leee 수정
+//	}
+	
+	//0501 건강식 레시피 검색 
+	@Transactional(readOnly = true)
+	public List<FoodVO> findBySeachingAndPaging(int currPage, int limit, String searchKey, String searchWord) {
+		
+		return searchKey.equals("foodName") ? foodDAO.findBySeachingFoodNameAndPaging(currPage, limit, searchWord):
+			foodDAO.findBySeachingFoodIngredientAndPaging(currPage, limit, searchWord);
 	}
 	
 	// imgUploadPath = /food/image/
@@ -186,6 +241,25 @@ public class FoodService {
 		return (int) foodDAO.countBy();
 	} //
 
+	//0501 음식 유형별
+	@Transactional(readOnly = true)
+	public int countByFoodType(int foodType) {
+		
+		if(foodType == 0) {
+			return (int) foodDAO.count();
+		}else {
+			return (int) foodDAO.countByFoodType(foodType);
+		} 
+	} //
+
+	//0501 체질별 레시피 추천 페이징
+	@Transactional(readOnly = true)
+	public int countByfoodNameLike(String foodName) {
+		
+//		return (int)foodDAO.findByFoodCode(0); // (댓글 아닌)원글만 추출 : food_re_ref = 0
+		return foodDAO.countByfoodNameLike(foodName);
+	} //
+	
 	@Transactional(readOnly = true)
 	public List<FoodVO> selectFoodsByPagingWithoutReplies(int currPage, int limit) {
 				

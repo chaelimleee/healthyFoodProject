@@ -33,6 +33,18 @@
 	
 
 </style>
+
+<script>
+window.onload = function() {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat";  
+}
+</script>
 </head>
 <!-- 
 	0412 leee 선배님이 해주신 진단 페이지 프로젝트 파일에 적용.  
@@ -47,7 +59,7 @@
 	
 	<article style="width:100%;">
 	<!-- Page Header Start -->
-	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
 	        <div class="container">
 	            <h1 class="display-3 mb-3 animated slideInDown">사상체질</h1>
 	            <nav aria-label="breadcrumb animated slideInDown">
@@ -58,7 +70,7 @@
 	                </ol>
 	            </nav>
 	        </div>
-	    </div>
+	    </div> -->
 	
 		<!-- Product Start -->
 	    <div class="container-xxl py-2">
@@ -73,7 +85,7 @@
 	            </div>
 
 		<div class="flex-container">
-		<aside class="flex-item" >
+		<!-- <aside class="flex-item" >
 			<p>사상체질 목록</p>
 				<ul>
 					<li><a th:href="@{/sasang/sasang.do}" class="active" >사상체질이란?</a></li>
@@ -81,8 +93,9 @@
 					<li><a href="#" >체질 별 음식</a></li>
 					<li><a href="#" ></a></li>
 				</ul>
-		</aside>
-	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 auto;">
+		</aside> -->
+	<div th:replace="sasang/sasang_aside :: aside"></div>
+	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 50px;">
 		<h1 class="p-2" style=" color : #9dbfa7; ">사상체질 자가진단 테스트</h1>
 		  <form th:id="'testForm_'+${#authentication.name}" style="width:800px; "> 
  		     <fieldset>

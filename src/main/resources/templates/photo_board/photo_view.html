@@ -32,6 +32,13 @@
 <!-- 댓글 제어 -->
 <script>
 window.onload = () => {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat";  
 		
 	// 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
 	let boardNum = '[[${board.boardNum}]]';
@@ -57,7 +64,7 @@ window.onload = () => {
 		<div class="content_sect_pnl">
 
 		<!-- Page Header Start -->
-	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
 	        <div class="container">
 	            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
 	            <nav aria-label="breadcrumb animated slideInDown">
@@ -68,7 +75,7 @@ window.onload = () => {
 	                </ol>
 	            </nav>
 	        </div>
-	    </div>
+	    </div> -->
 	
 		<!-- Product Start -->
 	    <div class="container-xxl py-2">

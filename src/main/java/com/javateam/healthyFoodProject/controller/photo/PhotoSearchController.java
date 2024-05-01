@@ -67,6 +67,10 @@ public class PhotoSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
+		
 		return "/photo_board/photo_list";		
 	} //
 

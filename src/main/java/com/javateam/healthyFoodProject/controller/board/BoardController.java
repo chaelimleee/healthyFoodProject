@@ -118,8 +118,17 @@ public class BoardController {
 		
 		model.addAttribute("board", boardVO);
 		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
+		
 		// 조회할 때마다 조회수 갱신(+)
 		boardService.updateBoardReadcountByBoardCode(boardCode);
+		
+		// title 0430 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
+
 		
 		return "/board/board_view";
 	}

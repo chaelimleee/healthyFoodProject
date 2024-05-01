@@ -39,6 +39,10 @@ public class MemberController {
 		log.info("join.do");		
 		
 		model.addAttribute("memberDTO", new MemberDTO());
+		
+		// title 0430
+		model.addAttribute("pageTitle", "회원가입");
+		
 		return "/member/member_join";
 	}
 	
@@ -117,6 +121,9 @@ public class MemberController {
 			model.addAttribute("memberDTO", memberDTO);
 		}
 		
+		// title 0430
+		model.addAttribute("pageTitle", "마이페이지");
+		
 		return "/member/member_view";	
 	}
 	
@@ -153,6 +160,9 @@ public class MemberController {
 			
 			log.info("기존 회원 정보 : {}", memberUpdateDTO);
 		}
+		
+		// title 0430
+		model.addAttribute("pageTitle", "회원정보수정");
 		
 		return "/member/member_update";	
 	}
@@ -238,6 +248,9 @@ public class MemberController {
 		}
 		model.addAttribute("errMsg", msg);
 		model.addAttribute("movePage", movePage);
+		
+		// title 0430
+		model.addAttribute("pageTitle", "탈퇴");
 
 		return "/error/error";
 	}

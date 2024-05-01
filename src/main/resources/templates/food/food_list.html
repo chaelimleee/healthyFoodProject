@@ -76,6 +76,13 @@
 <script>
 window.onload = function() {
 	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat"; 
+	
 	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
 	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
 	let mainCheckbox = checkboxes[0];
@@ -134,7 +141,7 @@ window.onload = function() {
 	<div class="content_sect_pnl" >
 	
 	<!-- Page Header Start -->
-    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+<!--     <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
         <div class="container">
             <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
             <nav aria-label="breadcrumb animated slideInDown">
@@ -145,7 +152,7 @@ window.onload = function() {
                 </ol>
             </nav>
         </div>
-    </div>
+    </div> -->
 	
 		<!-- Product Start -->
 	    <div class="container-xxl py-4">
@@ -157,20 +164,56 @@ window.onload = function() {
 	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
 	                    </div>
 	                </div>
-	                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+	            </div>
+	                <div class="col-3 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
 	                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
-	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary border-2 active" data-bs-toggle="pill" href="#tab-1">Vegetable</a>
+	                        <li class="nav-item me-2">												 
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/0}">전체메뉴</a><!-- 3 -->
+	                        </li>
+	                        <li class="nav-item me-2">												 
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/3}">간식</a><!-- 3 -->
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-2">Fruits </a>
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/4}">간단요리</a><!-- 4 -->
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/5}">초대요리</a><!-- 5 -->
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/6}">채식</a><!-- 6 -->
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/7}">한식 </a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/8}">양식</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/9}">일식</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/10}">중식</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/11}">퓨전</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/13}">안주</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/14}">베이킹</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/15}">다이어트</a>
 	                        </li>
 	                        <li class="nav-item me-0">
-	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-3">Fresh</a>
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/16}">도시락</a>
+	                        </li>
+	                        <li class="nav-item me-0">
+	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/17}">키토</a>
 	                        </li>
 	                    </ul>
 	                </div>
-	            </div>
 	            <div class="tab-content">
 	                <div id="tab-1" class="tab-pane fade show p-0 active">
 	                    <div class="row g-4">
@@ -184,27 +227,22 @@ window.onload = function() {
 	                                </div>
 	                                <div class="text-center p-4">
 	                                	<a class="d-block h5 mb-2" th:text="${food.foodName}" ></a>
-	                                    <span class="text-primary me-1">$19.00</span>
-	                                    <span class="text-body text-decoration-line-through">$29.00</span>
 	                                </div>
 	                                <div class="d-flex border-top">
 	                                    <small class="w-50 text-center border-end py-2">
-	                                        <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>View detail</a>
+	                                        <a class="text-body" th:href="@{/food/view.do/'+ ${food.foodCode}}"><i class="fa fa-eye text-primary me-2"></i>레시피 보러가기</a>
 	                                    </small>
 	                                    <small class="w-50 text-center py-2">
-	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
+	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>좋아요</a>
 	                                    </small>
 	                                </div>
 	                            </div>
 	                        </div>
-	                        <div class="col-12 text-center">
-                            <a class="btn btn-primary rounded-pill py-3 px-5" href="">Browse More Products</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     <!-- Product End -->
 			
 			
@@ -232,7 +270,7 @@ window.onload = function() {
 	
 						<!--  첫 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{/food/list.do?currPage=1}" aria-label="Start">
+							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=1'}" aria-label="Start">
 								<span aria-hidden="true">&Lt;</span>
 						</a></li>
 	
@@ -240,27 +278,27 @@ window.onload = function() {
 						<li class="page-item">
 							<!-- <a class="page-link" th:href="@{'/food/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
-							th:href="@{'/food/list.do?currPage='+${pageVO.prePage}}"
+							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
 						</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
 						<li class="page-item active"><a class="page-link"
-							th:href="@{'/food/list.do?currPage='+${pageVO.currPage}}"
+							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.currPage}}"
 							th:utext="${pageVO.currPage}"></a></li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
 							<a class="page-link"
-							th:href="@{'/food/list.do?currPage='+${pageVO.nextPage}}"
+							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>
 						</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/food/list.do?currPage='+${pageVO.endPage}}"
+							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.endPage}}"
 							aria-label="End"> <span aria-hidden="true">&Gt;</span>
 						</a></li>
 					</ul>
@@ -276,33 +314,33 @@ window.onload = function() {
 				    <!--  첫 페이지 -->
 				    <li class="page-item">
 				      <a class="page-link" 
-				      	 th:href="@{'/food/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				      	 th:href="@{'/food/searchList.do?foodType=' + ${foodType} + '&currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
 				        <span aria-hidden="true">&Lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" th:href="@{'/food/searchList.do?foodType=' + ${foodType} + '&currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" th:href="@{'/food/searchList.do?foodType=' + ${foodType} + '&currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				      <a class="page-link" th:href="@{'/food/searchList.do?foodType=' + ${foodType} + '&currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
 				        <span aria-hidden="true">&gt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/food/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" th:href="@{'/food/searchList.do?foodType=' + ${foodType} + '&currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -322,11 +360,30 @@ window.onload = function() {
 					<div class="col-3">
 					</div>
 					
-					<div id="select_pnl" class="col-2 pe-0">
+					<div id="foodType_pnl" class="col-2 pe-0">
+						<select class="form-select" id="foodType" name="foodType" aria-label="검색 구분">
+						  <option selected value="0">전체</option>
+						  <option value="3">간식</option>
+						  <option value="4">간단요리</option>
+						  <option value="5">초대요리</option>
+						  <option value="6">채식</option>
+						  <option value="7">한식</option>
+						  <option value="8">양식</option>
+						  <option value="9">일식</option>
+						  <option value="10">중식</option>
+						  <option value="11">퓨전</option>
+						  <option value="13">안주</option>
+						  <option value="14">베이킹</option>
+						  <option value="15">다이어트</option>
+						  <option value="16">도시락</option>
+						  <option value="17">키토</option>
+						</select>
+					</div>
+
+					<div id="searchKey_pnl" class="col-2 pe-0">
 						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
-						  <option selected value="board_subject">글제목</option>
-						  <option value="board_content">내용</option>
-						  <option value="board_writer">작성자</option>
+						  <option selected value="foodName">레시피명</option>
+						  <option value="foodIngredient">재료</option>
 						</select>
 					</div>
 					

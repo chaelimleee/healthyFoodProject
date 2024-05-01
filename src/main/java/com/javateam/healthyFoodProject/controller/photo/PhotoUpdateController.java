@@ -59,6 +59,11 @@ public class PhotoUpdateController {
 
 		log.info("PhotoVO : {}", photoVO);
 		model.addAttribute("board", photoVO);
+		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
+		
 		return "/photo_board/photo_update"; // 0430
 	} //
 
@@ -238,6 +243,10 @@ public class PhotoUpdateController {
 		// model.addAttribute("movePage", "/board/update.do?boardNum=" + map.get("boardNum").toString());
 		model.addAttribute("movePage", movePage);
 		returnPath = "/error/error"; // 에러 페이지로 이동
+		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
 
 		return returnPath;
 	}

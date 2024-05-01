@@ -34,12 +34,7 @@ public class AdminSearchController {
 		log.info("관리자 화면 검색(search) : role 표시");
 		List<Map<String, Object>> members = new ArrayList<>();
 		
-		// 성별 검색에 따른 검색값 변환
-		if (searchKey.equals("gender")) {
-			
-			searchWord = searchWord.trim().equals("남") || searchWord.trim().equalsIgnoreCase("m") ? "m" : "f";
-			
-		} else if (searchKey.equals("role")) {
+		if (searchKey.equals("role")) {
 			
 			searchWord = searchWord.trim().equals("관리자") ? "ROLE_ADMIN" : "ROLE_USER";			
 		}

@@ -116,6 +116,13 @@ $(function() {
 
 window.onload = function() {
 	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat";  
+	
 	// 첨부 파일 삭제 기능 추가 : 2024.3
 	let fileDeleteBtn = document.getElementById("fileDeleteBtn");	
 	
@@ -200,6 +207,18 @@ window.onload = function() {
 	<div layout:fragment="content" class="main_sect_pnl">
 
 		<div class="content_sect_pnl">
+		
+		<!-- Product Start -->
+	    <div class="container-xxl py-2">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+	                        <h1 class="display-6 mb-4"> 커뮤니티 자유게시판 </h1>
+	                        <p>다양한 사람들과 이야기해보세요!</p>
+	                    </div>
+	                </div>
+	            </div>
 
 			<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
 				encType="multipart/form-data" method="post">
@@ -277,6 +296,8 @@ window.onload = function() {
 
 			</form>
 
+		</div>
+		</div>
 		</div>
 		<!--// content -->
 

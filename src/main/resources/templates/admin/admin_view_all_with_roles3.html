@@ -111,25 +111,25 @@
 				<tbody>
 					<tr th:if="${not #lists.isEmpty(members) && pageVO.listCount > 0}" th:each="member, st : ${members}">
 						<td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td>
-						<td th:utext="${member.get('MEMBER_EMAIL')}"></td>
-						<td th:utext="${member.get('MEMBER_NICK')}"></td>
-						<td th:utext="${member.get('MEMBER_NAME')}"></td>
+						<td th:utext="${member.get('memberEmail')}"></td>
+						<td th:utext="${member.get('memberNick')}"></td>
+						<td th:utext="${member.get('memberName')}"></td>
 						
 						<td>
-							<input type="text" th:value="${member.get('MEMBER_MOBILE')}" 
-								   th:id="${'mobile_' + member.get('MEMBER_EMAIL')}"
-								   th:name="${'mobile_' + member.get('MEMBER_EMAIL')}"
+							<input type="text" th:value="${member.get('memberMobile')}" 
+								   th:id="${'mobile_' + member.get('memberEmail')}"
+								   th:name="${'mobile_' + member.get('memberEmail')}"
 								   readonly
 								   style="border:0"
 								   size="13"
 								   maxlength="13" />
 						</td>
 										
-						<td th:utext="${member.get('MEMBER_ZIP')}"></td>
-						<td th:utext="${member.get('MEMBER_ADDRESS1')}"></td>
-						<td th:utext="${member.get('MEMBER_ADDRESS2')}"></td>
-						<td th:utext="${#dates.format(member.get('MEMBER_BIRTH'), 'yyyy년 MM월 dd일')}"></td>
-						<td th:utext="${#dates.format(member.get('MERBER_DATE'), 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
+						<td th:utext="${member.get('memberZip')}"></td>
+						<td th:utext="${member.get('memberAddress1')}"></td>
+						<td th:utext="${member.get('memberAddress2')}"></td>
+						<td th:utext="${#dates.format(member.get('memberBirthAll'), 'yyyy년 MM월 dd일')}"></td>
+						<td th:utext="${#dates.format(member.get('memberDate'), 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
 						
 						<!-- 등급(role) : 체크 박스로 표기 
 							 - bootstrap checkbox 
@@ -139,10 +139,10 @@
 							
 								<!-- 회원은 여기서는 비 회원 전환 처리하지 불가능하도록 disabled, readonly 처리  -->
 								<label class="form-check-label" 
-									   th:for="${'role1_' + member.get('MEMBER_EMAIL')}">회원</label>
+									   th:for="${'role1_' + member.get('memberEmail')}">회원</label>
 									   
 								<input type="checkbox" class="form-check-input" 
-									   th:id="${'role1_' + member.get('MEMBER_EMAIL')}"												 
+									   th:id="${'role1_' + member.get('memberEmail')}"												 
 									   name="role" value="ROLE_USER" 
 									   th:checked="${#strings.contains(member.get('ROLE'),'ROLE_USER')}"
 									  >
@@ -151,17 +151,17 @@
 								<br>
 									   
 								<label class="form-check-label" 
-									   th:for="${'role2_' + member.get('MEMBER_EMAIL')}">관리자</label>
+									   th:for="${'role2_' + member.get('memberEmail')}">관리자</label>
 															
 								<input type="checkbox" class="form-check-input" 
-									   th:id="${'role2_' + member.get('MEMBER_EMAIL')}" 
+									   th:id="${'role2_' + member.get('memberEmail')}" 
 									   name="role" value="ROLE_ADMIN" 
 									   th:checked="${#strings.contains(member.get('ROLE'),'ROLE_ADMIN')}">
 							</div>		   							   
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'role_update_btn_' + member.get('MEMBER_EMAIL')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'role_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-primary">변경</button>
 						</td>
 						
 						<!--// 등급(role) -->
@@ -172,10 +172,10 @@
 						<td>
 							<div class="form-check form-switch"> 
 								
-								<label th:id="${'label_enabled_' + member.get('MEMBER_EMAIL')}" th:for="${'enabled_' + member.get('MEMBER_EMAIL')}" class="form-check-label"
+								<label th:id="${'label_enabled_' + member.get('memberEmail')}" th:for="${'enabled_' + member.get('memberEmail')}" class="form-check-label"
 									   th:text="${member.get('ENABLED') == 1 ? '활동' : '휴면'}"></label>
 									   
-								<input type="checkbox" class="form-check-input" name="enabled"  th:id="${'enabled_' + member.get('MEMBER_EMAIL')}"
+								<input type="checkbox" class="form-check-input" name="enabled"  th:id="${'enabled_' + member.get('memberEmail')}"
 									   th:value="${member.get('ENABLED')}"												 
 									   th:checked="${member.get('ENABLED') == 1}">
 												
@@ -183,15 +183,15 @@
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'enabled_update_btn_' + member.get('MEMBER_EMAIL')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'enabled_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-primary">변경</button>
 						</td>
 						
 						<!--// 활동 여부 -->
 						
 						<!-- 메뉴 -->
 						<td>
-							<button class="btn btn-sm btn-primary" th:id="${'update_btn' + member.get('MEMBER_EMAIL')}">수정</button>&nbsp;
-							<button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('MEMBER_EMAIL')}">삭제</button>
+							<button class="btn btn-sm btn-primary" th:id="${'update_btn' + member.get('memberEmail')}">수정</button>&nbsp;
+							<button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('memberEmail')}">삭제</button>
 						</td>				
 						<!--// 메뉴 -->
 						

@@ -197,21 +197,42 @@
 	
 	<!-- 멤버 롤 빼도될 듯. 여기서 합쳐짐. -->
 	<!-- 회원 정보 키워드 검색(조회) (페이징) : 아이디 중심 내림차순 정렬 -->
+	<!-- 
+				MEMBER_EMAIL as "memberEmail",
+				MEMBER_PW as "memberPw",
+				MEMBER_NAME as "memberName",
+				MEMBER_NICK as "memberNick",	
+				MEMBER_MOBILE as "memberMobile",
+				MEMBER_BIRTH as "memberBirthAll",
+				MEMBER_ZIP as "memberZip",
+				MEMBER_ADDRESS1 as "memberAddress1",
+				MEMBER_ADDRESS2 as "memberAddress2",
+				MEMBER_IMG as "memberImg",
+				MEMBER_IMG_ORIGIN as "memberImgOrigin",
+				MEMBER_DATE as "memberDate",		
+				MEMBER_ROLE as "memberRole",
+				ENABLED as "enabled",
+				MEMBER_SASANG as "memberSasang",
+				role,
+		        page   
+	 -->
 	<select id="selectMembersWithRolesBySearching" parameterType="map" resultType="map">
 		SELECT  
-				MEMBER_EMAIL,
-				MEMBER_PW ,
-				MEMBER_NAME ,
-				MEMBER_NICK ,	
-				MEMBER_MOBILE ,
-				MEMBER_BIRTH ,
-				MEMBER_ZIP ,
-				MEMBER_ADDRESS1 ,
-				MEMBER_ADDRESS2 ,
-				MEMBER_IMG ,
-				MEMBER_IMG_ORIGIN ,
-				MEMBER_DATE ,	
+				MEMBER_EMAIL ,
+				MEMBER_PW  ,
+				MEMBER_NAME  ,
+				MEMBER_NICK  ,	
+				MEMBER_MOBILE  ,
+				MEMBER_BIRTH  ,
+				MEMBER_ZIP  ,
+				MEMBER_ADDRESS1  ,
+				MEMBER_ADDRESS2  ,
+				MEMBER_IMG   ,
+				MEMBER_IMG_ORIGIN  ,
+				MEMBER_DATE  ,		
+				MEMBER_ROLE  ,
 				ENABLED ,
+				MEMBER_SASANG  ,
 				role,
 		        page   
 		FROM (SELECT m.*,  
@@ -231,13 +252,10 @@
 						 AND MEMBER_ADDRESS1 like '%${searchWord}%'
 						 OR MEMBER_ADDRESS2 like '%${searchWord}%'
 		    		 </if>
-		    		 <if test="searchKey == 'name' and searchKey != 'address'">
-						 AND MEMBER_NAME like '%${searchWord}%'
-		    		 </if>
 		    		 <if test="searchKey != 'name' and searchKey != 'address'">
 						 AND ${searchKey} = #{searchWord}
 		    		 </if>
-		             ORDER BY id DESC
+		             ORDER BY m.MEMBER_EMAIL DESC
 		          ) m  
 		      )  
 		WHERE page = #{page}

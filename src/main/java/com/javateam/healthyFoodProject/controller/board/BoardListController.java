@@ -72,6 +72,10 @@ public class BoardListController {
 		// 0404 leee 페이지네이션 위해서 현재 페이지에 보여줄 시작 페이지, 마지막 페이지 list.html에 보냄
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
+		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
 
 		return "/board/board_list";
 	} //

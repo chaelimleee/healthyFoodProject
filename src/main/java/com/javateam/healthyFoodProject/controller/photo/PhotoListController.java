@@ -143,8 +143,8 @@ public class PhotoListController {
 //		log.info("포토 보드 번호 >>>" + selectImg);
 		
 		// title 0430
-		model.addAttribute("pageTitle", "커뮤니티2");
-		model.addAttribute("bgImg", "carousel-3.jpg");
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food_2.jpg");
 
 		return "/photo_board/photo_list";
 	} //

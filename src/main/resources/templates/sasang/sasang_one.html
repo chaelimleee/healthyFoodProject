@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout}"
 	lang="ko-kr">
 <head>
-<meta charset="UTF-8">
-<title>사진 커뮤니티</title>
 
-<!-- 밑에 두개를 달면 인자현황이 안닫히지만 드롭다운은 잘 됨.  -->
+<!-- 0501 태음인 추천 레시피 . -->
+
+<meta charset="UTF-8">
+<title>건강식 레시피</title>
+<!-- Favicon -->
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
-
 <style>
 
 	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-
 	article{
 		float:left;
 	}
@@ -31,6 +30,11 @@
 	
 	img{
 		display:block;
+	}
+	
+	a{
+		text-align:center;
+		text-decoration: none;
 	}
 	
  /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
@@ -59,7 +63,7 @@
 	    background-color: #ff0;
 	    margin: -50px 0 0 -50px;
 	}
-       
+	 
 </style>
 <script>
 window.onload = function() {
@@ -69,16 +73,14 @@ window.onload = function() {
 	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
-	titleBg.style.backgroundRepeat = "no-repeat";  
+	titleBg.style.backgroundRepeat = "no-repeat"; 
 	
-	//top right no-repeat;
 	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
 	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
 	let mainCheckbox = checkboxes[0];
 	
 	// 삭제 버튼을 눌렀을 경우 
-//	let boardDeletebtn = document.getElementById("board_delete_btn");	
-//  let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let boardDeletebtn = document.getElementById("board_delete_btn");	
 	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
 	
 	mainCheckbox.onclick = function() {
@@ -94,8 +96,7 @@ window.onload = function() {
 	
 	// console.log("boardDeletebtn : ", boardDeletebtn);
 	
-	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
-	/*
+/* 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
 	boardDeletebtn.onclick = function() {
 		
 		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
@@ -104,9 +105,9 @@ window.onload = function() {
 			
 			if (checkboxes[i].checked == true) {
 				
-				let boardNum = checkboxes[i].id.substring('check_'.length)
-				deleteExpectedBoardIds.push(boardNum) // 삭제할 아이디 배열에 등록(적재)
-				// console.log("삭제할 게시글 아이디 :", boardNum);
+				let boardCode = checkboxes[i].id.substring('check_'.length)
+				deleteExpectedBoardIds.push(boardCode) // 삭제할 아이디 배열에 등록(적재)
+				// console.log("삭제할 게시글 아이디 :", boardCode);
 				
 			} //
 		} //
@@ -117,58 +118,71 @@ window.onload = function() {
 			console.log("삭제할(선택된) 게시글 아이디 : ", deleteExpectedBoardId);
 		} // for
 		
-	} //
-	*/
+	} // */
 	
 } //
 </script>
+
 </head>
 <body>
 
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
 	
+    <!-- Page Header End -->
 	<div class="content_sect_pnl" >
 	
-	<!-- Page Header Start (공통)-->
-<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;" id="intro_img">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">[[${pageTitle}]]</h1>커뮤니티
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
-	 <!-- // Page Header end (공통)-->
+	<!-- Page Header Start -->
+<!--     <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+        <div class="container">
+            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+                </ol>
+            </nav>
+        </div>
+    </div> -->
 	
 		<!-- Product Start -->
-	    <div class="container-xxl py-2">
+	    <div class="container-xxl py-4">
 	        <div class="container">
 	            <div class="row g-0 gx-5 align-items-end">
 	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
-	                        <h1 class="display-6 mb-4"> 건강식 찰칵! </h1>
-	                        <p>다양한 사람들과 오늘의 한끼를 공유해보세요!</p>
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
+	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
 	                    </div>
 	                </div>
+	                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+	                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary border-2 active" data-bs-toggle="pill" href="#tab-1">Vegetable</a>
+	                        </li>
+	                        <li class="nav-item me-2">
+	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-2">Fruits </a>
+	                        </li>
+	                        <li class="nav-item me-0">
+	                            <a class="btn btn-outline-primary border-2" data-bs-toggle="pill" href="#tab-3">Fresh</a>
+	                        </li>
+	                    </ul>
+	                </div>
 	            </div>
-	            <!-- 포토 게시글 시작 -->
 	            <div class="tab-content">
 	                <div id="tab-1" class="tab-pane fade show p-0 active">
 	                    <div class="row g-4">
 	                        <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
-	                             th:each="photo : ${photoList}" >
-	                            <div class="product-item" th:onclick="|location.href='/healthyFoodProject/photo_board/photo_view.do/'+ ${photo.boardNum}|">
+	                             th:if="${not #lists.isEmpty(foodList) && pageVO.listCount > 0}"
+								 th:each="food : ${foodList}">
+	                            <div class="product-item" th:onclick="|location.href='/healthyFoodProject/food/view.do/'+ ${food.foodCode}|">
 	                                <div class="position-relative bg-light overflow-hidden">
-	                                	<div style="width:300px; height:300px; overflow : hidden; " th:utext="${photo.boardContent}"></div>
+	                                	<img class="img-fluid w-100" th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
 	                                    <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
 	                                </div>
 	                                <div class="text-center p-4">
-	                                	<a class="d-block h5 mb-2" th:text="${photo.boardSubject}" ></a>
+	                                	<a class="d-block h5 mb-2" th:text="${food.foodName}" ></a>
 	                                    <span class="text-primary me-1">$19.00</span>
 	                                    <span class="text-body text-decoration-line-through">$29.00</span>
 	                                </div>
@@ -188,29 +202,28 @@ window.onload = function() {
                     </div>
                 </div>
             </div>
-			<!-- // 포토 게시글 끝  -->
         </div>
     </div>
-	            
-  
-    
+    <!-- Product End -->
+			
 			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
 			-->
 			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
 				 
-				 <a th:href="@{/photo_board/write.do}" class="btn btn-primary me-2" 
+				 <a th:href="@{/sasang/write.do}" class="btn btn-primary me-2" 
 				 	sec:authorize="isAuthenticated()">
 				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
 			 	 </a>	
 			 	 
 			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-primary" th:href="@{/photo_board/list.do}">
+			 	 <a class="btn btn-primary" th:href="@{'/sasang/list.do/'+${sasangType} + '/'}">
 					게시글 목록
 				 </a>			
 			</div>
 	
+			<!-- 0501 페이징 경로 변경. /sasang/taeum -->
 			<!-- 페이징 -->
 			<!-- 검색이 아닌 경우 -->	
 			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">
@@ -219,35 +232,35 @@ window.onload = function() {
 	
 						<!--  첫 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{/photo_board/list.do?currPage=1}" aria-label="Start">
+							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage=1'}" aria-label="Start">
 								<span aria-hidden="true">&Lt;</span>
 						</a></li>
 	
 						<!-- 이전 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<!-- <a class="page-link" th:href="@{'/food/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.prePage}}"
+							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
 						</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
 						<li class="page-item active"><a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage}}"
+							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.currPage}}"
 							th:utext="${pageVO.currPage}"></a></li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
 							<a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.nextPage}}"
+							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>
 						</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/photo_board/list.do?currPage='+${pageVO.endPage}}"
+							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.endPage}}"
 							aria-label="End"> <span aria-hidden="true">&Gt;</span>
 						</a></li>
 					</ul>
@@ -263,33 +276,33 @@ window.onload = function() {
 				    <!--  첫 페이지 -->
 				    <li class="page-item">
 				      <a class="page-link" 
-				      	 th:href="@{'/photo_board/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				      	 th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
 				        <span aria-hidden="true">&Lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
 				        <span aria-hidden="true">&gt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/photo_board/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -301,7 +314,7 @@ window.onload = function() {
 			
 			<!-- 검색 -->
 			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
-			<form th:action="@{/photo_board/searchList.do}" method="get">
+			<form th:action="@{'/sasang/searchList.do/' + ${sasangType} + '/'}" method="get">
 			
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				
@@ -341,7 +354,8 @@ window.onload = function() {
 		
 	</div>
 	<!--// layout -->	
-		<!-- Back to Top -->
+	
+	<!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
