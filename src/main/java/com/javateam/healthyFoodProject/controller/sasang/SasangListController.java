@@ -110,7 +110,8 @@ public class SasangListController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		
-		String pageTitle = sasangType + " 추천 레시피 ";
+		//0502
+		String pageTitle = "<span style='color:#fff;'>" + sasangType + " 추천 레시피</span>";
 		
 		// 0501
 		model.addAttribute("sasangType", sasangType);

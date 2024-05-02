@@ -67,9 +67,9 @@ public class PhotoSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		// title 0430
+		// title 0430 포토 커뮤니티
 		model.addAttribute("pageTitle", "커뮤니티");
-		//model.addAttribute("bgImg", "food_2.jpg");
+		model.addAttribute("bgImg", "bg_strawberry_1.png");
 		
 		return "/photo_board/photo_list";		
 	} //

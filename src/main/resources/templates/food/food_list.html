@@ -13,6 +13,7 @@
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
+
 <!-- bootstrap -->
 <!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
 
@@ -76,6 +77,21 @@
 <script>
 window.onload = function() {
 	
+	window.onscroll = function(){
+		
+		let mainNavbar = document.getElementById("main_navbar");
+		
+        if (window.scrollY == 0) {
+        	mainNavbar.style.backgroundColor = "";
+        	/* mainNavbar.style.opacity = 0; */
+        	mainNavbar.style.color = "#000";
+        } else {
+        	mainNavbar.style.backgroundColor = "#fff";
+        	
+        }
+        
+	}
+	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
 	//titleBg.style.backgroundColor = "red";
@@ -84,14 +100,14 @@ window.onload = function() {
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 	
 	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
-	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
-	let mainCheckbox = checkboxes[0];
+	/* let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
+	let mainCheckbox = checkboxes[0]; */
 	
 	// 삭제 버튼을 눌렀을 경우 
-	let boardDeletebtn = document.getElementById("board_delete_btn");	
-	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
+	/* let boardDeletebtn = document.getElementById("board_delete_btn");	
+	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열 */
 	
-	mainCheckbox.onclick = function() {
+	/* mainCheckbox.onclick = function() {
 		
 		// 메인 체크 박스 상태 파악 : 체크 여부
 		console.log("메인 체크박스 체크 여부 : ", mainCheckbox.checked);
@@ -100,7 +116,7 @@ window.onload = function() {
 			check.checked = mainCheckbox.checked; // 메인 체크 박스의 상태를 그대로 다른 체크박스들에도 반영
 		} //
 		
-	} //
+	} // */
 	
 	// console.log("boardDeletebtn : ", boardDeletebtn);
 	
