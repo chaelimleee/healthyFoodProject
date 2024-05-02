@@ -62,6 +62,46 @@ window.onload = function() {
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 	
+	//0425 song 
+	//검색어 불용어(특수문자 ;) 여부 점검
+	let searchForm = document.getElementById("searchForm");
+	let searchBtn = document.getElementById("searchBtn");
+	let searchWord = document.getElementById("searchWord");
+	
+	//0425 song 엔터키로 전송
+	searchWord.onkeydown = function(e){
+		
+		//console.log("키코드: " + e.keyCode);
+		if (e.keyCode == '13'){ //엔터
+			
+			let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+			
+			if (regex.test(searchWord.value) == true){
+				searchForm.submit();
+			} else {
+				alert("검색어에는 특수문자가 들어갈 수 없습니다.");
+				searchWord.value = "";// 초기화
+				searchWord.focus();
+			}
+		}
+		
+	}
+	
+	//0425 song '검색'버튼클릭으로 전송 점검
+	searchBtn.onclick = function(e){
+		
+		let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+		
+		if (regex.test(searchWord.value) == true){
+			searchForm.submit();
+		} else {
+			alert("검색어에는 특수문자가 들어갈 수 없습니다.");
+			searchWord.value = "";// 초기화
+			searchWord.focus();
+		}
+		
+	}	
+	
 	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
 	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
 	let mainCheckbox = checkboxes[0];
@@ -374,7 +414,7 @@ window.onload = function() {
 			
 			<!-- 검색 -->
 			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
-			<form th:action="@{/board/searchList.do}" method="get">
+			<form id="searchForm" th:action="@{/board/searchList.do}" method="get">
 			
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				
@@ -396,7 +436,8 @@ window.onload = function() {
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-primary">
+						<button id="searchBtn" type="button" class="btn btn-primary">
+						<!-- <button id="search_btn" class="btn btn-primary"> -->
 							<!-- bootstrap icon
 							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>

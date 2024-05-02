@@ -9,8 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Grandiflora+One&family=IBM+Plex+Sans+KR&family=Jua&family=Nanum+Myeongjo:wght@400;700&display=swap">
 <!-- 구글 폰트 끝 -->
+
+<!-- 네비게이션 바 폰트 시작-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gugi&family=IBM+Plex+Sans+KR:wght@500&family=Jua&family=Nanum+Gothic&family=Noto+Sans+KR:wght@100..900&family=Orbit&display=swap" rel="stylesheet">
+<!-- 네비게이션 바 폰트 끝-->
 
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
@@ -41,6 +46,13 @@
 	@import url(https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap 	);
 	
 	/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
+
+	.orbit-regular {
+	  font-family: "Noto Sans KR", sans-serif;
+	  font-optical-sizing: auto;
+	  font-weight: <weight>;
+	  font-style: normal;
+		}
 
 	 .bd-placeholder-img {
         font-size: 1.125rem;
@@ -339,7 +351,7 @@
             
             <div class="collapse navbar-collapse" id="navbarCollapse">
             
-                <div class="navbar-nav ms-auto p-4 p-lg-0 rounded-pill bg-success-subtle">
+                <div class="navbar-nav ms-auto p-4 p-lg-0 rounded-pill orbit-regular">
                     
                     <a th:href="@{/sasang/sasangTest.do}" class="nav-item nav-link active ms-3 text-success">체질자가진단</a>
                     

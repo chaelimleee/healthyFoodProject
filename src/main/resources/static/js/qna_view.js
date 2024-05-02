@@ -28,6 +28,7 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 							<button id="reply_writer_${reply.memberEmail}" type="button" class="btn btn-info position-relative">
 								
 								${reply.memberEmail}
+								
 				
 								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
 									작성자
@@ -62,11 +63,12 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 						<!-- 메뉴 추가(이동) : 댓글 수정/삭제  -->
 						<div class="col-8 d-flex justify-content-end">
 						
-							<a href="#" id="reply_update_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
-							   onClick="updateReply(${qnaReRef}, ${reply.qnaNum}, '${memberEmail}')">수정</a>
+							<!--0422 song boardNum → qnaCode, qnaReRef → reply.qnaReRef, memberEmail → reply.memberEmail -->
+							<a href="#" id="reply_update_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+							   onClick="updateReply(${reply.qnaReRef}, ${reply.qnaCode}, '${reply.memberEmail}', '${reply.memberNick}')">수정</a>
 				
-							<a href="#" id="reply_delete_btn_${reply.boardNum}" class="btn btn-sm btn-outline-primary mb-1 me-3"
-							   onClick="deleteReply(${qnaReRef}, ${reply.qnaNum}, '${memberEmail}')">삭제</a>
+							<a href="#" id="reply_delete_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+							   onClick="deleteReply(${reply.qnaReRef}, ${reply.qnaCode}, '${reply.memberEmail}')">삭제</a>
 			
 						</div>
 						<!--// 메뉴 추가(이동) : 댓글 수정/삭제 -->
@@ -81,7 +83,7 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 // 댓글 목록 읽어오기
 function getAllReplies(originalBoardId, boardWriter) {
 	
-	axios.get(`/healthyFoodProject/photo_board/getRepliesAll.do?boardNum=${originalBoardId}`) 
+	axios.get(`/healthyFoodProject/qna/getRepliesAll.do?qnaCode=${originalBoardId}`)// 0422 song boardNum → qnaCode, photo_board → qna
 		 .then(function(response) {
 			 
 			let resData = response.data;
@@ -99,7 +101,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 			
 			for (let reply of resData) {
 				
-				console.log("개별 댓글:" + reply.boardNum);
+				console.log("개별 댓글:" + reply.qnaCode);// 0422 song boardNum-->qnaCode
 				replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
 				replyListPnl.innerHTML += replyData;	
 				
@@ -117,7 +119,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // 댓글 작성 : 인자 변경
-function writeReply(originalBoardId, boardWriter) {
+function writeReply(originalBoardId, boardWriter, memberNick) {
 	
 	console.log("originalBoardId : ", originalBoardId);
 	
@@ -199,8 +201,9 @@ function writeReply(originalBoardId, boardWriter) {
 	 					{
 							qnaReRef : originalBoardId,
 							qnaContent : replyWriteForm.value,
-							memberEmail : boardWriter
-							//boardPass : boardPass.value,
+							memberEmail : boardWriter,
+							memberNick : memberNick
+//							qnaPass : qnaPass.value,
 /*							boardNum : originalBoardId,
 							boardContent : replyWriteForm.value,
 							boardWriter : boardWriter,
@@ -217,11 +220,11 @@ function writeReply(originalBoardId, boardWriter) {
 	 					
 	 					let replyListPnl = document.getElementById("reply_list_pnl");
 	 					let replyData = "";
-	 					
 						replyListPnl.innerHTML = ""; // 댓글 목록 초기화
+						
 						// 댓글 작성란/ 패쓰워드 초기화
 						document.getElementById("reply_write_form").value = ""; 	
-						document.getElementById("board_pass_3").value = "";
+						//document.getElementById("board_pass_3").value = ""; //0422 song 
 	 					
 	 					for (let reply of resData) {
 	 						
@@ -232,7 +235,7 @@ function writeReply(originalBoardId, boardWriter) {
 	 					
 	 				 })	 				 
 	 				 .catch(function(err) {
-	 					console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+	 					console.error("댓글 작성 중 서버 에러가 발견되었습니다.",err);
 	 				 }); // axios			  
 	 				
 	 			} // if (replyWriteForm.value.length > 100)	
@@ -248,7 +251,7 @@ function writeReply(originalBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // 댓글 수정 
-function updateReply(originalBoardId, replyBoardId, boardWriter) {
+function updateReply(originalBoardId, replyBoardId, boardWriter, memberNick) {
 	
 	console.log("원글 아이디, 댓글 아이디, 글 작성자 : " + originalBoardId + "," + replyBoardId +"," + boardWriter);
 	
@@ -276,12 +279,13 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 						   </div>`;
 	
 	// 댓글 수정 내용 전송 버튼 생성 : 수정용 패쓰워드 입력란 포함
+	//0422 song 패스워드 입력란 삭제
+	/*<input type="text" id="board_pass_${replyBoardId}" 
+								    id="board_pass_${replyBoardId}" required 
+								    class="form-control form-control-sm h-100 w-25 me-3">*/
+	
 	let replySubmitBtns = `<div id="reply_submit_btns_${replyBoardId}" class="d-flex justify-content-end my-2">
 	
-							 <input type="text" id="board_pass_${replyBoardId}" 
-								    id="board_pass_${replyBoardId}" required 
-								    class="form-control form-control-sm h-100 w-25 me-3">
-						  	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
 						  		 class="btn btn-sm btn-primary me-2">등록</button>
@@ -347,76 +351,78 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 			
 			// 댓글 작성란도 원상 복구
 			document.getElementById("reply_write_form").innerHTML = "";
-			document.getElementById(`board_pass_${originalBoardId}`).value = "";
+			//document.getElementById(`board_pass_${originalBoardId}`).value = "";
 			
 		} else { // 전송
 		
-			let boardUpdatePass = document.getElementById(`board_pass_${replyBoardId}`);
+			//let boardUpdatePass = document.getElementById(`board_pass_${replyBoardId}`);
 			
 			console.log("수정할 댓글의 아이디 : ", replyBoardId);
 			console.log("수정할 댓글의 '원글' 아이디 : ", originalBoardId);
 			console.log("작성자 아이디 : ", boardWriter);
-			console.log("수정할 댓글 패쓰워드 : ", boardUpdatePass.value);
+			//console.log("수정할 댓글 패쓰워드 : ", boardUpdatePass.value);
 			console.log("댓글 내용 : ", replyUpdateForm.value.trim());
 			
 			alert("최종점검");
 			
-			if (boardUpdatePass.value.trim() == '') { 
+		/*	if (boardUpdatePass.value.trim() == '') { 
 				
 				alert("댓글 패쓰워드를 입력하십시오");
 				boardUpdatePass.focus();
 				
-			} else {	
+			} else {*/	
 			
-				// 전송	
-				// 주의) 여기서 boardNum 댓글 자체의 아이디입니다.		  
- 				axios.post('/healthyFoodProject/qna/replyUpdate.do', 
- 					{
-					    //boardNum : replyBoardId,//0419 song 변경
-						qnaContent : replyUpdateForm.value,
-						memberEmail : boardWriter,
-						//boardPass : boardUpdatePass.value,//0419 song 변경
-						boardReRef : originalBoardId,
- 					}
- 				)
- 				 .then(function(response) {
- 					
- 					let resData = response.data;
- 					console.log("response.data : ", resData);
+			// 전송	
+			// 주의) 여기서 boardNum 댓글 자체의 아이디입니다.		  
+			axios.post('/healthyFoodProject/qna/replyUpdate.do', 
+				{
+				    //boardNum : replyBoardId,//0419 song 변경
+					qnaCode : replyBoardId, //0422 song 추가
+					qnaContent : replyUpdateForm.value,
+					memberEmail : boardWriter,
+					//boardPass : boardUpdatePass.value,//0419 song 변경
+					qnaReRef : originalBoardId,//0422 song board→qna
+					memberNick : memberNick
+				}
+			)
+			 .then(function(response) {
+				
+				let resData = response.data;
+				console.log("response.data : ", resData);
 
- 					// 전체 댓글 현황 리턴 확인
- 					console.log("전체 댓글 수 : ", resData.length);
- 					
- 					let replyListPnl = document.getElementById("reply_list_pnl");
- 					let replyData = "";
+				// 전체 댓글 현황 리턴 확인
+				console.log("전체 댓글 수 : ", resData.length);
 				
- 					replyListPnl.innerHTML = ""; // 댓글 목록 초기화
-					// 댓글 작성란/ 패쓰워드 초기화
-					document.getElementById("reply_write_form").value = ""; 	
-					document.getElementById("board_pass_3").value = "";
- 					
- 					for (let reply of resData) {
- 						
- 						replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
- 						replyListPnl.innerHTML += replyData;	
- 						
- 					} // for
- 					
- 				 })	 				 
- 				 .catch(function(err) {
- 					console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
-					
-					// 에러 처리
-					console.log(err.response.data);
-					console.log(err.response.status);
-					
-					if (err.response.status == 401) {
-						alert("게시글 패쓰워드가 일치하지 않습니다.");								
-					}
+				let replyListPnl = document.getElementById("reply_list_pnl");
+				let replyData = "";
+			
+				replyListPnl.innerHTML = ""; // 댓글 목록 초기화
+				// 댓글 작성란/ 패쓰워드 초기화
+				document.getElementById("reply_write_form").value = ""; 	
+				//document.getElementById("board_pass_3").value = "";
 				
- 				 }); // axios			  
+				for (let reply of resData) {
+					
+					replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
+					replyListPnl.innerHTML += replyData;	
+					
+				} // for
+				
+			 })	 				 
+			 .catch(function(err) {
+				console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+				
+				// 에러 처리
+				console.log(err.response.data);
+				console.log(err.response.status);
+				
+				if (err.response.status == 401) {
+					alert("게시글 패쓰워드가 일치하지 않습니다.");								
+				}
+			
+			 }); // axios			  
 		
-			} // if (boardUpdatePass.value.trim() == '') { ....
+			//} // if (boardUpdatePass.value.trim() == '') { ....
 			
 		} // if (replyUpdateForm.value.trim() == "") { ....
 		
@@ -437,7 +443,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 		
 		// 댓글 작성란도 원상 복구
 		document.getElementById("reply_write_form").innerHTML = "";
-		document.getElementById(`board_pass_${originalBoardId}`).value = "";
+		//document.getElementById(`board_pass_${originalBoardId}`).value = "";
 	} //
 			
 }
@@ -457,12 +463,13 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	let oldReplyPnl = replyPnl.innerHTML;
 	
 	// 댓글 삭제 및 전송 버튼 생성 : 삭제용 패쓰워드 입력란 포함
+	//0422 song 패스워드 입력란 삭제
+/*	 <input type="text" id="board_pass_${replyBoardId}" 
+								    id="board_pass_${replyBoardId}" required 
+								    class="form-control form-control-sm h-100 w-25 me-3">*/
+				
 	let replySubmitBtns = `<div id="reply_submit_btns_${replyBoardId}" class="d-flex justify-content-end my-2">
 	
-							 <input type="text" id="board_pass_${replyBoardId}" 
-								    id="board_pass_${replyBoardId}" required 
-								    class="form-control form-control-sm h-100 w-25 me-3">
-						  	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
 						  		 class="btn btn-sm btn-primary me-2">삭제 전송</button>
@@ -507,7 +514,7 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	
 		// 댓글 폼점검 : 비어 있는지 여부 점검
 		// 유의) 여기서는 "댓글 삭제" 버튼을 직접 이용하기 때문에 원글(boardNum) 버튼을 활용 
-		let boardDeletePass = document.getElementById(`board_pass_${replyBoardId}`);
+		//let boardDeletePass = document.getElementById(`board_pass_${replyBoardId}`);
 		
 		if (replyActualWriter != boardWriter) { // 회원이 실제 댓글 작성자가 아니라면 차단 !
 			
@@ -520,69 +527,69 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 			
 		} else { // 회원이 실제 댓글 작성자라면...
 		
-			if (boardDeletePass.value.trim() == '') { 
+			/*if (boardDeletePass.value.trim() == '') { 
 							
 				alert("댓글 패쓰워드를 입력하십시오");
 				boardDeletePass.focus();
 				
-			} else {	
+			} else {*/	
 				
-				alert("삭제 전송");
+			alert("삭제 전송");
+			
+			console.log("-- replyBoardId : ", replyBoardId);			
+			console.log("-- originalBoardId : ", originalBoardId);
+			//console.log("-- boardDeletePass.value : ", boardDeletePass.value);
+			
+			// 삭제를 위한 AJAX 전송
+			// 삭제할 댓글 아이디와 댓글 부모글(원글) 아이디 : 원글은 삭제 후 댓글 목록의 현황 갱신을 위한 전송 
+			axios.post(`/healthyFoodProject/qna/replyDelete.do`,// 0422 song photo_board → qna
+			{
+				qnaCode : replyBoardId, // 삭제할 댓글 아이디
+				originalQnaCode : originalBoardId // 댓글 목록 갱신을 위한 원글 아이디// 0422 song originalQnaCode로 변경
+				//boardPass : boardDeletePass.value // 삭제할 댓글 패쓰워드
 				
-				console.log("-- replyBoardId : ", replyBoardId);			
-				console.log("-- originalBoardId : ", originalBoardId);
-				console.log("-- boardDeletePass.value : ", boardDeletePass.value);
+			}) 
+			 .then(function(response) {
+				 
+				let resData = response.data;
+				console.log("response.data : ", resData);
+	
+				// 전체 댓글 현황 리턴 확인
+				console.log("전체 댓글 수 : ", resData.length);
 				
-				// 삭제를 위한 AJAX 전송
-				// 삭제할 댓글 아이디와 댓글 부모글(원글) 아이디 : 원글은 삭제 후 댓글 목록의 현황 갱신을 위한 전송 
-				axios.post(`/healthyFoodProject/photo_board/replyDelete.do`,
-				{
-					boardNum : replyBoardId, // 삭제할 댓글 아이디
-					originalBoardNum : originalBoardId, // 댓글 목록 갱신을 위한 원글 아이디
-					boardPass : boardDeletePass.value // 삭제할 댓글 패쓰워드
-					
-				}) 
-				 .then(function(response) {
-					 
-					let resData = response.data;
-					console.log("response.data : ", resData);
-		
-					// 전체 댓글 현황 리턴 확인
-					console.log("전체 댓글 수 : ", resData.length);
-					
-					let replyListPnl = document.getElementById("reply_list_pnl");
-					
-					// 기존 패널 비우기(초기화)
-					replyListPnl.innerHTML = "";
-					
-					// 댓글 작성란/ 패쓰워드 초기화
-					document.getElementById("reply_write_form").value = ""; 	
-					document.getElementById("board_pass_3").value = "";
-					
-					let replyData = "";
-					
-					for (let reply of resData) {
-		
-						replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
-						replyListPnl.innerHTML += replyData;	
-						
-					} // for
+				let replyListPnl = document.getElementById("reply_list_pnl");
 				
-				 })	 				 
-				 .catch(function(err) {
-					console.error("댓글 삭제 중 서버 에러가 발견되었습니다.");
+				// 기존 패널 비우기(초기화)
+				replyListPnl.innerHTML = "";
+				
+				// 댓글 작성란/ 패쓰워드 초기화
+				document.getElementById("reply_write_form").value = ""; 	
+				//document.getElementById("board_pass_3").value = "";
+				
+				let replyData = "";
+				
+				for (let reply of resData) {
+	
+					replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
+					replyListPnl.innerHTML += replyData;	
 					
-					// 에러 처리
-					console.log(err.response.data);
-					console.log(err.response.status);
-					
-					if (err.response.status == 401) {
-						alert("게시글 패쓰워드가 일치하지 않습니다.");								
-					}
-				 }); // axios			  
+				} // for
+			
+			 })	 				 
+			 .catch(function(err) {
+				console.error("댓글 삭제 중 서버 에러가 발견되었습니다.");
+				
+				// 에러 처리
+				console.log(err.response.data);
+				console.log(err.response.status);
+				
+				if (err.response.status == 401) {
+					alert("게시글 패쓰워드가 일치하지 않습니다.");								
+				}
+			 }); // axios			  
 				
 			
-			} // if (boardUpdatePass.value.trim() == '') { 	 
+			//} // if (boardUpdatePass.value.trim() == '') { 	 
 				
 		} //
 	
@@ -609,31 +616,30 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 /* **************************************************************************************************** */
 
 // (원)글 삭제
-function deleteBoard(boardNum, boardWriter) {
-	
-	// console.log("boardNum : ", boardNum, ", boardWriter : ", boardWriter);
+function deleteBoard(qnaCode, boardWriter) {//0422 song boardNum->qnaCode
+	console.log(" boardWriter : ", boardWriter);
 	// console.log("삭제할 게시글(원글) 아이디 : ",boardNum);
 	
 	// 게시글 삭제 버튼
-	let boardDeleteBtn = document.getElementById(`board_delete_btn_${boardNum}`);
+	let boardDeleteBtn = document.getElementById(`board_delete_btn_${qnaCode}`);//0422 song boardNum->qnaCode
 	
 	// 삭제할 게시글 패쓰워드
-	let boardDeletePass = document.getElementById(`board_pass_${boardNum}`);
+	let boardDeletePass = document.getElementById(`board_pass_${qnaCode}`);//0422 song boardNum->qnaCode
 	
 	boardDeleteBtn.onclick = function() {
 		
-		console.log("삭제할 게시글 아이디 : ", boardNum);
-		console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass.value);
+		console.log("삭제할 게시글 아이디 : ", qnaCode);//0422 song boardNum->qnaCode
+		//console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass);//0422 boardDeletePass.value ->boardDeletePass
 		
 		// 게시글 삭제 의사 재점검
 		if (confirm("정말 삭제하시겠습니까?") == true) {
 		
 			// 패쓰워드 폼점검
-			if (boardDeletePass.value.trim() == '') {
+			/*if (boardDeletePass.value.trim() == '') {
 				
 				alert("패쓰워드를 입력하십시오.")
 				
-			} else {
+			} else {*/ //0422 song 주석처리(패쓰워드 입력안하고 삭제할 것이기 때문)
 				
 				// 전송
 				// 삭제를 위한 AJAX 전송
@@ -642,18 +648,20 @@ function deleteBoard(boardNum, boardWriter) {
 				//////////////////////////////////////////////////////////////////////////
 				// 
 				// 주의사항) 특수문자(#)이 포함된 boardPass 인자 전송할 경우 => encodeURIComponent 활용 !
-				//  
-				let encodedPass = encodeURIComponent(boardDeletePass.value);
 				
-				let str = `/healthyFoodProject/photo_board/deleteProc.do?boardNum=${boardNum}&boardPass=${encodedPass}`;
+				//let encodedPass = encodeURIComponent(boardDeletePass.value);
+				
+				let str = `/healthyFoodProject/qna/deleteProc.do?qnaCode=${qnaCode}&memberEmail=${boardWriter}`; //0422 song &boardPass=${encodedPass}`; 삭제함
+				let str2 = `/healthyFoodProject/qna/list.do`;//0422 song 글 삭제 이후 리스트 페이지 이동위해 내가 작성한 코드
 				
 				console.log('str : ', str);
 				
 				location.href = str;
+		    	//location.href = str2;
 				
 			} // if
 		
-		} else {
+		 else {
 			
 			alert("게시글 삭제를 취소하였습니다.");
 			

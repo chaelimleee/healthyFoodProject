@@ -2,6 +2,7 @@ package com.javateam.healthyFoodProject.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 //import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,26 +55,60 @@ public class BoardService {
 		
 		return boardDAO.findById(boardCode);
 	}
+	
+	@Transactional(readOnly = true)
+	public BoardVO selectBoardCode(int boardCode, int boardOrigin) {
+		
+		return boardDAO.findByBoardCodeAndBoardOrigin(boardCode, boardOrigin);
+	}
 
+//	@Transactional(readOnly = true)
+//	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
+//
+//		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") : 
+//		return searchKey.equals("BOARD_TITLE") ? boardDAO.countByboardTitleContaining(searchWord) :
+//			   searchKey.equals("BOARD_CONTENT") ? boardDAO.countByBoardContentContaining(searchWord) : 
+//			   boardDAO.countBymemberEmailContaining(searchWord);	
+//		
+//	}
+	
+	//SONG
 	@Transactional(readOnly = true)
 	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
 
-		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") : 
-		return searchKey.equals("BOARD_TITLE") ? boardDAO.countByboardTitleContaining(searchWord) :
-			   searchKey.equals("BOARD_CONTENT") ? boardDAO.countByBoardContentContaining(searchWord) : 
-			   boardDAO.countBymemberEmailContaining(searchWord);	
+		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") :
+		//0425 필드명->VO명 (boardTitle, boardContent)
+		//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
+		return searchKey.equals("boardTitle") ? boardDAO.countByboardTitleContaining(searchWord) :
+			   //searchKey.equals("boardContent") ? boardDAO.countByBoardContentContaining(searchWord) : 
+			   searchKey.equals("boardContent") ? boardDAO.countByBoardContentContaining(searchWord) : 
+			   boardDAO.countByMemberNickContaining(searchWord);// 0424 song memberEmail->MemberNick	
 		
 	}
 
+//	@Transactional(readOnly = true)
+//	public List<BoardVO> selectBoardsBySearching(int currPage, int limit, String searchKey, String searchWord) {
+//		
+//		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
+//		
+//		// return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectLike("%"+searchWord+"%", pageable).getContent() : 
+//		return searchKey.equals("BOARD_TITLE") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
+//			   searchKey.equals("BOARD_CONTENT") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
+//			   boardDAO.findBymemberEmailContaining(searchWord, pageable).getContent();
+//	}
+	//SONG
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsBySearching(int currPage, int limit, String searchKey, String searchWord) {
 		
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		
 		// return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectLike("%"+searchWord+"%", pageable).getContent() : 
-		return searchKey.equals("BOARD_TITLE") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
-			   searchKey.equals("BOARD_CONTENT") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
-			   boardDAO.findBymemberEmailContaining(searchWord, pageable).getContent();
+		//0425 필드명->VO명 (boardTitle, boardContent)
+		//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
+		return searchKey.equals("boardTitle") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
+			   //searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
+			   searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, currPage, limit) : 
+			   boardDAO.findByMemberNickContaining(searchWord, pageable).getContent();
 	}
 	
 	// imgUploadPath = /board/image/

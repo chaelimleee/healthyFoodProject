@@ -243,16 +243,18 @@ window.onload = function() {
 						</td>
 					</tr>
 
-					<tr>
-						<th scope="col">작성자</th>
-						<td><input type="text" class="form-control" id="memberEmail"
-							name="memberEmail" th:value="${board.memberEmail}" th:field="memberEmail" readonly /></td>
+					<tr><!-- SONG -->
+						<th scope="col">작성자</th> 
+						<td> <!--th:field에서 "*{} 추가  -->
+							<input type="text" class="form-control" id="memberEmail"
+							name="memberEmail" th:value="${board.memberEmail}" th:field="*{memberEmail}" readonly /></td>
 					</tr>
 					
 					<tr>
 						<th scope="col">닉네임</th>
-						<td><input type="text" class="form-control" id="memberNick"
-							name="memberNick" th:value="${board.memberNick}" th:field="memberNick" readonly /></td>
+						<td><!--th:field에서 "*{} 추가  -->
+							<input type="text" class="form-control" id="memberNick"
+							name="memberNick" th:value="${board.memberNick}" th:field="*{memberNick}" readonly /></td>
 					</tr>
 
 					<!-- <tr>
@@ -265,9 +267,10 @@ window.onload = function() {
 
 					<tr>
 						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardTitle"
+						<td><!--0423 song th:field에서 "*{}추가  -->
+							<input type="text" class="form-control" id="boardTitle"
 							name="boardTitle" required title="글제목을 입력하십시오" th:value="${board.boardTitle}" 
-							th:field="boardTitle"/></td>
+							th:field="*{boardTitle}"/></td>
 					</tr>
 
 					<tr>

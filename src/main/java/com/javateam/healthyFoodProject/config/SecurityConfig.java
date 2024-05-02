@@ -97,7 +97,7 @@ public class SecurityConfig {
         //240405-es-song- photo_board 추가(permitAll(),authenticated())
 		// /board/view.do/** 비회원만 볼 수 있는 상황. 로그인 한 사용자는 볼 수 없는 것 수정해야함. 0415 leee
 		//  게시글 보기 해결함!!!! permitAll을 view.do만 따로 줬더니 잘 들어가짐 !!!!!0415 leee
-        .requestMatchers("/board/view.do/**").permitAll()
+				.requestMatchers("/board/view.do/**").permitAll()
         		.requestMatchers("/board/list.do/**","/board/searchList.do",
                 "/board/image", "/board/image/**",
                 "/board/getRepliesAll.do","/board/download/**",
@@ -111,25 +111,25 @@ public class SecurityConfig {
                 "/qna/image", "/qna/image/**",
                 "/qna/getRepliesAll.do").permitAll()
 
-        .requestMatchers("/board/write.do","/board/writeProc.do",
-                 "/board/update.do", "/board/updateProc.do",
-                 "/board/replyWrite.do",
-                 "/board/replyUpdate.do", 
-                 "/board/replyDelete.do",
-                 "/board/deleteProc.do",
-                 "/photo_board/write.do","/photo_board/writeProc.do",
-                 "/photo_board/update.do", "/photo_board/updateProc.do",
-                 "/photo_board/replyWrite.do",
-                 "/photo_board/replyUpdate.do", 
-                 "/photo_board/replyDelete.do",
-                 "/photo_board/deleteProc.do",
-                 "/qna/write.do","/qna/writeProc.do",
-                 "/qna/update.do", "/qna/updateProc.do",
-                 "/qna/replyWrite.do",
-                 "/qna/replyUpdate.do",
-                 "/qna/replyDelete.do",
-                 "/qna/deleteProc.do"
-                 ).authenticated()
+        		.requestMatchers("/board/write.do","/board/writeProc.do",
+                        "/board/update.do", "/board/updateProc.do",
+                        "/board/replyWrite.do",
+                        "/board/replyUpdate.do",
+                        "/board/replyDelete.do",
+                        "/board/deleteProc.do",
+                        "/photo_board/write.do","/photo_board/writeProc.do",
+                        "/photo_board/update.do", "/photo_board/updateProc.do",
+                        "/photo_board/replyWrite.do",
+                        "/photo_board/replyUpdate.do",
+                        "/photo_board/replyDelete.do",
+                        "/photo_board/deleteProc.do",
+                        "/qna/write.do","/qna/writeProc.do",
+                        "/qna/update.do", "/qna/updateProc.do",
+                        "/qna/replyWrite.do",
+                        "/qna/replyUpdate.do",
+                        "/qna/replyDelete.do",
+                        "/qna/deleteProc.do"
+                        ).authenticated()
         
         .requestMatchers("/sasang/**").authenticated()
         

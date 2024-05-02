@@ -37,16 +37,16 @@ public class PhotoDeleteController {
 
 	@GetMapping("/deleteProc.do")
 	public String updateProc(@RequestParam("boardNum") int boardNum, 
-							 @RequestParam("boardWriter") String boardWriter,
-							 Model model) {
+						     @RequestParam("boardPass") String boardPass,
+						     Model model) {
 
-		log.info("------ deleteProc.do : boardNum : {}, boardWriter : {} ", boardNum, boardWriter);// 0501 song boardPass삭제
+		log.info("------ deleteProc.do : boardNum : {}, boardPass : {}", boardNum, boardPass);
 
 		// 개별 게시글 보기로 이동(movePage)
 		// 게시글 삭제 성공시에는 게시글 목록으로 이동(이미 삭제되었으므로 이동할 게시글이 없음)
 		// 게시글 삭제 실패시에는 게시글 보기로 이동
 		String returnPath; // 글삭제 "성공/실패" 모두 "/error/error"로 가도록 재설정
-		String movePage = "/photo_board/photo_view.do/" + boardNum; // 리턴(이동) 페이지
+		String movePage = "/photo_board/view.do/" + boardNum; // 리턴(이동) 페이지
 		
 		String msg = ""; // 메시지
 		
@@ -65,13 +65,13 @@ public class PhotoDeleteController {
 			
 			log.info("댓글 없는 원글(삭제 가능한 글)");
 			
-			log.info("게시글 실제 작성자 : {}", photoVO.getBoardWriter());
-			log.info("게시글 작성자(인자) : {}", boardWriter);
+			log.info("전송 패쓰워드 : {}", boardPass);
+			log.info("DB 패쓰워드 : {}", photoVO.getBoardPass());
 			
-			// 0501 게시글 작성자 일치 여부 점검 
-			if (boardWriter.trim().equals(photoVO.getBoardWriter())) {
+			// 게시글 패쓰워드 검증
+			if (boardPass.trim().equals(photoVO.getBoardPass())) {
 				
-				log.info("게시글 작성자입니다.");
+				log.info("패쓰워드 점검 성공");
 			
 				// 삭제할 삽입 이미지 점검
 				List<Integer> deleteImgList = photoService.getImageList(photoVO.getBoardContent().trim(),
@@ -79,7 +79,7 @@ public class PhotoDeleteController {
 	
 				for (int s : deleteImgList) {
 					log.info("--- 삭제할 업로드  이미지 : " + s);
-				} //for
+				} //
 				
 				// 삽입 이미지들 삭제
 				if (deleteImgList.size() > 0) { // 삭제할 이미지들이 있다면...
@@ -108,12 +108,11 @@ public class PhotoDeleteController {
 					
 				} //
 
-			}//if // 0501 song 주석 추가
-			else { //게시글 작성자 일치하지 않을 때 
+			} else { // 패쓰워드 오류시 
 				
-				msg = "게시글 작성자만 글을 삭제할 수 있습니다.";
+				msg = "게시글 패쓰워드가 틀렸습니다. 다시 입력하십시오.";
 				
-			} // if (boardWriter.trim().equals(photoVO.getBoardWriter())) //0501	
+			} // if (boardPass.trim().equals(boardVO.getBoardPass()))	
 			
 		
 		} // (boardService.selectBoardsCountWithReplies(boardNum) > 0) 

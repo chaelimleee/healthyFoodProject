@@ -127,8 +127,8 @@ window.onload = () => {
 					<th scope="col">첨부파일</th>
 					<td>
 						<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
-						
-						<a th:href="@{'/board/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
+						<!-- boardFileOrigin로 변경(song-0415) -->
+						<a th:href="@{'/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
 						   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
 						   th:utext="${board.boardFileOrigin}"></a> 
 					</td>
@@ -170,12 +170,16 @@ window.onload = () => {
 					
 					<!-- 댓글 패쓰워드 -->
 					<!-- 정렬 교정 -->
-					<input type="text" th:id="${'board_pass_' + board.boardCode}" 
+					<!-- <input type="text" th:id="${'board_pass_' + board.boardCode}" 
 						   th:name="${'board_pass_' + board.boardCode}" required 
-						   class="form-control form-control-sm h-100 w-25 me-2">
+						   class="form-control form-control-sm h-100 w-25 me-2"> -->
 					
 					<!-- 댓글 메뉴 -->
-					<a href="#" th:id="${'reply_write_btn_' + board.boardCode}" class="btn btn-sm btn-outline-primary my-2 me-2">댓글 등록</a>
+					<a href="#" 
+					   th:id="${'reply_write_btn_' + board.boardCode}"
+					   class="btn btn-sm btn-outline-primary my-2 me-2">
+					   댓글 등록
+					</a>
 					
 					<!-- 댓글 수정/삭제 댓글 영역으로 이관 : 2024.3 -->
 					<!-- 

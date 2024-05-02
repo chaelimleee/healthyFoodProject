@@ -7,10 +7,6 @@
 <meta charset="UTF-8">
 <title>게시글 수정</title>
 
-<!-- 밑에 두개를 달면 인잔현황이 안닫히지만 드롭다운은 잘 됨.  -->
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
-
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 
@@ -206,32 +202,6 @@ window.onload = function() {
 	<div layout:fragment="content" class="main_sect_pnl">
 
 		<div class="content_sect_pnl">
-		
-		<!-- Page Header Start -->
-	    <!-- <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
-	
-		<!-- Product Start -->
-	    <div class="container-xxl py-4">
-	        <div class="container">
-	            <div class="row g-0 gx-5 align-items-end">
-	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
-	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
-	                    </div>
-	                </div>
-	            </div>
 
 			<form id="qna_update_frm" th:action="@{'/qna/updateProc.do'}"
 				encType="multipart/form-data" method="post" th:object="${qna}">
@@ -350,8 +320,6 @@ window.onload = function() {
 
 			</form>
 
-		</div>
-		</div>
 		</div>
 		<!--// content -->
 

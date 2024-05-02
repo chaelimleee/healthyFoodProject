@@ -81,7 +81,7 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 // 댓글 목록 읽어오기
 function getAllReplies(originalBoardId, boardWriter) {
 	
-	axios.get(`/healthyFoodProject/photo_board/getRepliesAll.do?boardNum=${originalBoardId}`) 
+	axios.get(`/memberProject/photo_board/getRepliesAll.do?boardNum=${originalBoardId}`) 
 		 .then(function(response) {
 			 
 			let resData = response.data;
@@ -95,7 +95,7 @@ function getAllReplies(originalBoardId, boardWriter) {
 
 			// 댓글 작성란/ 패쓰워드 초기화
 			document.getElementById("reply_write_form").value = ""; 	
-			//document.getElementById("board_pass_3").value = "";
+			document.getElementById("board_pass_3").value = "";
 			
 			for (let reply of resData) {
 				
@@ -124,7 +124,7 @@ function writeReply(originalBoardId, boardWriter) {
 	// 개별 게시글 읽어올 때 바로 개별 게시글의 댓글들 읽어옴(로딩)
 	let replyWriteBtn = document.getElementById("reply_write_btn_" + originalBoardId);
 	
-	console.log("replyWriteBtn : ", replyWriteBtn.id);
+	console.log("replyWriteBtn : ", replyWriteBtn);
 	
     // 참고) 간혹 아래와 같이 기존에 함수로 분리되기 전에는 없던 에러가 발생할 수 있습니다.(그러나 동작상에는 문제는 없음 !) 
     // 바로 진입할 경우는 아래와 같은 에러 console 창에서 출력될 수 있습니다. 
@@ -168,14 +168,14 @@ function writeReply(originalBoardId, boardWriter) {
 			console.log("댓글 길이 : ", replyWriteForm.value.length);
 			
 			// 패쓰워드 폼점검
-			/*let boardPass = document.getElementById('board_pass_'+originalBoardId);
+			let boardPass = document.getElementById('board_pass_'+originalBoardId);
 			
 			if (boardPass.value.trim() == '') {
 				
 				alert("댓글 패쓰워드를 입력하십시오");
 				boardPass.focus();
 				
-			}  else {*/
+			}  else {
 			
 	 			if (replyWriteForm.value.length > 100) {
 	 				
@@ -188,12 +188,12 @@ function writeReply(originalBoardId, boardWriter) {
 	 			} else { 
 				 
 	 				// 전송			  
-	 				axios.post('/healthyFoodProject/photo_board/replyWrite.do', 
+	 				axios.post('/memberProject/photo_board/replyWrite.do', 
 	 					{
 							boardNum : originalBoardId,
 							boardContent : replyWriteForm.value,
 							boardWriter : boardWriter,
-							//boardPass : boardPass.value,
+							boardPass : boardPass.value,
 	 					}
 	 				)
 	 				 .then(function(response) {
@@ -210,7 +210,7 @@ function writeReply(originalBoardId, boardWriter) {
 						replyListPnl.innerHTML = ""; // 댓글 목록 초기화
 						// 댓글 작성란/ 패쓰워드 초기화
 						document.getElementById("reply_write_form").value = ""; 	
-						//document.getElementById("board_pass_3").value = "";
+						document.getElementById("board_pass_3").value = "";
 	 					
 	 					for (let reply of resData) {
 	 						
@@ -226,7 +226,7 @@ function writeReply(originalBoardId, boardWriter) {
 	 				
 	 			} // if (replyWriteForm.value.length > 100)	
 	 		
-		//	} // 패쓰워드 점검
+			} // 패쓰워드 점검
 		
 		} //로그인 여부 점검
 		
@@ -265,12 +265,12 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 						   </div>`;
 	
 	// 댓글 수정 내용 전송 버튼 생성 : 수정용 패쓰워드 입력란 포함
-	// 0501 song 삭제
-	 /*<input type="text" id="board_pass_${replyBoardId}" 
-								    id="board_pass_${replyBoardId}" required 
-								    class="form-control form-control-sm h-100 w-25 me-3">*/
 	let replySubmitBtns = `<div id="reply_submit_btns_${replyBoardId}" class="d-flex justify-content-end my-2">
 	
+							 <input type="text" id="board_pass_${replyBoardId}" 
+								    id="board_pass_${replyBoardId}" required 
+								    class="form-control form-control-sm h-100 w-25 me-3">
+						  	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
 						  		 class="btn btn-sm btn-primary me-2">등록</button>
@@ -345,63 +345,73 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 			console.log("수정할 댓글의 아이디 : ", replyBoardId);
 			console.log("수정할 댓글의 '원글' 아이디 : ", originalBoardId);
 			console.log("작성자 아이디 : ", boardWriter);
-			//console.log("수정할 댓글 패쓰워드 : ", boardUpdatePass.value); //0501 song 삭제
+			console.log("수정할 댓글 패쓰워드 : ", boardUpdatePass.value);
 			console.log("댓글 내용 : ", replyUpdateForm.value.trim());
 			
 			alert("최종점검");
 			
-			// 전송	
-			// 주의) 여기서 boardNum 댓글 자체의 아이디입니다.		  
-			axios.post('/healthyFoodProject/photo_board/replyUpdate.do', 
-				{
-				    boardNum : replyBoardId,
-					boardContent : replyUpdateForm.value,
-					boardWriter : boardWriter,
-					//boardPass : boardUpdatePass.value,
-					boardReRef : originalBoardId,
-				}
-			)
-			 .then(function(response) {
+			if (boardUpdatePass.value.trim() == '') { 
 				
-				let resData = response.data;
-				console.log("response.data : ", resData);
+				alert("댓글 패쓰워드를 입력하십시오");
+				boardUpdatePass.focus();
+				
+			} else {	
+			
+				// 전송	
+				// 주의) 여기서 boardNum 댓글 자체의 아이디입니다.		  
+ 				axios.post('/memberProject/photo_board/replyUpdate.do', 
+ 					{
+					    boardNum : replyBoardId,
+						boardContent : replyUpdateForm.value,
+						boardWriter : boardWriter,
+						boardPass : boardUpdatePass.value,
+						boardReRef : originalBoardId,
+ 					}
+ 				)
+ 				 .then(function(response) {
+ 					
+ 					let resData = response.data;
+ 					console.log("response.data : ", resData);
 
-				// 전체 댓글 현황 리턴 확인
-				console.log("전체 댓글 수 : ", resData.length);
+ 					// 전체 댓글 현황 리턴 확인
+ 					console.log("전체 댓글 수 : ", resData.length);
+ 					
+ 					let replyListPnl = document.getElementById("reply_list_pnl");
+ 					let replyData = "";
 				
-				let replyListPnl = document.getElementById("reply_list_pnl");
-				let replyData = "";
-			
-				replyListPnl.innerHTML = ""; // 댓글 목록 초기화
-				// 댓글 작성란/ 패쓰워드 초기화
-				document.getElementById("reply_write_form").value = ""; 	
-				//document.getElementById("board_pass_3").value = ""; //0501 song 삭제
-				
-				for (let reply of resData) {
+ 					replyListPnl.innerHTML = ""; // 댓글 목록 초기화
+					// 댓글 작성란/ 패쓰워드 초기화
+					document.getElementById("reply_write_form").value = ""; 	
+					document.getElementById("board_pass_3").value = "";
+ 					
+ 					for (let reply of resData) {
+ 						
+ 						replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
+ 						replyListPnl.innerHTML += replyData;	
+ 						
+ 					} // for
+ 					
+ 				 })	 				 
+ 				 .catch(function(err) {
+ 					console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
 					
-					replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
-					replyListPnl.innerHTML += replyData;	
+					// 에러 처리
+					console.log(err.response.data);
+					console.log(err.response.status);
 					
-				} // for
-			 })	 				 
-			 .catch(function(err) {
-				console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+					if (err.response.status == 401) {
+						alert("게시글 패쓰워드가 일치하지 않습니다.");								
+					}
 				
-				// 에러 처리
-				console.log(err.response.data);
-				console.log(err.response.status);
-				
-				if (err.response.status == 401) {
-					alert("게시글 패쓰워드가 일치하지 않습니다.");								
-				}
-			
-			 }); // axios			  
+ 				 }); // axios			  
 		
+			} // if (boardUpdatePass.value.trim() == '') { ....
+			
 		} // if (replyUpdateForm.value.trim() == "") { ....
 		
 		// 댓글 전송 => 댓글 작성자 아이디/패쓰워드 비교
 	
-	} //replySubmitBtn.onclick
+	} //
 	
 	// 댓글 수정 (전송)취소 버튼을 클릭시
 	let replyResetBtn = document.getElementById("reply_reset_btn_" + replyBoardId);
@@ -419,7 +429,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 		document.getElementById(`board_pass_${originalBoardId}`).value = "";
 	} //
 			
-} // updateReply
+}
 
 
 /* **************************************************************************************************** */
@@ -435,13 +445,13 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	// 이전 상태 복원 대비 위해 이전 등록 모드 상태 보전 : "취소" 버튼 클릭시 이전 상태 복원
 	let oldReplyPnl = replyPnl.innerHTML;
 	
-	// 댓글 삭제 및 전송 버튼 생성 : 삭제용 패쓰워드 입력란 삭제// 0501 song 패쓰워드 입력란 삭제
-	//아래 let replySubmitBtns = 
-	//<input type="text" id="board_pass_${replyBoardId}" 
-	//						    id="board_pass_${replyBoardId}" required 
-	//					    class="form-control form-control-sm h-100 w-25 me-3">
+	// 댓글 삭제 및 전송 버튼 생성 : 삭제용 패쓰워드 입력란 포함
 	let replySubmitBtns = `<div id="reply_submit_btns_${replyBoardId}" class="d-flex justify-content-end my-2">
-							
+	
+							 <input type="text" id="board_pass_${replyBoardId}" 
+								    id="board_pass_${replyBoardId}" required 
+								    class="form-control form-control-sm h-100 w-25 me-3">
+						  	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
 						  		 class="btn btn-sm btn-primary me-2">삭제 전송</button>
@@ -474,14 +484,14 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	
 	// 댓글 삭제 (전송)등록 버튼을 클릭시
 	let replySubmitBtn = document.getElementById("reply_submit_btn_" + replyBoardId);
-			
+				
 	replySubmitBtn.onclick = () => {	
 		
 		//로그인 미인증 시 로그인 페이지 이동
 		if (boardWriter == 'anonymousUser'){
 		
 			alert("댓글 작성을 위해서 로그인이 필요합니다.");
-			location.href = "/healthyFoodProject/login";
+			location.href = "/memberProject/login";
 		}			
 	
 		// 댓글 폼점검 : 비어 있는지 여부 점검
@@ -499,33 +509,33 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 			
 		} else { // 회원이 실제 댓글 작성자라면...
 		
-			/*if (boardDeletePass.value.trim() == '') { 
+			if (boardDeletePass.value.trim() == '') { 
 							
 				alert("댓글 패쓰워드를 입력하십시오");
 				boardDeletePass.focus();
 				
-			} else { */	//0501 song 삭제
+			} else {	
 				
 				alert("삭제 전송");
 				
 				console.log("-- replyBoardId : ", replyBoardId);			
 				console.log("-- originalBoardId : ", originalBoardId);
-				//console.log("-- boardDeletePass.value : ", boardDeletePass.value);
+				console.log("-- boardDeletePass.value : ", boardDeletePass.value);
 				
 				// 삭제를 위한 AJAX 전송
 				// 삭제할 댓글 아이디와 댓글 부모글(원글) 아이디 : 원글은 삭제 후 댓글 목록의 현황 갱신을 위한 전송 
-				axios.post(`/healthyFoodProject/photo_board/replyDelete.do`,
+				axios.post(`/memberProject/photo_board/replyDelete.do`,
 				{
 					boardNum : replyBoardId, // 삭제할 댓글 아이디
-					originalBoardNum : originalBoardId // 댓글 목록 갱신을 위한 원글 아이디
-					//boardPass : boardDeletePass.value // 삭제할 댓글 패쓰워드 // 0501 song 삭제
+					originalBoardNum : originalBoardId, // 댓글 목록 갱신을 위한 원글 아이디
+					boardPass : boardDeletePass.value // 삭제할 댓글 패쓰워드
 					
-				}) //axios
+				}) 
 				 .then(function(response) {
 					 
 					let resData = response.data;
 					console.log("response.data : ", resData);
-					
+		
 					// 전체 댓글 현황 리턴 확인
 					console.log("전체 댓글 수 : ", resData.length);
 					
@@ -536,18 +546,18 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 					
 					// 댓글 작성란/ 패쓰워드 초기화
 					document.getElementById("reply_write_form").value = ""; 	
-					//document.getElementById("board_pass_3").value = ""; // 0501 song 삭제 
+					document.getElementById("board_pass_3").value = "";
 					
 					let replyData = "";
 					
 					for (let reply of resData) {
 		
-						replyData = makeReplyPanel(reply, originalBoardId, boardWriter);
+						replyData = makeReplyPanel(reply, originalBoardId, boardWriter)
 						replyListPnl.innerHTML += replyData;	
 						
 					} // for
 				
-				 })//function	 				 
+				 })	 				 
 				 .catch(function(err) {
 					console.error("댓글 삭제 중 서버 에러가 발견되었습니다.");
 					
@@ -557,15 +567,15 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 					
 					if (err.response.status == 401) {
 						alert("게시글 패쓰워드가 일치하지 않습니다.");								
-					} //if (err...
-				 }); // catch(function)			  
+					}
+				 }); // axios			  
 				
 			
-			} // dead code: else ~ //0501 song //if (boardUpdatePass.value.trim() == '') { 	 
+			} // if (boardUpdatePass.value.trim() == '') { 	 
 				
 		} //
 	
-	} // 0501 song //if, 회원이 실제 댓글 작성자라면...	
+	} // 회원이 실제 댓글 작성자라면...	
 	
 	// 댓글 삭제 (전송)취소 버튼을 클릭시
 	let replyResetBtn = document.getElementById("reply_reset_btn_" + replyBoardId);
@@ -580,10 +590,10 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 		
 		// 댓글 작성란도 원상 복구
 		document.getElementById("reply_write_form").innerHTML = "";
-		//document.getElementById(`board_pass_${originalBoardId}`).value = "";
-		} //onclick			
+		document.getElementById(`board_pass_${originalBoardId}`).value = "";
+	} //			
 	
-	//} //
+} //
 
 /* **************************************************************************************************** */
 
@@ -596,19 +606,42 @@ function deleteBoard(boardNum, boardWriter) {
 	// 게시글 삭제 버튼
 	let boardDeleteBtn = document.getElementById(`board_delete_btn_${boardNum}`);
 	
+	// 삭제할 게시글 패쓰워드
+	let boardDeletePass = document.getElementById(`board_pass_${boardNum}`);
+	
 	boardDeleteBtn.onclick = function() {
 		
 		console.log("삭제할 게시글 아이디 : ", boardNum);
+		console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass.value);
 		
 		// 게시글 삭제 의사 재점검
 		if (confirm("정말 삭제하시겠습니까?") == true) {
 		
-			let str = `/healthyFoodProject/photo_board/deleteProc.do?boardNum=${boardNum}&boardWriter=${boardWriter}`;
-			//let str = `/healthyFoodProject/photo_board/deleteProc.do?boardNum=${boardNum}&boardPass=${encodedPass}`; // 0501 원래 이게 진짜
-			
-			console.log('str : ', str);
-			location.href = str;
+			// 패쓰워드 폼점검
+			if (boardDeletePass.value.trim() == '') {
 				
+				alert("패쓰워드를 입력하십시오.")
+				
+			} else {
+				
+				// 전송
+				// 삭제를 위한 AJAX 전송
+				// 삭제할 게시글 아이디
+				
+				//////////////////////////////////////////////////////////////////////////
+				// 
+				// 주의사항) 특수문자(#)이 포함된 boardPass 인자 전송할 경우 => encodeURIComponent 활용 !
+				//  
+				let encodedPass = encodeURIComponent(boardDeletePass.value);
+				
+				let str = `/memberProject/photo_board/deleteProc.do?boardNum=${boardNum}&boardPass=${encodedPass}`;
+				
+				console.log('str : ', str);
+				
+				location.href = str;
+				
+			} // if
+		
 		} else {
 			
 			alert("게시글 삭제를 취소하였습니다.");

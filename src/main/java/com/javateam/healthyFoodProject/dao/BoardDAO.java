@@ -1,6 +1,7 @@
 package com.javateam.healthyFoodProject.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,17 +24,42 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 
 	Page<BoardVO> findAll(Pageable pageable);
 	
+	BoardVO findByBoardCodeAndBoardOrigin(int boardCode, int boardOrigin);
+	
 	BoardVO findById(int boardCode);
 	
 	int countByboardTitleLike(String boardTitle); // Like
 	int countByboardTitleContaining(String boardTitle); // Containing
-	int countByBoardContentContaining(String boardContent);
-	int countBymemberEmailContaining(String memberEmail);
+	//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
+	//int countByBoardContentContaining(String boardContent);
+//	int countBymemberEmailContaining(String memberEmail);
+	
+	@Query(value= "select count(*) from board_tbl where contains(board_content, '%' || :boardContent || '%') > 0"
+			,nativeQuery = true)
+	int countByBoardContentContaining(@Param("boardContent") String boardContent);
+	
+	int countByMemberNickContaining(String memberNick);
 	
 	Page<BoardVO> findByboardTitleLike(String boardTitle, Pageable pageable); // Like
 	Page<BoardVO> findByboardTitleContaining(String boardTitle, Pageable pageable); // Containing
-	Page<BoardVO> findByBoardContentContaining(String boardContent, Pageable pageable);
-	Page<BoardVO> findBymemberEmailContaining(String memberEmail, Pageable pageable);
+	
+	//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
+	//Page<BoardVO> findByBoardContentContaining(String boardContent, Pageable pageable);
+	@Query(value = "SELECT *  "
+				 + "FROM (SELECT m.*,  "
+				 + "             FLOOR((ROWNUM - 1) / :limit + 1) page  "
+				 + "      FROM ("
+				 + "             SELECT * "
+				 + "			 FROM board_tbl "
+				 + "			 WHERE contains(board_content, '%' || :boardContent || '%') > 0 "
+				 + "             ORDER BY board_code DESC "
+				 + "           ) m  "
+				 + "      )  "
+				 + "WHERE page = :page", nativeQuery = true)
+//	0425 song List<BoardVO> findByBoardContentContaining(@Param("boardContent") String boardContent, @Param("page")int page, @Param("limit") int limit);
+	List<BoardVO> findByBoardContentContaining(@Param("boardContent") String boardContent, @Param("page") int page, @Param("limit") int limit);
+	
+	Page<BoardVO> findByMemberNickContaining(String memberNick, Pageable pageable);//0424 song memberEmail->memberNick
 	
 	// 원글에 따른 소속 댓글들 가져오기
 	List<BoardVO> findByBoardReSeq(int boardReSeq); 

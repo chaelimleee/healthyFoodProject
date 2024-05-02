@@ -151,7 +151,7 @@ public class PhotoReplyRestController {
 			// 주의) 댓글 수정에서는 댓글의 아이디가 이미 등록시 발행이 되어 있으므로 댓글의 실제 아이디 !
 			photoVO.setBoardNum(boardNum);  
 			photoVO.setBoardWriter(map.get("boardWriter").toString());
-			photoVO.setBoardPass(map.get("boardPass").toString());
+			//photoVO.setBoardPass(map.get("boardPass").toString());
 			photoVO.setBoardSubject("댓글");
 			photoVO.setBoardReRef(Integer.parseInt(map.get("boardReRef").toString()));
 			photoVO.setBoardContent(map.get("boardContent").toString());
@@ -210,8 +210,8 @@ public class PhotoReplyRestController {
 	@PostMapping("replyDelete.do")
 	public ResponseEntity<List<PhotoVO>> replyDelete(@RequestBody Map<String, Object> map) { 
 		
-		log.info("replyDelete.do : boardNum={}, originalBoardNum={}, boardPass={}", 
-					map.get("boardNum"), map.get("originalBoardNum"), map.get("boardPass"));
+		log.info("replyDelete.do : boardNum={}, originalBoardNum={}", 
+					map.get("boardNum"), map.get("originalBoardNum"));
 		
 		List<PhotoVO> replyList = new ArrayList<>();
 
@@ -222,10 +222,10 @@ public class PhotoReplyRestController {
 		
 		int boardNum = Integer.parseInt(map.get("boardNum").toString());
 		int originalBoardNum = Integer.parseInt(map.get("originalBoardNum").toString());
-		String boardPass= map.get("boardPass").toString();
+		//String boardPass= map.get("boardPass").toString();
 		
 		try {
-			
+			/*
 			// 패쓰워드 체크
 			String originalBoardPass = photoService.selectBoard(boardNum).getBoardPass();
 			
@@ -235,20 +235,12 @@ public class PhotoReplyRestController {
 			
 			log.info("패스워드 일치 여부 : {}", isPass);
 			
-			boolean result = false; // 삭제 결과
+			
 			
 			if (isPass == true) {
-				
-				result = photoService.deleteReplysById(boardNum);
-				
-			} else { // 패쓰워드가 틀리면...
-				
-				log.error("게시글 패쓰워드 불일치");
+			*/ //
+			boolean result = photoService.deleteReplysById(boardNum);; // 삭제 결과
 
-				// Http Status Code : 401
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-			} // 
-			
 			log.info("삭제 결과 : {}", result);
 			
 			if (result == true) { // 삭제
@@ -256,15 +248,11 @@ public class PhotoReplyRestController {
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
 				replyList = photoService.selectReplysById(originalBoardNum);				
 				
-				// 댓글 등록 성공 : 성공 코드(200)
-				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
-				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 리턴(클라리언트에 전송)
 				responseEntity = new ResponseEntity<>(replyList, HttpStatus.OK); 
 				
 			} else {
 				// 댓글 등록 실패 : 실패 코드(204)
-				// responseEntity = new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
 				responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 			}
 			

@@ -41,7 +41,7 @@ public class BoardListController {
 		int listCount = boardService.selectBoardsCountWithoutReplies();
 		// 댓글들 제외
 		boardList = boardService.selectBoardsByPagingWithoutReplies(currPage, limit);
-		log.info("boardList 리스트 확인 ==> " + boardList.get(0).toString());
+		//log.info("boardList 리스트 확인 ==> " + boardList.get(0).toString());
 
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
@@ -73,9 +73,9 @@ public class BoardListController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		
-		// title 0430
+		// title board 커뮤니티
 		model.addAttribute("pageTitle", "커뮤니티");
-		model.addAttribute("bgImg", "food5.jpg");
+		model.addAttribute("bgImg", "food5.png");
 
 		return "/board/board_list";
 	} //

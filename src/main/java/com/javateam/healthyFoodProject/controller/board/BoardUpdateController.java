@@ -81,7 +81,7 @@ public class BoardUpdateController {
 		// log.info("------ updateProc.do : {}", boardUpdateDTO);
 		log.info("------ updateProc.do");
 		
-		log.info("인자 현황 :");
+		log.info("인자 현황 :{}", (map.get("memberImg")==null));
 		
 		map.entrySet().forEach(x->{ log.info("{}", x);});
 		
@@ -303,9 +303,9 @@ public class BoardUpdateController {
 		model.addAttribute("movePage", movePage);
 		returnPath = "/error/error"; // 에러 페이지로 이동
 		
-		// title 0430
+		// title board 커뮤니티
 		model.addAttribute("pageTitle", "커뮤니티");
-		//model.addAttribute("bgImg", "food_2.jpg");
+		model.addAttribute("bgImg", "food5.png");
 
 		return returnPath;
 	}

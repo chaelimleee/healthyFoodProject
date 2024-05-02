@@ -10,9 +10,15 @@
 <!-- 구글 폰트 시작 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Grandiflora+One&family=IBM+Plex+Sans+KR&family=Jua&family=Nanum+Myeongjo:wght@400;700&display=swap">
 <!-- 구글 폰트 끝 -->
+
+<!-- 네비게이션 바 폰트 시작-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gugi&family=IBM+Plex+Sans+KR:wght@500&family=Jua&family=Nanum+Gothic&family=Noto+Sans+KR:wght@100..900&family=Orbit&display=swap" rel="stylesheet">
+<!-- 네비게이션 바 폰트 끝-->
 
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
@@ -45,6 +51,13 @@
 	@import url(https://fonts.googleapis.com/css2?family=Gugi&family=IBM+Plex+Sans+KR:wght@500&display=swap 	);
 	
 	/* 0405 leee 메인화면 상단 로고 글꼴 추가  */
+
+	.orbit-regular {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+		}
 
 	 .bd-placeholder-img {
         font-size: 1.125rem;
@@ -289,7 +302,7 @@
 		</div> <!-- 인자현황판 -->
 
    <!-- Navbar Start -->
-    <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid fixed-top px-0 wow fadeIn orbit-regular" data-wow-delay="0.1s">
         <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
             <div class="col-lg-6 px-5 text-start">
                 <small><i class="fa fa-map-marker-alt me-2"></i> Seoul, Korea </small>
@@ -306,7 +319,7 @@
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
             <a th:href="@{/}" class="navbar-brand ms-4 ms-lg-0">
                 <h1 class="fw-bold m-0" style=" font-family: 'Gugi', sans-serif; font-size:45px; font-weight: 400;
-        			 font-style: normal; ">체식탁</h1>
+        			 font-style: normal;">체식탁</h1>
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
