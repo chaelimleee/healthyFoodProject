@@ -66,7 +66,7 @@ public class BoardUpdateController {
 		
 		// title 0430
 		model.addAttribute("pageTitle", "커뮤니티");
-		//model.addAttribute("bgImg", "food_2.jpg");
+		//model.addAttribute("bgImg", "food5.jpg");
 
 		return "/board/board_update";
 	} //
