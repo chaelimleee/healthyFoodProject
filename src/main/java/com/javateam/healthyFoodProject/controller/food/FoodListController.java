@@ -35,7 +35,7 @@ public class FoodListController {
 			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 
-		log.info("게시글 목록");
+		log.info("food 게시글 목록");
 		List<FoodVO> foodList = new ArrayList<>();
 		
 

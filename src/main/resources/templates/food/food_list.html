@@ -13,16 +13,6 @@
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
-
-<!-- bootstrap -->
-<!--  버그 패치 : 이중 bootstrap 선언으로 인한 인자 현황보드 작동 오류 유발 : 2024.3 -->
-
-<!-- <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
-
-<!-- bootstrap icons :  -->
-<!-- <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
-<!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 <style>
 
@@ -99,50 +89,6 @@ window.onload = function() {
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 	
-	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
-	/* let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
-	let mainCheckbox = checkboxes[0]; */
-	
-	// 삭제 버튼을 눌렀을 경우 
-	/* let boardDeletebtn = document.getElementById("board_delete_btn");	
-	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열 */
-	
-	/* mainCheckbox.onclick = function() {
-		
-		// 메인 체크 박스 상태 파악 : 체크 여부
-		console.log("메인 체크박스 체크 여부 : ", mainCheckbox.checked);
-				
- 		for (check of checkboxes) {
-			check.checked = mainCheckbox.checked; // 메인 체크 박스의 상태를 그대로 다른 체크박스들에도 반영
-		} //
-		
-	} // */
-	
-	// console.log("boardDeletebtn : ", boardDeletebtn);
-	
-/* 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
-	boardDeletebtn.onclick = function() {
-		
-		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
-		// 메인 체크 박스(i=0)는 제외 : 개별체크 박스(i=1부터 시작)에서 삭제할 게시글 아이디 추출		
-		for (let i=1; i<checkboxes.length-1; i++) {
-			
-			if (checkboxes[i].checked == true) {
-				
-				let boardCode = checkboxes[i].id.substring('check_'.length)
-				deleteExpectedBoardIds.push(boardCode) // 삭제할 아이디 배열에 등록(적재)
-				// console.log("삭제할 게시글 아이디 :", boardCode);
-				
-			} //
-		} //
-		
-		// 삭제할 게시글 아이디들 확인
-		for (deleteExpectedBoardId of deleteExpectedBoardIds) {
-			
-			console.log("삭제할(선택된) 게시글 아이디 : ", deleteExpectedBoardId);
-		} // for
-		
-	} // */
 	
 } //
 </script>
@@ -242,14 +188,13 @@ window.onload = function() {
 	                            <div class="product-item" th:onclick="|location.href='/healthyFoodProject/food/view.do/'+ ${food.foodCode}|">
 	                                <div class="position-relative bg-light overflow-hidden">
 	                                	<img class="img-fluid w-100" th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" style="width: 300px; height: 300px;" alt="이미지 준비 중. ">
-	                                    <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
 	                                </div>
 	                                <div class="text-center p-4">
 	                                	<a class="d-block h5 mb-2" th:text="${food.foodName}" ></a>
 	                                </div>
 	                                <div class="d-flex border-top">
 	                                    <small class="w-50 text-center border-end py-2">
-	                                        <a class="text-body" th:href="@{/food/view.do/'+ ${food.foodCode}}"><i class="fa fa-eye text-primary me-2"></i>레시피 보러가기</a>
+	                                        <a class="text-body" th:href="@{'/food/view.do/'+ ${food.foodCode}}"><i class="fa fa-eye text-primary me-2"></i>레시피 보기</a>
 	                                    </small>
 	                                    <small class="w-50 text-center py-2">
 	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>좋아요</a>
@@ -412,7 +357,7 @@ window.onload = function() {
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-primary">
+						<button id="search_btn" class="btn btn-outline-success">
 							<!-- bootstrap icon
 							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>
@@ -442,9 +387,5 @@ window.onload = function() {
 	</div>
 	<!--// layout -->	
 	
-    <!-- JavaScript Libraries -->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script> -->
-    
 </body>
 </html>

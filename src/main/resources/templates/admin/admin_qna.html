@@ -112,9 +112,9 @@
 							th:utext="${#dates.format(member.memberDate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></td>
 						<td th:utext="${member.enabled == '1' ? '활동' : '휴면'}"></td>
 						<td>
-							<button class="btn btn-primary"
+							<button class="btn btn-outline-success"
 								id="${'update_btn' + (st.count + (pageVO.currPage - 1) * 10)}">수정</button>&nbsp;
-							<button class="btn btn-primary"
+							<button class="btn btn-outline-success"
 								id="${'delete_btn' + (st.count + (pageVO.currPage - 1) * 10)}">삭제</button>
 						</td>
 					</tr>

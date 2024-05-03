@@ -66,6 +66,8 @@ public class QnaListController {
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("listCount", listCount);
 		
+		log.info("qna 게시글 목록 끝");
+		
 		return "/qna/qna_list";		
 	} //
 	

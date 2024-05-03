@@ -69,7 +69,7 @@ public class SasangController {
 		model.addAttribute("arg", "인자");
 		
 		// title 0430 사상체질
-		model.addAttribute("pageTitle", "사상체질");
+		model.addAttribute("pageTitle", "<span style='color:#fff;'>사상체질</span>");
 		model.addAttribute("bgImg", "sasang2.jpg");
 		
 		return "sasang/sasang_home";
@@ -82,7 +82,7 @@ public class SasangController {
 		model.addAttribute("arg", "인자");
 		
 		// title 0430 사상체질
-		model.addAttribute("pageTitle", "사상체질");
+		model.addAttribute("pageTitle", "<span style='color:#fff;'>사상체질</span>");
 		model.addAttribute("bgImg", "sasang2.jpg");
 		
 		return "sasang/sasang_list";
@@ -110,7 +110,7 @@ public class SasangController {
 		model.addAttribute("sasangName", sasang);
 		
 		// title 0430 사상체질
-		model.addAttribute("pageTitle", "사상체질");
+		model.addAttribute("pageTitle", "<span style='color:#fff;'>사상체질</span>");
 		model.addAttribute("bgImg", "sasang2.jpg");
 		
 		return "sasang/sasang_Result";

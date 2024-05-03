@@ -30,7 +30,7 @@
     <!-- 회원  정보 삭제/취소 버튼 -->	
     <div id="buttons_fld_pnl" th:if="${not #lists.isEmpty(members) && pageVO.listCount > 0}" th:each="member, st : ${members}"> 
         
-       <button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('MEMBER_EMAIL')}">삭제</button>
+       <button class="btn btn-sm btn-outline-success" th:id="${'delete_btn' + member.get('MEMBER_EMAIL')}">삭제</button>
         <button id="reset_btn" type="reset">뒤로</button>
     </div>
     <!--// 회원 정보 삭제/취소 버튼 -->

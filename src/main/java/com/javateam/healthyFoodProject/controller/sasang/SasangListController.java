@@ -110,14 +110,11 @@ public class SasangListController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		
-		//0502
-		String pageTitle = "<span style='color:#fff;'>" + sasangType + " 추천 레시피</span>";
-		
 		// 0501
 		model.addAttribute("sasangType", sasangType);
 		
 		// title 0430 사상체질
-		model.addAttribute("pageTitle", pageTitle);
+		model.addAttribute("pageTitle", "<span style='color:#fff;'>" + sasangType + " 추천 레시피</span>");
 		model.addAttribute("bgImg", "sasang2.jpg");
 
 		return "/sasang/sasang_one";
