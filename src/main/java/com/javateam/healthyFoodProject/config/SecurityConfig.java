@@ -101,7 +101,7 @@ public class SecurityConfig {
         		.requestMatchers("/board/list.do/**","/board/searchList.do",
                 "/board/image", "/board/image/**",
                 "/board/getRepliesAll.do","/board/download/**",
-                "/photo_board/view.do","/photo_board/view.do/**","/photo_board/list.do/**","/photo_board/searchList.do",
+                "/photo_board/photo_view.do/**","/photo_board/list.do","/photo_board/searchList.do",
                 "/photo_board/image", "/photo_board/image/**",
                 "/photo_board/getRepliesAll.do").permitAll()
         		.requestMatchers(

@@ -70,7 +70,7 @@ public class QnaListController {
 		
 		// title 0506 qna 문의게시판
 		model.addAttribute("pageTitle", "1:1 문의게시판");
-		model.addAttribute("bgImg", "");
+		model.addAttribute("bgImg", "bg-tomato.png");
 		
 		return "/qna/qna_list";		
 	} //

@@ -234,35 +234,34 @@ window.onload = function() {
 	
 						<!--  첫 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=1'}" aria-label="Start">
+							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=1'}" aria-label="Start">
 								<span aria-hidden="true">&Lt;</span>
 						</a></li>
 	
 						<!-- 이전 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/food/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
-							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.prePage}}"
+							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
 						</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
 						<li class="page-item active"><a class="page-link"
-							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.currPage}}"
+							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${pageVO.currPage}}"
 							th:utext="${pageVO.currPage}"></a></li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
 							<a class="page-link"
-							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.nextPage}}"
+							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>
 						</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/food/list.do?foodType=' + ${foodType} + '&currPage=' + ${pageVO.endPage}}"
+							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${pageVO.endPage}}"
 							aria-label="End"> <span aria-hidden="true">&Gt;</span>
 						</a></li>
 					</ul>

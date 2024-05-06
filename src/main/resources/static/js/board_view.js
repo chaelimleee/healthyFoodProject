@@ -426,7 +426,7 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 		
 		replyActualWriter = replyActualWriter.substring("reply_writer_".length); // 실제 작성자 아이디 추출				
 		
-		console.log("작성자 아이디 : ", memberNick);
+		console.log("작성자 닉네임 : ", memberNick);
 		console.log("실제 작성자 아이디 : ", replyActualWriter);
 		
 		
