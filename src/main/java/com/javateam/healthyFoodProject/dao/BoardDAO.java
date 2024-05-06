@@ -18,7 +18,7 @@ import com.javateam.healthyFoodProject.domain.BoardVO;
 // 페이징 메서드 추출위해 Repository 교체
 public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	
-	Optional<BoardVO> save(BoardVO boardVO);
+	BoardVO save(BoardVO boardVO);
 	
 	long count();
 
@@ -26,17 +26,15 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	
 	BoardVO findByBoardCodeAndBoardOrigin(int boardCode, int boardOrigin);
 	
+	List<BoardVO> findByBoardOrigin(int boardOrigin);// 0503 추가 댓글 여러개
+	
 	BoardVO findById(int boardCode);
-	
-//	@Query(value= "select * from board_tbl where board_code = :boardCode and board_origin = 0"
-//			,nativeQuery = true)
-//	List<BoardVO> findbyBoardCode(@Param("boardCode")int boardCode);
-	
 	
 	int countByboardTitleLike(String boardTitle); // Like
 	int countByboardTitleContaining(String boardTitle); // Containing
 	//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
 	//int countByBoardContentContaining(String boardContent);
+//	int countBymemberEmailContaining(String memberEmail);
 	
 	@Query(value= "select count(*) from board_tbl where contains(board_content, '%' || :boardContent || '%') > 0"
 			,nativeQuery = true)
@@ -65,13 +63,11 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	
 	Page<BoardVO> findByMemberNickContaining(String memberNick, Pageable pageable);//0424 song memberEmail->memberNick
 	
-	// 원글에 따른 소속 댓글들 가져오기
-	List<BoardVO> findByBoardOrigin(int boardOrigin); //0424 song boardReSeq->boardOrigin
+	// 댓글 제외한 원글들만의 게시글 수 : boardOrigin = 0
+	//long countByBoardReSeq(int boardReSeq);
+	long countByBoardOrigin(int boardOrigin); //0503
 	
-	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
-	long countByBoardReSeq(int boardReSeq);
-	
-	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
+	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardOrigin = 0
 	Page<BoardVO> findByBoardOrigin(int boardOrigin, Pageable pageable); 
 	
 	// 게시글 조회수 갱신

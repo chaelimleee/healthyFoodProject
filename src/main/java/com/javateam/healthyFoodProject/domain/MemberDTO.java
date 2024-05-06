@@ -52,7 +52,8 @@ public class MemberDTO {
 		MERBER_IMG_ORIGIN 회원 이미지 원본
 		MERBER_DATE	      회원 가입일
 		MEMBER_ROLE	      회원 권한
-		ENABLED	  회원 활성화
+		ENABLED	          회원 활성화
+		MEMBER_SASANG     회원 체질
 	 */
 	
 	/** 1. 회원 이메일 아이디 */
@@ -71,6 +72,7 @@ public class MemberDTO {
 	private String memberMobile;
 
 	/** 6. 회원 생년월일 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date memberBirth;
 	
 	/** 6. 회원 생일 년도 */ // 추가수정
@@ -83,7 +85,8 @@ public class MemberDTO {
 	private String memberDay;
 	
 	/** 6. 회원 생일 더함.  */  // 추가수정
-	private String memberBirthAll;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date memberBirthAll;
 	
 	/** 7. 회원 우편번호 */
 	private String memberZip;
@@ -110,6 +113,9 @@ public class MemberDTO {
 	/** 14. 회원 활성화 여부 */
 	private int enabled;
 	
+	/** 15. 회원 체질 */
+	private String memberSasang;
+
 	public static String formatBirthAll(String memberYear, String memberMonth, String memberDay) {
 		return memberYear + "-" + memberMonth +"-" + memberDay ;
 	}
@@ -128,7 +134,7 @@ public class MemberDTO {
 				
 				Method method = memberDTO.getClass().getDeclaredMethod("get"+StringUtils.capitalize(fld.getName()));
 				
-				if (fld.getName().equals("memberDate")) {
+				if (fld.getName().equals("memberBirthAll") ||fld.getName().equals("memberDate")) {
 				
 					map.put(fld.getName(), Arrays.asList(new SimpleDateFormat("yyyy-MM-dd").format(method.invoke(memberDTO))));
 					
@@ -159,7 +165,7 @@ public class MemberDTO {
 							field = this.getClass().getDeclaredField(fldName);
 							field.setAccessible(true);
 							
-							if (!fldName.equals("memberDate")) {
+							if (!fldName.equals("memberBirthAll") || !fldName.equals("memberDate")) {
 								field.set(this, requestMap.get(fldName));
 							}
 							

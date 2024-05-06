@@ -32,6 +32,10 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 		this.setMemberNick(memberDTO.getMemberNick());
 		this.setMemberMobile(memberDTO.getMemberMobile());
 		this.setMemberBirth(memberDTO.getMemberBirth());
+		this.setMemberYear(memberDTO.getMemberYear());
+		this.setMemberMonth(memberDTO.getMemberMonth());
+		this.setMemberBirthAll(memberDTO.getMemberBirthAll());
+		this.setMemberDay(memberDTO.getMemberDay());
 		this.setMemberZip(memberDTO.getMemberZip());
 		this.setMemberAddress1(memberDTO.getMemberAddress1());
 		this.setMemberAddress2(memberDTO.getMemberAddress2());
@@ -40,6 +44,7 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 		this.setMemberDate(memberDTO.getMemberDate());
 		this.setMemberRole(memberDTO.getMemberRole());
 		this.setEnabled(memberDTO.getEnabled());
+		this.setMemberSasang(memberDTO.getMemberSasang());
 	}
 
 	@Override
@@ -47,11 +52,17 @@ public class MemberUpdateDTO extends MemberDTO implements Serializable {
 		return "MemberUpdateDTO [password1=" + password1 + ", password2=" + password2 + ", getMemberEmail()="
 				+ getMemberEmail() + ", getMemberPw()=" + getMemberPw() + ", getMemberName()=" + getMemberName()
 				+ ", getMemberNick()=" + getMemberNick() + ", getMemberMobile()=" + getMemberMobile()
-				+ ", getMemberBirth()=" + getMemberBirth() + ", getMemberZip()=" + getMemberZip()
+				+ ", getMemberBirth()=" + getMemberBirth()
+				+ ", getMemberYear() =" + getMemberYear()
+				+ ", getMemberMonth() =" + getMemberMonth()
+				+ ", getMemberDay() =" + getMemberDay()
+				+ ", getMemberBirthAll() =" + getMemberBirthAll()
+				+ ", getMemberZip()=" + getMemberZip()
 				+ ", getMemberAddress1()=" + getMemberAddress1() + ", getMemberAddress2()=" + getMemberAddress2()
 				+ ", getMemberImg()=" + getMemberImg() + ", getMemberImgOrigin()=" + getMemberImgOrigin()
-				+ ", getRegDate()=" + getMemberDate() + ", getMemberRole()=" + getMemberRole() + ", getenabled()="
-				+ getEnabled() + ", getClass()=" + getClass() + "]";
+				+ ", getRegDate()=" + getMemberDate() + ", getMemberRole()=" + getMemberRole() 
+				+ ", getenabled()=" + getEnabled()
+				+ ", setMemberSasang()=" + getMemberSasang() + ", getClass()=" + getClass() + "]";
 	}
 
 	

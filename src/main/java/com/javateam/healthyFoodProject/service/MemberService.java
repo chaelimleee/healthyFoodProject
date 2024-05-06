@@ -53,6 +53,22 @@ public class MemberService {
 		
 		return result;
 	}
+	
+//	@Transactional
+//	public boolean insertMemberSasang(String sasang) {
+//		
+//		boolean result = false;
+//
+//		try {
+//			memberDAO.insertMemberSasang(sasang);
+//			result = true;
+//		} catch (Exception e) {
+//			log.error("MemberService.insertMemberRole.insertMember : {}", e);
+//			e.printStackTrace();
+//		}
+//		
+//		return result;
+//	}
 
 	@Transactional(readOnly = true)
 	public boolean hasFld(String fld, String val) {
@@ -91,6 +107,27 @@ public class MemberService {
 			
 		return result;
 	} //
+
+	@Transactional
+	public boolean updateMemberSasang(MemberDTO memberDTO) {
+		
+		boolean result = false;
+		
+		try {
+			if(memberDAO.hasFld("MEMBER_EMAIL", memberDTO.getMemberEmail()) == false) {
+				log.info("회원정보 없음.");
+				throw new Exception();
+			}
+			memberDAO.updateMemberSasang(memberDTO);
+			result = true;
+		} catch (Exception e) {
+			result = false;
+			log.error("MemberService.updateMember : {}", e);
+			e.printStackTrace();
+		}
+		
+		return result;
+	} //
 	
 	@Transactional(readOnly = true)
 	public int selectMembersCount() {
@@ -110,15 +147,15 @@ public class MemberService {
 	} //
 	
 	@Transactional
-	public boolean deleteRoleById(String id, String role) {
+	public boolean deleteRolesByEmail(String id) {
 		
 		boolean result = false;
 		
 		try {
-			memberDAO.deleteRoleById(id, role);
+			memberDAO.deleteRolesByEmail(id);
 			result = true;
 		} catch (Exception e) {
-			log.error("MemberService.deleteRoleById : {}", e);
+			log.error("MemberService.deleteRoleByEmail : {}", e);
 			e.printStackTrace();
 		}
 			
@@ -175,7 +212,7 @@ public class MemberService {
 			log.info("관리자 권한 회수");	
 			
 			String role = "ROLE_ADMIN";
-			result = this.deleteRoleById(id, role);
+			result = this.deleteRolesByEmail(id);
 		}
 				
 		return result;
@@ -210,13 +247,15 @@ public class MemberService {
 		return result;
 	}
 
+	// 회원 탈퇴
 	@Transactional
-	public boolean deleteMember(String id) {
+	public boolean deleteMember(String email) {
 		
 		boolean result = false;
 		
 		try {
-			memberDAO.deleteRolesById(id);
+//			memberDAO.deleteRolesById(id);
+			memberDAO.deleteMemberByEmail(email);
 			result = true;
 		} catch (Exception e) {
 			result = false;
@@ -224,10 +263,12 @@ public class MemberService {
 			e.printStackTrace();
 		} //
 		
+		log.info("회원 삭제 이메일 확인 ==> " + email);
+//		회원 삭제 이메일 확인 ==> team226@naver.com 잘 받아와짐. 
 		result = false; // 두번째 단계 위한 플래그 변수 초기화 : 순수 회원 정보 삭제
-		
+
 		try {
-			memberDAO.deleteMemberById(id);
+			memberDAO.deleteRolesByEmail(email);
 			result = true;
 		} catch (Exception e) {
 			result = false;
@@ -237,5 +278,13 @@ public class MemberService {
 			
 		return result;
 	}
+	
+//    public int overlappedID(MemberDTO memberDTO) throws Exception{
+//    	
+//		int result = memberDAO.overlappedID(memberDTO);
+//		return result;
+//	}
+    
+    
 		
 }

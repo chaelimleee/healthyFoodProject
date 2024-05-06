@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<!-- xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"> -->
+<!-- bootstrap icons :  -->
+<head>
+	<style type="text/css">
+		a{
+			text-shadow: 1px 1px 5px #000;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<div th:fragment="header" > <!-- 1440px(em은 글자에서 사용.) min-width필요하다면 // px이나%로 잡는게 좋다 . : 네비게이션 가로 길이.  -->
+		
+		<!-- //////////////////////////////////////////////////////////// -->
+		
+		<!--
+			인자 현황판 (collapse) : 교정 : list.html로 부터 이전 및 교정(작동 이상) : 2024.3
+			: 교정 사항 : 인자(pageVO, boardList)가 있을 경우에만 표현 
+			: https://getbootstrap.com/docs/5.3/components/collapse/ 
+		-->
+		
+		<!-- //////////////////////////////////////////////////////////// -->
+		
+				<div id="args_board" class="collapse" style="margin-top:150px;">
+					
+					<!-- 인증정보/회원정보 인자 확인  -->
+					<div th:if="${#authentication != null}">
+						
+						<table class="table table-striped">
+							<tr>
+								<th style="width:120px">인증정보</th>
+								<td>[[${#authentication}]]</td>
+							</tr>
+						</table>
+						
+					</div>
+					
+					<div th:if="${#authentication != null}">
+						
+						<table class="table table-striped">
+							<tr>
+								<th style="width:120px">이메일</th>
+								<td>[[${#authentication.name}]]</td>
+							</tr>
+						</table>
+						
+						<table sec:authorize="isAuthenticated()" class="table table-striped"><!--0503  -->
+							<tr>
+								<th style="width:120px">닉네임</th>
+								<td>[[${#authentication.principal.memberNick}]]</td>
+							</tr>
+						</table>
+						
+					</div> 
+					
+					<div th:if="${memberDTO != null}">
+				
+						<table class="table table-striped">
+							<tr>
+								<th style="width:120px">회원정보(인자)</th>
+								<td>[[${memberDTO}]]</td>
+							</tr>
+						</table>
+						
+					</div>
+					
+					<div th:if="${board != null}">
+						
+						<table class="table table-striped">
+							<tr>
+								<th style="width:120px">게시글 정보</th>
+								<td>[[${board}]]</td>
+							</tr>
+						</table>
+						
+					</div>		
+					
+					<div th:if="${session.boardUpdateSess != null}">
+						
+						<table class="table table-striped">
+							<tr>
+								<th style="width:120px">기존 게시글 정보(세션)</th>
+								<td>[[${session.boardUpdateSess}]]</td>
+							</tr>
+						</table>
+						
+					</div>	
+					
+					<table class="table table-striped"  th:if="${pageVO != null}">
+						
+						<tr th:each="board, st : ${boardList}" th:if="${not #lists.isEmpty(boardList)}">
+							<th colspan="1">게시글 정보</th>
+							<td colspan="11"><span th:text="${board}"></span><br></td>
+						</tr>
+						<tr th:each="food, st : ${foodList}" th:if="${not #lists.isEmpty(foodList)}">
+							<th colspan="1">음식 정보</th>
+							<td colspan="11"><span th:text="${food}"></span><br></td>
+						</tr>
+						
+						<tr>
+							<th style="width: 150px;">총 게시글 수</th>
+							<td th:text="${pageVO.listCount}"></td>
+							<th style="width: 150px;">이전 페이지</th>
+							<td th:text="${pageVO.prePage}"></td>
+							<th style="width: 150px;">현재 페이지</th>
+							<td th:text="${pageVO.currPage}"></td>
+							<th style="width: 150px;">이후 페이지</th>
+							<td th:text="${pageVO.nextPage}"></td>
+							<th style="width: 150px;">처음 페이지</th>
+							<td th:text="${pageVO.startPage}"></td>
+							<th style="width: 150px;">마지막 페이지</th>
+							<td th:text="${pageVO.endPage}"></td>
+						</tr>
+					</table>
+			
+			<!-- grid 정보 -->	
+			<div>
+				<div class="tablePhoto "  
+					th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}"
+					th:each="photo : ${photoList}">
+					<span th:text="${photo.boardSubject}"></span>,
+					<span th:text="${photo.boardContent}"></span>
+					<br>
+				</div>	
+			</div>
+			
+			<hr>
+			<br><br><br>
+			
+		</div> <!-- 인자현황판 -->
+			
+	<!-- Navbar Start -->
+    <div class="container-fluid fixed-top px-0 wow fadeIn orbit-regular" data-wow-delay="0.1s">
+    
+        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+            <div class="col-lg-6 px-5 text-start">
+                <small><i class="fa fa-map-marker-alt me-2"></i> Seoul, Korea </small>
+                <small class="ms-4"><i class="fa fa-envelope me-2"></i>healthyFood@example.com</small>
+            </div>
+            <div class="col-lg-6 px-5 text-end">
+                <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
+                <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
+                <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <nav id="main_navbar" class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+            <a th:href="@{/}" class="navbar-brand ms-4 ms-lg-0">
+                <h1 class="fw-bold m-0" style=" font-family: 'Gugi', sans-serif; font-size:30px; font-weight: 400;
+        			 font-style: normal;">체식탁</h1>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+            
+                <div class="navbar-nav ms-auto p-4 p-lg-0 rounded-pill">
+                    
+                    <a th:href="@{/sasang/sasangTest.do}" class="nav-item nav-link active ms-3 text-black-50 rounded ">체질자가진단</a>
+                    
+                    <div class="nav-item dropdown">
+                        <a th:href="@{/sasang/sasang.do}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">나의 맞춤 건강식</a>
+                        <div class="dropdown-menu m-0">
+                            <a th:href="@{/sasang/sasang.do}" class="dropdown-item">사상체질 맞춤 건강식</a>
+                            <a th:href="@{/}" class="dropdown-item">건강상태 맞춤 건강식</a>
+                            <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                        </div>
+                    </div>
+                    
+                    <a th:href="@{/food/list.do}" class="nav-item nav-link">건강식 레시피</a>
+                    
+                    <div class="nav-item dropdown">
+                        <a th:href="@{/board/list.do}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+                        <div class="dropdown-menu m-0">
+                            <a th:href="@{/board/list.do}" class="dropdown-item">게시글 커뮤니티</a>
+                            <a th:href="@{/photo_board/list.do}" class="dropdown-item">건강식 찰칵!</a>
+                        </div>
+                    </div>
+                    
+                    <a th:href="@{/member/update.do}" class="nav-link active">회원수정</a>
+
+                    <a href="#args_board" class="nav-link active"
+					   style="color:#fff;"
+					   data-bs-toggle="collapse" data-bs-target="#args_board" aria-expanded="false" aria-controls="args_board">
+					   인자현황
+					</a>
+					
+					<a th:href="@{/logout}" class="nav-item nav-link" sec:authorize="isAuthenticated()" >
+						로그아웃
+					</a>
+					
+					<a th:href="@{/login}" class="nav-item nav-link" sec:authorize="isAnonymous()" >
+						로그인
+					</a>
+					
+					<!-- 등급(롤:role)이 관리자일 경우 -->
+					<a th:href="@{/admin/viewAllWithRoles.do}" class="nav-link active" sec:authorize="hasRole('ROLE_ADMIN')">회원관리
+					</a>
+					
+					<div class="d-none d-lg-flex ms-2 d-flex align-items-center px-3">
+	                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+	                        <small class="fa fa-search text-body"></small>
+	                    </a>
+	                    <a class="btn-sm-square bg-white rounded-circle ms-3" th:href="@{/member/view.do}">
+	                        <small class="fa fa-user text-body"></small>
+	                    </a>
+	                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+	                        <small class="fa fa-shopping-bag text-body"></small>
+	                    </a>
+                	</div>
+					
+                </div>
+                
+                <!-- <div class="d-none d-lg-flex ms-2">
+                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+                        <small class="fa fa-search text-body"></small>
+                    </a>
+                    <a class="btn-sm-square bg-white rounded-circle ms-3" th:href="@{/member/view.do}">
+                        <small class="fa fa-user text-body"></small>
+                    </a>
+                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+                        <small class="fa fa-shopping-bag text-body"></small>
+                    </a>
+                </div> -->
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+    
+    <!-- Page Header Start (공통)-->
+	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;" id="intro_img">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown" th:utext="${pageTitle}"></h1><!-- 커뮤니티 -->
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+	                </ol>
+	            </nav>
+	        </div>
+	    </div>
+	 <!-- // Page Header end (공통)-->
+    
+			
+		<!-- </div> --> <!-- // 끝 th:fragment="header" -->
+		</div> <!-- // 끝 th:fragment="header" -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@latest"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+ -->    <!-- Template Javascript -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <script src="js/main.js"></script>
+ </body>
+ </html>

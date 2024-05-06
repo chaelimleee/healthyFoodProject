@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout}" lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>게시글 보기</title>
+
+<style>
+#reply_write_form {
+ resize:none;
+ height:5em;
+ width:100%;
+}
+</style>
+
+<!-- 0401 leee 수정완. 그러나 손봐야함. -->
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- bootstrap icons -->
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+
+<!-- 댓글 전송용  -->
+<!-- AJAX library axios -->
+<script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
+
+<!-- 코드 다량 발생 → 별도 파일화 -->
+<script th:src="@{'/js/board_view.js'}"></script>
+
+<!-- 댓글 제어 -->
+<script>
+window.onload = () => {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	let bgImg = '[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]'; //0503 bgImg
+	titleBg.style.backgroundImage = `url('/healthyFoodProject/img/${bgImg}')`; //0503 bgImg 
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat"; 
+		
+	// 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
+	let boardCode = '[[${board.boardCode}]]';
+	
+	// 전체 댓글 로딩(불러오기) : board_view.js 파일로 함수 분리
+	// getAllReplies(boardCode);
+	// 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정) : 인자 추가
+	//getAllReplies(boardCode, '[[${#authentication.name}]]'); // 0503
+	getAllReplies(boardCode, '[[${#authentication.principal.memberNick}]]'); // 0503
+
+	// 댓글 작성 함수 : board_view.js 파일로 함수 분리
+ 	writeReply(boardCode, '[[${#authentication.principal.memberNick}]]');// 0503 변경 authentication.name에서 변경
+	
+	// 댓글 수정 함수 : 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
+	//updateReply(boardCode, '[[${#authentication.name}]]');
+	
+	// 댓글 삭제 함수 : 2024.3 : 댓글 삭제 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
+	// deleteReplies(boardCode, '[[${#authentication.name}]]');
+	
+	// (원)글 삭제 함수
+	deleteBoard(boardCode, '[[${#authentication.name}]]');
+	
+} // onload
+</script>
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+
+		<div class="content_sect_pnl">
+		
+		<!-- Page Header Start -->
+<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+	                </ol>
+	            </nav>
+	        </div>
+	    </div> -->
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-2">
+	        <div class="container">
+	        
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+	                        <h1 class="display-6 mb-4"> 게시글 보기 </h1>
+	                    </div>
+	                </div>
+	            </div>
+
+			<h4 class="d-flex justify-content-center">커뮤니티 게시글 보기</h4>
+
+			<table class="table mx-auto mt-4" style="width: 800px;">
+			
+				<tr>
+					<th scope="col" class="col-2">게시글 번호</th>
+					<td th:text="${board.boardCode}" class="col-10"></td>
+				</tr>
+
+				<tr>
+					<th scope="col">작성자</th>
+					<td th:utext="${board.memberEmail}"></td>
+				</tr>
+
+				<tr>
+					<th scope="col">제목</th>
+					<td th:utext="${board.boardTitle}"></td>
+				</tr>
+
+				<tr>
+					<th scope="col">내용</th>
+					<td>							
+						<div id="boardContentDiv" th:utext="${board.boardContent}" contenteditable="false"></div>
+					</td>
+				</tr> 
+
+				<tr>
+					<th scope="col">첨부파일</th>
+					<td>
+						<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
+						<!-- boardFileOrigin로 변경(song-0415) -->
+						<a th:href="@{'/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
+						   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
+						   th:utext="${board.boardFileOrigin}"></a> 
+					</td>
+				</tr> 
+				
+				<tr>
+					<th scope="col">등록일</th>
+					<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				</tr>
+
+			</table>
+			
+			<!-- -------------------------------------------------------------------------- -->
+			
+			<!-- 댓글 -->
+			
+			<!-- 댓글 영역  -->
+			<!-- <div id="reply_pnl" class="mx-auto my-3 border border-top border-primary-subtle" style="width: 800px;"> -->
+			
+			<div id="reply_pnl" class="mx-auto my-3" style="width: 800px;">
+			 
+				<!-- 개별 게시글 전체 댓글 리스트 -->
+				<div id="reply_list_pnl" class="bg-light my-3">
+				 	<!-- 댓글 리스트 --> 
+				</div>
+				 
+				<!-- 댓글 등록/수정 -->
+				<div id="reply_write_update_pnl" class="my-3">
+				 
+					<textarea id="reply_write_form" name="reply_write_form" 
+							  class="form-control border border-primary"
+							  placeholder="댓글을  100자이내로 작성하십시오"></textarea>
+				   
+				</div>
+				 
+				<!-- 댓글 메뉴 -->
+				<!-- 정렬 교정 -->
+				<div class="d-flex justify-content-end align-items-center my-2">
+					
+					<!-- 댓글 패쓰워드 -->
+					<!-- 정렬 교정 -->
+					<!-- <input type="text" th:id="${'board_pass_' + board.boardCode}" 
+						   th:name="${'board_pass_' + board.boardCode}" required 
+						   class="form-control form-control-sm h-100 w-25 me-2"> -->
+					
+					<!-- 댓글 메뉴 -->
+					<a href="#" 
+					   th:id="${'reply_write_btn_' + board.boardCode}"
+					   class="btn btn-sm btn-outline-primary my-2 me-2">
+					   댓글 등록
+					</a>
+					
+					<!-- 댓글 수정/삭제 댓글 영역으로 이관 : 2024.3 -->
+					<!-- 
+					<a href="#" th:id="${'reply_update_btn_' + board.boardCode}" class="btn btn-outline-primary my-2 me-2">댓글 수정</a>
+					<a href="#" th:id="${'reply_delete_btn_' + board.boardCode}" class="btn btn-outline-primary my-2">댓글 삭제</a>
+					-->
+					
+				</div>	
+			
+			</div>
+			<!--// 댓글 영역  -->
+			
+			<!-- -------------------------------------------------------------------------- -->
+			
+			<div class="d-flex justify-content-center mb-3"> <!-- 간격 조정 : 2024.3 -->
+				<a type="button" class="btn btn-primary" th:href="@{/board/list.do}">게시글 목록</a>
+				&nbsp;
+				
+				<!-- 글수정 링크 추가 -->
+				<!-- 글 작성자만 글수정/삭제하도록 조건 처리 -->
+				<div sec:authorize="isAuthenticated()">
+					<span th:if="${board.memberEmail == #authentication.name}">
+					
+						<a type="button" class="btn btn-primary" 
+							th:href="@{'/board/update.do?boardCode='+${board.boardCode}}">글수정</a>
+							
+						<!-- (원)글삭제 링크 추가 -->
+						<a type="button" class="btn btn-primary ms-2" 
+						    th:id="${'board_delete_btn_' + board.boardCode}"
+							href="#">글삭제</a>
+						
+					</span>	
+				</div>
+				<!--// 글 작성자만 글수정/삭제하도록 조건 처리 -->	
+			</div>
+
+		</div>
+		</div>
+		</div>
+		<!--// content -->
+
+	</div>
+	<!--// layout -->
+
+</body>
+</html>

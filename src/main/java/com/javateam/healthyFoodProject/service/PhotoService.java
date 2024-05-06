@@ -36,6 +36,25 @@ public class PhotoService {
 		return (int)photoDAO.count();
 	} //
 
+//	@Transactional(readOnly = true)
+//	public List<PhotoVO> findSubjectAndFileNameByBoardNum(int boardNum) {
+//		
+//		return photoDAO.findSubjectAndFileNameByBoardNum(boardNum);
+//	} //
+	
+	//0411 leee 추가 수정. 
+	@Transactional(readOnly = true)
+	public List<PhotoVO> selectPhotoAndFileName(int boardNum) {
+	    return photoDAO.selectPhotoAndFileName(boardNum );
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public List<String> selectBoardsImg(int boardNum) {
+		log.info("보드 번호 : " + boardNum);
+		return photoDAO.selectBoardImg(boardNum + 1); // 0409 leee 여기서 0으로 들어가서 안나왔음. +1해줌. 
+	} //
+
 	@Transactional(readOnly = true)
 	public List<PhotoVO> selectBoardsByPaging(int currPage, int limit) {
 				
@@ -154,7 +173,8 @@ public class PhotoService {
 	@Transactional(readOnly = true)
 	public List<PhotoVO> selectBoardsByPagingWithoutReplies(int currPage, int limit) {
 				
-		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardNum"));//Page request [number: 0, size 10, sort: boardNum: DESC]
+		log.info( "pageable 서비스 >> " + pageable );
 		return photoDAO.findByBoardReRef(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 

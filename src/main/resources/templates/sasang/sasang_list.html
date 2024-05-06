@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>사상체질 자가진단 페이지.</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- 구글 폰트 0412 leee --> 
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
+
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/css/sasang_list.css}">
+<link rel="stylesheet" th:href="@{/css/aside.css}">
+<link href="img/favicon.ico" rel="icon">
+
+<style>
+	
+	.flex-container{
+		display: flex;
+	}
+	
+
+</style>
+
+<script>
+window.onload = function() {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat";  
+}
+</script>
+</head>
+<!-- 
+	0412 leee 선배님이 해주신 진단 페이지 프로젝트 파일에 적용.  
+	0412 leee css, js 파일명 변경 및 경로 변경. 
+-->
+
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl" >
+	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
+	
+	<article style="width:100%;">
+	<!-- Page Header Start -->
+<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+	        <div class="container">
+	            <h1 class="display-3 mb-3 animated slideInDown">사상체질</h1>
+	            <nav aria-label="breadcrumb animated slideInDown">
+	                <ol class="breadcrumb mb-0">
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+	                    <li class="breadcrumb-item text-dark active" aria-current="page">사상체질</li>
+	                </ol>
+	            </nav>
+	        </div>
+	    </div> -->
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-2">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+	                        <h1 class="display-6 mb-4"> 사상체질 자가진단 테스트 </h1>
+	                        <p> 나의 체질을 진단한 후 건강식을 추천 받아보세요!</p>
+	                    </div>
+	                </div>
+	            </div>
+
+		<div class="flex-container">
+		<!-- <aside class="flex-item" >
+			<p>사상체질 목록</p>
+				<ul>
+					<li><a th:href="@{/sasang/sasang.do}" class="active" >사상체질이란?</a></li>
+					<li><a th:href="@{/sasang/sasangTest.do}" role="button" >사상체질 자가진단</a></li>
+					<li><a href="#" >체질 별 음식</a></li>
+					<li><a href="#" ></a></li>
+				</ul>
+		</aside> -->
+	<div th:replace="sasang/sasang_aside :: aside"></div>
+	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 50px;">
+		<h1 class="p-2" style=" color : #9dbfa7; ">사상체질 자가진단 테스트</h1>
+		  <form th:id="'testForm_'+${#authentication.name}" style="width:800px; "> 
+ 		     <fieldset>
+		      <legend>자가진단 테스트 문항</legend>
+		      <p><b>다음 질문에 답변해주세요.</b></p>
+		      <div class="question" id="q1">
+		        <p>1. 나의 신체기관의 발달 및 건강정도는?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q1" value="a" id="q1-a">
+		            <label for="q1-a">폐, 기관지 호흡기계통은 좋으나 해독하는 간기능과 소화기계는 약한 것 같음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q1" value="c" id="q1-c">
+		            <label for="q1-c">신장, 방광, 생식, 내분비 호르몬, 비뇨기계는 좋으나 비장, 위장 등 소화기계가 약한 것 같음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q1" value="d" id="q1-d">
+		            <label for="q1-d">비장, 위장 등 소화기계는 좋으나 신장, 방광, 생식, 내분비 호르몬, 비뇨기계는 약한 것 같음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q1" value="b" id="q1-b">
+		            <label for="q1-b">해독하는 간기능과 소화기계는 좋으나 폐, 기관지 호흡기계는 약한 것 같음</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q2">
+		        <p>2. 나는 다음 중 어디형에 가까운가?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q2" value="b" id="q2-b">
+		                <label for="q2-b">듬직 후덕한 귀인형</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q2" value="a" id="q2-a">
+		                <label for="q2-a">카리스마 있는 선구자형</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q2" value="c" id="q2-c">
+		                <label for="q2-c">아담하지만 미남형, 여성적인 미인형</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q2" value="d" id="q2-d">
+		                <label for="q2-d">활발한 사교형</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q3">
+		        <p>3. 남에게 보이는 나의 첫인상은?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q3" value="a" id="q3-a">
+		                <label for="q3-a">깔끔하고 뚜렷한 인상의 사람</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q3" value="c" id="q3-c">
+		                <label for="q3-c">내성적이고 얌전한 사람</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q3" value="b" id="q3-b">
+		                <label for="q3-b">의젓하고 무게감있게 진중한 사람</label>
+		              </li>              
+		              <li>
+		                <input type="radio" name="q3" value="d" id="q3-d">
+		                <label for="q3-d">명랑활발한 외향적인 사람</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q4">
+		        <p>4. 나의 피부, 살과 몸집 정도는?</p>
+		        <ol type="a">
+		             <li>
+		              <input type="radio" name="q4" value="d" id="q4-d">
+		              <label for="q4-d">살과 근육은 제법 있으며 피부가 약하고 두르러기가 잘남</label>
+		            </li>
+		              <li>
+		                <input type="radio" name="q4" value="a" id="q4-a">
+		                <label for="q4-a">골격은 큰편이나 살과 근육은 수척</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q4" value="b" id="q4-b">
+		                <label for="q4-b">전체적으로 살과 근육이 많고 견실하나, 피부는 좋지않음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q4" value="c" id="q4-c">
+		                <label for="q4-c">보통이하의 적은 살집에 피부문제 없이 부드러움</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q5">
+		        <p>5. 나의 머리모양은?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q5" value="a" id="q5-a">
+		                <label for="q5-a">보통이상의 큰머리에 목덜미부분도 굵음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q5" value="c" id="q5-c">
+		                <label for="q5-c">머리는 작은편이고 대체로 얼굴이 달과 같이 둥금</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q5" value="b" id="q5-b">
+		                <label for="q5-b">머리가 대체로 크나 목은 상대적으로 보통크기</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q5" value="d" id="q5-d">
+		                <label for="q5-d">보통의 머리에 모양은 옆보다 앞뒤가 길며 턱과 하관이 다소 뾰족함(서구형)</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q6">
+		        <p>6. 나의 몸 체형은?</p>
+		        <ol type="a">
+		                  <li>
+		                    <input type="radio" name="q6" value="c" id="q6-c">
+		                    <label for="q6-c">대체로 체형이 타인에 비해 작고 왜소하나 전체적으로 균형잡혀있고 둔부만 큰편(둔부만 다소 큰 직사각형)</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q6" value="b" id="q6-b">
+		                    <label for="q6-b">대체로 타인에 비해 체형과 복부부분이 큰 비만형(중간체형의 통통한 마름모형 포함)</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q6" value="a" id="q6-a">
+		                    <label for="q6-a">상체의 어깨와 가슴부분이 발달 했으나 그에 비해 엉덩이와 다리등 하체가 약하고 빈약(역삼각형)</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q6" value="d" id="q6-d">
+		                    <label for="q6-d">상체와 하체는 중간정도 체형이나 상대적으로 가슴과 허리가 두텁고 둔부만 작음(둔부만 다소 작은 직사각형)</label>
+		                  </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q7">
+		        <p>7. 나의 장점인 성품은?</p>
+		        <ol type="a">
+		                  <li>
+		                    <input type="radio" name="q7" value="a" id="q7-a">
+		                    <label for="q7-a">강직, 결단성과 패기가 있음</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q7" value="b" id="q7-b">
+		                    <label for="q7-b">너그럽고, 바르고, 떳떳함</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q7" value="d" id="q7-d">
+		                    <label for="q7-d">명랑활발, 활동적이고 행동이 민첩함</label>
+		                  </li>
+		                  <li>
+		                    <input type="radio" name="q7" value="c" id="q7-c">
+		                    <label for="q7-c">침착섬세하며 재주가 있음</label>
+		                  </li>
+		        </ol>
+		      </div>   
+		      <div class="question" id="q8">
+		        <p>8. 나의 단점인 성품은?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q8" value="b" id="q8-b">
+		                <label for="q8-b">다소 남에게 본심을 안드러내고 비밀이 많음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q8" value="c" id="q8-c">
+		                <label for="q8-c">다소 예민하고 낯가림이 심하고 속이 좁다는 소리를 들음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q8" value="a" id="q8-a">
+		                <label for="q8-a">다소 독단적인이고 과장이 있음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q8" value="d" id="q8-d">
+		                <label for="q8-d">다소 변덕이 많고 남의 일에 간섭하기 좋아함</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q9">
+		        <p>9. 나의 대인관계는?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q9" value="a" id="q9-a">
+		            <label for="q9-a">처음엔 빠르고 쉽게 사귀나 결국엔 사람을 가려 사귐</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q9" value="d" id="q9-d">
+		            <label for="q9-d">사람은 가리나 가정보다 바깥활동과 외출을 좋아함</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q9" value="b" id="q9-b">
+		            <label for="q9-b">사교보다는 가정을 더 중시하여 가정적</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q9" value="c" id="q9-c">
+		            <label for="q9-c">아는 사람만 만나고 잘나가는 사람을 보면 질투가 날 때도 있음</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q10">
+		        <p>10. 당신의 성공에 대한 성취욕구을 평가하면?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q10" value="b" id="q10-b">
+		                <label for="q10-b">정당하게 경쟁하여 "성공할 수 있다" 생각하며 타의 모범이 되고 싶음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q10" value="c" id="q10-c">
+		                <label for="q10-c">교육, 일반 사무직, 기술직 등 전문분야에서 평범한 직장생활과 가정생활을 했으면 좋겠음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q10" value="a" id="q10-a">
+		                <label for="q10-a">열심히 인생성공을 위해 전진하고 실패한다해도 미련과 후회는 없음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q10" value="d" id="q10-d">
+		                <label for="q10-d">외부 활동이 가능한 외교, 영업, 운동 등의 직업을 갖고 좋은 사람들과 잘사귀며 살고 싶음</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q11">
+		        <p>11. 평소 피곤했을 때의 수면상태는?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q11" value="c" id="q11-c">
+		                <label for="q11-c">초저녁 잠이 많으나 잠자리가 바뀌거나 한번 신경이 곤두서면 잠을 못잠</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q11" value="b" id="q11-b">
+		                <label for="q11-b">대체로 얌전히 잠을 잘자나 피곤하거나 과음한 경우 코를 고는 경우가 많음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q11" value="d" id="q11-d">
+		                <label for="q11-d">열이나서 바깥바람을 쐬고 식혀주지 않으면 잠못 이루는 경우가 많음</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q11" value="a" id="q11-a">
+		                <label for="q11-a">가슴이 뛰고 머리쪽으로 피가 몰리는 것 같아 잠을 못자는 경우가 있음</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q12">
+		        <p>12. 나는 평소 어떠한 사람인가?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q12" value="b" id="q12-b">
+		            <label for="q12-b">책임감은 있으나 빨리 행동하기 보다는 일을 미루다 뒤늦게 서두르는 경향이 있음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q12" value="c" id="q12-c">
+		            <label for="q12-c">평소 집에 혼자 있으면 오히려 편하고 자신이 하고 싶은 일만 하고 살았으면 좋겠음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q12" value="a" id="q12-a">
+		            <label for="q12-a">목표를 향해 앞만보고 달려가는 성격으로 과로로 건강을 해치는 경향이 있음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q12" value="d" id="q12-d">
+		            <label for="q12-d">바깥활동을 좋아하고 외부에선 활동적이나 가끔 집안 일에 신경을 덜 쓰는 경향이 있음</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q13">
+		        <p>13.  나의 가장 발달된 신체 감각기관은?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q13" value="c" id="q13-c">
+		            <label for="q13-c">혀의 미각 발달</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q13" value="d" id="q13-d">
+		            <label for="q13-d">눈의 시각 발달</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q13" value="a" id="q13-a">
+		            <label for="q13-a">귀의 청각 발달</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q13" value="b" id="q13-b">
+		            <label for="q13-b">코의 후각 발달</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q14">
+		        <p>14. 자신은 다음중 어떤 표현이 맞는 사람인가?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q14" value="a" id="q14-a">
+		                <label for="q14-a">독창적/개척적</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q14" value="b" id="q14-b">
+		                <label for="q14-b">논리적/계산적</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q14" value="c" id="q14-c">
+		                <label for="q14-c">사색적/전문적</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q14" value="d" id="q14-d">
+		                <label for="q14-d">활동적/사교적</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q15">
+		        <p>15. 어떤 직업을 갖고 있거나 갖고 싶은가?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q15" value="b" id="q15-b">
+		                <label for="q15-b">정치가, 경영인, 사업가</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q15" value="c" id="q15-c">
+		                <label for="q15-c">교육가, 종교가</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q15" value="a" id="q15-a">
+		                <label for="q15-a">발명가, 창의적 프리랜서</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q15" value="d" id="q15-d">
+		                <label for="q15-d">상업인, 사무직, 군인</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q16">
+		        <p>16. 전체적으로 평소 나의 건강상태와 유사한 것은?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q16" value="c" id="q16-c">
+		            <label for="q16-c">속쓰림이 있거나 소화가 잘안됨</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q16" value="d" id="q16-d">
+		            <label for="q16-d">신장, 방광염 등 비뇨기계 문제와 두드러기가 잘생김</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q16" value="a" id="q16-a">
+		            <label for="q16-a">간이 나쁘거나 얼굴이 검어짐</label>
+		          </li>
+		            <li>
+		            <input type="radio" name="q16" value="b" id="q16-b">
+		            <label for="q16-b">호흡기계가 문제이며 환절기엔 피부가 가렵거나 안좋음</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q17">
+		        <p>17. 운동이나 몸관리가 잘됐다고 생각할 때 나타나는 몸의 건강신호는?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q17" value="d" id="q17-d">
+		            <label for="q17-d">몸이 시원하고 변비가 없어짐</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q17" value="a" id="q17-a">
+		            <label for="q17-a"> 면색이 희고 대소변이 많음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q17" value="b" id="q17-b">
+		            <label for="q17-b">땀을 많이 흘리면 몸이 상쾌함</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q17" value="c" id="q17-c">
+		            <label for="q1-c">몸이 따듯해지고 소화가 잘됨</label>
+		          </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q18">
+		        <p>18. 자신이 심하게 아플 때 나타났던 증상에 해당하는 것은?</p>
+		        <ol type="a">
+		            <li>
+		              <input type="radio" name="q18" value="b" id="q18-b">
+		              <label for="q18-b">음식 섭취가 어렵고 소변이 불통</label>
+		           </li>
+		           <li>
+		              <input type="radio" name="q18" value="c" id="q18-c">
+		              <label for="q18-c">속이 답답하고 발열과 땀을 많이 흘리고 오한 설사나 맑은 소변</label>
+		           </li>
+		           <li>
+		              <input type="radio" name="q18" value="a" id="q18-a">
+		              <label for="q18-a">팔다리 힘이 풀리고 감염성 요통, 식중독이 많고, 안색이 검게 변함</label>
+		           </li>
+		           <li>
+		              <input type="radio" name="q18" value="d" id="q18-d">
+		              <label for="q18-d">신열 두통후 며칠간 대변불통</label>
+		            </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q19">
+		        <p>19.평소 자주 발생했던 주요 질환중 해당하는 것이 상대적으로 많은 것은?</p>
+		        <ol type="a">
+		              <li>
+		                <input type="radio" name="q19" value="a" id="q19-a">
+		                <label for="q19-a">상기, 번열, 안질, 각기 등 다리질병, 소화불량(신트림), 음식이나 약물에 의한 중독</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q19" value="b" id="q19-b">
+		                <label for="q19-b">고/저혈압, 호흡기 질환, 심장병, 대장질환, 변비, 두드러기, 피부질환</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q19" value="c" id="q19-c">
+		                <label for="q19-c">급/만성 위장병, 위하수증, 소화불량, 상습 복통, 신경쇠약, 추위를 잘 탐</label>
+		              </li>
+		              <li>
+		                <input type="radio" name="q19" value="d" id="q19-d">
+		                <label for="q19-d">만성 신장기능, 성기능장애, 성적무관심, 방광염, 요통</label>
+		              </li>
+		        </ol>
+		      </div>
+		      <div class="question" id="q20">
+		        <p>20. 평소 선호하는 음식과 식사량은?</p>
+		        <ol type="a">
+		          <li>
+		            <input type="radio" name="q20" value="d" id="q20-d">
+		            <label for="q20-d">적당히 먹으며 더운 음식보다 채소 등 생식이나 시원하고 찬음식이 더 좋음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q20" value="a" id="q20-a">
+		            <label for="q20-a">먹기는 좋아하나 과식하거나 음식을 가려먹지 않으면 탈이 나는 경우가 많음</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q20" value="b" id="q20-b">
+		            <label for="q20-b">평소 별로 가리는 음식없이 많이 잘 먹고 잘 소화시키는 편</label>
+		          </li>
+		          <li>
+		            <input type="radio" name="q20" value="c" id="q20-c">
+		            <label for="q20-c">많이 먹는 편이 아니고 찬 음식보다 따뜻한 음식이 더 좋음</label>
+		          </li>
+		        </ol>
+		      </div>
+		      </fieldset>
+		      
+		      <!--
+		      	0412 leee 질문. 자가진단 결과확인 버튼을 안눌러도 결과가 바로 나오는데, 버튼을 눌렀을 때 결과가 나오는 이벤트 추가. 
+		      	0412 leee 질문. 버튼을 눌렀을 때 체크 하지 않은 문항이 있다고 알려주는 알림창이 뜨는 기능 추가. 
+		      	0412 leee 질문. 결과를 새로운 페이지를 만들어서 나오게 하는것이 어떤지. 
+		      	0412 leee 질문. 메인 콘텐츠 안에서 스크롤이 들어가게 하는 것보다 그냥 메인콘텐츠가 길어지는 게 더 좋을 듯.
+		      	0412 leee 질문. 왼쪽에 서브메뉴 넣는게 좋을 듯. --완
+		        -->
+		      <fieldset>
+		        <!-- <legend>자가진단 결과확인</legend> -->
+		       <!--  <a class="btn btn-outline-success" 
+						style="margin:17px 5px 17px 5px ;" 
+						role="button" 
+						th:id="'resultButton_'+${#authentication.name}">
+						결과확인
+				</a> -->
+		      </fieldset>
+		      <!-- <div id="result">
+		      </div> -->
+		    </form> 
+		    </div>
+		    </div>   
+		    </div>
+		    </div>
+		    <script th:src="@{/js/sasang_list2.js}"></script>
+			</article>
+    	</div>
+	<!--// layout -->	
+	
+</body>
+</html>

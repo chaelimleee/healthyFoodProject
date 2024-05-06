@@ -18,7 +18,8 @@ public class HomeController {
 		log.info("home");
 		model.addAttribute("arg", "인자");
 		
-		return "home"; 
+//		return "home"; 
+		return "home4"; 
 		
 		// return "redirect:/member/join.do";
 	} //
@@ -42,7 +43,7 @@ public class HomeController {
 	@GetMapping("/login")
 	public String login() {
 		
-		log.info("login");
+		log.info("--login");
 		return "login";
 	} //
 	
@@ -58,12 +59,15 @@ public class HomeController {
     	
 		// Spring CustomProvider 인증(Auth) 에러 메시지 처리
 		Object secuSess = session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+		
+		if(secuSess != null) {
+			log.info("#### 인증 오류 메시지-1 : " + secuSess);
+			log.info("#### 인증 오류 메시지-2 : " + secuSess.toString());
+
+			model.addAttribute("error", "true");
+			model.addAttribute("msg", secuSess);
+		}
 	
-		log.info("#### 인증 오류 메시지-1 : " + secuSess);
-		log.info("#### 인증 오류 메시지-2 : " + secuSess.toString());
-	
-		model.addAttribute("error", "true");
-		model.addAttribute("msg", secuSess);
 	
 		return "login";
 	}	
@@ -79,7 +83,7 @@ public class HomeController {
 		log.error("403 mapping");
     	
 		model.addAttribute("errMsg", "페이지 접근 권한이 없습니다.");
-		model.addAttribute("movePage", "/welcome");
+		model.addAttribute("movePage", "/");
 	
 		return "/error/error";
 	}	

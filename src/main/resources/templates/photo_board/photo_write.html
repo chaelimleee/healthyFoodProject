@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout}" lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>게시글 쓰기</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- summernote lite -->
+<script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
+
+<link th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}"
+	rel="stylesheet">
+<script th:src="@{/summernote/0.8.18/dist/summernote-lite.min.js}"></script>
+
+<!-- summernote 한글 지원 관련 -->
+<script th:src="@{/summernote/0.8.18/lang/summernote-ko-KR.js}"></script>
+
+<script>
+// summmernote 삽입 이미지 파일 업로드 전송
+function sendFile(file, el) {
+
+  // FormData 객체 
+  // : https://developer.mozilla.org/ko/docs/Web/API/FormData
+  let formData = new FormData();
+  formData.append('file', file);
+  
+  // jQuery AJAX
+  $.ajax({
+	  
+    data: formData,
+    type: "POST", // 업로드시 필수사항
+    url: '/healthyFoodProject/photo_board/image',
+    cache: false,
+    contentType: false,
+    enctype: 'multipart/form-data', // 업로드시 필수사항 
+    processData: false,
+    
+    success: function(url) {
+    	
+    	console.log("이미지 URL : ", url);
+    
+    	$(el).summernote('editor.insertImage', url);
+    	
+    } //
+    
+  });
+  
+}
+
+$(function() {
+	
+	$('#boardContentDiv').summernote(
+			{
+				placeholder : '글 내용을 작성하십시오',
+				tabsize : 2,
+				height : 300,
+				toolbar : [ [ 'style', [ 'style' ] ],
+						[ 'font', [ 'bold', 'underline', 'clear' ] ],
+						[ 'color', [ 'color' ] ],
+						[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+						[ 'table', [ 'table' ] ],
+						[ 'insert', [ 'link', 'picture', 'video' ] ],
+						[ 'view', [ 'fullscreen', 'codeview', 'help' ] ] ]
+				,lang : 'ko-kr',
+				
+				// 참고) 전송 방법
+				// 참고로, 컨텐츠 내의 삽입 이미지들을 아래와 같이 파일 업로드 처리를 하지 않으면,
+				// base64 알고리즘으로 암호화된 데이터 스트림(data stream) 형태로 전송됩니다.
+				
+				// - 컨텐츠 내부의 삽입 이미지들 업로드 API Guide
+				// : https://summernote.org/deep-dive/#callbacks			
+				
+				// 참고) 콜백 함수(callback) 
+			    // : https://developer.mozilla.org/ko/docs/Glossary/Callback_function
+				callbacks : {
+					
+					// 참고) onImageUpload 이벤트(event)
+					// : https://summernote.org/deep-dive/#onimageupload
+					
+					onImageUpload: function(files, editor, welEditable) {
+						
+						console.log("업로드할 이미지 파일들 : ", files.length);
+						
+		                for (var i = files.length - 1; i >= 0; i--) {
+		              		sendFile(files[i], this);
+		                } // for
+		              
+		            } // onImageUpload
+					
+				} //callbacks
+			
+			});
+});
+
+window.onload = function() {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat";  
+	
+	// 게시글 내용
+	let boardContentDiv= document.getElementById("boardContentDiv");
+	let boardContentHidden = document.getElementById("boardContent");
+	let boardForm = document.getElementById("board_write_frm");
+	
+	// 폼점검
+	boardForm.onsubmit = function(e) {
+		
+		// summernote actual component : 썸머노트의 실제 글내용 컴포넌트
+		// F12 → Elements 탭 메뉴 코너에서 확인할 수 있습니다.
+		let summernoteActualContent = document.querySelector(".note-editable");
+		
+		let content = summernoteActualContent.innerHTML;
+		
+		// 주의) summernote
+		// 비어 있는 초기 상태 :  "<p><br></p>"(초기)
+		// 편집 후 공백 : ""(편집중 공백)
+		// <p>&nbsp;</p>
+		// "<p><br></p>", "<p>&nbsp; &nbsp;</p>" => 공백 치환
+		
+		content = content.replaceAll('<p><br></p>', '')
+					     .replaceAll('&nbsp;', '')
+					     .replaceAll('<p>', '')
+					     .replaceAll('</p>', '')
+					     .trim()
+					     
+	    // 실제 전송용 hiddedn 필드에 입력
+		boardContentHidden.value = content;   
+		
+		console.log("content : ", content.length);
+		
+		if (content.length == 0) {
+		
+			alert("게시글 내용을 입력하십시오.");
+			summernoteActualContent.focus(); // 썸머노트의 실제 글내용 컴포넌트에 focus(입력 대기)
+			
+			// 전송 취소
+			return false;
+		} 
+		
+	}	
+}
+</script>
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+
+		<div class="content_sect_pnl">
+		
+			<!-- Page Header Start -->
+	<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+		        <div class="container">
+		            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
+		            <nav aria-label="breadcrumb animated slideInDown">
+		                <ol class="breadcrumb mb-0">
+		                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+		                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+		                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+		                </ol>
+		            </nav>
+		        </div>
+		    </div> -->
+		
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+		        <div class="container">
+		        
+		            <div class="row g-0 gx-5 align-items-end">
+		                <div class="col-lg-6">
+		                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+		                        <h1 class="display-6 mb-4"> 글 작성하기 </h1>
+		                        <p>다양한 사람들과 오늘의 한끼를 공유해보세요!</p>
+		                    </div>
+		                </div>
+		            </div>
+
+			<form id="board_write_frm" th:action="@{'/photo_board/writeProc.do'}" method="post">
+
+				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
+
+				<table class="table mx-auto mt-4" style="width: 800px;">
+
+					<tr>
+						<th scope="col">작성자</th>
+						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 -->
+						<td><input type="text" class="form-control" id="boardWriter"
+							name="boardWriter" th:value="${#authentication.name}" readonly /></td>
+					</tr>
+
+					<tr>
+						<th scope="col">패쓰워드</th>
+						<td><input type="text" class="form-control" id="boardPass"
+							name="boardPass" required 
+							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
+					</tr>
+
+					<tr>
+						<th scope="col">제목</th>
+						<td><input type="text" class="form-control" id="boardSubject"
+							name="boardSubject" required title="글제목을 입력하십시오" /></td>
+					</tr>
+
+					<tr>
+						<th scope="col">내용</th>
+						<td>							
+							<div id="boardContentDiv"></div>
+							<input type="hidden" id="boardContent" name="boardContent" />
+						</td>
+					</tr>
+
+				</table>
+
+				<div class="d-flex justify-content-center">
+					<button type="submit" class="btn btn-primary">전송</button>
+					&nbsp;
+					<button type="reset" class="btn btn-primary">취소</button>
+				</div>
+
+			</form>
+
+		</div>
+		</div>
+		</div>
+		<!--// content -->
+
+	</div>
+	<!--// layout -->
+	
+</body>
+</html>

@@ -19,21 +19,22 @@ public class CustomUser implements UserDetails {
 	
 	private String username;
 	private String password;
-		
-    /* Spring Security related fields */
+
+	/* Spring Security related fields */
     private List<Role> authorities;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
-    
+
+    /* 추가 */
     private String memberNick;
 	
     public CustomUser(Users users) {
 		this.username = users.getId();
 		this.password = users.getPw();
 		this.enabled = users.getEnabled()==1 ?  true : false;
-		this.memberNick = memberNick;
+		this.memberNick = users.getMemberNick();
 	}
 
     // 추가
@@ -41,7 +42,9 @@ public class CustomUser implements UserDetails {
  		this.username = username;
  		this.password = password;
  		this.enabled = enabled;
- 		this.memberNick = memberNick;
+ 		this.memberNick = memberNick; 
  	}
 
+ 	
+ 	
 }

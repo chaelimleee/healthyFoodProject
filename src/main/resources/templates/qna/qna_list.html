@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>관리자 화면</title>
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- AJAX library axios -->
+<script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
+
+<style>
+
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+	
+	.inner-div {
+	  width : 400px;
+	  height : 100px;
+	  /* background-color: red; */
+	}
+</style>
+<script>
+//0429 song 패스워드 입력창(모달) 열기
+function openModal(qnaCode){
+	let btn = document.getElementById("lockPassSubmit_");
+	btn.id = "lockPassSubmit_" + qnaCode;
+	console.log("btn : " + btn.id);
+}
+
+window.onload = function() {
+	/*
+	// 게시글의 체크 박스들 전체 선택용 "체크 박스(최상단)" 이벤트 처리
+	let checkboxes = document.querySelectorAll("[id^=check_]"); // 체크 박스들
+	let mainCheckbox = checkboxes[0];
+	
+	// 삭제 버튼을 눌렀을 경우 
+	let boardDeletebtn = document.getElementById("board_delete_btn"); // 0429song board_delete_btn없었음	
+	let deleteExpectedBoardIds = new Array(); // 삭제할 아이디 정보를 담을 배열
+	
+	mainCheckbox.onclick = function() {
+		
+		// 메인 체크 박스 상태 파악 : 체크 여부
+		console.log("메인 체크박스 체크 여부 : ", mainCheckbox.checked);
+				
+ 		for (check of checkboxes) {
+			check.checked = mainCheckbox.checked; // 메인 체크 박스의 상태를 그대로 다른 체크박스들에도 반영
+		} //
+		
+	} //
+	
+	// console.log("boardDeletebtn : ", boardDeletebtn);
+	
+	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
+	boardDeletebtn.onclick = function() {
+		
+		// 체크 박스들 중에서 체크된 체크박스(삭제할 게시글들) 아이디 파악 
+		// 메인 체크 박스(i=0)는 제외 : 개별체크 박스(i=1부터 시작)에서 삭제할 게시글 아이디 추출		
+		for (let i=1; i<checkboxes.length-1; i++) {
+			
+			if (checkboxes[i].checked == true) {
+				
+				let qnaCode = checkboxes[i].id.substring('check_'.length)// song 0412 boardNum-->qnaCode
+				deleteExpectedBoardIds.push(qnaCode) // 삭제할 아이디 배열에 등록(적재)
+				// console.log("삭제할 게시글 아이디 :", boardNum);
+				
+			} //
+		} //
+		
+		// 삭제할 게시글 아이디들 확인
+		for (deleteExpectedBoardId of deleteExpectedBoardIds) {
+			
+			console.log("삭제할(선택된) 게시글 아이디 : ", deleteExpectedBoardId);
+		} // for
+		
+	} //  
+	*/
+	
+	/* 0429 song 게시글 패스워드 점검/전송 */
+	let lockPassSubmit =document.querySelector("[id^=lockPassSubmit]");
+	
+	lockPassSubmit.onclick = function(e){
+		
+		let qnaCode = e.target.id.split("_")[1];
+		console.log("qnaCode : ", qnaCode);
+		
+		let qnaPass = document.getElementById("qnaPass");   
+		console.log("qnaPass : ", qnaPass.value);	
+		let memberEmail = "[[${#authentication.name}]]";            
+		console.log("memberEmail : ", memberEmail); 
+		
+		let regexPw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/ //패스워드(로그인) 정규식
+		
+		if (regexPw.test(qnaPass.value) == false){
+			alert("로그인할 때 입력한 패스워드를 입력하세요");
+		} else{
+			
+			axios.post('/healthyFoodProject/qna/checkLock.do',{
+				  "qnaCode": qnaCode,
+				  "qnaPass": qnaPass.value,
+				  "memberEmail": memberEmail
+				})// 
+			 .then(function(response) {
+				 
+				let msg = response.data;
+				console.log("response.data : " + msg);
+
+				alert(msg); //메세지
+				
+				if (msg == '해당글 작성자가 맞습니다.'){
+					location.href = "/healthyFoodProject/qna/qna_view.do/" + qnaCode + "/yes";
+				}
+			 })	 				 
+			 .catch(function(err) {
+				console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+			 }); // axios
+		}
+	}
+} //
+</script>
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+	
+		<!--잠금 게시글의 패스워드 입력 모달-->
+		<div class="modal" tabindex="-1" id="lockModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">잠금 게시글 패스워드 입력</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <p><input class="form-control" type="text" id="qnaPass" name="qnaPass" placeholder="게시글 패스워드를 입력하세요"></p>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" id="lockPassSubmit_" class="btn btn-primary">전송</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!--// 잠금 게시글의 패스워드 입력 모달-->
+		
+		<div class="content_sect_pnl">
+		
+	<!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
+        <div class="container">
+            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-4">
+	        <div class="container">
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+	                        <h1 class="display-6 mb-4"> 다양한 레시피를 살펴보세요 </h1>
+	                        <p>다양한 재료, 종류의 레시피로 오늘도 건강한 한끼 하세요!</p>
+	                    </div>
+	                </div>
+	            </div>
+
+		
+			<!-- 인자 현황판 이전(move) :   -->
+			
+			<h4 class="d-flex justify-content-left m-5">
+				<div class='inner-div'> </div>
+				<div class="p-2" style="line-height: 1.5em">1:1 문의게시판<br>
+					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
+				</div>	
+			</h4>
+			
+				
+			<table class="table mx-2 mx-auto" style="width:50vw">
+				<thead>
+					<tr>	
+						<th>    
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						
+						<!-- 조회수 추가 -->
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${not #lists.isEmpty(qnaList) && pageVO.listCount > 0}"
+						th:each="qna, st : ${qnaList}">
+						<td>
+							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
+						</td>
+						<td th:text="${qna.qnaCode}"></td>
+						<td>
+							<!--0423 song view.do → qna_view.do  -->
+							
+							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<!--관리자일 때 잠금게시글 보기-->
+							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
+							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							
+							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
+								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  data-bs-toggle="modal" 
+								  data-bs-target="#lockModal" 
+								  th:utext="${qna.qnaTitle}"></a>
+							
+							<!--song 0412 링크를 view.do->qna_view.do로 변경 애매함& 주소에 맞는 폴더 만들어야 할 듯-->
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(qna.qnaContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+							
+							<!--0429 song 게시글 잠금표시(자물쇠) -->
+							<span th:if="${qna.qnaLockYesno == 1}">
+								<i class="bi bi-lock"></i>
+							</span>
+						</td>
+						<td th:utext="${qna.memberNick}"></td>
+						
+						
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 추가 -->
+						<td th:utext="${qna.qnaReadCount}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
+			
+			<!-- 게시판 메뉴 :
+		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
+			-->
+			<div id="qna_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
+				 
+				 <a th:href="@{/qna/write.do}" class="btn btn-primary me-2" 
+				 	sec:authorize="isAuthenticated()">
+				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
+			 	 </a>	
+			 	 
+			 	 <!-- 게시글 목록 -->
+			 	 <a class="btn btn-primary" th:href="@{/qna/list.do}">
+					게시글 목록
+				 </a>			
+			</div>
+	
+			<!-- 페이징 -->
+			<!-- 검색이 아닌 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+	
+						<!--  첫 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{/qna/list.do?currPage=1}" aria-label="Start">
+								<span aria-hidden="true">&Lt;</span>
+						</a></li>
+	
+						<!-- 이전 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<a class="page-link"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.prePage}}"
+							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
+						</a>
+						</li>
+	
+						<!-- 현재 페이지 -->
+						<li class="page-item active"><a class="page-link"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.currPage}}"
+							th:utext="${pageVO.currPage}"></a></li>
+	
+						<!-- 다음 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
+							<a class="page-link"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.nextPage}}"
+							aria-label="Next"> <span aria-hidden="true">&gt;</span>
+						</a>
+						</li>
+	
+						<!-- 마지막 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/qna/list.do?currPage='+${pageVO.endPage}}"
+							aria-label="End"> <span aria-hidden="true">&Gt;</span>
+							
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--// 검색이 아닌 경우 -->
+			
+			<!-- 검색인 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${!#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    
+				    <!--  첫 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" 
+				      	 th:href="@{'/qna/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				        <span aria-hidden="true">&Lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 이전 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				        <span aria-hidden="true">&lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 현재 페이지 -->
+				    <li class="page-item active">
+				    	<a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+			    	</li>
+				    
+				    <!-- 다음 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				        <span aria-hidden="true">&gt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 마지막 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				        <span aria-hidden="true">&Gt;</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
+			</div>	
+			<!--// 검색인 경우 -->	
+			<!--// 페이징 -->
+			
+			<!-- 검색 -->
+			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
+			<form th:action="@{/qna/searchList.do}" method="get">
+			
+				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
+				
+					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
+					<div class="col-3">
+					</div>
+					
+					<div id="select_pnl" class="col-2 pe-0">
+						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
+						  <option selected value="qnaTitle">글제목</option>
+						  <option value="qnaContent">내용</option>
+						  <option value="memberNick">작성자</option>
+						</select>
+					</div>
+					
+					<div id="search_pnl" class="col-4">
+					
+						<input type="text" class="form-control" id="searchWord" name="searchWord" />
+					</div>
+					
+					<div id="search_btn_pnl" class="col-1 ps-0">
+						<button id="search_btn" class="btn btn-primary">
+							<!-- bootstrap icon
+							     : https://icons.getbootstrap.com/icons/search/  -->
+							<i class="bi bi-search"></i>
+						</button>
+					
+					</div>
+					
+				</div>
+				
+			</form>
+			<!--// 검색 -->
+			
+		</div>
+		</div>
+		</div>
+		<!--// content -->	
+		
+	</div>
+	<!--// layout -->	
+	
+	<!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

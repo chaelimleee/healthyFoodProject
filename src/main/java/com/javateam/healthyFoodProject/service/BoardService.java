@@ -32,7 +32,7 @@ public class BoardService {
 	BoardDAO boardDAO;
 	
 	@Transactional(rollbackFor = Exception.class)
-	public Optional<BoardVO> insertBoard(BoardVO boardVO) {//0424 song optional 추가
+	public BoardVO insertBoard(BoardVO boardVO) {
 		
 		return boardDAO.save(boardVO);
 	}
@@ -42,7 +42,7 @@ public class BoardService {
 		
 		return (int)boardDAO.count();
 	} //
-
+	
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsByPaging(int currPage, int limit) {
 				
@@ -61,9 +61,18 @@ public class BoardService {
 		
 		return boardDAO.findByBoardCodeAndBoardOrigin(boardCode, boardOrigin);
 	}
-	
-	
 
+//	@Transactional(readOnly = true)
+//	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
+//
+//		// return searchKey.equals("board_subject") ? boardDAO.countByBoardSubjectLike("%"+searchWord+"%") : 
+//		return searchKey.equals("BOARD_TITLE") ? boardDAO.countByboardTitleContaining(searchWord) :
+//			   searchKey.equals("BOARD_CONTENT") ? boardDAO.countByBoardContentContaining(searchWord) : 
+//			   boardDAO.countBymemberEmailContaining(searchWord);	
+//		
+//	}
+	
+	//SONG
 	@Transactional(readOnly = true)
 	public int selectBoardsCountBySearching(String searchKey, String searchWord) {
 
@@ -77,6 +86,17 @@ public class BoardService {
 		
 	}
 
+//	@Transactional(readOnly = true)
+//	public List<BoardVO> selectBoardsBySearching(int currPage, int limit, String searchKey, String searchWord) {
+//		
+//		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
+//		
+//		// return searchKey.equals("board_subject") ? boardDAO.findByBoardSubjectLike("%"+searchWord+"%", pageable).getContent() : 
+//		return searchKey.equals("BOARD_TITLE") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
+//			   searchKey.equals("BOARD_CONTENT") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
+//			   boardDAO.findBymemberEmailContaining(searchWord, pageable).getContent();
+//	}
+	//SONG
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsBySearching(int currPage, int limit, String searchKey, String searchWord) {
 		
@@ -155,21 +175,22 @@ public class BoardService {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public Optional<BoardVO> updateBoard(BoardVO boardVO) {
+	public BoardVO updateBoard(BoardVO boardVO) {
 		
 		return boardDAO.save(boardVO);
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public List<BoardVO> selectReplysById(int boardOrigin) {
+	public List<BoardVO> selectReplysById(int boardCode) {
 		
-		return boardDAO.findByBoardOrigin(boardOrigin);
+		return boardDAO.findByBoardOrigin(boardCode); //0503 Origin
 	}
 	
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithoutReplies() {
 		
-		return (int)boardDAO.countByBoardReSeq(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		//return (int)boardDAO.countByBoardReSeq(0); // 0503 잘못됨
+		return (int)boardDAO.countByBoardOrigin(0); // 0503 BoardOrigin=0(원게시글)
 	} //
 
 	@Transactional(readOnly = true)
@@ -177,7 +198,7 @@ public class BoardService {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		// return boardDAO.findAll(pageable).getContent();
-		return boardDAO.findByBoardOrigin(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return boardDAO.findByBoardOrigin(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_origin = 0
 	} //
 
 	@Transactional(rollbackFor = Exception.class)
@@ -200,7 +221,7 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithReplies(int boardCode) {
 		
-		return (int)boardDAO.countByBoardReSeq(boardCode); // 댓글의 갯수 추출 : board_re_ref = boardCode
+		return (int)boardDAO.countByBoardOrigin(boardCode); // 댓글의 갯수 추출 : board_origin = boardCode
 	} //
 	
 	

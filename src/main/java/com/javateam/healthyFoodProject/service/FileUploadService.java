@@ -6,23 +6,36 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.javateam.healthyFoodProject.dao.FileDAO;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class FileUploadService {
+
+	// 파일 업로드 경로	
+	private FileDAO fileDAO;
 	
 	// 파일 업로드 경로	
 	private final Path uploadPath;
 	
 	private final int uploadFileMaxSize;
+	
+	@Transactional(readOnly = true)
+	public List<String> selectBoardsImg(int boardNum) {
+		log.info("보드 번호 : " + boardNum);
+		return fileDAO.selectBoardImg(boardNum + 1); // 0409 leee 여기서 0으로 들어가서 안나왔음. +1해줌. 
+	} //
 	
 	// spring.servlet.multipart.max-file-size
 	

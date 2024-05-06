@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * leee
  * 0402 게터세터 없던거 다 넣음. 수정완.
  * 0403 leee enabled 없앰. > DB컬럼에 없고, 없애도 될듯.
+ * 0409 leee 수정
  * @author oracle
  *
  */
@@ -112,7 +113,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	/** 첨부 파일(원래 파일명) */
 	@Column(name = "BOARD_FILE_ORIGIN") 
-	private String boardFileOrigin;
+	private String boardFileOrigin; 
 	
 	/** 게시글 작성일자 */
 	@CreationTimestamp // 작성 날짜(기본값) 생성
@@ -199,9 +200,11 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
     	this.boardCode = map.get("boardCode") == null ? 0 : Integer.parseInt(map.get("boardCode").toString());
     	
         this.memberEmail = (String)map.get("memberEmail");
-        this.memberNick = map.get("memberNick").toString();
         this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
+        
+        // 0419 leee 추가. 위에 map만 받아오는 생성자에는 있지만 정작. BoardController 에서는 인자가 두개인 생성자를 부르기 때문에 이 부분에 memberNick을 추가해야했다. 결정적인 부분. ////
+        this.memberNick = map.get("memberNick").toString();
         
         ////////////////////////////////////////////////////////
         //
@@ -221,6 +224,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
         
         this.boardReSeq = map.get("boardReSeq") == null ? 0 : Integer.parseInt(map.get("boardReSeq").toString());
         this.boardDate = (Date)map.get("boardDate");
+        
     }
     
 	
@@ -230,6 +234,7 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 		StringBuilder builder = new StringBuilder();
 		builder.append("BoardVO [boardCode=").append(boardCode)
 				.append(", memberEmail=").append(memberEmail)
+				.append(", memberNick=").append(memberNick)
 				.append(", boardTitle=").append(boardTitle)
 				.append(", boardContent=").append(boardContent)
 				.append(", boardFileOrigin=").append(boardFileOrigin)
@@ -240,6 +245,9 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
 				.append("]");
 		return builder.toString();
 	}
+	
+	
+	
 
 	
 	// 게시글 수정시 기존 정보와 수정 정보 동일성 여부 점검시 활용

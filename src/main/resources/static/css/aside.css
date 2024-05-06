@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+aside {
+
+	/* for fixed side bar */
+	/* position: fixed; */
+	/* top: 78px;
+	bottom: 120px; */
+	height:calc(100vh - 130px);
+	width: 300px;
+	padding-top: 25px;
+	/* background-color: #9dbfa7; */
+	border-radius: 10px;/*테두리 둥글게 0412 leee*/ 
+	/* visibility: hidden; */
+	border-style: solid;
+	border-color: #9dbfa7;
+	/*margin : 0 5em 0 0;*/
+}
+	
+aside > p {
+
+	text-align : center;
+	font-size : 25px;
+	/* color : #fff; */
+	color : #9dbfa7;
+	
+	font-family: "IBM Plex Sans KR", sans-serif;
+	font-weight: 600;
+	font-style: normal;
+}
+
+/* aside navigation */
+aside > ul {
+	width: 300px;
+	list-style:none;/* 리스트 점 없애기  */
+	/* padding-left:0px; */
+	padding-left:0px;/* 들여쓰기 없애기 */
+}
+
+aside > ul > li > a {
+	display: block;
+	/* color: #fff; */
+	color : #8db599;
+	font-size : 17px;
+	padding: 10px 0 10px 20px;
+	text-decoration-line:none;
+	font-family: "IBM Plex Sans KR", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+aside > ul > li > a.active {
+	background-color: #d3f0dc;
+}
+
+aside > ul > li > a:hover:not(.active) {
+	background-color: #9dbfa7;
+	color : #fff;
+}

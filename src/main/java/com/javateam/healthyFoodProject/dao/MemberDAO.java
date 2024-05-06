@@ -1,5 +1,8 @@
 package com.javateam.healthyFoodProject.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +31,30 @@ public class MemberDAO {
 //		sqlSession.insert("mapper.Member.insertMember", memberDTO);
 //	}
 	
-	public void insertMember(MemberDTO memberDTO) {
+	public void insertMember(MemberDTO memberDTO) throws ParseException {
 		String memberBirth = MemberDTO.formatBirthAll(memberDTO.getMemberYear(), memberDTO.getMemberMonth(), memberDTO.getMemberDay());
 		
-		memberDTO.setMemberBirthAll(memberBirth);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date memberD = new Date();
+		
+		memberD = format.parse(memberBirth);
+		log.info("memberBirth ==>" + memberBirth);
+		log.info("memberD ==>" + memberD);
+		memberDTO.setMemberBirthAll(memberD);
+		
 		sqlSession.insert("mapper.Member.insertMember", memberDTO);
 	}
 	
 	public void insertRole(Role role) {
 		sqlSession.insert("mapper.Member.insertRole", role);
+	}
+	
+//	public void insertMemberSasang(String sasang) {
+//		sqlSession.insert("mapper.Member.insertMemberSasang", sasang);
+//	}
+	
+	public void updateMemberSasang(MemberDTO memberDTO) {
+		sqlSession.insert("mapper.Member.updateMemberSasang", memberDTO);
 	}
 	
 	public boolean hasFld(String fld, String val) {
@@ -64,7 +82,9 @@ public class MemberDAO {
 	} //
 	
 	public void updateMember(MemberDTO memberDTO) {
-		sqlSession.insert("mapper.Member.updateMember", memberDTO);
+		log.info("memberDAO.updateMember memberDTO =>" + memberDTO);
+		log.info("memberDAO.updateMember pw =>" + (memberDTO.getMemberPw() == null));
+		sqlSession.update("mapper.Member.updateMember", memberDTO);
 	}
 	
 	public int selectMembersCount() {
@@ -94,13 +114,9 @@ public class MemberDAO {
 		return sqlSession.selectList("mapper.Member.selectRolesById", id);
 	}
 	
-	public void deleteRoleById(String id, String role) {
+	public void deleteRolesByEmail(String id) {
 		
-		Map<String, String> map = new HashMap<>();
-		map.put("id",  id);
-		map.put("role", role);
-		
-		sqlSession.delete("mapper.Member.deleteRoleById", map);
+		sqlSession.delete("mapper.Member.deleteRolesByEmail", id);
 	}
 	
 	public List<Map<String, Object>> selectMembersWithRolesBySearching(int page, int limit, String searchKey, String searchWord) {
@@ -134,14 +150,17 @@ public class MemberDAO {
 		sqlSession.update("mapper.Member.changeEnabled", map);
 	}
 
-	public void deleteRolesById(String id) {
-		
-		sqlSession.delete("mapper.Member.deleteRolesById", id);
+//	public void deleteMemberById(String id) {
+//		
+//		sqlSession.delete("mapper.Member.deleteMemberById", id);
+//	}
+	
+	// 회원 탈퇴 email
+	public void deleteMemberByEmail(String memberEmail) {
+		sqlSession.delete("mapper.Member.deleteMemberByEmail", memberEmail);
+
 	}
 	
-	public void deleteMemberById(String id) {
-		
-		sqlSession.delete("mapper.Member.deleteMemberById", id);
-	}
+	
 	
 }

@@ -8,11 +8,16 @@ import java.sql.Date;
 import java.util.Map;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.Column;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,7 +51,17 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 			initialValue = 1,
 			allocationSize = 1)
 	@Column(name = "board_num") 
-	private int boardNum; 
+	private int boardNum;  	
+	
+	// 0411 leee 파일 이름을 가져오기 위해 조인을 사용하기 위해 관계 설정 필드. 
+//	@OneToOne // 엔티티 간의 일대일 관계 매핑. 
+//    @JoinColumn(name = "") // 외부 키 지정.  id 컬럼을 외부 키로 사용하여 업로드파일 tbl과 연결. 
+	@OneToOne(fetch = FetchType.LAZY) // 지연 로딩 설정
+	    @JoinColumn(name = "board_num", referencedColumnName = "id")
+	    private UploadFile uploadFile;
+	
+//	@Transient
+//    private UploadFile uploadFile;
 	
 	/** 게시글 작성자 */
 	@Column(name = "board_writer")
@@ -88,20 +103,37 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	public PhotoVO() {}
 	
-    // 게시글 수정시 : Map<String, Object> => BoardVO
+//    // 게시글 수정시 : Map<String, Object> => PhotoVO
+//    public PhotoVO(Map<String, Object> map,UploadFile uploadFile) {
+//
+//    	log.info("PhotoVO 오버로딩 생성자 : Map to VO");
+//    	//시퀀스로 생성-->초기값이 null
+//    	
+//    	this.uploadFile = uploadFile;
+//        this.boardWriter = (String)map.get("boardWriter");
+//        this.boardPass = (String)map.get("boardPass");
+//        this.boardSubject = (String)map.get("boardSubject");
+//        this.boardContent = (String)map.get("boardContent");
+//        this.boardReRef = map.get("boardReRef") == null ? 0: Integer.parseInt(map.get("boardReRef").toString());
+//        this.boardReLev = map.get("boardReLev") == null ? 0: Integer.parseInt(map.get("boardReLev").toString());
+//        this.boardReSeq = map.get("boardReSeq") == null ? 0: Integer.parseInt(map.get("boardReSeq").toString());
+//        this.boardDate = map.get("boardReSeq") == null ? new Date(System.currentTimeMillis()) : (Date)map.get("boardDate");
+//    }
+    
+    // 게시글 수정시 : Map<String, Object> => PhotoVO
     public PhotoVO(Map<String, Object> map) {
-
+    	
     	log.info("PhotoVO 오버로딩 생성자 : Map to VO");
     	//시퀀스로 생성-->초기값이 null
     	
-        this.boardWriter = (String)map.get("boardWriter");
-        this.boardPass = (String)map.get("boardPass");
-        this.boardSubject = (String)map.get("boardSubject");
-        this.boardContent = (String)map.get("boardContent");
-        this.boardReRef = map.get("boardReRef") == null ? 0: Integer.parseInt(map.get("boardReRef").toString());
-        this.boardReLev = map.get("boardReLev") == null ? 0: Integer.parseInt(map.get("boardReLev").toString());
-        this.boardReSeq = map.get("boardReSeq") == null ? 0: Integer.parseInt(map.get("boardReSeq").toString());
-        this.boardDate = map.get("boardReSeq") == null ? new Date(System.currentTimeMillis()) : (Date)map.get("boardDate");
+    	this.boardWriter = (String)map.get("boardWriter");
+    	this.boardPass = (String)map.get("boardPass");
+    	this.boardSubject = (String)map.get("boardSubject");
+    	this.boardContent = (String)map.get("boardContent");
+    	this.boardReRef = map.get("boardReRef") == null ? 0: Integer.parseInt(map.get("boardReRef").toString());
+    	this.boardReLev = map.get("boardReLev") == null ? 0: Integer.parseInt(map.get("boardReLev").toString());
+    	this.boardReSeq = map.get("boardReSeq") == null ? 0: Integer.parseInt(map.get("boardReSeq").toString());
+    	this.boardDate = map.get("boardReSeq") == null ? new Date(System.currentTimeMillis()) : (Date)map.get("boardDate");
     }
     
 	public int getBoardNum() {
@@ -111,6 +143,14 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	public void setBoardNum(int boardNum) {
 		this.boardNum = boardNum;
 	}
+	
+//	public UploadFile getUploadFile() {
+//		return uploadFile;
+//	}
+//
+//	public void setUploadFile(UploadFile uploadFile) {
+//		this.uploadFile = uploadFile;
+//	}
 
 	public String getBoardWriter() {
 		return boardWriter;
@@ -187,7 +227,9 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PhotoVO [boardNum=").append(boardNum).append(", boardWriter=").append(boardWriter)
+		builder.append("PhotoVO [boardNum=").append(boardNum)
+				.append(", uploadFile").append(uploadFile)
+				.append(", boardWriter=").append(boardWriter)
 				.append(", boardPass=").append(boardPass).append(", boardSubject=").append(boardSubject)
 				.append(", boardContent=").append(boardContent)
 				.append(", boardReRef=").append(boardReRef)
