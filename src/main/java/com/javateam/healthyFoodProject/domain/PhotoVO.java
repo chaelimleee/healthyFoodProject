@@ -67,10 +67,6 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	@Column(name = "board_writer")
 	private String boardWriter; 
 	
-	/** 게시글 비밀번호 */
-	@Column(name = "board_pass")
-	private String boardPass; 
-	
 	/** 게시글 제목 */
 	@Column(name = "board_subject")
 	private String boardSubject; 
@@ -103,23 +99,6 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 	
 	public PhotoVO() {}
 	
-//    // 게시글 수정시 : Map<String, Object> => PhotoVO
-//    public PhotoVO(Map<String, Object> map,UploadFile uploadFile) {
-//
-//    	log.info("PhotoVO 오버로딩 생성자 : Map to VO");
-//    	//시퀀스로 생성-->초기값이 null
-//    	
-//    	this.uploadFile = uploadFile;
-//        this.boardWriter = (String)map.get("boardWriter");
-//        this.boardPass = (String)map.get("boardPass");
-//        this.boardSubject = (String)map.get("boardSubject");
-//        this.boardContent = (String)map.get("boardContent");
-//        this.boardReRef = map.get("boardReRef") == null ? 0: Integer.parseInt(map.get("boardReRef").toString());
-//        this.boardReLev = map.get("boardReLev") == null ? 0: Integer.parseInt(map.get("boardReLev").toString());
-//        this.boardReSeq = map.get("boardReSeq") == null ? 0: Integer.parseInt(map.get("boardReSeq").toString());
-//        this.boardDate = map.get("boardReSeq") == null ? new Date(System.currentTimeMillis()) : (Date)map.get("boardDate");
-//    }
-    
     // 게시글 수정시 : Map<String, Object> => PhotoVO
     public PhotoVO(Map<String, Object> map) {
     	
@@ -127,7 +106,6 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
     	//시퀀스로 생성-->초기값이 null
     	
     	this.boardWriter = (String)map.get("boardWriter");
-    	this.boardPass = (String)map.get("boardPass");
     	this.boardSubject = (String)map.get("boardSubject");
     	this.boardContent = (String)map.get("boardContent");
     	this.boardReRef = map.get("boardReRef") == null ? 0: Integer.parseInt(map.get("boardReRef").toString());
@@ -144,28 +122,12 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 		this.boardNum = boardNum;
 	}
 	
-//	public UploadFile getUploadFile() {
-//		return uploadFile;
-//	}
-//
-//	public void setUploadFile(UploadFile uploadFile) {
-//		this.uploadFile = uploadFile;
-//	}
-
 	public String getBoardWriter() {
 		return boardWriter;
 	}
 
 	public void setBoardWriter(String boardWriter) {
 		this.boardWriter = boardWriter;
-	}
-
-	public String getBoardPass() {
-		return boardPass;
-	}
-
-	public void setBoardPass(String boardPass) {
-		this.boardPass = boardPass;
 	}
 
 	public String getBoardSubject() {
@@ -230,7 +192,7 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 		builder.append("PhotoVO [boardNum=").append(boardNum)
 				.append(", uploadFile").append(uploadFile)
 				.append(", boardWriter=").append(boardWriter)
-				.append(", boardPass=").append(boardPass).append(", boardSubject=").append(boardSubject)
+				.append(", boardSubject=").append(boardSubject)
 				.append(", boardContent=").append(boardContent)
 				.append(", boardReRef=").append(boardReRef)
 				.append(", boardReLev=").append(boardReLev).append(", boardReSeq=").append(boardReSeq)
@@ -247,7 +209,6 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 		int result = 1;
 		result = prime * result + ((boardContent == null) ? 0 : boardContent.hashCode());
 		result = prime * result + boardNum;
-		result = prime * result + ((boardPass == null) ? 0 : boardPass.hashCode());
 		result = prime * result + ((boardSubject == null) ? 0 : boardSubject.hashCode());
 		result = prime * result + ((boardWriter == null) ? 0 : boardWriter.hashCode());
 		return result;
@@ -279,13 +240,6 @@ public class PhotoVO implements Serializable { // 10.25 (sesssion으로 변환�
 			return false;
 		}
 		
-		if (boardPass == null) {
-			if (other.boardPass != null) {
-				return false;
-			}
-		} else if (!boardPass.equals(other.boardPass)) {
-			return false;
-		}
 		if (boardSubject == null) {
 			if (other.boardSubject != null) {
 				return false;

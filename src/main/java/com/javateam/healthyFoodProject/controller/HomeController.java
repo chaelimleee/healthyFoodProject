@@ -47,7 +47,7 @@ public class HomeController {
 		
 		// title 0506 로그인
 		model.addAttribute("pageTitle", "로그인");
-		model.addAttribute("bgImg", "");
+		model.addAttribute("bgImg", "bg-tomato.png");
 		return "login";
 	} //
 	

@@ -186,6 +186,8 @@ function writeReply(originalBoardId, boardWriter) {
 	 				replyWriteForm.focus(); // 재입력 대기 				
 	 			
 	 			} else { 
+		
+					alert("댓글 작성자:"+ boardWriter);
 				 
 	 				// 전송			  
 	 				axios.post('/healthyFoodProject/photo_board/replyWrite.do', 
@@ -193,7 +195,6 @@ function writeReply(originalBoardId, boardWriter) {
 							boardNum : originalBoardId,
 							boardContent : replyWriteForm.value,
 							boardWriter : boardWriter,
-							//boardPass : boardPass.value,
 	 					}
 	 				)
 	 				 .then(function(response) {
@@ -357,7 +358,6 @@ function updateReply(originalBoardId, replyBoardId, boardWriter) {
 				    boardNum : replyBoardId,
 					boardContent : replyUpdateForm.value,
 					boardWriter : boardWriter,
-					//boardPass : boardUpdatePass.value,
 					boardReRef : originalBoardId,
 				}
 			)
