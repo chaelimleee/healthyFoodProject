@@ -41,9 +41,13 @@ public class HomeController {
 	} //
 	
 	@GetMapping("/login")
-	public String login() {
+	public String login(Model model) {
 		
 		log.info("login");
+		
+		// title 0506 로그인
+		model.addAttribute("pageTitle", "로그인");
+		model.addAttribute("bgImg", "");
 		return "login";
 	} //
 	

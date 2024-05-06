@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layout}"
@@ -63,7 +63,7 @@
 	
 		<!-- Product Start -->
 	    <div class="container-xxl py-2">
-	        <div class="container">
+	        <div class="container d-flex align-items-center">
 	            <div class="row g-0 gx-5 align-items-end">
 	                <div class="col-lg-6">
 	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
@@ -80,7 +80,7 @@
 		</script>
 
 		<!-- 1. 로그인 박스 시작 -->
-		<div id="login_box" >
+		<div id="login_box">
 
 			<h2 class="p-2 " style=" color : #9dbfa7; margin : 30px;">로그인</h2>
 			
@@ -143,6 +143,9 @@
 
 				</div>
 				<!-- 3. 패쓰워드 필드 섹션 끝 -->
+				
+				<!-- 구분선 0412 leee  -->
+				<hr style="width : 25em; margin:30px auto;">
 
 				<!-- 4. 전송 버튼 필드 섹션 시작 -->
 				<div id="submit_box" >
@@ -175,16 +178,13 @@
 				</div>
 				<!-- 5. 전송 버튼 필드 섹션 끝 -->
 
-			<!-- 구분선 0412 leee  -->
-			<hr style="width : 25em; margin:30px auto;">
-			
 			</form>
 			
-			<div class="naverLogin">
+			<!-- <div class="naverLogin">
 			
 				<img th:src="@{/img/naver/btnG_naver2.png}" style="width:60px;height:60px; float : left; margin : 10px 10px 100px 100px;">
 			
-			</div>
+			</div> -->
 			
 
 		</div>

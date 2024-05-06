@@ -63,6 +63,10 @@ public class QnaUpdateController {
 		log.info("QnaVO : {}", qnaVO);
 		model.addAttribute("qna", qnaVO);
 		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
+		
 		return "/qna/qna_update";
 	} //
 
