@@ -105,13 +105,13 @@ window.onload = () => {
 						<input class="form-control" type="text" id="qnaPass" name="qnaPass" placeholder="게시글 패스워드를 입력하세요"> 
 					</div>
 					<div class="col-3">
-						<button type="button" id="lockPassSubmit" class="btn btn-primary">전송</button>
+						<button type="button" id="lockPassSubmit" class="btn btn-outline-success">전송</button>
 					</div>
 				</div>
 			</div>
 			
 			<div class="d-flex justify-content-center mb-3"> <!-- 간격 조정 : 2024.3 -->
-				<a type="button" class="btn btn-primary" th:href="@{/qna/list.do}">게시글 목록</a>
+				<a type="button" class="btn btn-outline-success" th:href="@{/qna/list.do}">게시글 목록</a>
 				&nbsp;
 
 				
@@ -120,11 +120,11 @@ window.onload = () => {
 				<div sec:authorize="isAuthenticated()">
 					<span th:if="${qna.memberEmail == #authentication.name}">
 					
-						<a type="button" class="btn btn-primary" 
+						<a type="button" class="btn btn-outline-success" 
 							th:href="@{'/qna/update.do?qnaCode='+${qna.qnaCode}}">글수정</a>
 							
 						<!-- (원)글삭제 링크 추가 -->
-						<a type="button" class="btn btn-primary ms-2" 
+						<a type="button" class="btn btn-outline-success ms-2" 
 						    th:id="${'board_delete_btn_' + qna.qnaCode}"
 							href="#">글삭제</a>
 						
@@ -132,6 +132,17 @@ window.onload = () => {
 				</div>
 				<!--// 글 작성자만 글수정/삭제하도록 조건 처리 -->	
 			</div>
+			
+			<!-- Back to Top -->
+   			<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+			
+			<script th:src="@{/lib/wow/wow.min.js}"></script>
+		    <script th:src="@{/lib/easing/easing.min.js}"></script>
+		    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+		    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+		    <!-- Template Javascript -->
+		    <script th:src="@{/js/main.js}"></script>
 
 		</div>
 		<!--// content -->

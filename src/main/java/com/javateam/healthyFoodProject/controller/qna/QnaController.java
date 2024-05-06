@@ -43,6 +43,10 @@ public class QnaController {
 	public String write(Model model) {
 		
 		model.addAttribute("qnaDTO", new QnaDTO());
+		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
 		return "/qna/qna_write";
 	} //
 	
@@ -101,6 +105,10 @@ public class QnaController {
 		model.addAttribute("errMsg", msg);
 		model.addAttribute("movePage", "/qna/list.do"); 
 		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
+		
 		return "/error/error"; 
 	} //
 	
@@ -124,6 +132,10 @@ public class QnaController {
 		}
 		
 		model.addAttribute("qna", qnaVO);
+		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
 		
 		return page;
 	}

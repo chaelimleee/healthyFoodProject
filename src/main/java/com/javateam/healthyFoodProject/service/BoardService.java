@@ -183,13 +183,13 @@ public class BoardService {
 	@Transactional(rollbackFor = Exception.class)
 	public List<BoardVO> selectReplysById(int boardCode) {
 		
-		return boardDAO.findByBoardReSeq(boardCode);
+		return boardDAO.findByBoardOrigin(boardCode);
 	}
 	
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithoutReplies() {
 		
-		return (int)boardDAO.countByBoardReSeq(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return (int)boardDAO.countByBoardOrigin(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(readOnly = true)
@@ -197,7 +197,7 @@ public class BoardService {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		// return boardDAO.findAll(pageable).getContent();
-		return boardDAO.findByBoardReSeq(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		return boardDAO.findByBoardOrigin(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(rollbackFor = Exception.class)
@@ -220,7 +220,7 @@ public class BoardService {
 	@Transactional(readOnly = true)
 	public int selectBoardsCountWithReplies(int boardCode) {
 		
-		return (int)boardDAO.countByBoardReSeq(boardCode); // 댓글의 갯수 추출 : board_re_ref = boardCode
+		return (int)boardDAO.countByBoardOrigin(boardCode); // 댓글의 갯수 추출 : board_re_ref = boardCode
 	} //
 	
 	

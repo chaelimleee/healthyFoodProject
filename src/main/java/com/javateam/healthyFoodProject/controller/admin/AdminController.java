@@ -30,6 +30,7 @@ public class AdminController {
 		
 		log.info("관리자 화면 admin");
 		// return "redirect:/admin/viewAllWithRoles";
+		
 		return "/";
 	}
 	// 0430  추가
@@ -80,6 +81,10 @@ public class AdminController {
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("members", members);
 		
+		// title 0430 레시피
+		model.addAttribute("pageTitle", "회원관리");
+		model.addAttribute("bgImg", "food4.jpg");
+		
 		return "/admin/admin_view_all";
 	} //
 	
@@ -120,48 +125,11 @@ public class AdminController {
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("members", members);
 		
+		// title 0430 레시피
+		model.addAttribute("pageTitle", "회원관리");
+		model.addAttribute("bgImg", "food4.jpg");
+		
 		return "/admin/admin_view_all_with_roles";
 	} //
-	
-//	@GetMapping("/adminQna.do")
-//	public String adminQna(@RequestParam(value="currPage", defaultValue="1", required=true) int currPage, 
-//			@RequestParam(value="limit", defaultValue="10") int limit,
-//			Model model) {
-//		
-//		log.info("관리자 화면 adminQna.do");
-//		log.info("관리자 화면 : role 표시");
-//		List<Map<String, Object>> members = new ArrayList<>();
-//		
-//		members = memberService.selectMembersWithRolesByPaging(currPage, limit);
-//		
-//		// 총 인원 수
-//		int listCount = memberService.selectMembersCount();
-//		
-//		log.info("총 인원수 : {}", listCount);
-//		
-//		// 총 페이지 수
-//		int maxPage = PageVO.getMaxPage(listCount, limit);
-//		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
-//		int startPage = PageVO.getStartPage(currPage, limit);
-//		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-//		int endPage = startPage + 10;
-//		
-//		if (endPage> maxPage) endPage = maxPage;
-//		
-//		PageVO pageVO = new PageVO();
-//		pageVO.setEndPage(endPage);
-//		pageVO.setListCount(listCount);
-//		pageVO.setMaxPage(maxPage);
-//		pageVO.setCurrPage(currPage);
-//		pageVO.setStartPage(startPage);
-//		
-//		pageVO.setPrePage(pageVO.getCurrPage()-1 < 1 ? 1 : pageVO.getCurrPage()-1);
-//		pageVO.setNextPage(pageVO.getCurrPage()+1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage()+1);
-//		
-//		model.addAttribute("pageVO", pageVO);
-//		model.addAttribute("members", members);
-//		
-//		return "/admin/admin_qna";
-//	} //
-//	
+
 } //

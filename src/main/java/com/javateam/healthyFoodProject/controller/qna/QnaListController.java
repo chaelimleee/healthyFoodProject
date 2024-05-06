@@ -66,6 +66,12 @@ public class QnaListController {
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("listCount", listCount);
 		
+		log.info("qna 게시글 목록 끝");
+		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
+		
 		return "/qna/qna_list";		
 	} //
 	

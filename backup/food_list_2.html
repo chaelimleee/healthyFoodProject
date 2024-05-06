@@ -161,13 +161,13 @@ window.onload = function() {
 			-->
 			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
 				 
-				 <a th:href="@{/food/write.do}" class="btn btn-primary me-2" 
+				 <a th:href="@{/food/write.do}" class="btn btn-outline-success me-2" 
 				 	sec:authorize="isAuthenticated()">
 				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
 			 	 </a>	
 			 	 
 			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-primary" th:href="@{/food/list.do}">
+			 	 <a class="btn btn-outline-success" th:href="@{/food/list.do}">
 					게시글 목록
 				 </a>			
 			</div>
@@ -284,7 +284,7 @@ window.onload = function() {
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-primary">
+						<button id="search_btn" class="btn btn-outline-success">
 							<!-- bootstrap icon
 							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>
@@ -304,7 +304,7 @@ window.onload = function() {
 	<!--// layout -->	
 	
 	<!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-outline-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
     <!-- JavaScript Libraries -->

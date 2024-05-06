@@ -91,9 +91,6 @@ input[type=radio] {
 [id$=_btn] {
     width:100px;
     height:40px;
-    background-color:#0080ff;
-    border:0px;
-    color:#fff;
     border-radius:7px;        
     margin-right:10px;
 }

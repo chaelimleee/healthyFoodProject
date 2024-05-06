@@ -67,6 +67,10 @@ public class QnaSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
+		// title 0506 qna 문의게시판
+		model.addAttribute("pageTitle", "1:1 문의게시판");
+		model.addAttribute("bgImg", "");
+		
 		return "/qna/qna_list";		
 	} //
 

@@ -11,12 +11,6 @@
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
-<!-- 구글 폰트 0412 leee --> 
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}"> -->
-
 <!-- axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -26,6 +20,8 @@
 <link href="img/favicon.ico" rel="icon">
 
 <style>
+
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 	
 	.flex-container{
 		display: flex;
@@ -36,6 +32,9 @@
 
 <script>
 window.onload = function() {
+	
+
+	
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
@@ -58,22 +57,8 @@ window.onload = function() {
 	<!-- 하위 메뉴 넣어서 마우스 가져다 대면 아래로 열리도록. 0412 leee  -->
 	
 	<article style="width:100%;">
-	<!-- Page Header Start -->
-<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">사상체질</h1>
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">사상체질</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
-	
 		<!-- Product Start -->
-	    <div class="container-xxl py-2">
+	    <div class="container-xxl py-4">
 	        <div class="container">
 	            <div class="row g-0 gx-5 align-items-end">
 	                <div class="col-lg-6">
@@ -85,21 +70,12 @@ window.onload = function() {
 	            </div>
 
 		<div class="flex-container">
-		<!-- <aside class="flex-item" >
-			<p>사상체질 목록</p>
-				<ul>
-					<li><a th:href="@{/sasang/sasang.do}" class="active" >사상체질이란?</a></li>
-					<li><a th:href="@{/sasang/sasangTest.do}" role="button" >사상체질 자가진단</a></li>
-					<li><a href="#" >체질 별 음식</a></li>
-					<li><a href="#" ></a></li>
-				</ul>
-		</aside> -->
 	<div th:replace="sasang/sasang_aside :: aside"></div>
 	  <div class="content_sect_pnl flex-item" style="width:auto; float:rigth; margin: 0 50px;">
 		<h1 class="p-2" style=" color : #9dbfa7; ">사상체질 자가진단 테스트</h1>
 		  <form th:id="'testForm_'+${#authentication.name}" style="width:800px; "> 
- 		     <fieldset>
 		      <legend>자가진단 테스트 문항</legend>
+ 		     <fieldset>
 		      <p><b>다음 질문에 답변해주세요.</b></p>
 		      <div class="question" id="q1">
 		        <p>1. 나의 신체기관의 발달 및 건강정도는?</p>
@@ -548,6 +524,16 @@ window.onload = function() {
 		    </div>
 		    <script th:src="@{/js/sasang_list2.js}"></script>
 			</article>
+			<!-- Back to Top -->
+   			<a href="#" class="btn btn-lg btn-outline-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+			
+			<script th:src="@{/lib/wow/wow.min.js}"></script>
+		    <script th:src="@{/lib/easing/easing.min.js}"></script>
+		    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+		    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+		    <!-- Template Javascript -->
+		    <script th:src="@{/js/main.js}"></script>
     	</div>
 	<!--// layout -->	
 	

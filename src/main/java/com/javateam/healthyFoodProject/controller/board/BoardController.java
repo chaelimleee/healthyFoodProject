@@ -58,6 +58,10 @@ public class BoardController {
 	public String write(Model model) {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
+		
+		// title board 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.png");
 		return "/board/board_write";
 	} // 
 	

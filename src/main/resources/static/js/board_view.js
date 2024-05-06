@@ -890,7 +890,7 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 /* **************************************************************************************************** */
 
 // (원)글 삭제
-function deleteBoard(boardCode, memberNick) {
+function deleteBoard(boardCode, boardWriter) {
 	
 	// console.log("boardCode : ", boardCode, ", memberNick : ", memberNick);
 	// console.log("삭제할 게시글(원글) 아이디 : ",boardCode);
@@ -899,17 +899,17 @@ function deleteBoard(boardCode, memberNick) {
 	let boardDeleteBtn = document.getElementById(`board_delete_btn_${boardCode}`);
 	
 	// 삭제할 게시글 패쓰워드
-	let boardDeletePass = document.getElementById(`board_pass_${boardCode}`);
+	//let boardDeletePass = document.getElementById(`board_pass_${boardCode}`);
 	
 	boardDeleteBtn.onclick = function() {
 		
 		console.log("삭제할 게시글 아이디 : ", boardCode);
-		console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass.value);
+		//console.log("삭제할 게시글 패쓰워드 : ", boardDeletePass.value);
 		
 		// 게시글 삭제 의사 재점검
 		if (confirm("정말 삭제하시겠습니까?") == true) {
 		
-			// 패쓰워드 폼점검
+			/*// 패쓰워드 폼점검
 			if (boardDeletePass.value.trim() == '') {
 				
 				alert("패쓰워드를 입력하십시오.")
@@ -924,15 +924,15 @@ function deleteBoard(boardCode, memberNick) {
 				// 
 				// 주의사항) 특수문자(#)이 포함된 boardPass 인자 전송할 경우 => encodeURIComponent 활용 !
 				//  
-				let encodedPass = encodeURIComponent(boardDeletePass.value);
+				let encodedPass = encodeURIComponent(boardDeletePass.value);*/
 				
-				let str = `/healthyFoodProject/board/deleteProc.do?boardCode=${boardCode}&boardPass=${encodedPass}`;
+				let str = `/healthyFoodProject/board/deleteProc.do?boardCode=${boardCode}&memberEmail=${boardWriter}`;
 				
 				console.log('str : ', str);
 				
 				location.href = str;
 				
-			} // if
+			/*} // if*/
 		
 		} else {
 			

@@ -35,7 +35,7 @@ public class FoodListController {
 			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 
-		log.info("게시글 목록");
+		log.info("food 게시글 목록");
 		List<FoodVO> foodList = new ArrayList<>();
 		
 
@@ -89,6 +89,8 @@ public class FoodListController {
 		// title 0430 레시피
 		model.addAttribute("pageTitle", "건강식 레시피");
 		model.addAttribute("bgImg", "food4.jpg");
+		
+		log.info("foodList end : ");
 
 		return "/food/food_list";
 	} //
