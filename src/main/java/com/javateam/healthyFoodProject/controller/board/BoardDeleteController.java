@@ -140,6 +140,10 @@ public class BoardDeleteController {
 		// 초기값은 메서드 초기에 언급된 지역 변수에서 변경(movePage)
 		model.addAttribute("movePage", movePage);
 		returnPath = "/error/error"; // 에러 페이지로 이동
+		
+		// title 0430 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.jpg");
 
 		return returnPath;
 	} //
