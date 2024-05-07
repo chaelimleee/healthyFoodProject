@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -38,11 +39,11 @@ public class BoardReplyRestController {
 	// 댓글을 작성하면서 즉시 현재까지의 댓글들 현황을 집계하여 리턴
 	public ResponseEntity<List<BoardVO>> replyWrite(@RequestBody Map<String, Object> map) {
 		
-		log.info("replyWrite.do : boardCode={}, boardContent={}", map.get("boardCode"), map.get("boardContent"));
+		log.info("replyWrite.do : boardOrigin={}, boardContent={}, memberEmail={}, memberNick={}",
+				 map.get("boardOrigin"), map.get("boardContent"), map.get("memberEmail"), map.get("memberNick"));////0424 song boardOrigin={},memberEmail 추가
 		
 		List<BoardVO> replyList = new ArrayList<>();
 
-		// ResponseEntity<Boolean> responseEntity = null; 
 		ResponseEntity<List<BoardVO>> responseEntity = null;
 		
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -58,11 +59,11 @@ public class BoardReplyRestController {
 			boardVO.setMemberNick(map.get("memberNick").toString());
 			boardVO.setBoardTitle("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());
-			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardCode").toString()));
+			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardOrigin").toString())); //0424 song 주석제외
 //			boardVO.setBoardReLev(1);
 			
 			// 댓글의 현황을 보면서 댓글 시퀀스 결정
-			boardVO = boardService.insertBoard(boardVO);
+			BoardVO resultVO = boardService.insertBoard(boardVO);
 			
 			log.info("--- result : {}", boardVO);
 			
@@ -159,31 +160,14 @@ public class BoardReplyRestController {
 			boardVO.setMemberNick(map.get("memberNick").toString());
 			boardVO.setBoardTitle("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());
-			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardCode").toString()));
+			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardOrigin").toString()));
 			boardVO.setBoardDate(new Date(System.currentTimeMillis()));
 			
 			log.info("boardVO : {}", boardVO);
 			
-//			// 패쓰워드 체크
-//			String originalMemberEmail = boardService.selectBoard(boardCode).getMemberEmail();
-////			
-//			boolean isPass = map.get("memberEmail").toString().equals(originalMemberEmail) ? true : false;
-//			
-//			if (isPass == true) {
-//				
-//				boardVO = boardService.updateBoard(boardVO);
-//				
-//				log.info("--- result : {}", boardVO);
-//				
-//			} else { // 패쓰워드가 틀리면...
-//				
-//				log.error("게시글 패쓰워드 불일치");
-//
-//				// Http Status Code : 401
-//				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//			} // 
+			BoardVO resultVO = boardService.updateBoard(boardVO);
 			
-			if (boardVO != null) {
+			if (boardVO != null) { //0424 song resultVO로 판단
 				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
 				replyList = boardService.selectReplysById(boardVO.getBoardOrigin());				
@@ -214,8 +198,8 @@ public class BoardReplyRestController {
 	@PostMapping("replyDelete.do")
 	public ResponseEntity<List<BoardVO>> replyDelete(@RequestBody Map<String, Object> map) { 
 		
-		log.info("replyDelete.do : boardCode={}, originalboardCode={}, memberEmail={}", 
-					map.get("boardCode"), map.get("originalboardCode"), map.get("memberEmail"));
+		log.info("replyDelete.do : boardCode={}, originalboardCode={}", 
+				map.get("boardCode"), map.get("originalboardCode"));
 		
 		List<BoardVO> replyList = new ArrayList<>();
 
@@ -230,47 +214,6 @@ public class BoardReplyRestController {
 		
 		try {
 			
-			// 패쓰워드 체크
-//			String originalBoardPass = boardService.selectBoard(boardCode).getBoardPass();
-			
-//			log.info("originalBoardPass : {}", originalBoardPass);
-//			
-//			boolean isPass = boardPass.equals(originalBoardPass) ? true : false;
-			
-//			log.info("패스워드 일치 여부 : {}", isPass);
-//			
-//			boolean result = false; // 삭제 결과
-//			
-//			if (isPass == true) {
-//				
-//				result = boardService.deleteReplysById(boardCode);
-//				
-//			} else { // 패쓰워드가 틀리면...
-//				
-//				log.error("게시글 패쓰워드 불일치");
-//
-//				// Http Status Code : 401
-//				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//			} // 
-//			
-//			log.info("삭제 결과 : {}", result);
-//			
-//			if (result == true) { // 삭제
-//				
-//				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
-//				replyList = boardService.selectReplysById(originalboardCode);				
-//				
-//				// 댓글 등록 성공 : 성공 코드(200)
-//				// responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
-//				
-//				// 원글에 따른 전체 댓글 현황 목록(리스트) 리턴(클라리언트에 전송)
-//				responseEntity = new ResponseEntity<>(replyList, HttpStatus.OK); 
-//				
-//			} else {
-//				// 댓글 등록 실패 : 실패 코드(204)
-//				// responseEntity = new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
-//				responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-//			}
 //			
 		} catch (Exception e) {
 			log.error("replyWrite error : {}", e);
