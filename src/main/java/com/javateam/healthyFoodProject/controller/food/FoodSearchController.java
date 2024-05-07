@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,7 +26,8 @@ public class FoodSearchController {
 	FoodService foodService;
 
 	@GetMapping("searchList.do")
-	public String list(@RequestParam(value="currPage", defaultValue="1") int currPage,
+	public String list(@RequestParam("foodType") int foodType,
+					   @RequestParam(value="currPage", defaultValue="1") int currPage,
 					   @RequestParam(value="limit", defaultValue="10") int limit,
 					   @RequestParam(value="searchKey") String searchKey,
 					   @RequestParam(value="searchWord") String searchWord,
@@ -39,9 +41,10 @@ public class FoodSearchController {
 		
 		// 검색시는 "댓글"도 검색에 반영 (기존 대비 변경 없음)
 		// 총 "검색" 게시글 수
-		int listCount = foodService.selectFoodsCountBySearching(searchKey, searchWord.trim());
+		int listCount = foodService.selectFoodsCountBySearching(searchKey, searchWord.trim(), foodType);
 		
-		foodList = foodService.selectFoodsBySearching(currPage, limit, searchKey, searchWord.trim());	
+		foodList = foodService.findBySeachingAndPaging(currPage, limit, searchKey, searchWord.trim());	
+		log.info("foodList사이즈 확인 : " + foodList.size());
 		
 		// 총 페이지 수
 		int maxPage = PageVO.getMaxPage(listCount, limit);
@@ -63,9 +66,14 @@ public class FoodSearchController {
 	
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("foodList", foodList);
+		model.addAttribute("foodType", foodType);
 		
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
+		
+		// title 0430 레시피
+		model.addAttribute("pageTitle", "건강식 레시피");
+		model.addAttribute("bgImg", "food4	.jpg");
 		
 		return "/food/food_list";		
 	} //
