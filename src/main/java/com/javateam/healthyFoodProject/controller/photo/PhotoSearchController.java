@@ -37,11 +37,15 @@ public class PhotoSearchController {
 		
 		List<PhotoVO> boardList = new ArrayList<>();
 		
+		
 		// 검색시는 "댓글"도 검색에 반영 (기존 대비 변경 없음)
 		// 총 "검색" 게시글 수
 		int listCount = photoService.selectBoardsCountBySearching(searchKey, searchWord.trim());
 		
+		log.info("리스트 결과 개수 확인 : " + listCount);
+		
 		boardList = photoService.selectBoardsBySearching(currPage, limit, searchKey, searchWord.trim());	
+		log.info("리스트 결과 확인 : " + boardList);
 		
 		// 총 페이지 수
 		int maxPage = PageVO.getMaxPage(listCount, limit);
