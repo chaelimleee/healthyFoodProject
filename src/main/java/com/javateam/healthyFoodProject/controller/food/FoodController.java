@@ -53,7 +53,11 @@ public class FoodController {
 	public String write(Model model) {
 		
 		model.addAttribute("foodDTO", new FoodDTO());
-		return "/food/write";
+		
+		// title 0430 레시피
+		model.addAttribute("pageTitle", "건강식 레시피");
+		model.addAttribute("bgImg", "food4.jpg");
+		return "/food/food_write";
 	} // 
 	
 //	// DTO 대신 Map 형태의 인자 수신 
@@ -113,6 +117,10 @@ public class FoodController {
 		log.info("FoodVO : {}", foodVO);
 		
 		model.addAttribute("food", foodVO);
+		
+		// title 0430 레시피
+		model.addAttribute("pageTitle", "건강식 레시피");
+		model.addAttribute("bgImg", "food4.jpg");
 		
 		// 조회할 때마다 조회수 갱신(+)
 //		foodService.updateFoodReadcountByFoodCode(foodCode);
