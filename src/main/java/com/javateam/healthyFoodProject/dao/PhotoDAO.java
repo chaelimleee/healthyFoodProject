@@ -20,7 +20,7 @@ public interface PhotoDAO extends PagingAndSortingRepository<PhotoVO, Integer> {
 	Page<PhotoVO> findAll(Pageable pageable);
 
 	PhotoVO findById(int boardNum);
-
+	
 	int countByBoardSubjectLike(String boardSubject); // Like
 
 	int countByBoardSubjectContaining(String boardSubject); // Containing
@@ -80,8 +80,8 @@ public interface PhotoDAO extends PagingAndSortingRepository<PhotoVO, Integer> {
 					"WHERE p.board_num = :boardNum ", nativeQuery = true)
 	List<PhotoVO> selectPhotoAndFileName(@Param("boardNum") int boardNum);
 	
-	@Query("SELECT p.boardSubject, u.fileName FROM PhotoVO p JOIN p.uploadFile u WHERE p.boardNum = :boardNum")
-    List<PhotoVO> findSubjectAndFileNameByBoardNum(@Param("boardNum") int boardNum);
+//	@Query("SELECT p.boardSubject, u.fileName FROM PhotoVO p JOIN p.uploadFile u WHERE p.boardNum = :boardNum")
+//    List<PhotoVO> findSubjectAndFileNameByBoardNum(@Param("boardNum") int boardNum);
 	
 
 	// 게시글 삭제
