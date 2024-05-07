@@ -2,6 +2,7 @@ package com.javateam.healthyFoodProject.controller.board;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,6 +58,10 @@ public class BoardController {
 	public String write(Model model) {
 		
 		model.addAttribute("boardDTO", new BoardDTO());
+		
+		// title board 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.png");
 		return "/board/board_write";
 	} // 
 	
@@ -91,11 +96,18 @@ public class BoardController {
 		
 		log.info("BoardVO : {}", boardVO);
 		
-		boardVO = boardService.insertBoard(boardVO);
+//		boardVO = boardService.insertBoard(boardVO);
+//		song합침.
+		BoardVO resultVO = boardService.insertBoard(boardVO); //0424 Optional<>추가 &boardVO->resultVO변경
 		
 		log.info("----- 게시글 저장 BoardVO : {}", boardVO);
 		
-		if (boardVO != null) {
+//		if (boardVO != null) {
+//			msg = "게시글 저장에 성공하였습니다.";
+//		}
+		
+//		song합침.		
+		if (boardVO != null) { //0424 song resultVO.isEmpty() == false 로 변경
 			msg = "게시글 저장에 성공하였습니다.";
 		}
 			
@@ -105,6 +117,7 @@ public class BoardController {
 		// 정상 : 파일이 업로드 되었습니다.
 		
 		model.addAttribute("errMsg", msg);
+//		song합침.
 		model.addAttribute("movePage", "/board/list.do"); 
 		
 		return "/error/error"; 
@@ -120,6 +133,11 @@ public class BoardController {
 		
 		// 조회할 때마다 조회수 갱신(+)
 		boardService.updateBoardReadcountByBoardCode(boardCode);
+		
+		// title 0430 board 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.png");
+
 		
 		return "/board/board_view";
 	}
