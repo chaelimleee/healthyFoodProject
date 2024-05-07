@@ -39,8 +39,8 @@ public class BoardReplyRestController {
 	// 댓글을 작성하면서 즉시 현재까지의 댓글들 현황을 집계하여 리턴
 	public ResponseEntity<List<BoardVO>> replyWrite(@RequestBody Map<String, Object> map) {
 		
-		log.info("replyWrite.do : boardOrigin={}, boardContent={}, memberEmail={}, memberNick={}",
-				 map.get("boardOrigin"), map.get("boardContent"), map.get("memberEmail"), map.get("memberNick"));////0424 song boardOrigin={},memberEmail 추가
+		log.info("replyWrite.do : boardOrigin={}, boardContent={}, memberNick={}",
+				  				  map.get("boardOrigin"), map.get("boardContent"), map.get("memberNick"));////0503 0424 song boardOrigin={},memberEmail 추가
 		
 		List<BoardVO> replyList = new ArrayList<>();
 
@@ -55,19 +55,19 @@ public class BoardReplyRestController {
 			//
 			// 주의사항) 
 			// 여기서 댓글의 고유 아이디는 DB를 통해서 생성되므로 원글의 아이디(boardCode)는 다른 필드에 입력됩니다.
-			boardVO.setMemberEmail(map.get("memberEmail").toString());
+			//boardVO.setMemberEmail(map.get("memberEmail").toString());// 0503
 			boardVO.setMemberNick(map.get("memberNick").toString());
 			boardVO.setBoardTitle("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());
-			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardOrigin").toString())); //0424 song 주석제외
+			boardVO.setBoardOrigin(Integer.parseInt(map.get("boardOrigin").toString())); // 0424 song 주석제외
 //			boardVO.setBoardReLev(1);
 			
 			// 댓글의 현황을 보면서 댓글 시퀀스 결정
 			BoardVO resultVO = boardService.insertBoard(boardVO);
 			
-			log.info("--- result : {}", boardVO);
+			log.info("--- result : {}", resultVO); //0503resultVO 
 			
-			if (boardVO != null) {
+			if (resultVO != null) { // 0503result
 				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
 				replyList = boardService.selectReplysById(boardVO.getBoardOrigin());				
@@ -140,7 +140,8 @@ public class BoardReplyRestController {
 	@PostMapping("replyUpdate.do")
 	public ResponseEntity<List<BoardVO>> replyUpdate(@RequestBody Map<String, Object> map) { 
 		
-		log.info("replyUpdate.do : boardCode={}, boardContent={}", map.get("boardCode"), map.get("boardContent"));
+		log.info("replyUpdate.do : boardCode={}, boardContent={}, boardOrigin={}, memberNick={}",
+									map.get("boardCode"), map.get("boardContent"),map.get("boardOrigin"),map.get("memberNick"));//0503
 		
 		List<BoardVO> replyList = new ArrayList<>();
 
@@ -156,7 +157,7 @@ public class BoardReplyRestController {
 			
 			// 주의) 댓글 수정에서는 댓글의 아이디가 이미 등록시 발행이 되어 있으므로 댓글의 실제 아이디 !
 			boardVO.setBoardCode(boardCode);  
-			boardVO.setMemberEmail(map.get("memberEmail").toString());
+			//boardVO.setMemberEmail(map.get("memberEmail").toString());
 			boardVO.setMemberNick(map.get("memberNick").toString());
 			boardVO.setBoardTitle("댓글");
 			boardVO.setBoardContent(map.get("boardContent").toString());
@@ -167,7 +168,7 @@ public class BoardReplyRestController {
 			
 			BoardVO resultVO = boardService.updateBoard(boardVO);
 			
-			if (boardVO != null) { //0424 song resultVO로 판단
+			if (resultVO != null) { //0424 song resultVO로 판단
 				
 				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
 				replyList = boardService.selectReplysById(boardVO.getBoardOrigin());				
@@ -185,7 +186,7 @@ public class BoardReplyRestController {
 			}
 			
 		} catch (Exception e) {
-			log.error("replyWrite error : {}", e);
+			log.error("replyUpdate error : {}", e);
 			e.printStackTrace();
 
 			// 실패 코드(417) : 내부 서버 에러
@@ -210,11 +211,23 @@ public class BoardReplyRestController {
 		
 		int boardCode = Integer.parseInt(map.get("boardCode").toString());
 		int originalboardCode = Integer.parseInt(map.get("originalboardCode").toString());
-		String boardPass= map.get("memberEmail").toString();
 		
 		try {
 			
-//			
+			if(boardService.deleteReplysById(boardCode) == true) {
+				
+				// 원글에 따른 전체 댓글 현황 목록(리스트) 가져오기 => 리턴 => Client(웹 브라우저)
+				replyList = boardService.selectReplysById(originalboardCode);				
+				
+				// 원글에 따른 전체 댓글 현황 목록(리스트) 리턴(클라이언트에 전송)
+				responseEntity = new ResponseEntity<>(replyList, HttpStatus.OK); 
+				
+			} else {
+				// 댓글 등록 실패 : 실패 코드(204)
+				// responseEntity = new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
+				responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			}
+			
 		} catch (Exception e) {
 			log.error("replyWrite error : {}", e);
 			e.printStackTrace();

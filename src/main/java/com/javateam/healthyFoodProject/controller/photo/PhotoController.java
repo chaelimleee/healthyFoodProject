@@ -59,7 +59,7 @@ public class PhotoController {
 		
 		if (PhotoVO != null) {
 			msg = "게시글 저장에 성공하였습니다.";
-		}
+		} 
 		model.addAttribute("errMsg", msg);
 		model.addAttribute("movePage", "/photo_board/list.do"); 
 		

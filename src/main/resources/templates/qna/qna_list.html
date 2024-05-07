@@ -128,12 +128,12 @@ window.onload = function() {
 		
 			<!-- 인자 현황판 이전(move) :   -->
 			
-			<h4 class="d-flex justify-content-left m-5">
-				<div class='inner-div'> </div>
-				<div class="p-2" style="line-height: 1.5em">1:1 문의게시판<br>
-					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
-				</div>	
-			</h4>
+			<figcaption >
+					<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
+						<p class="mx-2 mx-auto" style="width:70vw;">1:1 문의<br>전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글</p>
+						<!-- 0412 leee p 태그 안에 class="mx-2 mx-auto" 이걸 넣어줘야 margin이 적용 됨. div에 해도 소용 없음. -->
+					</div>	
+			</figcaption>
 			
 				
 			<table class="table mx-2 mx-auto" style="width:50vw">

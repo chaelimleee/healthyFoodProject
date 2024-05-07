@@ -89,6 +89,7 @@ public class FoodListController {
 		// title 0430 레시피
 		model.addAttribute("pageTitle", "건강식 레시피");
 		model.addAttribute("bgImg", "food4.jpg");
+		model.addAttribute("foodType", "0");
 		
 		log.info("foodList end : ");
 
