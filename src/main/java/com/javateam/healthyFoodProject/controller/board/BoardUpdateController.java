@@ -63,6 +63,10 @@ public class BoardUpdateController {
 		log.info("BoardVO : {}", boardVO);
 		model.addAttribute("board", boardVO);
 		// model.addAttribute("boardUpdateDTO", new BoardDTO());
+		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		//model.addAttribute("bgImg", "food5.jpg");
 
 		return "/board/board_update";
 	} //
@@ -77,7 +81,7 @@ public class BoardUpdateController {
 		// log.info("------ updateProc.do : {}", boardUpdateDTO);
 		log.info("------ updateProc.do");
 		
-		log.info("인자 현황 :");
+		log.info("인자 현황 :{}", (map.get("memberImg")==null));
 		
 		map.entrySet().forEach(x->{ log.info("{}", x);});
 		
@@ -298,6 +302,10 @@ public class BoardUpdateController {
 		// model.addAttribute("movePage", "/board/update.do?boardCode=" + map.get("boardCode").toString());
 		model.addAttribute("movePage", movePage);
 		returnPath = "/error/error"; // 에러 페이지로 이동
+		
+		// title board 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.png");
 
 		return returnPath;
 	}
