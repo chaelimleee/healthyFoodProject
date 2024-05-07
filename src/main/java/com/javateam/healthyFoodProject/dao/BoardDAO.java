@@ -29,7 +29,8 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	List<BoardVO> findByBoardOrigin(int boardOrigin);
 
 	BoardVO findById(int boardCode);
-	
+
+	int countByMemberEmailLike(String memberEmail); // Like
 	int countByboardTitleLike(String boardTitle); // Like
 	int countByboardTitleContaining(String boardTitle); // Containing
 	//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
@@ -69,8 +70,16 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
 	long countByBoardOrigin(int boardOrigin);
 	
+	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
+	//  0507 내가쓴 글 카운트
+	long countByBoardOriginAndMemberEmail(int boardOrigin, String memberEmail);
+	
 	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
 	Page<BoardVO> findByBoardOrigin(int boardOrigin, Pageable pageable); 
+	
+	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
+	//0507 내가 쓴 글 만 보이도록
+	Page<BoardVO> findByBoardOriginAndMemberEmailLike(int boardOrigin, Pageable pageable, String memberEmail); 
 	
 	// 게시글 조회수 갱신
 	@Modifying
