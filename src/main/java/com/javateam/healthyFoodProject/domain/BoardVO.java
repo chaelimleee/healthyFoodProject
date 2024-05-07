@@ -176,10 +176,10 @@ public class BoardVO implements Serializable { // 10.25 (sesssion으로 변환�
     	this.boardCode = Integer.parseInt(map.get("boardCode").toString());
         this.memberEmail = (String)map.get("memberEmail");
         this.memberNick = map.get("memberNick").toString();
-        this.memberImg = map.get("memberImg").toString();
-        this.boardOrigin = (int) map.get("boardOrigin");
-        this.boardImg= (String) map.get("boardImg");
-        this.boardImgOrigin= (String) map.get("boardImgOrigin");
+        this.memberImg = map.get("memberImg") == null ? "" : map.get("memberImg").toString(); //0423 song 삼항 연산자로 추가 
+        this.boardOrigin = map.get("boardOrigin") == null ? 0 : Integer.parseInt(map.get("boardOrigin").toString());//0423 song 삼항 연산자로 추가
+        this.boardImg= map.get("boardImg") == null ? "" : map.get("memberImg").toString();//0423 song 삼항 연산자로 추가
+        this.boardImgOrigin= map.get("boardImgOrigin") == null ? "" : map.get("boardImgOrigin").toString();//0423 song 삼항 연산자로 추가
         this.boardTitle = (String)map.get("boardTitle");
         this.boardContent = (String)map.get("boardContent");
         this.boardFileOrigin = (MultipartFile)map.get("boardOriginal") == null ? "" : ((MultipartFile)map.get("boardOriginal")).getOriginalFilename(); // 파일명 저장
