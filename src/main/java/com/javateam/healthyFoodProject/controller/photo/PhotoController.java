@@ -28,6 +28,11 @@ public class PhotoController {
 	@GetMapping("/write.do")
 	public String write(Model model) {
 		model.addAttribute("PhotoVO", new PhotoVO());
+		
+		// title 0430 포토 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "bg_strawberry_1.png");
+		
 		return "/photo_board/photo_write";
 	} //
 	
@@ -58,16 +63,26 @@ public class PhotoController {
 		model.addAttribute("errMsg", msg);
 		model.addAttribute("movePage", "/photo_board/list.do"); 
 		
+		// title 0430 포토 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "bg_strawberry_1.png");
+		
 		return "/error/error"; 
 	} //
 	
-	@GetMapping("/view.do/{boardNum}")
+	@GetMapping("/photo_view.do/{boardNum}")
 	public String view(@PathVariable("boardNum") int boardNum, Model model) {
+		
+		
 		
 		PhotoVO PhotoVO =photoService.selectBoard(boardNum);
 		log.info("PhotoVO : {}", PhotoVO);
 		
 		model.addAttribute("board", PhotoVO);
+
+		// title 0430 포토 커뮤니티
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "bg_strawberry_1.png");
 		
 		// 조회할 때마다 조회수 갱신(+)
 		photoService.updateBoardReadcountByBoardNum(boardNum);
