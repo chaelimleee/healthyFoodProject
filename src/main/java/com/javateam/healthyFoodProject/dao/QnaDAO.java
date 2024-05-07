@@ -1,6 +1,7 @@
 package com.javateam.healthyFoodProject.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,8 @@ import com.javateam.healthyFoodProject.domain.QnaVO;
 // 페이징 메서드 추출위해 Repository 교체
 public interface QnaDAO extends PagingAndSortingRepository<QnaVO, Integer>{
 	
-	QnaVO save(QnaVO qnaVO);
+	//0422 song QnaVO-->Optional<QnaVO> (empty체크위해)
+	Optional<QnaVO> save(QnaVO qnaVO);
 	
 	long count();
 
@@ -29,26 +31,26 @@ public interface QnaDAO extends PagingAndSortingRepository<QnaVO, Integer>{
 	int countByQnaTitle(String qnaTitle);
 	int countByQnaTitleContaining(String qnaTitle); // Containing
 	int countByQnaContentContaining(String qnaContent);
-	int countByMemberEmailContaining(String memberEmail);
+	int countByMemberNickContaining(String memberNick);
 	
 	//Page<QnaVO> findByQnaTitleLike(String qnaTitle, Pageable pageable); // Like
 	Page<QnaVO> findByQnaTitleContaining(String qnaTitle, Pageable pageable); // Containing
 	Page<QnaVO> findByQnaContentContaining(String qnaContent, Pageable pageable);
-	Page<QnaVO> findByMemberEmailContaining(String memberEmail, Pageable pageable);
+	Page<QnaVO> findByMemberNickContaining(String memberNick, Pageable pageable);
 	
 	// 원글에 따른 소속 댓글들 가져오기
-	List<QnaVO> findByQnaReSeq(int qnaReSeq); 
+	List<QnaVO> findByQnaReRef(int qnaReRef); //0422 song findByQnaReSeq-->findByQnaReRef
 	
-	// 댓글 제외한 원글들만의 게시글 수 : qnaReSeq = 0
-	long countByQnaReSeq(int qnaReSeq);
+	// 댓글 제외한 원글들만의 게시글 수 : qnaReRef = 0 //0422 song countByQnaReSeq(int qnaReSeq)-->countByQnaReRef(int qnaReRef)
+	long countByQnaReRef(int qnaReRef);
 	
 	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : qnaReSeq = 0
-	Page<QnaVO> findByQnaReSeq(int qnaReSeq, Pageable pageable); 
+	Page<QnaVO> findByQnaReRef(int qnaReRef, Pageable pageable); //0422 song Seq -> Ref 
 	
 //	// 게시글 조회수 갱신
 	@Modifying
 	@Query(value = "UPDATE qna_tbl SET " + 
-				   "QNA_READ_COUNT = QNA_READ_COUNT + 1 " + 
+				   "QNA_READCOUNT = QNA_READCOUNT + 1 " + 
 				   "WHERE QNA_CODE = :qnaCode", nativeQuery = true)
 	void updateQnaReadCountByQnaCode(@Param("qnaCode") int qnaCode);
 
