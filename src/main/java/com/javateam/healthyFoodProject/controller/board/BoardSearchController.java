@@ -67,6 +67,10 @@ public class BoardSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
+		// title 0430
+		model.addAttribute("pageTitle", "커뮤니티");
+		model.addAttribute("bgImg", "food5.jpg");
+		
 		return "/board/board_list";		
 	} //
 
