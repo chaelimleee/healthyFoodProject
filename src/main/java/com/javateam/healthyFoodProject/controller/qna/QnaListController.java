@@ -29,7 +29,6 @@ public class QnaListController {
 	public String list(@RequestParam(value="currPage", defaultValue="1") int currPage,
 					   @RequestParam(value="limit", defaultValue="10") int limit,
 					   Model model) {
-		
 		log.info("게시글 목록");
 		List<QnaVO> qnaList = new ArrayList<>();
 		

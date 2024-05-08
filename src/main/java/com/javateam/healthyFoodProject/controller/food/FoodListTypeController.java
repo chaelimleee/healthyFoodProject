@@ -69,6 +69,7 @@ public class FoodListTypeController {
 							 Model model) {
 		
 		int listCount = 0;
+		String foodTypeName = "";
 		
 		log.info("page : " + currPage);
 
@@ -80,6 +81,9 @@ public class FoodListTypeController {
 		log.info("listCount 총 게시글 수 확인 ==> " + listCount);
 		
 		foodList = foodService.findByFoodTypeAndFoodCateCode(currPage, limit, foodType );
+		
+		// 음식유형 이름만 가져옴 0508
+		foodTypeName = foodService.findByFoodTypeName(foodType);
 		
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
@@ -111,10 +115,15 @@ public class FoodListTypeController {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("foodType", foodType);
 		
-		// title 0430 레시피
-		model.addAttribute("pageTitle", "한식 레시피");
+		// 0508
+		if(foodType == 0) {
+			// title 0430 레시피
+			model.addAttribute("pageTitle", "건강식레시피");
+		} else {
+			// title 0430 레시피
+			model.addAttribute("pageTitle", foodTypeName + "레시피");
+		}
 		model.addAttribute("bgImg", "food4.jpg");
-		// 0501
 
 		return "/food/food_list";
 	} //

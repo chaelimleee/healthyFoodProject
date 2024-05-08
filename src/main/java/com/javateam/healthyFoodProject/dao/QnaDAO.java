@@ -54,6 +54,11 @@ public interface QnaDAO extends PagingAndSortingRepository<QnaVO, Integer>{
 				   "WHERE QNA_CODE = :qnaCode", nativeQuery = true)
 	void updateQnaReadCountByQnaCode(@Param("qnaCode") int qnaCode);
 
+//	// 0508 답변 완료로 바꿈 .
+	@Modifying
+	@Query(value = "update qna_tbl set qna_re_lev = 1 where qna_code = :qnaCode ", nativeQuery = true)
+	void uadateQnaReLev(@Param("qnaCode") int qnaCode);
+	
 	// 게시글 삭제
 	void deleteById(int qnaCode);
 

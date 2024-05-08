@@ -180,9 +180,9 @@ window.onload = function() {
 						<th>제목</th>
 						<th>작성자</th>
 						<th>작성일</th>
+						
 						<!-- 조회수 추가 -->
 						<th>조회수</th>
-						<th>답변여부</th>
 					</tr>
 				</thead>
 				<tbody class="table-group-divider">
@@ -227,8 +227,6 @@ window.onload = function() {
 						
 						<!-- 조회수 추가 -->
 						<td th:utext="${qna.qnaReadCount}"></td>
-
-						<td th:utext="${qna.qnaReLev}"></td>
 					</tr>
 				</tbody>
 	

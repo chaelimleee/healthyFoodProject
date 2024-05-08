@@ -32,12 +32,14 @@ public class QnaService {
 		
 		return qnaDAO.save(qnaVO);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public int selectQnasCount() {
 		
 		return (int)qnaDAO.count();
 	} //
+	
+	
 
 	@Transactional(readOnly = true)
 	public List<QnaVO> selectQnasByPaging(int currPage, int limit) {
@@ -222,5 +224,23 @@ public class QnaService {
 		
 		return result;
 	}
+	
+	// 0508 답변 완료 대기 
+	@Transactional(readOnly = true)
+	public boolean uadateQnaReLev(int qnaReRef) {
+		
+		boolean result = false;
+				
+		try {
+			qnaDAO.uadateQnaReLev(qnaReRef);
+			result = true;
+		} catch (Exception e) {
+			log.error("uadateQnaReLev error : {}", e);
+			result = false;
+		}
+		
+		return result; 
+	} //
+	
 	
 }

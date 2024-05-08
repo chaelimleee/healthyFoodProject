@@ -71,6 +71,11 @@ public class FoodService {
 			return foodDAO.findByFoodTypeAndFoodCateCode(page, limit, foodType);
 		}
 	}
+	
+	//0508 음식유형 이름만 가져옴. 
+	public String findByFoodTypeName(int foodType){
+		return foodDAO.findByFoodTypeName(foodType);
+	}
 
 	// 0501 - PAGING 사상체질 별 음식 보여주기 .
 	public List<FoodVO> findSasangGoodIngredientMainBySasangNameAndPaging(int page, int limit, String sasang){

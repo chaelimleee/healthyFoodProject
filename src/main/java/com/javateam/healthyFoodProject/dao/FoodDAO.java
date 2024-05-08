@@ -173,6 +173,13 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	List<FoodVO> findByFoodTypeAndFoodCateCode(@Param("page") int page,
 			   								   @Param("limit") int limit,
 			   								   @Param("foodCateCode") int foodCateCode);
+
+	//0508 음식유형 이름 가져옴. 
+	@Query(value = "SELECT distinct n.food_cate_name "
+				 + "FROM food_cate_code_tbl C    "
+				 + "JOIN food_cate_name_tbl n ON C.food_cate_code = n.food_cate_code "
+				 + "WHERE C.food_cate_code = :foodCateCode", nativeQuery = true)
+	String findByFoodTypeName(@Param("foodCateCode") int foodCateCode);
 	
 	@Query(value ="SELECT count(*) "
 				+ "FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
