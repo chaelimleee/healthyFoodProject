@@ -135,19 +135,19 @@ window.onload = function() {
 	    // 실제 전송용 hiddedn 필드에 입력
 		boardContentHidden.value = content;
 		
-		if (content.includes("<img src=") == false){
+		/* if (content.includes("<img src=") == false){
 			
 			alert("사진을 첨부해주세요.");
 			summernoteActualContent.innerHTML = "";
 			boardContentHidden.value = "";
 			
 			return false;
-		}
+		} */
 		
 		let idx = content.indexOf('">');// 이미지의 마감태그
 		console.log("idx = " + idx);
 		
-		// 그림 업로드 시 기본적으로 삽입되는 <br>를 비교해서 제외함. 
+/* 		// 그림 업로드 시 기본적으로 삽입되는 <br>를 비교해서 제외함. 
 		if (content.substring(idx+2).replaceAll('<br>','').trim() != ""){
 			
 			alert("사진만 첨부해주세요.");
@@ -155,7 +155,7 @@ window.onload = function() {
 			boardContentHidden.value = "";
 			
 			return false;
-		} 
+		}  */
 		
 		console.log("content : ", content.length);
 		
@@ -210,7 +210,7 @@ window.onload = function() {
 
 				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
 
-				<table class="table mx-auto mt-4" style="width: 800px;">
+				<table class="table mx-auto mt-4" style="width:70vw;">
 
 					<tr>
 						<th scope="col">작성자</th>
@@ -250,7 +250,7 @@ window.onload = function() {
 
 			</form>
 			!-- Back to Top -->
-   			<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+   			<a href="#" class="btn btn-outline-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>
 		    <script th:src="@{/lib/easing/easing.min.js}"></script>

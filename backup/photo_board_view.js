@@ -25,7 +25,7 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 						<div id="reply_actual_writer_${reply.boardNum}" class="d-flex align-items-center ms-1 mt-1">
 						
 							<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-							<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-info position-relative">
+							<button id="reply_writer_${reply.boardWriter}" type="button" class="btn btn-outline-success position-relative">
 								
 								${reply.boardWriter}
 				

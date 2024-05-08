@@ -67,6 +67,9 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	
 	Page<BoardVO> findByMemberNickContaining(String memberNick, Pageable pageable);//0424 song memberEmail->memberNick
 	
+	//0507 추가
+	Page<BoardVO> findByMemberNickAndBoardOrigin(String memberNick, Pageable pageable, int boardOrigin);//0424 song memberEmail->memberNick
+	
 	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
 	long countByBoardOrigin(int boardOrigin);
 	

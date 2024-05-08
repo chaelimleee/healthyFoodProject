@@ -35,8 +35,7 @@ public class PhotoSearchController {
 		log.info("검색 구분 : {}", searchKey);
 		log.info("검색어 : {}", searchWord);
 		
-		List<PhotoVO> boardList = new ArrayList<>();
-		
+		List<PhotoVO> photoList = new ArrayList<>();
 		
 		// 검색시는 "댓글"도 검색에 반영 (기존 대비 변경 없음)
 		// 총 "검색" 게시글 수
@@ -44,8 +43,8 @@ public class PhotoSearchController {
 		
 		log.info("리스트 결과 개수 확인 : " + listCount);
 		
-		boardList = photoService.selectBoardsBySearching(currPage, limit, searchKey, searchWord.trim());	
-		log.info("리스트 결과 확인 : " + boardList);
+		photoList = photoService.selectBoardsBySearching(currPage, limit, searchKey, searchWord.trim());	
+		log.info("리스트 결과 확인 : " + photoList);
 		
 		// 총 페이지 수
 		int maxPage = PageVO.getMaxPage(listCount, limit);
@@ -66,7 +65,7 @@ public class PhotoSearchController {
 		pageVO.setNextPage(pageVO.getCurrPage()+1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage()+1);
 	
 		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("boardList", boardList);	
+		model.addAttribute("photoList", photoList);	
 
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);

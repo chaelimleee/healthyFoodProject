@@ -119,7 +119,15 @@
 					<span th:text="${photo.boardSubject}"></span>,
 					<span th:text="${photo.boardContent}"></span>
 					<br>
-				</div>	
+				</div>
+			</div>
+			
+			<div th:if="${not #lists.isEmpty(photoList) && pageVO.listCount > 0}">
+				photoList.size():[[${photoList.size()}]]
+			</div>
+			
+			<div th:if="${#lists.isEmpty(photoList)}">
+				photoList 비어있음
 			</div>
 			
 			<hr>
@@ -193,7 +201,7 @@
                         </div>
                     </div>
                     
-                    <a th:href="@{/member/update.do}" class="nav-link active text-white">회원수정</a>
+                    <!-- <a th:href="@{/member/update.do}" class="nav-link active text-white">회원수정</a> -->
 
 					<a th:href="@{/qna/list.do}" class="nav-link active text-white">1:1문의 게시판</a>
 

@@ -83,8 +83,8 @@
 			<h2 class="d-flex justify-content-center m-5">
 				회원 관리
 				<!-- 인자 현황 버튼 이동 -->
-				&nbsp;<button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#demo">인자 현황</button>
-				&nbsp;<a class="btn btn-primary" th:href="@{/admin/adminQna.do}" role="button">1:1 문의 알림</a>
+				&nbsp;<button class="btn btn-success" data-bs-toggle="collapse" data-bs-target="#demo">인자 현황</button>
+				&nbsp;<a class="btn btn-success" th:href="@{/admin/adminQna.do}" role="button">1:1 문의 알림</a>
 			</h2>
 			
 			<!-- 회원정보 시작 -->				
@@ -161,7 +161,7 @@
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'role_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'role_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-success">변경</button>
 						</td>
 						
 						<!--// 등급(role) -->
@@ -183,15 +183,15 @@
 						</td>
 						
 						<td>
-							<button type="button" th:id="${'enabled_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-primary">변경</button>
+							<button type="button" th:id="${'enabled_update_btn_' + member.get('memberEmail')}" class="btn btn-sm btn-outline-success">변경</button>
 						</td>
 						
 						<!--// 활동 여부 -->
 						
 						<!-- 메뉴 -->
 						<td>
-							<button class="btn btn-sm btn-primary" th:id="${'update_btn' + member.get('memberEmail')}">수정</button>&nbsp;
-							<button class="btn btn-sm btn-primary" th:id="${'delete_btn' + member.get('memberEmail')}">삭제</button>
+							<button class="btn btn-sm btn-success" th:id="${'update_btn' + member.get('memberEmail')}">수정</button>&nbsp;
+							<button class="btn btn-sm btn-success" th:id="${'delete_btn' + member.get('memberEmail')}">삭제</button>
 						</td>				
 						<!--// 메뉴 -->
 						
@@ -327,7 +327,7 @@
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-primary">
+						<button id="search_btn" class="btn btn-success">
 							<!-- bootstrap icon
 							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>
@@ -336,7 +336,7 @@
 					</div>
 					
 					<div id="list_btn_pnl" class="col-3 ps-0">
-						<a class="btn btn-primary" th:href="@{/admin/viewAllWithRoles.do}">
+						<a class="btn btn-success" th:href="@{/admin/viewAllWithRoles.do}">
 							전체 회원 목록 
 						</a>						
 					</div>

@@ -108,7 +108,7 @@ public class BoardService {
 		return searchKey.equals("boardTitle") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
 			   //searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
 			   searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, currPage, limit) : 
-			   boardDAO.findByMemberNickContaining(searchWord, pageable).getContent();
+			   boardDAO.findByMemberNickAndBoardOrigin(searchWord, pageable, 0).getContent();
 	}
 	
 	// imgUploadPath = /board/image/

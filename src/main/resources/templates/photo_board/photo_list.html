@@ -38,6 +38,9 @@
 		text-decoration: none;
 	}
 	
+	/* 페이징 색깔 변경.  */
+	.page-item > a { color : #86b594; }	
+	
  /* 마우스 올렸을 때, tr: 행이 변하는 효과(여기는 행 배경색을 변화 줌) */
 	.trclass:hover{
             background-color:#FEE6FD;
@@ -126,19 +129,20 @@ window.onload = function() {
 	                             th:each="photo : ${photoList}" >
 	                            <div class="product-item" th:onclick="|location.href='/healthyFoodProject/photo_board/photo_view.do/'+ ${photo.boardNum}|">
 	                                <div class="position-relative bg-light overflow-hidden">
-	                                	<div style="width:300px; height:300px; overflow : hidden; " th:utext="${photo.boardContent}"></div>
+	                                	<div style="width:300px; height:300px; overflow : hidden;" 
+	                                		 th:utext="${#strings.replace(#strings.replace(photo.boardContent,'25%','100%'), '50%', '100%')}"></div>
 	                                </div>
 	                                <div class="text-center p-4">
 	                                	<a class="d-block h5 mb-2" th:text="${photo.boardSubject}" ></a>
 	                                </div>
-	                                <div class="d-flex border-top">
+	                                <!-- <div class="d-flex border-top">
 	                                    <small class="w-50 text-center border-end py-2">
 	                                        <a class="text-body" th:href="@{'/photo_board/photo_view.do/'+ ${photo.boardNum}}"><i class="fa fa-eye text-primary me-2"></i>레시피 보기</a>
 	                                    </small>
 	                                    <small class="w-50 text-center py-2">
 	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>좋아요</a>
 	                                    </small>
-	                                </div>
+	                                </div> -->
 	                            </div>
 	                        </div>
                     	</div>
@@ -187,9 +191,13 @@ window.onload = function() {
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<li class="page-item active"><a class="page-link"
+						<!-- <li class="page-item active"><a class="page-link"
 							th:href="@{'/photo_board/list.do?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li>
+							th:utext="${pageVO.currPage}"></a></li> -->
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/photo_board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
@@ -290,7 +298,7 @@ window.onload = function() {
 			<!--// 검색 -->
 			
 			<!-- Back to Top -->
-   			<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+   			<a href="#" class="btn btn-lg btn-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>
 		    <script th:src="@{/lib/easing/easing.min.js}"></script>

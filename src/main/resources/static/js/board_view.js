@@ -46,11 +46,11 @@ function getAllReplies(originalBoardId, memberNick) {
 									<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 									
 										<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-										<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
+										<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-outline-success position-relative">
 											
 											${reply.memberNick}
 							
-										  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+										  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
 										    	작성자
 										    	<span class="visually-hidden">unread messages</span>
 										  	</span>
@@ -85,10 +85,10 @@ function getAllReplies(originalBoardId, memberNick) {
 									<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 									<div class="col-8 d-flex justify-content-end">
 									
-										<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+										<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success me-2 mb-1" 
 										   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 							
-										<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+										<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success mb-1 me-3"
 										   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 						
 									</div>
@@ -247,11 +247,11 @@ function writeReply(originalBoardId, memberNick) {
 												<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 												
 													<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-													<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
+													<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-outline-success position-relative">
 														
 														${reply.memberNick}
 														
-													  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+													  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
 													    	작성자
 													    	<span class="visually-hidden">unread messages</span>
 													  	</span>
@@ -286,10 +286,10 @@ function writeReply(originalBoardId, memberNick) {
 												<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 												<div class="col-8 d-flex justify-content-end">
 												
-													<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+													<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success me-2 mb-1" 
 													   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 										
-													<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+													<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success mb-1 me-3"
 													   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 									
 												</div>
@@ -353,7 +353,7 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 		 
 								<textarea id="reply_update_form_${replyBoardId}" 
 										  name="reply_update_form_${replyBoardId}" 
-										  class="form-control border border-primary"
+										  class="form-control border border-success"
 										  placeholder="댓글을  100자이내로 작성하십시오">${boardContent.innerText.trim()}</textarea>
 							   
 						   </div>`;
@@ -363,11 +363,11 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">등록</button>
+						  		 class="btn btn-sm btn-success me-2">등록</button>
 							
 							 <button type="button" 
 						 	 	 id="reply_reset_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">취소</button>
+						  		 class="btn btn-sm btn-success me-2">취소</button>
 						
 						  </div>`;
 	
@@ -490,11 +490,11 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 										<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 										
 											<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-											<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
+											<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-outline-success position-relative">
 												
 												${reply.memberNick}
 												
-											  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+											  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
 											    	작성자
 											    	<span class="visually-hidden">unread messages</span>
 											  	</span>
@@ -529,10 +529,10 @@ function updateReply(originalBoardId, replyBoardId, memberNick) {
 										<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 										<div class="col-8 d-flex justify-content-end">
 										
-											<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+											<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success me-2 mb-1" 
 											   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 								
-											<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+											<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success mb-1 me-3"
 											   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 							
 										</div>
@@ -612,11 +612,11 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">삭제 전송</button>
+						  		 class="btn btn-sm btn-success me-2">삭제 전송</button>
 							
 							 <button type="button" 
 						 	 	 id="reply_reset_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">취소</button>
+						  		 class="btn btn-sm btn-success me-2">취소</button>
 						
 						  </div>`;
 				
@@ -725,11 +725,11 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 										<div id="reply_actual_writer_${reply.boardCode}" class="d-flex align-items-center ms-1 mt-1">
 										
 											<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-											<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-info position-relative">
+											<button id="reply_writer_${reply.memberNick}" type="button" class="btn btn-outline-success position-relative">
 												
 												${reply.memberNick}
 								
-											  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+											  	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
 											    	작성자
 											    	<span class="visually-hidden">unread messages</span>
 											  	</span>
@@ -768,10 +768,10 @@ function deleteReply(originalBoardId, replyBoardId, memberNick) {
 										<!-- 메뉴 추가(이동) : 댓글 수정/삭제 : 2024.3 -->
 										<div class="col-8 d-flex justify-content-end">
 										
-											<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+											<a href="#" id="reply_update_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success me-2 mb-1" 
 											   onClick="updateReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">수정</a>
 								
-											<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+											<a href="#" id="reply_delete_btn_${reply.boardCode}" class="btn btn-sm btn-outline-success mb-1 me-3"
 											   onClick="deleteReply(${originalBoardId}, ${reply.boardCode}, '${memberNick}')">삭제</a>
 							
 										</div>

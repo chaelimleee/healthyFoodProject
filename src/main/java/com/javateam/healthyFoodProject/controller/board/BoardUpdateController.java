@@ -64,9 +64,9 @@ public class BoardUpdateController {
 		model.addAttribute("board", boardVO);
 		// model.addAttribute("boardUpdateDTO", new BoardDTO());
 		
-		// title 0430
+		// title 0430 board 커뮤니티
 		model.addAttribute("pageTitle", "커뮤니티");
-		//model.addAttribute("bgImg", "food5.jpg");
+		model.addAttribute("bgImg", "food5.png");
 
 		return "/board/board_update";
 	} //

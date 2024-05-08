@@ -168,49 +168,49 @@ window.onload = function() {
 	                <div class="col-3 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
 	                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
 	                        <li class="nav-item me-2">												 
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/0}">전체메뉴</a><!-- 3 -->
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/0}">전체메뉴</a><!-- 3 -->
 	                        </li>
 	                        <li class="nav-item me-2">												 
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/3}">간식</a><!-- 3 -->
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/3}">간식</a><!-- 3 -->
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/4}">간단요리</a><!-- 4 -->
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/4}">간단요리</a><!-- 4 -->
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/5}">초대요리</a><!-- 5 -->
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/5}">초대요리</a><!-- 5 -->
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/6}">채식</a><!-- 6 -->
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/6}">채식</a><!-- 6 -->
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/7}">한식 </a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/7}">한식 </a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/8}">양식</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/8}">양식</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/9}">일식</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/9}">일식</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/10}">중식</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/10}">중식</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/11}">퓨전</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/11}">퓨전</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/13}">안주</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/13}">안주</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/14}">베이킹</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/14}">베이킹</a>
 	                        </li>
 	                        <li class="nav-item me-2">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/15}">다이어트</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/15}">다이어트</a>
 	                        </li>
 	                        <li class="nav-item me-0">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/16}">도시락</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/16}">도시락</a>
 	                        </li>
 	                        <li class="nav-item me-0">
-	                            <a class="btn btn-outline-primary" role="button"  th:href="@{/food/list.do/17}">키토</a>
+	                            <a class="btn btn-outline-success" role="button"  th:href="@{/food/list.do/17}">키토</a>
 	                        </li>
 	                    </ul>
 	                </div>
@@ -251,13 +251,13 @@ window.onload = function() {
 			-->
 			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
 				 
-				 <a th:href="@{/food/write.do}" class="btn btn-primary me-2" 
+				 <a th:href="@{/food/write.do}" class="btn btn-success me-2" 
 				 	sec:authorize="isAuthenticated()">
 				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
 			 	 </a>	
 			 	 
 			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-primary" th:href="@{/food/list.do}">
+			 	 <a class="btn btn-success" th:href="@{/food/list.do}">
 					게시글 목록
 				 </a>			
 			</div>
@@ -393,7 +393,7 @@ window.onload = function() {
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-primary">
+						<button id="search_btn" class="btn btn-success">
 							<!-- bootstrap icon
 							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>
@@ -407,7 +407,7 @@ window.onload = function() {
 			<!--// 검색 -->
 			
 			<!-- Back to Top -->
-   			<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+   			<a href="#" class="btn btn-lg btn-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>
 		    <script th:src="@{/lib/easing/easing.min.js}"></script>

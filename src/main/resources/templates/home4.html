@@ -366,7 +366,7 @@
                         </div>
                     </div>
                     
-                    <a th:href="@{/member/update.do}" class="nav-link active">회원수정</a>
+                    <!-- <a th:href="@{/member/update.do}" class="nav-link active">회원수정</a> -->
                     
                     <a th:href="@{/qna/list.do}" class="nav-link active">1:1문의 게시판</a>
 
@@ -388,6 +388,15 @@
 					<a th:href="@{/admin/viewAllWithRoles.do}" class="nav-link active" sec:authorize="hasRole('ROLE_ADMIN')">회원관리
 					</a>
 					
+					<div class="d-flex align-items-center" sec:authorize="hasRole('ROLE_ADMIN')">
+						<button type="button" class="btn btn-outline-success position-relative">
+						  1:1 문의
+						  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+						    <span class="visually-hidden">새로운 문의글</span>
+						  </span>
+						</button>
+					</div>
+										
                 </div>
                 
                 <div class="d-none d-lg-flex align-items-center ms-2">

@@ -66,6 +66,10 @@ public class QnaListController {
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("listCount", listCount);
 		
+		// 0404 leee 페이지네이션 위해서 현재 페이지에 보여줄 시작 페이지, 마지막 페이지 list.html에 보냄
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		
 		log.info("qna 게시글 목록 끝");
 		
 		// title 0506 qna 문의게시판

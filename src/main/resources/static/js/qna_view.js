@@ -25,12 +25,12 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 						<div id="reply_actual_writer_${reply.qnaCode}" class="d-flex align-items-center ms-1 mt-1">
 						
 							<!-- 실제 댓글 작성자 파악을 위해 id 등록 -->	
-							<button id="reply_writer_${reply.memberEmail}" type="button" class="btn btn-info position-relative">
+							<button id="reply_writer_${reply.memberEmail}" type="button" class="btn btn-outline-success position-relative">
 								
 								${reply.memberEmail}
 								
 				
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
 									작성자
 									<span class="visually-hidden">unread messages</span>
 								</span>
@@ -64,10 +64,10 @@ function makeReplyPanel(reply, originalBoardId, boardWriter) {
 						<div class="col-8 d-flex justify-content-end">
 						
 							<!--0422 song boardNum → qnaCode, qnaReRef → reply.qnaReRef, memberEmail → reply.memberEmail -->
-							<a href="#" id="reply_update_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-primary me-2 mb-1" 
+							<a href="#" id="reply_update_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-success me-2 mb-1" 
 							   onClick="updateReply(${reply.qnaReRef}, ${reply.qnaCode}, '${reply.memberEmail}', '${reply.memberNick}')">수정</a>
 				
-							<a href="#" id="reply_delete_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-primary mb-1 me-3"
+							<a href="#" id="reply_delete_btn_${reply.qnaCode}" class="btn btn-sm btn-outline-success mb-1 me-3"
 							   onClick="deleteReply(${reply.qnaReRef}, ${reply.qnaCode}, '${reply.memberEmail}')">삭제</a>
 			
 						</div>
@@ -273,7 +273,7 @@ function updateReply(originalBoardId, replyBoardId, boardWriter, memberNick) {
 		 
 								<textarea id="reply_update_form_${replyBoardId}" 
 										  name="reply_update_form_${replyBoardId}" 
-										  class="form-control border border-primary"
+										  class="form-control border border-success"
 										  placeholder="댓글을  100자이내로 작성하십시오">${boardContent.innerText.trim()}</textarea>
 							   
 						   </div>`;
@@ -288,11 +288,11 @@ function updateReply(originalBoardId, replyBoardId, boardWriter, memberNick) {
 	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">등록</button>
+						  		 class="btn btn-sm btn-success me-2">등록</button>
 							
 							 <button type="button" 
 						 	 	 id="reply_reset_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">취소</button>
+						  		 class="btn btn-sm btn-success me-2">취소</button>
 						
 						  </div>`;
 	
@@ -472,11 +472,11 @@ function deleteReply(originalBoardId, replyBoardId, boardWriter) {
 	
 							 <button type="button" 
 						 	 	 id="reply_submit_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">삭제 전송</button>
+						  		 class="btn btn-sm btn-success me-2">삭제 전송</button>
 							
 							 <button type="button" 
 						 	 	 id="reply_reset_btn_${replyBoardId}"
-						  		 class="btn btn-sm btn-primary me-2">취소</button>
+						  		 class="btn btn-sm btn-success me-2">취소</button>
 						
 						  </div>`;
 				

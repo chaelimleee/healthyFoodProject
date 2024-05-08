@@ -103,7 +103,7 @@ public class BoardMyListController {
 		model.addAttribute("pageTitle", "내가 작성한 글");
 		model.addAttribute("bgImg", "food5.png");
 
-		return "/board/board_list";
+		return "/member/member_my_list";
 	} //
 
 } 
