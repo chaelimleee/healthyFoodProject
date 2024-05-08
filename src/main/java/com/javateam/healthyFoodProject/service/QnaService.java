@@ -159,11 +159,43 @@ public class QnaService {
 												//0422 song countByQnaReRef(int qnaReRef)
 	} //
 
+	//0508 관리자 문의 글 답변 완료. 
+	@Transactional(readOnly = true)
+	public int selectQnasCountOne() {
+		
+		return (int)qnaDAO.countByQnaReRefAndQnaReLev(0,1); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		//0422 song countByQnaReRef(int qnaReRef)
+	} //
+
+	//0508 관리자 문의 글 미답변
+	@Transactional(readOnly = true)
+	public int selectQnasCountZero() {
+		
+		return (int)qnaDAO.countByQnaReRefAndQnaReLev(0,0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+		//0422 song countByQnaReRef(int qnaReRef)
+	} //
+
 	@Transactional(readOnly = true)
 	public List<QnaVO> selectQnasByPagingWithoutReplies(int currPage, int limit) {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "qnaCode"));
 		return qnaDAO.findByQnaReRef(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0 //0422 song Seq->Ref
+	} //
+	
+	// 답변 완료 0508 관리자
+	@Transactional(readOnly = true)
+	public List<QnaVO> selectQnasByPagingWithoutQnaReLevOne(int currPage, int limit) {
+		
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "qnaCode"));
+		return qnaDAO.findByQnaReRefAndQnaReLev(0, pageable, 1).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0 //0422 song Seq->Ref
+	} //
+
+	//0508 미답변 관리자
+	@Transactional(readOnly = true)
+	public List<QnaVO> selectQnasByPagingWithoutQnaReLevZero(int currPage, int limit) {
+		
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "qnaCode"));
+		return qnaDAO.findByQnaReRefAndQnaReLev(0, pageable, 0).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0 //0422 song Seq->Ref
 	} //
 
 	@Transactional(rollbackFor = Exception.class)

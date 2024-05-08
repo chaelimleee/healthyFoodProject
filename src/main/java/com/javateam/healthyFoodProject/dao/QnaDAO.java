@@ -44,8 +44,14 @@ public interface QnaDAO extends PagingAndSortingRepository<QnaVO, Integer>{
 	// 댓글 제외한 원글들만의 게시글 수 : qnaReRef = 0 //0422 song countByQnaReSeq(int qnaReSeq)-->countByQnaReRef(int qnaReRef)
 	long countByQnaReRef(int qnaReRef);
 	
+	//  0508 관리자 문의 게시판
+	long countByQnaReRefAndQnaReLev(int qnaReRef, int qnaReLev);
+	
 	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : qnaReSeq = 0
 	Page<QnaVO> findByQnaReRef(int qnaReRef, Pageable pageable); //0422 song Seq -> Ref 
+	
+	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : qnaReSeq = 0
+	Page<QnaVO> findByQnaReRefAndQnaReLev(int qnaReRef, Pageable pageable, int qnaReLev); //0422 song Seq -> Ref 
 	
 //	// 게시글 조회수 갱신
 	@Modifying

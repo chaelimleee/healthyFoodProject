@@ -250,9 +250,6 @@ window.onload = function() {
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<!-- <li class="page-item active"><a class="page-link"
-							th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li> -->
 						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
 							th:each="num : ${#numbers.sequence(startPage, endPage)}">
  							<a class="page-link" th:if="${num > 0}" th:href="@{'/food/list.do/' + ${foodType} + '?currPage=' + ${num}}" th:text="${num}">1</a>

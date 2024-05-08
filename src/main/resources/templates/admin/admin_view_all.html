@@ -129,10 +129,11 @@
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<li class="page-item active"><a class="page-link"
-							th:href="@{'/admin/viewAll.do?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li>
-	
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/admin/viewAll.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>
+
 						<!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
 			    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
 	

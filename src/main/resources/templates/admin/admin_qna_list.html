@@ -169,7 +169,7 @@ window.onload = function() {
 					</div>	
 			</figcaption>
 			
-			<div style="height:500px;"><!-- 0507 글이 없어도 자동 사이즈 줌.  -->
+			<div style="height:300px;"><!-- 0507 글이 없어도 자동 사이즈 줌.  -->
 			<table class="table mx-2 mx-auto" style="width:70vw;">
 				<thead>
 					<tr>	
@@ -180,14 +180,14 @@ window.onload = function() {
 						<th>제목</th>
 						<th>작성자</th>
 						<th>작성일</th>
-						
 						<!-- 조회수 추가 -->
 						<th>조회수</th>
+						<th>답변여부</th>
 					</tr>
-				</thead>
-				<tbody class="table-group-divider">
-					<tr th:if="${not #lists.isEmpty(qnaList) && pageVO.listCount > 0}"
-						th:each="qna, st : ${qnaList}">
+				</thead>.
+				<tbody class="table-group-divider " >
+					<tr th:if="${not #lists.isEmpty(qnaListZero) && pageVO.listCount > 0 }"
+						th:each="qna, st : ${qnaListZero}">
 						<td>
 							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
 						</td>
@@ -227,6 +227,74 @@ window.onload = function() {
 						
 						<!-- 조회수 추가 -->
 						<td th:utext="${qna.qnaReadCount}"></td>
+						
+						<td th:utext="${qna.qnaReLev}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
+			</div>
+			
+			<div style="height:300px;"><!-- 0507 글이 없어도 자동 사이즈 줌.  -->
+			<table class="table mx-2 mx-auto" style="width:70vw;">
+				<thead>
+					<tr>	
+						<th>    
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<!-- 조회수 추가 -->
+						<th>조회수</th>
+						<th>답변여부</th>
+					</tr>
+				</thead>
+				<tbody class="table-group-divider">
+					<tr th:if="${not #lists.isEmpty(qnaListOne) && pageVO.listCount > 0}"
+						th:each="qna, st : ${qnaListOne}">
+						<td>
+							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
+						</td>
+						<td th:text="${qna.qnaCode}"></td>
+						<td>
+							<!--0423 song view.do → qna_view.do  -->
+							
+							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<!--관리자일 때 잠금게시글 보기-->
+							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
+							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							
+							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
+								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  data-bs-toggle="modal" 
+								  data-bs-target="#lockModal" 
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
+							
+							<!--song 0412 링크를 view.do->qna_view.do로 변경 애매함& 주소에 맞는 폴더 만들어야 할 듯-->
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(qna.qnaContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+							
+							<!--0429 song 게시글 잠금표시(자물쇠) -->
+							<span th:if="${qna.qnaLockYesno == 1}">
+								<i class="bi bi-lock"></i>
+							</span>
+						</td>
+						<td th:utext="${qna.memberNick}"></td>
+						
+						
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 추가 -->
+						<td th:utext="${qna.qnaReadCount}"></td>
+						
+						<td th:utext="${qna.qnaReLev}"></td>
 					</tr>
 				</tbody>
 	
@@ -243,7 +311,7 @@ window.onload = function() {
 			 	 </a>	
 			 	 
 			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-outline-success" th:href="@{/qna/list.do}">
+			 	 <a class="btn btn-outline-success" th:href="@{/admin/qna_list.do}">
 					게시글 목록
 				 </a>			
 			</div>
@@ -256,7 +324,7 @@ window.onload = function() {
 	
 						<!--  첫 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{/qna/list.do?currPage=1}" aria-label="Start">
+							th:href="@{/admin/qna_list.do?currPage=1}" aria-label="Start">
 								<span aria-hidden="true">&Lt;</span>
 						</a></li>
 	
@@ -264,32 +332,29 @@ window.onload = function() {
 						<li class="page-item">
 							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
-							th:href="@{'/qna/list.do?currPage='+${pageVO.prePage}}"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
 						</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<!-- <li class="page-item"><a class="page-link"
-							th:href="@{'/qna/list.do?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li> -->
 						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
 							th:each="num : ${#numbers.sequence(startPage, endPage)}">
- 							<a class="page-link" th:if="${num > 0}" th:href="@{'/qna/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/admin/qna_list.do?currPage=' + ${num}}" th:text="${num}">1</a>
  						</li>	
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
 							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
 							<a class="page-link"
-							th:href="@{'/qna/list.do?currPage='+${pageVO.nextPage}}"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.nextPage}}"
 							aria-label="Next"> <span aria-hidden="true">&gt;</span>
 						</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
 						<li class="page-item"><a class="page-link"
-							th:href="@{'/qna/list.do?currPage='+${pageVO.endPage}}"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.endPage}}"
 							aria-label="End"> <span aria-hidden="true">&Gt;</span>
 							
 						</a></li>
@@ -306,33 +371,33 @@ window.onload = function() {
 				    <!--  첫 페이지 -->
 				    <li class="page-item">
 				      <a class="page-link" 
-				      	 th:href="@{'/qna/searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				      	 th:href="@{'/admin/qna_searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
 				        <span aria-hidden="true">&Lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
 				        <span aria-hidden="true">&gt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/qna/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -344,7 +409,7 @@ window.onload = function() {
 			
 			<!-- 검색 -->
 			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
-			<form th:action="@{/qna/searchList.do}" method="get">
+			<form th:action="@{/admin/qna_searchList.do}" method="get">
 			
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				

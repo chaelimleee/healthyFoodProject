@@ -389,12 +389,14 @@
 					</a>
 					
 					<div class="d-flex align-items-center" sec:authorize="hasRole('ROLE_ADMIN')">
+						<a th:href="@{/admin/qna_list.do}">
 						<button type="button" class="btn btn-outline-success position-relative">
 						  1:1 문의
 						  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
 						    <span class="visually-hidden">새로운 문의글</span>
 						  </span>
 						</button>
+						</a>
 					</div>
 										
                 </div>
