@@ -199,6 +199,15 @@ window.onload = function() {
 									th:text="${#dates.format(memberDTO.memberDate, 'yyyy년 MM월 dd일 HH:mm:ss')}"></div>
 							</div>
 							<!--// 가입일 -->
+							
+							<!-- 회원 체질 -->
+							<div id="sasang_fld_pnl">
+								<div class="fld_label">
+									<label for="memberSasang">회원 체질</label>
+								</div>
+								<div class="fld_content" th:text="${memberDTO.memberSasang}"></div>
+							</div>
+							<!--// 회원 체질 -->
 				
 						</div> <!--// id="form_content_box" -->
 					

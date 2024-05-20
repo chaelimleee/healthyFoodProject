@@ -1,78 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout}"
-	lang="ko-kr">
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout}"
+		lang="ko-kr">
 <head>
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
-
-<!-- 0401 leee 수정완... 이긴한데 좀 더 손봐 -->
 
 <meta charset="UTF-8">
 <title>게시글 목록</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
 <style>
 
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-
-/* 
-.inner-div {
-  width : 400px;
-  height : 100px;
-} */
-  /* background-color: red; */
-
-table{
-	width : 600px;
-}
-
-td {
-	text-decoration: none; /* 텍스트 링크 밑줄 없애기 */ 
-}
-
-/* 링크 밑줄 없애기. 0418 leee*/
-a { text-decoration-line: none; }
-
-/* 아직 확인하지 않은 글.링크 0418 leee*/
-a:link { color:#000; }
-
-/* 확인 한 글.링크 0418 leee*/
-a:visited { color:#b2bfb6; }
-
-/* 마우스를 올렸을 때 색상.링크 0418 leee*/
-a:hover { color : #86b594; }
-
-.page-item > a { color : #86b594; }
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+	
+	table{width : 600px;}
+	
+	td {text-decoration: none; }
+	
+	/* 링크 밑줄 없애기. */
+	a { text-decoration-line: none; }
+	
+	/* 아직 확인하지 않은 글.링크 */
+	a:link { color:#000; }
+	
+	/* 확인 한 글.링크 */
+	a:visited { color:#b2bfb6; }
+	
+	/* 마우스를 올렸을 때 색상.링크 */
+	a:hover { color : #86b594; }
+	
+	.page-item > a { color : #86b594; }
 
 </style>
+
 <script>
 window.onload = function() {
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
-	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 	
-	//0425 song 
 	//검색어 불용어(특수문자 ;) 여부 점검
 	let searchForm = document.getElementById("searchForm");
 	let searchBtn = document.getElementById("searchBtn");
 	let searchWord = document.getElementById("searchWord");
 	
-	//0425 song 엔터키로 전송
+	//엔터키로 전송
 	searchWord.onkeydown = function(e){
 		
 		//console.log("키코드: " + e.keyCode);
 		if (e.keyCode == '13'){ //엔터
 			
-			let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+			let regex = /[\w가-힣]+/g; // 검색어 중 불용어(특수문자) 포함여부 점검
 			
 			if (regex.test(searchWord.value) == true){
 				searchForm.submit();
@@ -85,10 +72,10 @@ window.onload = function() {
 		
 	}
 	
-	//0425 song '검색'버튼클릭으로 전송 점검
+	// '검색'버튼클릭으로 전송 점검
 	searchBtn.onclick = function(e){
 		
-		let regex = /[\w가-힣]+/g; //0425 song 검색어 중 불용어(특수문자) 포함여부 점검
+		let regex = /[\w가-힣]+/g; // 검색어 중 불용어(특수문자) 포함여부 점검
 		
 		if (regex.test(searchWord.value) == true){
 			searchForm.submit();
@@ -118,8 +105,6 @@ window.onload = function() {
 		} //
 		
 	} //
-	
-	// console.log("boardDeletebtn : ", boardDeletebtn);
 	
 	// 관리자 모드일 경우만 나오는 버튼이므로 일반 모드에는 에러로 오인됨 (추후 처리)
 	boardDeletebtn.onclick = function() {
@@ -156,20 +141,6 @@ window.onload = function() {
 	
 		<div class="content_sect_pnl">
 
-		<!-- Page Header Start -->
-<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
-	
 		<!-- Product Start -->
 	    <div class="container-xxl py-2">
 	        <div class="container">
@@ -183,97 +154,73 @@ window.onload = function() {
 	            </div>
 	        </div>
 	    </div>
-    <!-- Product End -->
-		
-			<!-- 인자 현황판 이전(move) :   -->
-			
-			<!-- 은수씨의 커뮤니티 전체글. -->
-			<!-- <h4 class="d-flex justify-content-left m-5">
-				<div class='inner-div'> </div>
-				<div class="p-2" style="line-height: 1.5em">커뮤니티<br>
-					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
-				</div>	
-			</h4> -->
-			
-			<!-- 0412 leee 커뮤니티 전체글 수정함.  -->
+    	<!-- Product End -->
+    	
 			<figure>
-			
-	        <figcaption >
+		        <figcaption >
 					<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
 						<p class="mx-2 mx-auto" style="width:70vw;"  >커뮤니티<br>전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글</p>
-						<!-- 0412 leee p 태그 안에 class="mx-2 mx-auto" 이걸 넣어줘야 margin이 적용 됨. div에 해도 소용 없음. -->
 					</div>	
-			</figcaption>
-			
+				</figcaption>
 				
-			<table class="table mx-2 mx-auto" style="width:70vw;">
-				<thead class="bg-success">
-					<tr>	
-						<th>
-							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
-						</th>
-						<th>번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성일</th>
-						<!-- 조회수 추가 -->
-						<th>조회수</th>
-					</tr>
-				</thead>
-				<tbody class="table-group-divider">
-					<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
-						th:each="board, st : ${boardList}">
-						
-						<!-- 체크박스  -->
-						<td>
-							<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
-						</td>
-            
-						<!-- <td th:text="${st.count + (pageVO.currPage - 1) * 10}"></td> -->
-						
-						<!-- 번호  -->
-						<td style="text-decoration: none;" th:text="${board.boardCode}" ></td>
-						<!-- <td th:text="${st.listCount - (pageVO.currPage -pageVO.size ) * st.index}"></td> -->
-						
-						<!-- 제목(글내용)  -->
-						<td>
-							<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
-							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
-							<span th:if="${#strings.contains(board.boardContent, 'img')}">
-								<i class="bi bi-card-image"></i>
-							</span>
-														
-							<!-- 업로드 파일 존재 여부 -->
-							<span th:if="${!#strings.isEmpty(board.boardFile)}">
-								<i class="bi bi-paperclip"></i>
-							</span>
-						</td>
-			
-						<!-- 작성자 --><!-- 0419 leee memberNick >> memberEmail로 변경함 .-->
-						<!-- <td th:utext="${board.memberEmail}"></td> -->
-
-						<!-- 작성자 --><!-- 0419 leee memberNick >> memberEmail로 변경함 .-->
-						<td th:utext="${board.memberNick}"></td>
-			
-						<!-- 작성일-->
-						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-						
-						<!-- 조회수 추가 -->
-						<td th:utext="${board.boardReadCount}"></td>
-					</tr>
-				</tbody>
-	
-			</table>
+				<div style="height:500px;">
+				<table class="table mx-2 mx-auto" style="width:70vw;">
+					<thead class="bg-success">
+						<tr>	
+							<th>
+								<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+							</th>
+							<th>번호</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>작성일</th>
+							<th>조회수</th>
+						</tr>
+					</thead>
+					
+					<tbody class="table-group-divider">
+						<tr th:if="${not #lists.isEmpty(boardList) && pageVO.listCount > 0}"
+							th:each="board, st : ${boardList}">
+							
+							<!-- 체크박스  -->
+							<td>
+								<input type="checkbox" th:id="${'check_'+ board.boardCode}" th:name="${'check_'+ board.boardCode}">
+							</td>
+	            
+							<!-- 번호  -->
+							<td style="text-decoration: none;" th:text="${board.boardCode}" ></td>
+							
+							<!-- 제목(글내용)  -->
+							<td>
+								<a th:href="@{'/board/view.do/'+ ${board.boardCode}}" th:utext="${board.boardTitle}"></a>
+								
+								<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+								<span th:if="${#strings.contains(board.boardContent, 'img')}">
+									<i class="bi bi-card-image"></i>
+								</span>
+															
+								<!-- 업로드 파일 존재 여부 -->
+								<span th:if="${!#strings.isEmpty(board.boardFile)}">
+									<i class="bi bi-paperclip"></i>
+								</span>
+							</td>
+				
+							<!-- 작성자 -->
+							<td th:utext="${board.memberNick}"></td>
+				
+							<!-- 작성일-->
+							<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+							
+							<!-- 조회수 -->
+							<td th:utext="${board.boardReadCount}"></td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
 			</figure>
 			
-			<!-- 게시판 메뉴 :
-		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
-			-->
+			<!-- 게시판 메뉴 : ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨	-->
 			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
-				 
-				 <!-- 게시글 목록에서 바로 삭제 못하도록 임시 생략 처리-->
-				 <!-- <a href="#" id="board_delete_btn" class="btn btn-outline-success me-2" 
-				 	sec:authorize="isAuthenticated()">삭제</a> -->
 				 
 				 <a th:href="@{/board/write.do}" class="btn btn-outline-success me-2" 
 				 	sec:authorize="isAuthenticated()">
@@ -300,35 +247,34 @@ window.onload = function() {
 	
 						<!-- 이전 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
 							th:href="@{'/board/list.do?currPage='+${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
-						</a>
+							</a>
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<!-- 0404 leee 삼항 연산자 : 참 거짓 둘 다 넣어야함. -->
-						<!-- 0404 leee 쿼리 링크 물음표 들어가야함. 문자열하고 num을 분리 시킴. num이 0보다 크다는 조건을 주면 num-1안해도됨.  -->
 						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
 							th:each="num : ${#numbers.sequence(startPage, endPage)}">
- 							<a class="page-link" th:if="${num > 0}" th:href="@{'/board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 							<a class="page-link" th:if="${num > 0}" 
+ 							   th:href="@{'/board/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
  						</li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
 							<a class="page-link"
-							th:href="@{'/board/list.do?currPage='+${pageVO.nextPage}}"
-							aria-label="Next"> <span aria-hidden="true">&gt;</span>
-						</a>
+							   th:href="@{'/board/list.do?currPage='+${pageVO.nextPage}}"
+							   aria-label="Next"> <span aria-hidden="true">&gt;</span>
+							</a>
 						</li>
 	
 						<!-- 마지막 페이지 -->
-						<li class="page-item"><a class="page-link"
-							th:href="@{'/board/list.do?currPage='+${pageVO.endPage}}"
-							aria-label="End"> <span aria-hidden="true">&Gt;</span>
-						</a></li>
+						<li class="page-item">
+							<a class="page-link"
+							   th:href="@{'/board/list.do?currPage='+${pageVO.endPage}}"
+							   aria-label="End"> <span aria-hidden="true">&Gt;</span>
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -349,14 +295,17 @@ window.onload = function() {
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" 
+				      	 th:href="@{'/board/searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" 
+				    	   th:href="@{'/board/searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}">
+				    	</a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
@@ -368,7 +317,8 @@ window.onload = function() {
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/board/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" 
+				         th:href="@{'/board/searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -385,8 +335,7 @@ window.onload = function() {
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				
 					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
-					<div class="col-3">
-					</div>
+					<div class="col-3"></div>
 					
 					<div id="select_pnl" class="col-2 pe-0">
 						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
@@ -397,18 +346,13 @@ window.onload = function() {
 					</div>
 					
 					<div id="search_pnl" class="col-4">
-					
 						<input type="text" class="form-control" id="searchWord" name="searchWord" />
 					</div>
 					
 					<div id="search_btn_pnl" class="col-1 ps-0">
 						<button id="searchBtn" type="button" class="btn btn-outline-success">
-						<!-- <button id="search_btn" class="btn btn-outline-success"> -->
-							<!-- bootstrap icon
-							     : https://icons.getbootstrap.com/icons/search/  -->
 							<i class="bi bi-search"></i>
 						</button>
-					
 					</div>
 				</div>
 			</form>

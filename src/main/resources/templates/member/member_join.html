@@ -40,15 +40,16 @@
         // 일괄적으로 도로명으로 기본주소가 들어가도록 설정하였습니다. 추후 지번 주소와
         // 같이 송부하기 위해서는 아래의 코드를 약간 변경하여 지번주소가 들어갈 필드를 
         // 추가하시면 되겠습니다. -->
-    <script th:src="@{'/js/member_join.js'}" charset="UTF-8"></script>
+        
     
+	
     <!-- 메시징 -->
     <script th:inline="javascript" th:if="${msg != null}">
 		alert([[${msg}]]);
 	</script>
 	
 	<!-- jQuery 0402 추가함 !! 생일 셀렉트 박스 사용위해서.-->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 	
 	<!-- jQuery 0402 추가함 !! 생일 셀렉트 박스 사용위해서.-->
 	<script type="text/javascript">
@@ -79,8 +80,16 @@
 	        $("#month  > option[value="+mon+"]").attr("selected", "true");    
 	        $("#day  > option[value="+day+"]").attr("selected", "true");       
 	        
+	     	// 배경그림 변경 0519
+			let titleBg = document.querySelector(".page-header");
+			titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+			titleBg.style.backgroundPosition = "top right";
+			titleBg.style.backgroundRepeat = "no-repeat";
+	        
 	    })
 	</script>
+	
+	<script th:src="@{'/js/member_join.js'}" charset="UTF-8"></script>
 </head>
 <body>
 
@@ -118,7 +127,7 @@
 		                    <div class="fld_content">
 		                        <!-- <input type="password" id="password" name="password" title="" /> -->
 		                        <!-- 입력 필드값 확인 임시 조치, maxlength -->
-		                        <input type="text" id="memberPw" name="memberPw" maxlength="20" th:field="*{memberPw}" />
+		                        <input type="password" id="memberPw" name="memberPw" maxlength="20" th:field="*{memberPw}" />
 		                    </div>
 		                </div>
 		                
@@ -204,9 +213,9 @@
 		                        <input type="text" id="memberZip" name="memberZip" style="width:100px;" readonly />
 		                        
 		                        <!-- 주소 검색 -->		
-		                        <button type="button" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button> 
+		                        <button type="button" class="btn btn-outline-success" id="address_search_btn" onclick="getPostcodeAddress()">주소 검색</button> 
 		                        <!-- <button type="button" id="address_search_btn" onclick="alert('주소 검색 확인')">주소 검색</button> -->
-		                        <button type="button" id="address_delete_btn">주소 삭제</button>
+		                        <button type="button" class="btn btn-outline-success" id="address_delete_btn">주소 삭제</button>
 		                    </div>                    
 		                </div>
 		                <!--// 회원 우편번호 -->
@@ -239,8 +248,8 @@
 
 		                <!-- 회원  가입/취소 버튼 -->	
 		                <div id="buttons_fld_pnl">	
-		                    <button id="submit_btn" type="submit">회원 가입</button>&nbsp;
-		                    <button id="reset_btn" type="reset">취소</button>
+		                    <button id="submit_btn" class="btn btn-outline-success" type="submit">회원 가입</button>&nbsp;
+		                    <button id="reset_btn" class="btn btn-outline-success" type="reset">취소</button>
 		                </div>
 		                <!--// 회원 가입/취소 버튼 -->
 		            

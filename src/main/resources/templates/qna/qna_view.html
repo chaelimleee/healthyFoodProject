@@ -30,7 +30,27 @@
 <script th:src="@{'/js/qna_view.js'}"></script> <!--주소 어떻게 써야할 지 잘 모르겠음 0418 qna_board->qna  --> 
 
 <!-- 댓글 제어 -->
-<script>
+<script sec:authorize="isAnonymous()">
+window.onload = () => {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	//titleBg.style.backgroundColor = "red";
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat"; 
+		
+	// 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
+	let qnaCode = '[[${qna.qnaCode}]]';
+	
+	// 전체 댓글 로딩(불러오기) : board_view.js 파일로 함수 분리
+	// 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정) : 인자 추가
+	getAllReplies(qnaCode, 'anonymous');
+	
+} // onload
+</script>
+
+<script sec:authorize="isAuthenticated()">
 window.onload = () => {
 	
     // 배경그림 변경
@@ -101,7 +121,7 @@ window.onload = () => {
 						<span th:if="${#strings.isEmpty(qna.qnaFile)}">첨부 파일 없음</span>
 						<!-- boardFileOrigin로 변경(song-0415) -->
 						<!-- <a th:href="@{'/qna/download/'+${qna.qnaFileOrigin}+'/'+${qna.qnaFile}}" 0423 /download로 변경 -->
-						<a th:href="@{'/download/'+${qna.qnaOriginalFile}+'/'+${qna.qnaFile}}" 
+						<a th:href="@{'/qna/download/'+${qna.qnaOriginalFile}+'/'+${qna.qnaFile}}" 
 						   th:if="${!#strings.isEmpty(qna.qnaOriginalFile)}" 
 						   th:utext="${qna.qnaOriginalFile}"></a> 
 					</td>

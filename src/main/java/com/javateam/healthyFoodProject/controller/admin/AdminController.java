@@ -17,6 +17,12 @@ import com.javateam.healthyFoodProject.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 관리자 컨트롤러
+ * @author cofla
+ *
+ */
+
 @Controller
 @RequestMapping("/admin")
 @Slf4j
@@ -25,6 +31,10 @@ public class AdminController {
 	@Autowired
 	MemberService memberService;
 	
+	/**
+	 * 관리자 로그인 시 메인화면.
+	 * @return
+	 */
 	@GetMapping("/")
 	public String admin() {
 		
@@ -33,6 +43,10 @@ public class AdminController {
 		
 		return "/";
 	}
+	/**
+	 * 관리자 1대1 문의 알림 게시판
+	 * @return
+	 */
 	// 0430  추가
 	@GetMapping("/adminQna.do")
 	public String adminQnaD() {
@@ -88,6 +102,13 @@ public class AdminController {
 		return "/admin/admin_view_all";
 	} //
 	
+	/** 
+	 * 모든 회원 정보 확인.
+	 * @param currPage 페이징 한페이지에 10개의 게시글을 보여줌.
+	 * @param limit
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/viewAllWithRoles.do")
 	public String adminViewWithRoles(@RequestParam(value="currPage", defaultValue="1", required=true) int currPage, 
 									 @RequestParam(value="limit", defaultValue="10") int limit,
@@ -127,7 +148,7 @@ public class AdminController {
 		
 		// title 0430 레시피
 		model.addAttribute("pageTitle", "회원관리");
-		model.addAttribute("bgImg", "food4.jpg");
+		model.addAttribute("bgImg", "bg-tomato.png");
 		
 		return "/admin/admin_view_all_with_roles";
 	} //

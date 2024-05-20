@@ -7,14 +7,10 @@
 <meta charset="UTF-8">
 <title>게시글 수정</title>
 
-
-<!--  0401 leee 수정완. -->
-
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 
-<link th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}"
-	rel="stylesheet">
+<link rel="stylesheet" th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}">
 <script th:src="@{/summernote/0.8.18/dist/summernote-lite.min.js}"></script>
 
 <!-- summernote 한글 지원 관련 -->
@@ -25,7 +21,6 @@
 function sendFile(file, el) {
 
   // FormData 객체 
-  // : https://developer.mozilla.org/ko/docs/Web/API/FormData
   let formData = new FormData();
   formData.append('file', file);
   
@@ -46,8 +41,6 @@ function sendFile(file, el) {
     
     	$(el).summernote('editor.insertImage', url);
     	
-     	// $('#imageBoard').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
-     	
     } //
     
   });
@@ -212,142 +205,129 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 		
-		<!-- Product Start -->
-	    <div class="container-xxl py-2">
-	        <div class="container">
-	        
-	            <div class="row g-0 gx-5 align-items-end">
-	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
-	                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
-	                    </div>
-	                </div>
-	            </div>
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+	    
+		        <div class="container">
+		        
+		            <div class="row g-0 gx-5 align-items-end">
+		                <div class="col-lg-6">
+		                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+		                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
+		                    </div>
+		                </div>
+		            </div>
 
-			<form id="board_update_frm" th:action="@{'/board/updateProc.do'}"
-				encType="multipart/form-data" method="post" th:object="${board}">
-				
-				<!-- 기존 정보 전송용 히든 필드 -->
-				<input type="hidden" id="boardReSeq" name="boardReSeq" th:value="${board.boardReSeq}" />
-				<!--// 기존 정보 전송용 히든 필드 -->
-				
-				<h2 class="d-flex justify-content-center">게시글 수정</h2>
-
-				<table class="table mx-auto mt-4" style="width: 800px;">
-				
-					<tr>
-						<th scope="col" class="col-2">게시글 번호</th>
-						<td>
-							<input type="text" class="form-control" id="boardCode" name="boardCode" 
-								th:value="${board.boardCode}" th:field="*{boardCode}" readonly />
-						</td>
-					</tr>
-
-					<tr>
-						<th scope="col">작성자</th>
-						<td><input type="text" class="form-control" id="memberEmail"
-							name="memberEmail" th:value="${board.memberEmail}" th:field="memberEmail" readonly /></td>
-					</tr>
-					
-					<tr>
-						<th scope="col">닉네임</th>
-						<td><input type="text" class="form-control" id="memberNick"
-							name="memberNick" th:value="${board.memberNick}" th:field="memberNick" readonly /></td>
-					</tr>
-
-					<!-- <tr>
-						<th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="boardPass"
-							name="boardPass" required 
-							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" 
-							th:field="*{boardPass}" /></td>
-					</tr> -->
-
-					<tr>
-						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardTitle"
-							name="boardTitle" required title="글제목을 입력하십시오" th:value="${board.boardTitle}" 
-							th:field="boardTitle"/></td>
-					</tr>
-
-					<tr>
-						<th scope="col">내용</th>
-						<td>							
-							<!-- case-1 -->
-							<textarea class="form-control" id="boardContent"
-								name="boardContent" th:field="*{boardContent}" required>[[${board.boardContent}]]</textarea>
-							
-							<!-- case-2 -->
-							<!-- <div id="boardContentDiv"></div>
-							<input type="hidden" id="boardContent" name="boardContent" /> -->
-						</td>
-					</tr>
-
-					<tr>						
-						<th scope="col">
-							첨부파일
-						</th>
+					<form id="board_update_frm" th:action="@{'/board/updateProc.do'}"
+						encType="multipart/form-data" method="post" th:object="${board}">
 						
-						<td>
+						<!-- 기존 정보 전송용 히든 필드 -->
+						<input type="hidden" id="boardReSeq" name="boardReSeq" th:value="${board.boardReSeq}" />
+						<!--// 기존 정보 전송용 히든 필드 -->
+						
+						<h2 class="d-flex justify-content-center">게시글 수정</h2>
+		
+						<table class="table mx-auto mt-4" style="width: 800px;">
+						
+							<tr>
+								<th scope="col" class="col-2">게시글 번호</th>
+								<td>
+									<input type="text" class="form-control" id="boardCode" name="boardCode" 
+										th:value="${board.boardCode}" th:field="*{boardCode}" readonly />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">작성자</th>
+								<td><input type="text" class="form-control" id="memberEmail"
+									name="memberEmail" th:value="${board.memberEmail}" th:field="memberEmail" readonly /></td>
+							</tr>
 							
-							<!-- 2024.3 -->
-							<div class="row my-1">
-							
-								<div class="col-8">
-									<a th:href="@{'/board/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
-									   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
-									   th:utext="${board.boardFileOrigin}"></a>
-								</div>   
+							<tr>
+								<th scope="col">닉네임</th>
+								<td><input type="text" class="form-control" id="memberNick"
+									name="memberNick" th:value="${board.memberNick}" th:field="memberNick" readonly /></td>
+							</tr>
+		
+							<tr>
+								<th scope="col">제목</th>
+								<td><input type="text" class="form-control" id="boardTitle"
+									name="boardTitle" required title="글제목을 입력하십시오" th:value="${board.boardTitle}" 
+									th:field="boardTitle"/></td>
+							</tr>
+		
+							<tr>
+								<th scope="col">내용</th>
+								<td>							
+									<textarea class="form-control" id="boardContent"
+										name="boardContent" th:field="*{boardContent}" required>[[${board.boardContent}]]</textarea>
+								</td>
+							</tr>
+		
+							<tr>						
+								<th scope="col">
+									첨부파일
+								</th>
 								
-								<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
-								
-								<div class="col-4" th:if="${#strings.isEmpty(board.boardFile) == false}">
-								
-									<div class="form-check form-switch">
-									  <input class="form-check-input" type="checkbox" role="switch" 
-									  		 id="defaultFileDeleteYN" name="defaultFileDeleteYN" value="false">
-									  <label class="form-check-label" for="defaultFileDeleteYN"><b>기존 파일 삭제</b></label>
-									</div>
+								<td>
 									
-								</div>
-								   
-							</div>
-							    
-							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control mt-3 mb-2" type="file" id="boardFile" name="boardFile" th:field="*{boardFile}">
-								</div>	
-								<div class="col-2">
-									<a href="#" class="btn btn-sm btn-outline-success mt-3" id="fileDeleteBtn">첨부 삭제</a>
-								</div>
-							</div>	
+									<!-- 2024.3 -->
+									<div class="row my-1">
+									
+										<div class="col-8">
+											<a th:href="@{'/board/download/'+${board.boardFileOrigin}+'/'+${board.boardFile}}" 
+											   th:if="${!#strings.isEmpty(board.boardFileOrigin)}" 
+											   th:utext="${board.boardFileOrigin}"></a>
+										</div>   
+										
+										<span th:if="${#strings.isEmpty(board.boardFile)}">첨부 파일 없음</span>
+										
+										<div class="col-4" th:if="${#strings.isEmpty(board.boardFile) == false}">
+										
+											<div class="form-check form-switch">
+											  <input class="form-check-input" type="checkbox" role="switch" 
+											  		 id="defaultFileDeleteYN" name="defaultFileDeleteYN" value="false">
+											  <label class="form-check-label" for="defaultFileDeleteYN"><b>기존 파일 삭제</b></label>
+											</div>
+											
+										</div>
+										   
+									</div>
+									    
+									<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
+									<div class="row">
+										<div class="col-10">
+											<input class="form-control mt-3 mb-2" type="file" id="boardFile" name="boardFile" th:field="*{boardFile}">
+										</div>	
+										<div class="col-2">
+											<a href="#" class="btn btn-sm btn-outline-success mt-3" id="fileDeleteBtn">첨부 삭제</a>
+										</div>
+									</div>	
+									
+								</td>
+							</tr>
 							
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="col">등록일</th>
-						<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-					</tr>
+							<tr>
+								<th scope="col">등록일</th>
+								<td th:utext="${#dates.format(board.boardDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+							</tr>
+		
+						</table>
+		
+						<div class="d-flex justify-content-center">
+							<button type="submit" class="btn btn-outline-success">글수정 전송</button>
+							&nbsp;
+							<button type="reset" class="btn btn-outline-success">취소</button>
+						</div>
+		
+					</form>
 
-				</table>
-
-				<div class="d-flex justify-content-center">
-					<button type="submit" class="btn btn-outline-success">글수정 전송</button>
-					&nbsp;
-					<button type="reset" class="btn btn-outline-success">취소</button>
-				</div>
-
-			</form>
-
-		</div>
-		</div>
-		</div>
-		<!--// content -->
-
-	</div>
-	<!--// layout -->
-
+				</div><!--// container  -->
+			
+			</div><!--// Product End -->
+			
+		</div><!--// content_sect_pnl -->
+	
+	</div><!--// layout -->
 </body>
 </html>

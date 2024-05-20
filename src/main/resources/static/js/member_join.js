@@ -190,7 +190,7 @@ function isCheckAddressFldValid(memberZipFld, memberAddress1Fld, memberAddress2F
 ////////////////////////////////////////////////////
 
 window.onload = () => {
-
+	
     // 각 필드들의 에러 점검 여부 (플래그(flag) 변수)
     let idCheckFlag = false;
 

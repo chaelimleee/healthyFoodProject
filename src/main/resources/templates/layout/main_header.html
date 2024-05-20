@@ -26,6 +26,16 @@
 				</table>
 			</div>
 			
+			<!-- 인증정보/회원정보 인자 null값 확인  -->
+			<div th:if="${#authentication == null}">
+				<table class="table table-striped">
+					<tr>
+						<th style="width:120px">인증정보</th>
+						<td>인증정보없음</td>
+					</tr>
+				</table>
+			</div>
+			
 			<div th:if="${#authentication != null}">
 				<table class="table table-striped">
 					<tr>
@@ -219,14 +229,6 @@
     </div>
     <!-- Navbar End -->
     
-    <!-- Page Header Start (공통)-->
-	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;" id="intro_img">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown" th:utext="${pageTitle}"></h1><!-- 커뮤니티 -->
-	        </div>
-	    </div>
-	 <!-- // Page Header end (공통)-->
-			
 	</div> <!-- // 끝 th:fragment="header" -->
     
     <!-- Back to Top -->

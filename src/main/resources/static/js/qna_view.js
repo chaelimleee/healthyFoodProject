@@ -217,7 +217,7 @@ function writeReply(originalBoardId, boardWriter, memberNick) {
 	
 	 					// 전체 댓글 현황 리턴 확인
 	 					console.log("전체 댓글 수 : ", resData.length);
-	 					
+
 	 					let replyListPnl = document.getElementById("reply_list_pnl");
 	 					let replyData = "";
 						replyListPnl.innerHTML = ""; // 댓글 목록 초기화
@@ -225,7 +225,7 @@ function writeReply(originalBoardId, boardWriter, memberNick) {
 						// 댓글 작성란/ 패쓰워드 초기화
 						document.getElementById("reply_write_form").value = ""; 	
 						//document.getElementById("board_pass_3").value = ""; //0422 song 
-	 					
+
 	 					for (let reply of resData) {
 	 						
 							replyData = makeReplyPanel(reply, originalBoardId, boardWriter);

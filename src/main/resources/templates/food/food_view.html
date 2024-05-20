@@ -10,65 +10,56 @@
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
-<!-- leee 0416 건강식 레시피 사진 누르면 상세 페이지 들어가도록 함. -->
-<!-- leee 0416 DB 데이터 개행 안되는 문제 수정해야함... -->
-<!-- leee 0416 aside로 옆에 메뉴 넣어야함.  -->
-<!-- leee 0416 양념 재료 없을 때 해당 메뉴판 안보이게 할지 고민.  -->
-<!-- leee 0416 grid box5만 따로 크기 조정하고싶다. -->
-
 <style>
-#reply_write_form {
- resize:none;
- height:5em;
- width:100%;
-}
+	#reply_write_form {
+		resize:none;
+		height:5em;
+		width:100%;
+	}
 
-#wrapper{
-	width:85%;
-	display:grid;
-	grid-template-columns:repeat(auto-fit, minmax(100px,1fr));
-	/* grid-template-rows:repeat(4,250px); */
-	grid-gap:10px;
-	grid-column-gap : 50px;
-	grid-template-areas:
-		"box5 box5"
-		"box1 box2"
-		"box1 box3"
-		"box4 box4";
-	margin: 2em auto;
-}
+	#wrapper{
+		width:85%;
+		display:grid;
+		grid-template-columns:repeat(auto-fit, minmax(100px,1fr));
+		grid-gap:10px;
+		grid-column-gap : 50px;
+		grid-template-areas:
+			"box5 box5"
+			"box1 box2"
+			"box1 box3"
+			"box4 box4";
+		margin: 2em auto;
+	}
 
-.ingredientView{
-	min-height:30px;
-}
-
-.box1{
-	/* background-color: aqua; */
-	grid-area:box1;
-}
-.box2{
-	/* background-color: pink; */
-	grid-area:box2;
-}
-.box3{
-	/* background-color: red; */
-	grid-area:box3;
-	min-height:50px;
-}
-.box4{
-	/* background-color: yellow; */
-	grid-area:box4;
-	margin-top: 0px;
-}
-.box5{
-	/* background-color:aqua ; */
-	grid-area:box5;
-	min-height:50px;/* 크기 수정. 최소사이즈 */
-}
+	.ingredientView{
+		min-height:30px;
+	}
+	
+	.box1{
+		/* background-color: aqua; */
+		grid-area:box1;
+	}
+	.box2{
+		/* background-color: pink; */
+		grid-area:box2;
+	}
+	.box3{
+		/* background-color: red; */
+		grid-area:box3;
+		min-height:50px;
+	}
+	.box4{
+		/* background-color: yellow; */
+		grid-area:box4;
+		margin-top: 0px;
+	}
+	.box5{
+		/* background-color:aqua ; */
+		grid-area:box5;
+		min-height:50px;/* 크기 수정. 최소사이즈 */
+	}
+	
 </style>
-
-<!-- 0401 leee 수정완. 그러나 손봐야함. -->
-
 
 <!-- bootstrap icons -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
@@ -86,34 +77,14 @@ window.onload = () => {
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
-	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 		
-	/* // 개별글 로딩시 지금까지 집계된 댓글들 읽어오기
-	let foodCode = '[[${food.foodCode}]]';
-	
-	// 전체 댓글 로딩(불러오기) : food_view.js 파일로 함수 분리
-	// getAllReplies(foodCode);
-	// 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정) : 인자 추가
-	getAllReplies(foodCode, '[[${#authentication.name}]]');
-
-	// 댓글 작성 함수 : food_view.js 파일로 함수 분리
- 	writeReply(foodCode, '[[${#authentication.name}]]');
-	
-	// 댓글 수정 함수 : 2024.3 : 댓글 수정 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-	// updateReply(foodCode, '[[${#authentication.name}]]');
-	
-	// 댓글 삭제 함수 : 2024.3 : 댓글 삭제 버튼의 댓글 영역 내로 이관된 조치에 따른 후속 조치(수정)
-	// deleteReplies(foodCode, '[[${#authentication.name}]]');
-	
-	// (원)글 삭제 함수
-	deleteBoard(foodCode, '[[${#authentication.name}]]'); */
-	
 } // onload 
 </script>
 </head>
+
 <body>
 
 	<!-- layout -->
@@ -121,74 +92,67 @@ window.onload = () => {
 
 		<div class="content_sect_pnl">
 		
-		<!-- Product Start -->
-	    <div class="container-xxl py-2">
-	    
-    		<div class="w-100">
-                <div class="d-flex justify-content-between">
-                    <div class="section-header text-start mb-2 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
-                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
-                    </div>
-                </div>
-            </div>
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+		    
+	    		<div class="w-100">
+	                <div class="d-flex justify-content-between">
+	                    <div class="section-header text-start mb-2 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+	                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
+	                    </div>
+	                </div>
+            	</div>
             
-	    	<!-- 본문 -->
-	        <div class="container d-flex align-items-start">
-	            
-				<div id="wrapper" class="w-100" th:each="food : ${food}">	
-					<!-- 0503 레시피 설명 없을 때 칸 물리는 거 해결. 및 조리 방법 위로 올림-->
-					<div class="box box5 w-100"> 
-						<span style="font-size: 2em;">
-							<a th:text="${food.foodName}"></a>레시피
-						</span>
-						<div th:if="${food.foodIntroduce != null}" th:utext="${'<br>'+food.foodIntroduce}" style="font-size: 20px;"></div>
-					</div>
-					
-					<div class="box box1"> 
-						
-						<div style="width:500px; min-height:550px; overflow:hidden; margin-top:70px;">
-						
-							<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}"
-								 style="width:100%; border-radius: 10px; "
-								 alt="이미지 준비 중. ">
-						</div>	 
-							 <!-- 스타일 위아래 100%로 주니까 grid안에 딱 맞춰짐. leee 0416 -->
-						
-						<!-- <img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}" 
-							 style="width: 300px; 
-							 height: 300px;" 
-							 alt="이미지 준비 중. > -->
-					</div>
-					
-					<div class="box box2" style="min-height:100px;"> 
-						<span style="font-size:30px;">기본 재료</span>
-						<hr style="border:0; height:10px; background: #83a68d;">
-						<div th:utext="${food.foodIngredientMainView}" 
-						   style="font-size: 20px;"
-						   class="ingredientView">
+		    	<!-- 본문 -->
+		        <div class="container d-flex align-items-start">
+		            
+					<div id="wrapper" class="w-100" th:each="food : ${food}">	
+						<div class="box box5 w-100"> 
+							<span style="font-size: 2em;">
+								<a th:text="${food.foodName}"></a>레시피
+							</span>
+							<div th:if="${food.foodIntroduce != null}" th:utext="${'<br>'+food.foodIntroduce}" style="font-size: 20px;"></div>
 						</div>
-					</div>
-					
-					<div class="box box3" style="min-height:100px;"> 
-						<span style="font-size:30px;">양념 재료</span>
-						<hr style="border:0; height:10px; background: #83a68d;">
-						<div th:utext="${food.foodIngredientSubView}" 
-						   style="font-size: 20px;"
-						   class="ingredientView">
+						
+						<div class="box box1"> 
+							<div style="width:500px; min-height:550px; overflow:hidden; margin-top:70px;">
+							
+								<img th:src="@{'/img/upload_image_we3/' + ${food.foodImg}}"
+									 style="width:100%; border-radius: 10px; "
+									 alt="이미지 준비 중. ">
+							</div>	 
 						</div>
-					</div>
-					
-					<div class="box box4"> 
-						<span style="font-size:30px;">조리 방법</span>
-						<hr style="border:0; height:10px; background: #83a68d;">
-						<div th:utext="${food.foodRecipe}" 
-						   style="font-size: 20px;"
-						   class="ingredientView">
+						
+						<div class="box box2" style="min-height:100px;"> 
+							<span style="font-size:30px;">기본 재료</span>
+							<hr style="border:0; height:10px; background: #83a68d;">
+							<div th:utext="${food.foodIngredientMainView}" 
+							   style="font-size: 20px;"
+							   class="ingredientView">
+							</div>
 						</div>
+						
+						<div class="box box3" style="min-height:100px;"> 
+							<span style="font-size:30px;">양념 재료</span>
+							<hr style="border:0; height:10px; background: #83a68d;">
+							<div th:utext="${food.foodIngredientSubView}" 
+							   style="font-size: 20px;"
+							   class="ingredientView">
+							</div>
+						</div>
+						
+						<div class="box box4"> 
+							<span style="font-size:30px;">조리 방법</span>
+							<hr style="border:0; height:10px; background: #83a68d;">
+							<div th:utext="${food.foodRecipe}" 
+							   style="font-size: 20px;"
+							   class="ingredientView">
+							</div>
+						</div>
+						
 					</div>
-				</div>
-					
-			</div><!--// 본문 -->
+						
+				</div><!--// 본문 -->
 			
 			<div class="w-100 d-flex justify-content-center py-3">
              	<a class="btn btn-outline-success" th:href="@{/food/list.do}"> 레시피 목록 </a>

@@ -108,6 +108,7 @@ public class MemberService {
 		return result;
 	} //
 
+	//0516 사상체질 DB 저장 수정 leee
 	@Transactional
 	public boolean updateMemberSasang(MemberDTO memberDTO) {
 		

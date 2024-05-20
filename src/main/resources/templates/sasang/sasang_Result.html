@@ -128,8 +128,14 @@ window.onload = function() {
 			    <ul id="foodRecommend"></ul><br>
 			    </p>
 			    
-			    <p><strong>추천 좋은 음식 리스트 :</strong></p>
-			    <p id="goodFoodList">${goodFoodList}</p>
+			    <p><strong class="d-flex justify-content-center">추천 좋은 음식 리스트 </strong></p>
+			    <p id="goodFoodList">
+				    <a th:href="@{'/sasang/list.do/' + ${sasangName}}" style="text-decoration-line: none;">
+				    	<button class="d-flex justify-content-center btn btn-outline-success mx-auto col-6 " role="button" >
+				    		나의 체질에 맞는 레시피 더 알아보기
+				    	</button>
+				    </a>
+			    </p>
 			    
 			   <!-- 해당 체질에 맞는 음식 추천! 0423 leee -->
 			   <div class="row mt-3 " style="margin:0 auto;">
@@ -145,7 +151,7 @@ window.onload = function() {
 				   </div>
 			   </div>
 			   <!-- //해당음식에 맞는 음식 추천 끝 -->
-			    
+			   
 			   </div><!-- // id = "resultForm" 끝 -->
 			   
 			   

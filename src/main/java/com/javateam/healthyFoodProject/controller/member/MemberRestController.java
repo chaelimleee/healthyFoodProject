@@ -190,43 +190,43 @@ public class MemberRestController {
 	
 	// REST Test (swagger) ready
 	// case-1)	
-	/*
-	@GetMapping("/updateMemberByAdmin/{id}/mobile/{mobile}")
-	public ResponseEntity<Boolean> updateMember(@Parameter(name = "id", required = true) @PathVariable("id") String id,
-			@Parameter(name = "mobile", required = true) @PathVariable("mobile") String mobile) {
-		
-		// log.info("회원 정보 수정 처리(관리자 REST) : {}", id);
-		log.info("회원 정보 수정 처리(관리자 REST) : {}, {}", id, mobile);
-		
-		ResponseEntity<Boolean> responseEntity = null; 
-		
-		try {
-			// 기존 정보 로딩
-			MemberDTO memberDTO = memberService.selectMember(id);
-			memberDTO.setMobile(mobile);
-			boolean result = memberService.updateMember(memberDTO);
-			
-			log.info("--- result : {}", result);
-			
-			if (result == true) {
-				// 성공 코드(200)
-				responseEntity = new ResponseEntity<>(result, HttpStatus.OK); 
-			} else {
-				// 실패 코드(204)
-				responseEntity = new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
-			}
-			
-		} catch (Exception e) {
-			log.error("changeEnabled error : {}", e);
-			e.printStackTrace();
-
-			// 실패 코드(417) : 내부 서버 에러
-			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		return responseEntity;		
-	} //
-	*/
+	
+//	@GetMapping("/updateMemberByAdmin/{id}/mobile/{mobile}")
+//	public ResponseEntity<Boolean> updateMember(@Parameter(name = "id", required = true) @PathVariable("id") String id,
+//			@Parameter(name = "mobile", required = true) @PathVariable("mobile") String mobile) {
+//		
+//		// log.info("회원 정보 수정 처리(관리자 REST) : {}", id);
+//		log.info("회원 정보 수정 처리(관리자 REST) : {}, {}", id, mobile);
+//		
+//		ResponseEntity<Boolean> responseEntity = null; 
+//		
+//		try {
+//			// 기존 정보 로딩
+//			MemberDTO memberDTO = memberService.selectMember(id);
+//			memberDTO.setMemberMobile(mobile);
+//			boolean result = memberService.updateMember(memberDTO);
+//			
+//			log.info("--- result : {}", result);
+//			
+//			if (result == true) {
+//				// 성공 코드(200)
+//				responseEntity = new ResponseEntity<>(result, HttpStatus.OK); 
+//			} else {
+//				// 실패 코드(204)
+//				responseEntity = new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+//			}
+//			
+//		} catch (Exception e) {
+//			log.error("changeEnabled error : {}", e);
+//			e.printStackTrace();
+//
+//			// 실패 코드(417) : 내부 서버 에러
+//			responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		return responseEntity;		
+//	} //
+	
 	
 	// case-2
 	@PostMapping("/updateMemberByAdmin")

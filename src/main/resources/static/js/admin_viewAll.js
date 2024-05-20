@@ -45,7 +45,7 @@ function isCheckFldValid(fld, regex, initVal, errMsg) {
 ////////////////////////////////////////////////////
 
 window.onload = function() {
-
+	
 	// 활동여부(enabled) 스위치 컴포넌트/라벨 제어	
 	let enabledFlds = document.querySelectorAll("[id^='enabled_']");
 	
@@ -205,7 +205,7 @@ window.onload = function() {
 		
 		// 클릭시 => 편집가능 상태(readonly 해제)
 		mobileUpdateFld.onclick = (e) => {
-						
+			
 			let id = e.target.id; // 'mobile_' ~~~
 			id = id.substring('mobile_'.length);
 			
@@ -254,9 +254,9 @@ window.onload = function() {
 			// 유효성 점검(regex validation)
 			// 기존의 개별 회원정보 수정 페이지와는 달리 팝업(alert)로 에러 출력
 			let mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010-\d{4}-\d{4}$/,
+                        /^010\d{4}\d{4}$/,
                         mobileFld.value,
-                        "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.\n\n ex) 010-1234-5678");
+                        "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.\n\n ex) 01012345678");
 
 			console.log("mobileCheckFlag : " + mobileCheckFlag);
 
@@ -268,7 +268,7 @@ window.onload = function() {
 				// 휴대폰 중복 점검 플래그
 				let mobileDuplicatedCheckFlag = false;
 				
-				axios.get(`/healthyFoodProject/member/hasFldForUpdate/${id}/mobile/${mobileFld.value}`)
+				axios.get(`/healthyFoodProject/member/hasFldForUpdate/${id}/MEMBER_MOBILE/${mobileFld.value}`)
 				 .then(function(response) {
 					
 					mobileDuplicatedCheckFlag = response.data;
@@ -308,8 +308,10 @@ window.onload = function() {
 							method : "post",
 							url : '/healthyFoodProject/member/updateMemberByAdmin',
 							data : {
-								id : id,	
-								mobile : mobileFld.value
+								//id : id,	
+								//mobile : mobileFld.value
+								memberEmail : id,	
+								memberMobile : mobileFld.value
 							},
 							headers:{ "Content-Type":'multipart/form-data' }
 						 })

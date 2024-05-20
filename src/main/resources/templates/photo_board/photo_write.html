@@ -179,20 +179,6 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 		
-			<!-- Page Header Start -->
-	<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-		        <div class="container">
-		            <h1 class="display-3 mb-3 animated slideInDown">커뮤니티</h1>
-		            <nav aria-label="breadcrumb animated slideInDown">
-		                <ol class="breadcrumb mb-0">
-		                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-		                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-		                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-		                </ol>
-		            </nav>
-		        </div>
-		    </div> -->
-		
 			<!-- Product Start -->
 		    <div class="container-xxl py-2">
 		        <div class="container">
@@ -218,13 +204,14 @@ window.onload = function() {
 						<td><input type="text" class="form-control" id="boardWriter"
 							name="boardWriter" th:value="${#authentication.name}" readonly /></td>
 					</tr>
-
-					<tr>
+					
+					<!-- 0515 leee  -->
+					<!-- <tr> 
 						<th scope="col">패쓰워드</th>
 						<td><input type="text" class="form-control" id="boardPass"
 							name="boardPass" required 
 							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr>
+					</tr> -->
 
 					<tr>
 						<th scope="col">제목</th>
@@ -249,7 +236,7 @@ window.onload = function() {
 				</div>
 
 			</form>
-			!-- Back to Top -->
+			<!-- Back to Top -->
    			<a href="#" class="btn btn-outline-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>

@@ -37,12 +37,7 @@
 		#{role})
 	</insert>
 
-	<!-- 회원 정보 롤(role) 생성 -->
-	<!-- <insert id="insertMemberSasang" parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
-		INSERT INTO member_tbl(MEMBER_SASANG) 
-		VALUES (#{memberSasang})
-	</insert> -->
-	
+	<!-- 체질 테스트 후 저장. -->
 	<update id="updateMemberSasang" 
 			parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		UPDATE member_tbl
@@ -72,7 +67,8 @@
 		MEMBER_IMG_ORIGIN as "memberImgOrigin",
 		MEMBER_DATE as "memberDate",		
 		MEMBER_ROLE as "memberRole",
-		ENABLED as "enabled"
+		ENABLED as "enabled",
+		MEMBER_SASANG as "memberSasang"
 		FROM member_tbl WHERE MEMBER_EMAIL = #{memberEmail}
 	</select>
 	
@@ -86,8 +82,6 @@
 	</select>
 	
 	<!-- 회원 정보 수정 -->
-	<!-- 동적 SQL 추가(조거/선택적 update)
-	     동적 SQL : https://mybatis.org/mybatis-3/ko/dynamic-sql.html#trim-where-set -->
 	<update id="updateMember" 
 				parameterType="com.javateam.healthyFoodProject.domain.MemberDTO">
 		UPDATE member_tbl
@@ -124,7 +118,8 @@
 				MEMBER_IMG_ORIGIN as "memberImgOrigin",
 				MEMBER_DATE as "memberDate",		
 				MEMBER_ROLE as "memberRole",
-				ENABLED as "enabled"
+				ENABLED as "enabled",
+				MEMBER_SASANG as "memberSasang"
 		FROM (SELECT m.*,  
 		             FLOOR((ROWNUM - 1) / ${limit} + 1) page  
 		      FROM (
@@ -195,44 +190,23 @@
   		</if>
 	</select>
 	
-	<!-- 멤버 롤 빼도될 듯. 여기서 합쳐짐. -->
-	<!-- 회원 정보 키워드 검색(조회) (페이징) : 아이디 중심 내림차순 정렬 -->
-	<!-- 
-				MEMBER_EMAIL as "memberEmail",
-				MEMBER_PW as "memberPw",
-				MEMBER_NAME as "memberName",
-				MEMBER_NICK as "memberNick",	
-				MEMBER_MOBILE as "memberMobile",
-				MEMBER_BIRTH as "memberBirthAll",
-				MEMBER_ZIP as "memberZip",
-				MEMBER_ADDRESS1 as "memberAddress1",
-				MEMBER_ADDRESS2 as "memberAddress2",
-				MEMBER_IMG as "memberImg",
-				MEMBER_IMG_ORIGIN as "memberImgOrigin",
-				MEMBER_DATE as "memberDate",		
-				MEMBER_ROLE as "memberRole",
-				ENABLED as "enabled",
-				MEMBER_SASANG as "memberSasang",
-				role,
-		        page   
-	 -->
 	<select id="selectMembersWithRolesBySearching" parameterType="map" resultType="map">
 		SELECT  
-				MEMBER_EMAIL ,
-				MEMBER_PW  ,
-				MEMBER_NAME  ,
-				MEMBER_NICK  ,	
-				MEMBER_MOBILE  ,
-				MEMBER_BIRTH  ,
-				MEMBER_ZIP  ,
-				MEMBER_ADDRESS1  ,
-				MEMBER_ADDRESS2  ,
-				MEMBER_IMG   ,
-				MEMBER_IMG_ORIGIN  ,
-				MEMBER_DATE  ,		
-				MEMBER_ROLE  ,
-				ENABLED ,
-				MEMBER_SASANG  ,
+				MEMBER_EMAIL,
+				MEMBER_PW,
+				MEMBER_NAME,
+				MEMBER_NICK,	
+				MEMBER_MOBILE,
+				MEMBER_BIRTH,
+				MEMBER_ZIP,
+				MEMBER_ADDRESS1,
+				MEMBER_ADDRESS2,
+				MEMBER_IMG ,
+				MEMBER_IMG_ORIGIN,
+				MEMBER_DATE,		
+				MEMBER_ROLE,
+				ENABLED,
+				MEMBER_SASANG,
 				role,
 		        page   
 		FROM (SELECT m.*,  

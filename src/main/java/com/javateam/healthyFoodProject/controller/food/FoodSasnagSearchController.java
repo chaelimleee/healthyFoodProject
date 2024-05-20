@@ -17,14 +17,14 @@ import com.javateam.healthyFoodProject.service.FoodService;
 
 import lombok.extern.slf4j.Slf4j;
 /**
- * 건강식 레시피 검색. 
+ * 체질별 건강식 레시피 검색. . 
  * @author cofla
  *
  */
 @Controller
 @RequestMapping("food")
 @Slf4j
-public class FoodSearchController {
+public class FoodSasnagSearchController {
 	
 	@Autowired
 	FoodService foodService;
@@ -35,15 +35,16 @@ public class FoodSearchController {
 	 * @param searchWord 검색할 키워드
 	 * @return
 	 */
-	@GetMapping("searchList.do")
-	public String list(@RequestParam("foodType") int foodType,
+	@GetMapping("/sasang/searchList.do/{sasangType}")
+	public String list(@PathVariable("sasangType") String sasangType,
+					   @RequestParam("foodType") int foodType,
 					   @RequestParam(value="currPage", defaultValue="1") int currPage,
 					   @RequestParam(value="limit", defaultValue="10") int limit,
 					   @RequestParam(value="searchKey") String searchKey,
 					   @RequestParam(value="searchWord") String searchWord,
 					   Model model) {
 		
-		log.info("게시글 검색 목록");
+		log.info("foodSasang 게시글 검색 목록");
 		log.info("검색 구분 : {}", searchKey);
 		log.info("검색어 : {}", searchWord);
 		
@@ -51,15 +52,15 @@ public class FoodSearchController {
 		
 		// 검색시는 "댓글"도 검색에 반영 (기존 대비 변경 없음)
 		// 총 "검색" 게시글 수
-		int listCount = foodService.selectFoodsCountBySearching(searchKey, searchWord.trim(), foodType);
+		int listCount = foodService.selectSasangFoodsCountBySearching(searchKey, searchWord.trim(), foodType, sasangType);
 		
-		foodList = foodService.findBySeachingAndPaging(currPage, limit, searchKey, searchWord.trim(), foodType);	
+		foodList = foodService.findSearchSasangGoodIngredientMainBySasangIngredientAndPaging(currPage, limit, searchKey,  searchWord.trim(), foodType, sasangType);	
 		log.info("foodList사이즈 확인 : " + foodList.size());
 		
 		// 총 페이지 수
 		int maxPage = PageVO.getMaxPage(listCount, limit);
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
-		int startPage = PageVO.getStartPage(currPage, limit);
+		int startPage = currPage == 1 ? 1 : PageVO.getStartPage(currPage, limit);//0430 수정. 
    	    int endPage = startPage + 10;
    	    
    	    if (endPage> maxPage) endPage = maxPage;
@@ -81,11 +82,14 @@ public class FoodSearchController {
 		model.addAttribute("searchKey", searchKey);
 		model.addAttribute("searchWord", searchWord);
 		
-		// title 0430 레시피
-		model.addAttribute("pageTitle", "건강식 레시피");
-		model.addAttribute("bgImg", "food4	.jpg");
+		// 0501
+		model.addAttribute("sasangType", sasangType);
 		
-		return "/food/food_list";		
+		// title 0430 사상체질
+		model.addAttribute("pageTitle", "<span style='color:#fff;'>" + sasangType + " 추천 레시피</span>");
+		model.addAttribute("bgImg", "sasang2.jpg");
+		
+		return "/sasang/sasang_one";		
 	} //
 
 }

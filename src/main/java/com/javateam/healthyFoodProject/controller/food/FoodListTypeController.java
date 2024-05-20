@@ -60,7 +60,16 @@ public class FoodListTypeController {
 	
 	@Autowired
 	FoodDAO foodDao; 
-
+	
+	/**
+	 * 유형별 레시피 조회.
+	 * 해당하는 유형을 파라미터로 받아와서 dao로 보냄.
+	 * @param foodType 해당 유형의 번호를 가져옴.
+	 * @param currPage 페이징을 위한 시작 페이지
+	 * @param limit 한 페이지에 20의 게시물을 보여줌.
+	 * @param model
+	 * @return
+	 */
 	//사상별 추천 레시피
 	@GetMapping("list.do/{foodType}")
 	public String SasangList(@PathVariable("foodType") int foodType,
@@ -80,18 +89,23 @@ public class FoodListTypeController {
 		listCount = foodService.countByFoodType(foodType);
 		log.info("listCount 총 게시글 수 확인 ==> " + listCount);
 		
+		/**
+		 * foodCateCode테이블에서 foodType에 해당하는 레시피의 id를 찾아서 
+		 * 모든 정보를 가져옴. 
+		 */
 		foodList = foodService.findByFoodTypeAndFoodCateCode(currPage, limit, foodType );
 		
 		// 음식유형 이름만 가져옴 0508
 		foodTypeName = foodService.findByFoodTypeName(foodType);
 		
 		// 총 페이지 수
-		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
 		int maxPage = PageVO.getMaxPage(listCount, limit);
+		
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
-		int startPage = currPage == 1 ? 1 : PageVO.getStartPage(currPage, limit);//0430 수정. 
+		int startPage = PageVO.getStartPage(currPage, limit/2);//0519 수정. 
+		
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-		int endPage = startPage + 20;
+		int endPage = PageVO.getEndPage(currPage, limit/2);//0519 수정.
 
 		if (endPage > maxPage)
 			endPage = maxPage;
@@ -104,7 +118,9 @@ public class FoodListTypeController {
 		pageVO.setStartPage(startPage);
 
 		pageVO.setPrePage(pageVO.getCurrPage() - 1 < 1 ? 1 : pageVO.getCurrPage() - 1);
-		pageVO.setNextPage(pageVO.getCurrPage() + 1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage() + 1);
+//		pageVO.setNextPage(pageVO.getCurrPage() + 1 > pageVO.getEndPage() ? pageVO.getEndPage() : pageVO.getCurrPage() + 1);
+		//0519
+		pageVO.setNextPage(pageVO.getCurrPage() + 1 > pageVO.getMaxPage() ? pageVO.getMaxPage() : pageVO.getCurrPage() + 1);
 
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("foodList", foodList);
@@ -115,6 +131,9 @@ public class FoodListTypeController {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("foodType", foodType);
 		
+		/**
+		 * 헤더의 제목이 전체조회일때와 유형별조회 일 때 다르게 나오도록 함. 
+		 */
 		// 0508
 		if(foodType == 0) {
 			// title 0430 레시피

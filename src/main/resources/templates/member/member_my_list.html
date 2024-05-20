@@ -183,6 +183,7 @@ window.onload = function() {
 			</figcaption>
 			
 			<div style="height:500px;">	
+			
 			<table class="table mx-2 mx-auto" style="width:70vw;">
 				<thead class="bg-success p-2 text-dark bg-opacity-25">
 					<tr>	
@@ -244,21 +245,21 @@ window.onload = function() {
 			</div>
 			</figure>
 			
+			<!-- 글 작성자만 글수정/삭제하도록 조건 처리 -->
+				<!-- <div sec:authorize="isAuthenticated()">
+					<span th:if="${board.memberEmail == #authentication.email}">
+					
+						(원)글삭제 링크 추가
+						<a type="button" class="btn btn-outline-success ms-2" 
+						    th:id="${'board_delete_btn_' + board.boardCode}"
+							href="#">글삭제</a>
+						
+					</span>	
+				</div> -->
+			
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
 			-->
-			<div id="board_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
-				 
-				 <!-- 게시글 목록에서 바로 삭제 못하도록 임시 생략 처리-->
-				 <!-- <a href="#" id="board_delete_btn" class="btn btn-outline-success me-2" 
-				 	sec:authorize="isAuthenticated()">삭제</a> -->
-				 
-			 	 <!-- 게시글 목록 -->
-			 	 <a class="btn btn-outline-success" th:href="@{/board/list.do}">
-					게시글 목록
-				 </a>			
-			</div>
-	
 			<!-- 페이징 -->
 			<!-- 검색이 아닌 경우 -->	
 			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">

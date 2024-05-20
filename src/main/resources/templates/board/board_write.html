@@ -7,25 +7,13 @@
 <meta charset="UTF-8">
 <title>게시글 쓰기</title>
 
-
-
-<!-- 0401 leee 수정완. 그러나 손봐야함. -->
-
-<!-- 0419 leee 레이아웃에는 안넣고 각자 필요한 곳에 따로따로 적용을 시켜야지 드롭다운과 인자현황 잘 닫히는 현상을 동시에 해결 할 수 있따.  -->
 <link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
-<!-- / 0419 드롭다운 인자현황 현상 끝.// -->
-
-<!-- bootstrap -->
-<!-- <link rel="stylesheet"
-	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
 
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 
-<link th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}"
-	rel="stylesheet">
+<link rel="stylesheet" th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}">
 <script th:src="@{/summernote/0.8.18/dist/summernote-lite.min.js}"></script>
 
 <!-- summernote 한글 지원 관련 -->
@@ -118,7 +106,6 @@ window.onload = function() {
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
-	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat";  
@@ -134,13 +121,11 @@ window.onload = function() {
 	} //	
 	
 	// TODO
-	// case-2
 	// 게시글 내용
 	let boardContentDiv= document.getElementById("boardContentDiv");
 	let boardContentHidden = document.getElementById("boardContent");
 	let boardForm = document.getElementById("board_write_frm");
 	
-	// case-2
 	// 폼점검
 	boardForm.onsubmit = function(e) {
 		
@@ -181,7 +166,6 @@ window.onload = function() {
 		// 파일 업로드 사이즈 체크 : 10MB 보다 큰지 점검
 		let boardFile = document.getElementById("boardFile");
 
-		//let uploadFileSize = boardFile.files[0].size;
 		// 빈 파일일 경우
 		let uploadFileSize = (boardFile.value == "") ? 0 : boardFile.files[0].size;
 
@@ -208,98 +192,87 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 		
-		<!-- Product Start -->
-	    <div class="container-xxl py-2">
-	        <div class="container">
-	            <div class="row g-0 gx-5 align-items-end">
-	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
-	                        <h1 class="display-6 mb-4"> 커뮤니티 자유게시판 </h1>
-	                        <p>다양한 사람들과 이야기해보세요!</p>
-	                    </div>
-	                </div>
-	            </div>
-
-			<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
-				encType="multipart/form-data" method="post">
-
-				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
-
-				<table class="table mx-auto mt-4" style="width:70vw;">
-
-					<tr>
-						<th scope="col">작성자</th>
-						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 --><!-- memberNick >>> memberEmail 로 변경. 0419 leee -->
-						<td><input type="text" class="form-control" id="memberEmail"
-							name="memberEmail" th:value="${#authentication.name}" readonly /></td>
-					</tr>
-
-					<tr>
-						<!-- 0419 leee authentication.name >>> authentication.principal.memberNick 로 변경.  -->
-						<!--  readonly 해야함. -->
-						<th scope="col">닉네임</th>
-						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 --><!-- memberNick >>> memberEmail 로 변경. 0419 leee -->
-						<td><input type="text" class="form-control" id="memberNick"
-							name="memberNick" th:value="${#authentication.principal.memberNick}" readonly /></td>
-					</tr>
-
-					<!-- <tr>
-						<th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="boardPass"
-							name="boardPass" required 
-							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr> -->
-
-					<tr>
-						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardTitle"
-							name="boardTitle" required title="글제목을 입력하십시오" /></td>
-					</tr>
-
-					<tr>
-						<th scope="col">내용</th>
-						<td>							
-							<!-- case-1 -->
-							<!-- <textarea class="form-control" id="boardContent"
-								name="boardContent" required></textarea> -->
-														
-							<!-- case-2 -->
-							<div id="boardContentDiv"></div>
-							<input type="hidden" id="boardContent" name="boardContent" />
-							<!-- <input type="text" id="boardContent" name="boardContent" readonly /> -->
-						</td>
-					</tr>
-
-					<tr>
-						<th scope="col">첨부파일</th>
-						<td>
-							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control" type="file" id="boardFile"
-										name="boardFile">
-								</div>	
-								<div class="col-2">
-									<a href="#" class="btn btn-sm btn-outline-success mt-1" id="fileDeleteBtn">첨부 삭제</a>
-								</div>
-							</div>	
-						</td>
-					</tr>
-
-				</table>
-
-				<div class="d-flex justify-content-center">
-					<button type="submit" class="btn btn-outline-success">전송</button>
-					&nbsp;
-					<button type="reset" class="btn btn-outline-success">취소</button>
-				</div>
-
-			</form>
-
-		</div>
-		</div>
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+		    
+		        <div class="container">
+		        
+		            <div class="row g-0 gx-5 align-items-end">
+		                <div class="col-lg-6">
+		                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+		                        <h1 class="display-6 mb-4"> 커뮤니티 자유게시판 </h1>
+		                        <p>다양한 사람들과 이야기해보세요!</p>
+		                    </div>
+		                </div>
+		            </div>
+	
+					<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
+						  encType="multipart/form-data" method="post">
 		
-		<!-- Back to Top -->
+						<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
+		
+						<table class="table mx-auto mt-4" style="width:70vw;">
+		
+							<tr>
+								<th scope="col">작성자</th>
+								<td><input type="text" class="form-control" id="memberEmail"
+										   name="memberEmail" th:value="${#authentication.name}" readonly />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">닉네임</th>
+								<td><input type="text" class="form-control" id="memberNick"
+										   name="memberNick" th:value="${#authentication.principal.memberNick}" readonly />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">제목</th>
+								<td><input type="text" class="form-control" id="boardTitle"
+										   name="boardTitle" required title="글제목을 입력하십시오" />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">내용</th>
+								<td>							
+									<div id="boardContentDiv"></div>
+									<input type="hidden" id="boardContent" name="boardContent" />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">첨부파일</th>
+								<td>
+									<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
+									<div class="row">
+										<div class="col-10">
+											<input class="form-control" type="file" id="boardFile"
+												   name="boardFile">
+										</div>	
+										<div class="col-2">
+											<a href="#" class="btn btn-sm btn-outline-success mt-1" id="fileDeleteBtn">첨부 삭제</a>
+										</div>
+									</div>	
+								</td>
+							</tr>
+		
+						</table>
+		
+						<div class="d-flex justify-content-center">
+							<button type="submit" class="btn btn-outline-success">전송</button>
+							&nbsp;
+							<button type="reset" class="btn btn-outline-success">취소</button>
+						</div>
+		
+					</form>
+	
+				</div><!--// container  -->
+				
+			</div><!-- Product Start -->
+		
+			<!-- Back to Top -->
    			<a href="#" class="btn btn-lg btn-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>
@@ -309,6 +282,7 @@ window.onload = function() {
 
 		    <!-- Template Javascript -->
 		    <script th:src="@{/js/main.js}"></script>
+		    
 		</div>
 		<!--// content -->
 

@@ -13,14 +13,25 @@
 <script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
 
 <!-- bootstrap icons :  -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
 <link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
 
 <!-- AJAX library axios -->
 <script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
 
+<script type="text/javascript">
+$(function(){
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat"; 
+});
+</script>
 <!-- 관리자 모드 Javascript -->
 <script th:src="@{'/js/admin_viewAll.js'}" charset="UTF-8"></script>
+
+
 </head>
 <body>
 
@@ -84,7 +95,7 @@
 				회원 관리
 				<!-- 인자 현황 버튼 이동 -->
 				&nbsp;<button class="btn btn-outline-success" data-bs-toggle="collapse" data-bs-target="#demo">인자 현황</button>
-				&nbsp;<a class="btn btn-outline-success" th:href="@{/admin/adminQna.do}" role="button">1:1 문의 알림</a>
+				&nbsp;<a class="btn btn-outline-success" th:href="@{/admin/qna_list.do}" role="button">1:1 문의 알림</a>
 			</h2>
 			
 			<!-- 회원정보 시작 -->				
@@ -178,7 +189,6 @@
 								<input type="checkbox" class="form-check-input" name="enabled"  th:id="${'enabled_' + member.get('MEMBER_EMAIL')}"
 									   th:value="${member.get('ENABLED')}"												 
 									   th:checked="${member.get('ENABLED') == 1}">
-												
 							</div>	   
 						</td>
 						
@@ -232,15 +242,10 @@
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
-			    	<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
-						th:each="num : ${#numbers.sequence(startPage, endPage)}">
-							<a class="page-link" th:if="${num > 0}" th:href="@{'/admin/viewAllWithRoles.do?currPage=' + ${num}}" th:text="${num}">1</a>
-					</li>
+				    <li class="page-item active">
+				    	<a class="page-link" th:href="@{'/admin/viewAllWithRoles.do?currPage='+${pageVO.currPage}}" th:utext="${pageVO.currPage}"></a>
+			    	</li>
 			    	
-				    
-				    <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
-				    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
 				      <!-- <a class="page-link" th:href="@{'/admin/viewAllWithRoles.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->

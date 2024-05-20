@@ -1,9 +1,10 @@
 <aside class="flex-item" style="width:auto;margin: 0 auto;">
 	<p> 회원정보메뉴</p>
 		<ul>
-			<li><a th:href="@{/member/update.do}" class="active">내정보수정</a></li>
+			<li><a th:href="@{/member/view.do}">내정보조회</a></li>
+			<li><a th:href="@{/member/update.do}">내정보수정</a></li>
 			<li><a th:href="@{/board/member/list.do}" >내가 쓴 글</a></li>
-			<li><a href="#" >비밀번호 변경</a></li>
 			<li><a onclick="chooseDelete()">탈퇴하기</a></li>
 		</ul>
 </aside>
+

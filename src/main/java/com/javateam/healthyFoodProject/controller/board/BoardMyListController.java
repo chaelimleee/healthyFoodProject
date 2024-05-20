@@ -36,7 +36,7 @@ public class BoardMyListController {
 			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 		
-		//0507 회어
+		//0507 
 		Object principal = SecurityContextHolder.getContext()
 				.getAuthentication()
 				.getPrincipal();
@@ -68,7 +68,7 @@ public class BoardMyListController {
 		// 댓글들 제외
 		boardList = boardService.selectBoardsByPagingWithoutMemberEmail(currPage, limit, id);
 		//log.info("boardList 리스트 확인 ==> " + boardList.get(0).toString());
-
+		log.info("list, boardList 확인확인 : "+ listCount + boardList);
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
 		int maxPage = PageVO.getMaxPage(listCount, limit);

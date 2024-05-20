@@ -194,16 +194,26 @@ window.onload = function() {
 						<td th:text="${qna.qnaCode}"></td>
 						<td>
 							<!--0423 song view.do → qna_view.do  -->
-							
-							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							<!-- 인증된 회원/관리자일 때 링크  -->
+							<a  sec:authorize="isAuthenticated()"
+								th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" 
+								th:utext="${qna.qnaTitle}"></a>
 							
 							<!--관리자일 때 잠금게시글 보기-->
 							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
 							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
-							
+
+							<!-- 잠금걸린 글 제목만 누구나 확인 가능./ 링크는 인증된 사람만 연결됨. -->
+							<span sec:authorize="isAnonymous()" th:if="${qna.qnaLockYesno == 1}" th:utext="${qna.qnaTitle}"></span>
+
+							<!-- 잠금해제된 글 제목/링크 누구나 확인 가능./ 링크는 인증된 사람만 연결됨. -->
+							<a sec:authorize="isAnonymous()" th:if="${qna.qnaLockYesno == 0}"
+								  th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}"  
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
 							
 							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
-								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  href="#" th:attr="onclick=|openModal('${qna.qnaCode}')|" 
 								  data-bs-toggle="modal" 
 								  data-bs-target="#lockModal" 
 								  th:utext="${qna.qnaTitle}"
