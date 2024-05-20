@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout}"
+		lang="ko-kr">
+<head>
+<meta charset="UTF-8">
+<title>관리자 문의 게시판</title>
+
+<!-- bootstrap icons :  -->
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css}">
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
+<!-- AJAX library axios -->
+<script th:src="@{'/axios/1.5.0/dist/axios.min.js'}"></script>
+
+<style>
+
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+	
+	.inner-div {
+		width : 400px;
+		height : 100px;
+	}
+
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+
+	table{ width : 600px;}
+	
+	td { text-decoration: none; } /* 텍스트 링크 밑줄 없애기 */ 
+	
+	
+	a { text-decoration-line: none; } /* 링크 밑줄 없애기 */
+	
+	
+	a:link { color:#000; } /* 아직 확인하지 않은 글.링크 */
+	
+	a:visited { color:#b2bfb6; } /* 확인 한 글.링크 */
+	
+	a:hover { color : #86b594; } /* 마우스를 올렸을 때 색상.링크 */
+	
+	.page-item > a { color : #86b594; } /* 페이징 색깔 변경.  */
+
+</style>
+
+<script>
+//패스워드 입력창(모달) 열기
+function openModal(qnaCode){
+	let btn = document.getElementById("lockPassSubmit_");
+	btn.id = "lockPassSubmit_" + qnaCode;
+	console.log("btn : " + btn.id);
+}
+
+window.onload = function() {
+	
+    // 배경그림 변경
+	let titleBg = document.querySelector(".page-header");
+	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
+	titleBg.style.backgroundPosition = "top right";
+	titleBg.style.backgroundRepeat = "no-repeat"; 
+	
+	/* 게시글 패스워드 점검/전송 */
+	let lockPassSubmit =document.querySelector("[id^=lockPassSubmit]");
+	
+	lockPassSubmit.onclick = function(e){
+		
+		let qnaCode = e.target.id.split("_")[1];
+		console.log("qnaCode : ", qnaCode);
+		
+		let qnaPass = document.getElementById("qnaPass");   
+		console.log("qnaPass : ", qnaPass.value);	
+		let memberEmail = "[[${#authentication.name}]]";            
+		console.log("memberEmail : ", memberEmail); 
+		
+		let regexPw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}/ //패스워드(로그인) 정규식
+		
+		if (regexPw.test(qnaPass.value) == false){
+			alert("로그인할 때 입력한 패스워드를 입력하세요");
+		} else{
+			
+			axios.post('/healthyFoodProject/qna/checkLock.do',{
+				  "qnaCode": qnaCode,
+				  "qnaPass": qnaPass.value,
+				  "memberEmail": memberEmail
+				})// 
+			 .then(function(response) {
+				 
+				let msg = response.data;
+				console.log("response.data : " + msg);
+
+				alert(msg); //메세지
+				
+				if (msg == '해당글 작성자가 맞습니다.'){
+					location.href = "/healthyFoodProject/qna/qna_view.do/" + qnaCode + "/yes";
+				}
+			 })	 				 
+			 .catch(function(err) {
+				console.error("댓글 작성 중 서버 에러가 발견되었습니다.");
+			 }); // axios
+		}
+	}
+} //
+</script>
+</head>
+<body>
+
+	<!-- layout -->
+	<div layout:fragment="content" class="main_sect_pnl">
+	
+		<!--잠금 게시글의 패스워드 입력 모달-->
+		<div class="modal" tabindex="-1" id="lockModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">잠금 게시글 패스워드 입력</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <p><input class="form-control" type="text" id="qnaPass" name="qnaPass" placeholder="게시글 패스워드를 입력하세요"></p>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" id="lockPassSubmit_" class="btn btn-outline-success">전송</button>
+		        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">닫기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!--// 잠금 게시글의 패스워드 입력 모달-->
+		
+		<div class="content_sect_pnl">
+	
+		<!-- Product Start -->
+	    <div class="container-xxl py-4">
+	        <div class="container">
+	        
+	            <div class="row g-0 gx-5 align-items-end">
+	                <div class="col-lg-6">
+	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+	                        <h1 class="display-6 mb-4"> 1:1 문의 </h1>
+	                        <p>문의사항을 알려주세요!</p>
+	                    </div>
+	                </div>
+	            </div>
+
+		
+			<!-- 인자 현황판 이전(move) :   -->
+			
+			<figcaption >
+				<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
+					<p class="mx-2 mx-auto" style="width:70vw;">1:1 문의<br>전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글</p>
+					<p class="mx-2 mx-auto" style="width:70vw;"> 답변준비중</p>
+				</div>
+			</figcaption>
+			
+			<div style="height:300px;">
+			<table class="table mx-2 mx-auto" style="width:70vw;">
+				<thead>
+					<tr>	
+						<th>    
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>조회수</th>
+						<th>답변여부</th>
+					</tr>
+				</thead>
+				
+				<tbody class="table-group-divider " >
+					<tr th:if="${not #lists.isEmpty(qnaListZero) && pageVO.listCount > 0 }"
+						th:each="qna, st : ${qnaListZero}">
+						
+						<!-- 체크박스 -->
+						<td>
+							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
+						</td>
+						
+						<!-- 번호 -->
+						<td th:text="${qna.qnaCode}"></td>
+						
+						<!-- 제목 -->
+						<td>
+							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<!--관리자일 때 잠금게시글 보기-->
+							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
+							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
+								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  data-bs-toggle="modal" 
+								  data-bs-target="#lockModal" 
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
+							
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(qna.qnaContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+							
+							<!--게시글 잠금표시(자물쇠) -->
+							<span th:if="${qna.qnaLockYesno == 1}">
+								<i class="bi bi-lock"></i>
+							</span>
+						</td>
+						
+						<!-- 닉네임 -->
+						<td th:utext="${qna.memberNick}"></td>
+						
+						<!-- 등록일 -->
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 -->
+						<td th:utext="${qna.qnaReadCount}"></td>
+						
+						<!-- 답변여부 -->
+						<td th:utext="${qna.qnaReLev}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
+			
+			</div>
+			
+			<figcaption >
+				<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
+					<p class="mx-2 mx-auto" style="width:70vw;"> 답변완료</p>
+				</div>
+			</figcaption>
+			
+			<div style="height:300px;">
+			
+			<table class="table mx-2 mx-auto" style="width:70vw;">
+				<thead>
+					<tr>	
+						<th>    
+							<input type="checkbox" th:id="${'check_'+ pageVO.currPage}" th:name="${'check_'+ pageVO.currPage}">
+						</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>조회수</th>
+						<th>답변여부</th>
+					</tr>
+				</thead>
+				
+				<tbody class="table-group-divider">
+					<tr th:if="${not #lists.isEmpty(qnaListOne) && pageVO.listCount > 0}"
+						th:each="qna, st : ${qnaListOne}">
+						
+						<!-- 체크박스 -->
+						<td>
+							<input type="checkbox" th:id="${'check_'+ qna.qnaCode}" th:name="${'check_'+ qna.qnaCode}">
+						</td>
+						
+						<!-- 번호 -->
+						<td th:text="${qna.qnaCode}"></td>
+						
+						<!-- 제목 -->
+						<td>
+							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<!--관리자일 때 잠금게시글 보기-->
+							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
+							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							
+							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
+								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  data-bs-toggle="modal" 
+								  data-bs-target="#lockModal" 
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
+							
+							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
+							<span th:if="${#strings.contains(qna.qnaContent, 'img')}">
+								<i class="bi bi-card-image"></i>
+							</span>
+							
+							<!-- 게시글 잠금표시(자물쇠) -->
+							<span th:if="${qna.qnaLockYesno == 1}">
+								<i class="bi bi-lock"></i>
+							</span>
+						</td>
+						
+						<!-- 닉네임 -->
+						<td th:utext="${qna.memberNick}"></td>
+						
+						<!-- 등록일 -->
+						<td th:utext="${#dates.format(qna.qnaDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+						<!-- 조회수 -->
+						<td th:utext="${qna.qnaReadCount}"></td>
+						
+						<!-- 답변여부 -->
+						<td th:utext="${qna.qnaReLev}"></td>
+					</tr>
+				</tbody>
+	
+			</table>
+			</div>
+			<!-- 게시판 메뉴 :  ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨	        
+			-->
+			<div id="qna_menu" class="mx-auto d-flex justify-content-end mt-4" style="width:45vw">
+				 
+				 <a th:href="@{/qna/write.do}" class="btn btn-outline-success me-2" 
+				 	sec:authorize="isAuthenticated()">
+				 	<i class="bi bi-pen"></i>&nbsp;글쓰기
+			 	 </a>	
+			 	 
+			 	 <!-- 게시글 목록 -->
+			 	 <a class="btn btn-outline-success" th:href="@{/admin/qna_list.do}">
+					게시글 목록
+				 </a>			
+			</div>
+	
+			<!-- 페이징 -->
+			<!-- 검색이 아닌 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+	
+						<!--  첫 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{/admin/qna_list.do?currPage=1}" aria-label="Start">
+								<span aria-hidden="true">&Lt;</span>
+						</a></li>
+	
+						<!-- 이전 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<a class="page-link"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.prePage}}"
+							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
+						</a>
+						</li>
+	
+						<!-- 현재 페이지 -->
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/admin/qna_list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>	
+	
+						<!-- 다음 페이지 -->
+						<li class="page-item">
+							<!-- <a class="page-link" th:href="@{'/qna_board/list.do?currPage='+${pageVO.currPage+1 > pageVO.endPage ? pageVO.endPage : pageVO.currPage+1}}" aria-label="Next"> -->
+							<a class="page-link"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.nextPage}}"
+							aria-label="Next"> <span aria-hidden="true">&gt;</span>
+						</a>
+						</li>
+	
+						<!-- 마지막 페이지 -->
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/admin/qna_list.do?currPage='+${pageVO.endPage}}"
+							aria-label="End"> <span aria-hidden="true">&Gt;</span>
+							
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!--// 검색이 아닌 경우 -->
+			
+			<!-- 검색인 경우 -->	
+			<div class="d-flex justify-content-center mt-4" th:if="${!#strings.isEmpty(searchKey)}">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination">
+				    
+				    <!--  첫 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" 
+				      	 th:href="@{'/admin/qna_searchList.do?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				        <span aria-hidden="true">&Lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 이전 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				        <span aria-hidden="true">&lt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 현재 페이지 -->
+				    <li class="page-item active">
+				    	<a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+			    	</li>
+				    
+				    <!-- 다음 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				        <span aria-hidden="true">&gt;</span>
+				      </a>
+				    </li>
+				    
+				    <!-- 마지막 페이지 -->
+				    <li class="page-item">
+				      <a class="page-link" th:href="@{'/admin/qna_searchList.do?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				        <span aria-hidden="true">&Gt;</span>
+				      </a>
+				    </li>
+				  </ul>
+				</nav>
+			</div>	
+			<!--// 검색인 경우 -->	
+			<!--// 페이징 -->
+			
+			<!-- 검색 -->
+			<form th:action="@{/admin/qna_searchList.do}" method="get">
+			
+				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
+				
+					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
+					<div class="col-3"></div>
+					
+					<div id="select_pnl" class="col-2 pe-0">
+						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
+						  <option selected value="qnaTitle">글제목</option>
+						  <option value="qnaContent">내용</option>
+						  <option value="memberNick">작성자</option>
+						</select>
+					</div>
+					
+					<div id="search_pnl" class="col-4">
+						<input type="text" class="form-control" id="searchWord" name="searchWord" />
+					</div>
+					
+					<div id="search_btn_pnl" class="col-1 ps-0">
+						<button id="search_btn" class="btn btn-outline-success">
+							<!-- bootstrap icon
+							     : https://icons.getbootstrap.com/icons/search/  -->
+							<i class="bi bi-search"></i>
+						</button>
+					
+					</div>
+					
+				</div>
+				
+			</form>
+			<!--// 검색 -->
+			
+		</div><!-- // container -->
+	</div>
+		
+			<!-- Back to Top -->
+   			<a href="#" class="btn btn-lg btn-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+			
+			<script th:src="@{/lib/wow/wow.min.js}"></script>
+		    <script th:src="@{/lib/easing/easing.min.js}"></script>
+		    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+		    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+		    <!-- Template Javascript -->
+		    <script th:src="@{/js/main.js}"></script>
+		
+		</div>
+		<!--// content -->	
+		
+	</div>
+	<!--// layout -->	
+	
+</body>
+</html>

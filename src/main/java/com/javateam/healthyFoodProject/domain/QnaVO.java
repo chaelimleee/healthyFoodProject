@@ -381,8 +381,15 @@ CREATE TABLE qna_tbl (
 		this.qnaReRef = qnaReRef;
 	}
 
-	public int getQnaReLev() {
-		return qnaReLev;
+	//0508 답변
+	public String getQnaReLev() {
+		String result = "";
+		if(qnaReLev == 0) {
+			result = "답변준비중";
+		}else {
+			result = "답변완료";
+		}
+		return result;
 	}
 
 	public void setQnaReLev(int qnaReLev) {

@@ -6,71 +6,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
-
 <title>login box</title>
 
+<link rel="stylesheet" th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{'/css/login.css'}"/>
+
 <style>
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-
-
-#submit_box{
-	margin-top : 60px; 
-}
-
-
-
-/* input{
-	height : 35px;
-} */
-
-/* #id_box input: focus{
-	border-color:#0982f0;
-    outline: none;
-}
- */
-
+	#submit_box{
+		margin-top : 60px; 
+	}
 </style>
 
-<link th:href="@{'/css/login.css'}" rel="stylesheet" />
+<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script>
+
 <script>
 window.onload = () => {
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
-	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
 }
-
 </script>
 </head>
 <body>
 
-<!-- 0401 leee 수정 완. 근데 아이디 이름 다시 확인해야함. -->
-
 	<!-- layout -->
 	<div layout:fragment="content" class="main_sect_pnl">
 	
+	<!-- content_sect_pnl -->
 	<div class="content_sect_pnl">
-	
-		<!-- Page Header Start -->
-	    <!-- <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">로그인</h1>
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">로그인</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
 	
 		<!-- Product Start -->
 	    <div class="container-xxl py-2">
@@ -86,11 +54,7 @@ window.onload = () => {
 	                </div>
 	            </div>
 
-				<script th:inline="javascript" th:if="${error == 'true'}">
-			 	<!--
-					alert([[${msg.message}]]);
-			 	//-->
-				</script>
+				<!-- <script th:inline="javascript" th:if="${error == 'true'}"></script> -->
 
 				<div class="w-100 d-flex justify-content-center align-items-center">
 	
@@ -113,7 +77,6 @@ window.onload = () => {
 									5) 최대 입력 글자수 : 20
 									6) 내부 라벨(초기값) : 아이디
 								-->
-								<!-- <label for="inputEmail" class="form-label" style="margin-top:20px; ">Email</label> -->
 								
 								<!-- 로그인 아이콘  -->
 								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-person" viewBox="0 0 16 16">
@@ -142,9 +105,6 @@ window.onload = () => {
 				               5) 최대 입력 글자수 : 20
 				               6) 내부 라벨(초기값) : 패쓰워드
 				           -->
-								<!-- <label for="inputPassword" class="form-label" style="margin-top:20px; ">pawwword</label> -->
-								<!-- <input type="password" id="password" name="password" size="30" maxlength="20" placeholder="패쓰워드"> -->
-								
 								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#9dbfa7" class="bi bi-key" viewBox="0 0 16 16">
 								  <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
 								  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -159,7 +119,7 @@ window.onload = () => {
 							</div>
 							<!-- 3. 패쓰워드 필드 섹션 끝 -->
 							
-							<!-- 구분선 0412 leee  -->
+							<!-- 구분선 -->
 							<hr style="width : 25em; margin:30px auto;">
 			
 							<!-- 4. 전송 버튼 필드 섹션 시작 -->
@@ -172,7 +132,7 @@ window.onload = () => {
 					               2) id : submit_btn
 					               3) 내부 라벨 : 로그인
 					           -->
-								<input type="submit" id="login_btn" value="로그인">
+								<input type="submit" id="login_btn" value="로그인" onclick="location.href='/'">
 								
 							</div>
 							<!-- 4. 전송 버튼 필드 섹션 끝 -->
@@ -180,34 +140,26 @@ window.onload = () => {
 							<!-- 5. 전송 버튼 필드 섹션 시작 -->
 							<div id="join_box">
 			
-						<!-- 
-			               5. 회원가입 버튼
-			
-			               1) 타입 : 버튼
-			               2) id : join_btn
-			               3) 내부 라벨 : 회원가입
-			           -->
+								<!-- 
+					               5. 회원가입 버튼
+					
+					               1) 타입 : 버튼
+					               2) id : join_btn
+					               3) 내부 라벨 : 회원가입
+					             -->
+					             
 								<!-- 회원 가입 링크 -->
 								<input type="button" id="join_btn" value="회원가입" 
 									   onclick="location.href='/healthyFoodProject/member/join.do'"/>
 							</div>
 							<!-- 5. 전송 버튼 필드 섹션 끝 -->
-			
 						</form>
-						
-						<!-- <div class="naverLogin">
-						
-							<img th:src="@{/img/naver/btnG_naver2.png}" style="width:60px;height:60px; float : left; margin : 10px 10px 100px 100px;">
-						
-						</div> -->
-						
-			
 					</div>
 					<!-- 1. 로그인 박스 끝 -->
 				</div>
-			</div>
-		</div> 
-	</div>
+			</div><!-- conteiner -->
+		</div> <!-- Product End -->
+	</div> <!--// content_sect_pnl  -->
 </div> <!--// layout -->
  
 </body>

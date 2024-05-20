@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class PageVO {
 	
-	/** 시작 페이지 */
+	/** 화면에 표시되는 시작 페이지 */
 	private int startPage;
 	
-	/** 마지막 페이지 */
+	/** 화면에 표시되는 마지막 페이지 */
 	private int endPage;
 	
 	/** 총 페이지 수 */
@@ -32,6 +32,11 @@ public class PageVO {
 	
 	public static int getStartPage(int currPage, int limit) {
 		return  (((int) ((double)currPage / limit + 0.9)) - 1) * limit + 1;
+	}
+	
+	//0519 화면에 표시되는 마지막 페이지 
+	public static int getEndPage(int currPage, int limit) {
+		return  (((int) ((double)currPage / limit + 0.9))) * limit ;
 	}
 		
 } //

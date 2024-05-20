@@ -157,10 +157,10 @@ window.onload = function() {
 	                                </div>
 	                                <div class="d-flex border-top">
 	                                    <small class="w-50 text-center border-end py-2">
-	                                        <a class="text-body"  th:href="@{'/food/view.do/'+ ${food.foodCode}}"><i class="fa fa-eye text-primary me-2"></i>레시피 보러가기</a>
+	                                        <a class="text-body"  th:href="@{'/food/view.do/'+ ${food.foodCode}}"><i class="fa fa-eye text-success me-2"></i>레시피 보러가기</a>
 	                                    </small>
 	                                    <small class="w-50 text-center py-2">
-	                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>좋아요</a>
+	                                        <a class="text-body" href=""><i class="bi bi-heart-fill text-success me-2"></i>좋아요</a>
 	                                    </small>
 	                                </div>
 	                            </div>
@@ -199,7 +199,7 @@ window.onload = function() {
 	
 						<!-- 이전 페이지 -->
 						<li class="page-item">
-							<!-- <a class="page-link" th:href="@{'/food/list.do?currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
+							<!-- <a class="page-link" th:href="@{'/food/list.do&currPage='+${pageVO.currPage-1 < 1 ? 1 : pageVO.currPage-1}}" aria-label="Previous"> -->
 							<a class="page-link"
 							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.prePage}}"
 							aria-label="Previous"> <span aria-hidden="true">&lt;</span>
@@ -207,9 +207,10 @@ window.onload = function() {
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<li class="page-item active"><a class="page-link"
-							th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li>
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
@@ -237,33 +238,33 @@ window.onload = function() {
 				    <!--  첫 페이지 -->
 				    <li class="page-item">
 				      <a class="page-link" 
-				      	 th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
+				      	 th:href="@{'/food/sasang/searchList.do/'+ ${sasangType} + '?foodType=' + ${foodType} + '&currPage=1&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Start">
 				        <span aria-hidden="true">&Lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 이전 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
+				      <a class="page-link" th:href="@{'/food/sasang/searchList.do/'+ ${sasangType} + '?foodType=' + ${foodType} + '&currPage='+${pageVO.prePage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Previous">
 				        <span aria-hidden="true">&lt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 현재 페이지 -->
 				    <li class="page-item active">
-				    	<a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
+				    	<a class="page-link" th:href="@{'/food/sasang/searchList.do/'+ ${sasangType} + '?foodType=' + ${foodType} + '&currPage='+${pageVO.currPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" th:utext="${pageVO.currPage}"></a>
 			    	</li>
 				    
 				    <!-- 다음 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
+				      <a class="page-link" th:href="@{'/food/sasang/searchList.do/'+ ${sasangType} + '?foodType=' + ${foodType} + '&currPage='+${pageVO.nextPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="Next">
 				        <span aria-hidden="true">&gt;</span>
 				      </a>
 				    </li>
 				    
 				    <!-- 마지막 페이지 -->
 				    <li class="page-item">
-				      <a class="page-link" th:href="@{'/sasang/list.do/'+ ${sasangType} + '?currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
+				      <a class="page-link" th:href="@{'/food/sasang/searchList.do/'+ ${sasangType} + '?foodType=' + ${foodType} + '&currPage='+${pageVO.endPage}+'&searchKey='+${searchKey}+'&searchWord='+${searchWord}}" aria-label="End">
 				        <span aria-hidden="true">&Gt;</span>
 				      </a>
 				    </li>
@@ -275,35 +276,54 @@ window.onload = function() {
 			
 			<!-- 검색 -->
 			<!-- 간격 : mt-2 mb-5, 줄 단위 배치 : row, 레이아웃 배분 비율 : ex) col-3 (3/12) -->
-			<form th:action="@{'/sasang/searchList.do/' + ${sasangType} + '/'}" method="get">
+			<form th:action="@{'/food/sasang/searchList.do/' + ${sasangType}}" method="get">
 			
 				<div id="search_pnl" class="mx-auto row mt-2 mb-5" style="width:50vw">
 				
 					<!-- 게시글 목록 이동에 따른 조치 : 빈 영역 -->
-					<div class="col-3">
-					</div>
-					
-					<div id="select_pnl" class="col-2 pe-0">
-						<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
-						  <option selected value="board_subject">글제목</option>
-						  <option value="board_content">내용</option>
-						  <option value="board_writer">작성자</option>
-						</select>
-					</div>
-					
-					<div id="search_pnl" class="col-4">
-					
-						<input type="text" class="form-control" id="searchWord" name="searchWord" />
-					</div>
-					
-					<div id="search_btn_pnl" class="col-1 ps-0">
-						<button id="search_btn" class="btn btn-outline-success">
-							<!-- bootstrap icon
-							     : https://icons.getbootstrap.com/icons/search/  -->
-							<i class="bi bi-search"></i>
-						</button>
-					
-					</div>
+						<div class="col-3"></div>
+						
+						<div id="foodType_pnl" class="col-2 pe-0">
+							<select class="form-select" id="foodType" name="foodType" aria-label="검색 구분">
+							  <option selected value="0">전체</option>
+							  <option value="3">간식</option>
+							  <option value="4">간단요리</option>
+							  <option value="5">초대요리</option>
+							  <option value="6">채식</option>
+							  <option value="7">한식</option>
+							  <option value="8">양식</option>
+							  <!-- 
+							  <option value="9">일식</option>
+							  <option value="10">중식</option>
+							  <option value="11">퓨전</option>
+							  <option value="13">안주</option> 
+							  -->
+							  <option value="14">베이킹</option>
+							  <option value="15">다이어트</option>
+							  <!-- 
+							  <option value="16">도시락</option>
+							  <option value="17">키토</option> 
+							  -->
+							</select>
+						</div>
+	
+						<div id="searchKey_pnl" class="col-2 pe-0">
+							<select class="form-select" id="searchKey" name="searchKey" aria-label="검색 구분">
+							  <option selected value="foodName">레시피명</option>
+							  <option value="foodIngredient">재료</option>
+							</select>
+						</div>
+						
+						<div id="search_pnl" class="col-4">
+							<input type="text" class="form-control" id="searchWord" name="searchWord" />
+						</div>
+						
+						<div id="search_btn_pnl" class="col-1 ps-0">
+							<button id="search_btn" class="btn btn-outline-success">
+								<i class="bi bi-search"></i>
+							</button>
+						
+						</div>
 					
 				</div>
 				

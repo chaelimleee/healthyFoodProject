@@ -61,6 +61,10 @@ public class QnaReplyRestController {
 			//qnaVO.setQnaReLev(1);
 			
 			log.info("--- result_1 : {}", qnaVO);
+			log.info("--- qnaVO.getQnaReRef() : {}", qnaVO.getQnaReRef());
+			
+			//0508 문의게시판 답변완료로 수정. 
+			qnaService.uadateQnaReLev(qnaVO.getQnaReRef());
 			
 			// 댓글의 현황을 보면서 댓글 시퀀스 결정
 			//0422 song QnaVO-->Optional<QnaVO> (empty체크위해)

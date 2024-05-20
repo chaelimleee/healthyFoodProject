@@ -12,6 +12,7 @@ table{
 
 thead{
 	box-shadow: 4px 4px 10px rgba(0,0,0,0.1); /* 박스에 섀도우 */
+	text-align:center;
 }
 
 /* 테이블 메뉴 */

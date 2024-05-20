@@ -25,6 +25,40 @@
 	  height : 100px;
 	  /* background-color: red; */
 	}
+	
+	@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+/* 
+.inner-div {
+  width : 400px;
+  height : 100px;
+} */
+  /* background-color: red; */
+
+table{
+
+	width : 600px;
+	
+}
+
+td {
+	text-decoration: none; /* 텍스트 링크 밑줄 없애기 */ 
+}
+
+/* 링크 밑줄 없애기. 0418 leee*/
+a { text-decoration-line: none; }
+
+/* 아직 확인하지 않은 글.링크 0418 leee*/
+a:link { color:#000; }
+
+/* 확인 한 글.링크 0418 leee*/
+a:visited { color:#b2bfb6; }
+
+/* 마우스를 올렸을 때 색상.링크 0418 leee*/
+a:hover { color : #86b594; }
+
+/* 페이징 색깔 변경.  */
+.page-item > a { color : #86b594; }
 </style>
 <script>
 //0429 song 패스워드 입력창(모달) 열기
@@ -128,15 +162,15 @@ window.onload = function() {
 		
 			<!-- 인자 현황판 이전(move) :   -->
 			
-			<h4 class="d-flex justify-content-left m-5">
-				<div class='inner-div'> </div>
-				<div class="p-2" style="line-height: 1.5em">1:1 문의게시판<br>
-					전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글
-				</div>	
-			</h4>
+			<figcaption >
+					<div calss="mx-2 mx-auto" style="line-height: 1.5em; font-size : 15px; " >
+						<p class="mx-2 mx-auto" style="width:70vw;">1:1 문의<br>전체 <span style = "color : red;"><b>[[${pageVO.listCount}]]</b></span>개의 글</p>
+						<!-- 0412 leee p 태그 안에 class="mx-2 mx-auto" 이걸 넣어줘야 margin이 적용 됨. div에 해도 소용 없음. -->
+					</div>	
+			</figcaption>
 			
-				
-			<table class="table mx-2 mx-auto" style="width:50vw">
+			<div style="height:500px;"><!-- 0507 글이 없어도 자동 사이즈 줌.  -->
+			<table class="table mx-2 mx-auto" style="width:70vw;">
 				<thead>
 					<tr>	
 						<th>    
@@ -146,12 +180,12 @@ window.onload = function() {
 						<th>제목</th>
 						<th>작성자</th>
 						<th>작성일</th>
-						
 						<!-- 조회수 추가 -->
 						<th>조회수</th>
+						<th>답변여부</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="table-group-divider">
 					<tr th:if="${not #lists.isEmpty(qnaList) && pageVO.listCount > 0}"
 						th:each="qna, st : ${qnaList}">
 						<td>
@@ -160,19 +194,30 @@ window.onload = function() {
 						<td th:text="${qna.qnaCode}"></td>
 						<td>
 							<!--0423 song view.do → qna_view.do  -->
-							
-							<a th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
+							<!-- 인증된 회원/관리자일 때 링크  -->
+							<a  sec:authorize="isAuthenticated()"
+								th:if="${qna.qnaLockYesno == 0}" th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" 
+								th:utext="${qna.qnaTitle}"></a>
 							
 							<!--관리자일 때 잠금게시글 보기-->
 							<a sec:authorize="hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" 
 							   th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}" th:utext="${qna.qnaTitle}"></a>
-							
+
+							<!-- 잠금걸린 글 제목만 누구나 확인 가능./ 링크는 인증된 사람만 연결됨. -->
+							<span sec:authorize="isAnonymous()" th:if="${qna.qnaLockYesno == 1}" th:utext="${qna.qnaTitle}"></span>
+
+							<!-- 잠금해제된 글 제목/링크 누구나 확인 가능./ 링크는 인증된 사람만 연결됨. -->
+							<a sec:authorize="isAnonymous()" th:if="${qna.qnaLockYesno == 0}"
+								  th:href="@{'/qna/qna_view.do/'+ ${qna.qnaCode} + '/yes'}"  
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
 							
 							<a sec:authorize="hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')" th:if="${qna.qnaLockYesno == 1}" th:id="'qnaLockCode_'+ ${qna.qnaCode} + '/no'" 
-								  href="#"  th:attr="onclick=|openModal('${qna.qnaCode}')|" 
+								  href="#" th:attr="onclick=|openModal('${qna.qnaCode}')|" 
 								  data-bs-toggle="modal" 
 								  data-bs-target="#lockModal" 
-								  th:utext="${qna.qnaTitle}"></a>
+								  th:utext="${qna.qnaTitle}"
+								  style="text-decoration: none;"></a>
 							
 							<!--song 0412 링크를 view.do->qna_view.do로 변경 애매함& 주소에 맞는 폴더 만들어야 할 듯-->
 							<!-- 글 내용 중 삽입 이미지 존재 여부 -->
@@ -192,11 +237,13 @@ window.onload = function() {
 						
 						<!-- 조회수 추가 -->
 						<td th:utext="${qna.qnaReadCount}"></td>
+
+						<td th:utext="${qna.qnaReLev}"></td>
 					</tr>
 				</tbody>
 	
 			</table>
-			
+			</div>
 			<!-- 게시판 메뉴 :
 		         ex) 관리자 모드 : 체크박스 제어에 따른 관리자 모드에서의 메뉴(삭제 등). 관리자 등급이어야 표기됨		         
 			-->
@@ -235,9 +282,13 @@ window.onload = function() {
 						</li>
 	
 						<!-- 현재 페이지 -->
-						<li class="page-item active"><a class="page-link"
+						<!-- <li class="page-item"><a class="page-link"
 							th:href="@{'/qna/list.do?currPage='+${pageVO.currPage}}"
-							th:utext="${pageVO.currPage}"></a></li>
+							th:utext="${pageVO.currPage}"></a></li> -->
+						<li class="page-item" th:classappend="${num == pageVO.currPage } ? 'active' : '' " 
+							th:each="num : ${#numbers.sequence(startPage, endPage)}">
+ 							<a class="page-link" th:if="${num > 0}" th:href="@{'/qna/list.do?currPage=' + ${num}}" th:text="${num}">1</a>
+ 						</li>	
 	
 						<!-- 다음 페이지 -->
 						<li class="page-item">
@@ -344,7 +395,7 @@ window.onload = function() {
 		</div>
 		
 			<!-- Back to Top -->
-   			<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+   			<a href="#" class="btn btn-lg btn-success btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 			
 			<script th:src="@{/lib/wow/wow.min.js}"></script>
 		    <script th:src="@{/lib/easing/easing.min.js}"></script>

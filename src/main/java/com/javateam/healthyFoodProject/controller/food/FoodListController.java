@@ -54,17 +54,21 @@ public class FoodListController {
 //		Pageable pageable = PageRequest.of(currPage - 1, limit);
 //		foodList = foodService.findAllByOrderByFoodCode();
 		//log.info("foodList 리스트 확인 ==> " + foodList.get(0).toString());
+		
+		// 페이징 방식
+		// 현재 페이지(currPage) 1 ~ 10 이면 화면에 표시되는 페이지가 1~10페이지 표시. 
+		// 현재 페이지(currPage) 11 ~ 20 이면 화면에 표시되는 페이지가 11~20페이지 표시. 
 
 		// 총 페이지 수
 		// int maxPage=(int)((double)listCount/limit+0.95); //0.95를 더해서 올림 처리
 		int maxPage = PageVO.getMaxPage(listCount, limit);
+		
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
-		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
-		//int startPage = PageVO.getStartPage(currPage, limit);
-		int startPage = currPage == 1 ? 1 : PageVO.getStartPage(currPage, limit);//0430 수정. 
+		int startPage = PageVO.getStartPage(currPage, limit/2);//0519 수정.
+		
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
-		int endPage = startPage + 20;
-
+		int endPage = PageVO.getEndPage(currPage, limit/2);//0519 수정.
+		
 		if (endPage > maxPage)
 			endPage = maxPage;
 
@@ -89,6 +93,7 @@ public class FoodListController {
 		// title 0430 레시피
 		model.addAttribute("pageTitle", "건강식 레시피");
 		model.addAttribute("bgImg", "food4.jpg");
+		model.addAttribute("foodType", "0");
 		
 		log.info("foodList end : ");
 

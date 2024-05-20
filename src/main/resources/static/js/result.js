@@ -12,7 +12,7 @@
         var sasangType = localStorage.getItem("sasangType");
         var description = localStorage.getItem("description");
         var healthManagement = localStorage.getItem("healthManagement");
-        var goodFoodList = localStorage.getItem("goodFoodList")
+        //var goodFoodList = localStorage.getItem("goodFoodList")
         var foodRecommend = JSON.parse(localStorage.getItem("foodRecommend"));
 
         // 결과를 HTML에 표시하기
@@ -24,7 +24,7 @@
         document.getElementById("sasangType").textContent = sasangType;
         document.getElementById("description").textContent = description;
         document.getElementById("healthManagement").textContent = healthManagement;
-        document.getElementById("goodFoodList").textContent = goodFoodList;
+        //document.getElementById("goodFoodList").textContent = goodFoodList;
         var foodRecommendList = document.getElementById("foodRecommend");
         foodRecommend.forEach(function(food) {
             var listItem = document.createElement("li");

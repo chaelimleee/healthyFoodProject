@@ -65,6 +65,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 				+ "		 WHERE C.FOOD_CODE = F.FOOD_CODE "
 				+ "		 AND C.FOOD_CATE_CODE > 0  "
 				+ "		 AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :foodIngredient || '%'"
+				+ "      OR F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :foodIngredient || '%' "
 				+ ")", nativeQuery = true)
 	int countByFoodIngredientContainingFoodTypeAll(@Param("foodIngredient") String foodIngredient); 
 	
@@ -79,12 +80,85 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 
 	// 0501 leee 수정 0이 아닐 때 // 재료명으로 검색할 때
 	@Query(value= "SELECT count(*) "
-			+ "FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
-			+ "WHERE C.FOOD_CODE = F.FOOD_CODE "
-			+ "AND C.FOOD_CATE_CODE = :foodType  "
-			+ "AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :foodIngredient || '%'", nativeQuery = true)
+			+ "    FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
+			+ "    WHERE C.FOOD_CODE = F.FOOD_CODE "
+			+ "    AND C.FOOD_CATE_CODE = :foodType  "
+			+ "    AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :foodIngredient || '%' "
+			+ "    OR F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :foodIngredient || '%' ", nativeQuery = true)
 	int countByFoodIngredientContainingAndFoodType(@Param("foodIngredient") String foodIngredient,
 												   @Param("foodType") int foodType); 
+	
+	//=============================================<<사상체질별 검색>>=================================================================//
+	// 0516 사상체질 leee 전체 재료 검색. 
+	@Query(value= "SELECT count(*) "
+				+ "FROM food_tbl f  "
+				+ "WHERE EXISTS (  "
+				+ "             SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+				+ "             FROM SASANG_GOOD_MAIN_TBL s  "
+				+ "             WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+				+ "             and s.sasang_name = :sasangType  "
+				+ ") "
+				+ "and f.food_ingredient_main_inside is not null "
+				+ "AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :foodIngredient || '%' "
+				+ "OR  F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :foodIngredient || '%' ", nativeQuery = true)
+	int countBySasangFoodIngredientContainingFoodTypeAll(@Param("foodIngredient") String foodIngredient,
+															@Param("sasangType") String sasangType); 
+	
+	// 0516 leee 전체  레시피명 검색. 
+	@Query(value= "SELECT count(*) "
+				+ "FROM food_tbl f  "
+				+ "WHERE EXISTS (  "
+				+ "             SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+				+ "             FROM SASANG_GOOD_MAIN_TBL s  "
+				+ "             WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+				+ "             and s.sasang_name = :sasangType  "
+				+ ") "
+				+ "and f.food_ingredient_main_inside is not null "
+				+ "AND  F.FOOD_NAME LIKE '%' || :foodName || '%' ", nativeQuery = true)
+	int countBySasangFoodNameContainingFoodTypeAll(@Param("foodName") String foodName,
+													@Param("sasangType") String sasangType); 
+	
+	// 0516 leee 수정 0이 아닐 때 // 재료로 검색할 때
+	@Query(value= "SELECT COUNT(*) "
+				+ "FROM FOOD_CATE_CODE_TBL C,  "
+				+ "        ( "
+				+ "        SELECT *   "
+				+ "        FROM food_tbl f   "
+				+ "        WHERE EXISTS (   "
+				+ "                     SELECT s.SASANG_GOOD_INGREDIENT_MAIN   "
+				+ "                     FROM SASANG_GOOD_MAIN_TBL s   "
+				+ "                     WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'    "
+				+ "                     and s.sasang_name = :sasangType   "
+				+ "        ) and f.food_ingredient_main_inside is not null  "
+				+ "AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :foodIngredient || '%' "
+				+ "OR  F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :foodIngredient || '%' "
+				+ ")F "
+				+ "WHERE C.FOOD_CODE = F.FOOD_CODE   "
+				+ "AND C.FOOD_CATE_CODE = :foodType", nativeQuery = true)
+	int countBySasangFoodIngredientContainingAndFoodType(@Param("foodIngredient") String foodIngredient, 
+															@Param("sasangType") String sasangType,
+															@Param("foodType")int foodType); 
+	
+	// 0516 leee 수정 0이 아닐 때 // 레시피명으로 검색할 때
+		@Query(value= "SELECT COUNT(*) "
+					+ "FROM FOOD_CATE_CODE_TBL C,  "
+					+ "        ( "
+					+ "        SELECT *   "
+					+ "        FROM food_tbl f   "
+					+ "        WHERE EXISTS (   "
+					+ "                     SELECT s.SASANG_GOOD_INGREDIENT_MAIN   "
+					+ "                     FROM SASANG_GOOD_MAIN_TBL s   "
+					+ "                     WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'    "
+					+ "                     and s.sasang_name = :sasangType   "
+					+ "        ) and f.food_ingredient_main_inside is not null  "
+					+ "AND F.FOOD_NAME LIKE '%' || :foodName || '%' "
+					+ ")F "
+					+ "WHERE C.FOOD_CODE = F.FOOD_CODE   "
+					+ "AND C.FOOD_CATE_CODE = :foodType", nativeQuery = true)
+	int countBySasangFoodNameContainingAndFoodType(@Param("foodName") String foodName,
+													@Param("sasangType") String sasangType, 
+													@Param("foodType") int foodType); 
+	//=============================================<<///사상체질별 검색>>=================================================================//
 	
 	Page<FoodVO> findByfoodNameLike(String foodName, Pageable pageable); // Like
 	Page<FoodVO> findByfoodNameContaining(String foodName, Pageable pageable); // Containing
@@ -144,6 +218,20 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 				+ ") and f.food_ingredient_main_inside is not null",nativeQuery = true)
 	List<FoodVO> findSasangGoodIngredientMainBySasangName(@Param("sasangName") String sasangName);
 	
+	//0513 사상체질 결과 딜레이 심해서 3개만 보여주기로 함. 
+	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE,"
+			+ "FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE,"
+			+ "FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+			+ "FROM food_tbl f "
+			+ "WHERE EXISTS ( "
+			+ "    SELECT s.SASANG_GOOD_INGREDIENT_MAIN "
+			+ "    FROM SASANG_GOOD_MAIN_TBL s "
+			+ "    WHERE f.food_ingredient_main_inside LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'  "
+			+ "    and s.sasang_name = :sasangName "
+			+ ") and f.food_ingredient_main_inside is not null and rownum <=3 ",nativeQuery = true)
+	List<FoodVO> findSasangGoodIngredientMainBySasangNameResult(@Param("sasangName") String sasangName);
+	
+	// 개수 카운트 // 사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식
 	@Query(value= "SELECT count(*) "
 				+ "FROM food_tbl f "
 				+ "WHERE EXISTS ( "
@@ -173,12 +261,149 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	List<FoodVO> findByFoodTypeAndFoodCateCode(@Param("page") int page,
 			   								   @Param("limit") int limit,
 			   								   @Param("foodCateCode") int foodCateCode);
+
+	//0508 음식유형 이름 가져옴. 
+	@Query(value = "SELECT distinct n.food_cate_name "
+				 + "FROM food_cate_code_tbl C    "
+				 + "JOIN food_cate_name_tbl n ON C.food_cate_code = n.food_cate_code "
+				 + "WHERE C.food_cate_code = :foodCateCode", nativeQuery = true)
+	String findByFoodTypeName(@Param("foodCateCode") int foodCateCode);
 	
 	@Query(value ="SELECT count(*) "
 				+ "FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
 				+ "WHERE C.FOOD_CODE = F.FOOD_CODE  AND C.FOOD_CATE_CODE = :foodType", nativeQuery = true )
 	int countByFoodType(@Param("foodType") int foodType);
 	
+	
+	// 0516 체질 재료 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+			+ "FROM (  "
+			+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page  "
+			+ "        FROM (   "
+			+ "            SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+			+ "			          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	                  F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+			+ "            FROM  "
+			+ "                    ( "
+			+ "                    SELECT *  "
+			+ "                    FROM food_tbl f  "
+			+ "                    WHERE EXISTS (  "
+			+ "                                 SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+			+ "                                 FROM SASANG_GOOD_MAIN_TBL s  "
+			+ "                                 WHERE F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+			+ "                                 AND S.SASANG_NAME = :sasangType  "
+			+ "                	) AND F.FOOD_INGREDIENT_MAIN_INSIDE IS NOT NULL "
+			+ "                   AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :searchWord || '%' "
+			+ "			          OR  F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :searchWord || '%' "
+			+ "            )F "
+			+ "       ) m "
+			+ ") "
+			+ "WHERE page = :page ",nativeQuery = true)
+	List<FoodVO> findSearchSasangGoodIngredientMainBySasangIngredientAndAllPaging(@Param("page") int page,
+																					@Param("limit") int limit,	
+																					@Param("searchWord") String searchWord,
+																					@Param("sasangType") String sasangType);
+	
+	// 0516 체질 음식명 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+			+ "FROM (  "
+			+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page  "
+			+ "        FROM (   "
+			+ "            SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+			+ "			          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	                  F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+			+ "            FROM  "
+			+ "                    ( "
+			+ "                    SELECT *  "
+			+ "                    FROM food_tbl f  "
+			+ "                    WHERE EXISTS (  "
+			+ "                                 SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+			+ "                                 FROM SASANG_GOOD_MAIN_TBL s  "
+			+ "                                 WHERE F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+			+ "                                 AND S.SASANG_NAME = :sasangType  "
+			+ "                	) AND F.FOOD_INGREDIENT_MAIN_INSIDE IS NOT NULL "
+			+ "                   AND F.FOOD_NAME LIKE '%' || :searchWord || '%' "
+			+ "            )F "
+			+ "       ) m "
+			+ ") "
+			+ "WHERE page = :page ",nativeQuery = true)
+	List<FoodVO> findSearchSasangGoodIngredientMainBySasangNameAndAllPaging(@Param("page") int page,
+																			@Param("limit") int limit,	
+																			@Param("searchWord") String searchWord,
+																			@Param("sasangType") String sasangType);
+	
+	// 0516 체질 유형+ 음식명 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+				+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+				+ "FROM (  "
+				+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page  "
+				+ "        FROM (   "
+				+ "            SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+				+ "			          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "	                  F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+				+ "            FROM FOOD_CATE_CODE_TBL C, "
+				+ "                    ( "
+				+ "                    SELECT *  "
+				+ "                    FROM food_tbl f  "
+				+ "                    WHERE EXISTS (  "
+				+ "                                 SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+				+ "                                 FROM SASANG_GOOD_MAIN_TBL s  "
+				+ "                                 WHERE F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+				+ "                                 AND S.SASANG_NAME = :sasangType  "
+				+ "                	) AND F.FOOD_INGREDIENT_MAIN_INSIDE IS NOT NULL "
+				+ "                   AND F.FOOD_NAME LIKE '%' || :searchWord || '%' "
+				+ "            )F "
+				+ "            WHERE C.FOOD_CODE = F.FOOD_CODE  "
+				+ "            AND C.FOOD_CATE_CODE = :foodType "
+				+ "       ) m "
+				+ ") "
+				+ "WHERE page = :page ",nativeQuery = true)
+	List<FoodVO> findSearchSasangGoodIngredientMainBySasangNameAndPaging(@Param("page") int page,
+																	 	 @Param("limit") int limit,	
+																	 	 @Param("searchWord") String searchWord,
+																	 	 @Param("foodType") int foodType,
+																	 	 @Param("sasangType") String sasangType);
+	
+	// 0516 체질 유형+ 재료 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+			+ "FROM (  "
+			+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page  "
+			+ "        FROM (   "
+			+ "            SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+			+ "			          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+			+ "	                  F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+			+ "            FROM FOOD_CATE_CODE_TBL C, "
+			+ "                    ( "
+			+ "                    SELECT *  "
+			+ "                    FROM food_tbl f  "
+			+ "                    WHERE EXISTS (  "
+			+ "                                 SELECT s.SASANG_GOOD_INGREDIENT_MAIN  "
+			+ "                                 FROM SASANG_GOOD_MAIN_TBL s  "
+			+ "                                 WHERE F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || s.SASANG_GOOD_INGREDIENT_MAIN || '%'   "
+			+ "                                 AND S.SASANG_NAME = :sasangType  "
+			+ "                	) AND F.FOOD_INGREDIENT_MAIN_INSIDE IS NOT NULL "
+			+ "                    AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :searchWord || '%' "
+			+ "            		OR  F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :searchWord || '%' "
+			+ "            )F "
+			+ "            WHERE C.FOOD_CODE = F.FOOD_CODE  "
+			+ "            AND C.FOOD_CATE_CODE = :foodType "
+			+ "       ) m "
+			+ ") "
+			+ "WHERE page = :page ",nativeQuery = true)
+	List<FoodVO> findSearchSasangGoodIngredientMainBySasangIngredientAndPaging(@Param("page") int page,
+																	 	 @Param("limit") int limit,	
+																	 	 @Param("searchWord") String searchWord,
+																		 @Param("foodType") int foodType,
+																		 @Param("sasangType") String sasangType);
+	
+	// 사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 				+ "       FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 				+ "       FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE  "
@@ -217,7 +442,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 				+ ") and f.food_ingredient_main_inside is not null",nativeQuery = true)
 	List<FoodVO> findByFoodName(@Param("sasangName") String sasangName);
 
-	//0501 건강식 레시피 검색 페이징. 
+	//0501 건강식 레시피 레시피명 전체 검색 페이징. 
 	@Query(value="SELECT  FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 				+ "       FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 				+ "       FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE  "
@@ -233,7 +458,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	List<FoodVO> findBySeachingFoodNameAndPaging(@Param("page") int page,
 					   							 @Param("limit") int limit,
 					   							 @Param("searchWord") String searchWord);
-	//0501 
+	//0501 건강식 레시피 재료명 전체 검색 페이징. 
 	@Query(value="SELECT  FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 				+ "       FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 				+ "       FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE  "
@@ -243,12 +468,59 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 				+ "			SELECT * "
 				+ "			FROM food_tbl f "
 				+ "			WHERE f.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :searchWord || '%'  "
+				+ "         OR F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :searchWord || '%' "
 				+ "		) m "
 				+ "	) "
 				+ "WHERE page = :page", nativeQuery = true)
 	List<FoodVO> findBySeachingFoodIngredientAndPaging(@Param("page") int page,
 						   							   @Param("limit") int limit,
 						   							   @Param("searchWord") String searchWord);
+	
+	//0501 건강식 레시피 유형 + 레시피명 검색 페이징. //해결
+	@Query(value= "SELECT  FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+				+ "		   FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "		   FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+				+ "FROM ( "
+				+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page "
+				+ "        FROM ( "
+				+ "                SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+				+ "				          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "                       F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+				+ "                FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
+				+ "                WHERE C.FOOD_CODE = F.FOOD_CODE "
+				+ "                AND C.FOOD_CATE_CODE = :foodType "
+				+ "                AND F.FOOD_NAME LIKE '%' || :searchWord || '%' "
+				+ "            ) m "
+				+ ") "
+				+ "WHERE page = :page", nativeQuery = true)
+	List<FoodVO> findBySeachingFoodNameAndFoodTypePaging(@Param("page") int page,
+														 @Param("limit") int limit,
+														 @Param("foodType") int foodType,
+														 @Param("searchWord") String searchWord);
+	
+	//0501 건강식 레시피 유형 + 재료명 검색 페이징. 
+	@Query(value= "SELECT  FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
+				+ "		   FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "		   FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
+				+ "FROM ( "
+				+ "        SELECT m.*, FLOOR((ROWNUM - 1) / :limit + 1) page "
+				+ "        FROM ( "
+				+ "                SELECT F.FOOD_CODE, F.FOOD_NAME, F.FOOD_IMG, F.FOOD_INTRODUCE, "
+				+ "				          F.FOOD_DATE, F.FOOD_DISPLAY, F.FOOD_IMG_ORIGIN, F.FOOD_INGREDIENT_MAIN_INSIDE, "
+				+ "				          F.FOOD_INGREDIENT_MAIN_VIEW, F.FOOD_INGREDIENT_SUB_INSIDE, F.FOOD_INGREDIENT_SUB_VIEW, F.FOOD_RECIPE "
+				+ "                FROM FOOD_CATE_CODE_TBL C, FOOD_TBL F "
+				+ "                WHERE C.FOOD_CODE = F.FOOD_CODE "
+				+ "                AND C.FOOD_CATE_CODE = :foodType "
+				+ "                AND F.FOOD_INGREDIENT_MAIN_INSIDE LIKE '%' || :searchWord || '%' "
+				+ "                OR F.FOOD_INGREDIENT_SUB_INSIDE LIKE '%' || :searchWord || '%' "
+				+ "            ) m   "
+				+ ") "
+				+ "WHERE page = :page "
+				+ "AND ROWNUM <=1 ", nativeQuery = true)
+	List<FoodVO> findBySeachingFoodIngredientAndFoodTypePaging(@Param("page") int page,
+															   @Param("limit") int limit,
+															   @Param("foodType") int foodType,
+															   @Param("searchWord") String searchWord);
 		
 	// 원글에 따른 소속 댓글들 가져오기
 //	List<FoodVO> findByFoodCode(int foodCode); 

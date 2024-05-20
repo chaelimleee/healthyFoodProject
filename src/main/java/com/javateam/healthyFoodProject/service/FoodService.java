@@ -45,9 +45,9 @@ public class FoodService {
 	}
 
 	// 0423 leee 추가함. 
-	public List<FoodVO> findSasangGoodIngredientMainBySasangName(String sasang){
+	public List<FoodVO> findSasangGoodIngredientMainBySasangNameResult(String sasang){
 		log.info("sasang 서비스 이름 확인 1 : " + sasang);
-		return foodDAO.findSasangGoodIngredientMainBySasangName(sasang);
+		return foodDAO.findSasangGoodIngredientMainBySasangNameResult(sasang);
 		
 	}
 
@@ -71,12 +71,17 @@ public class FoodService {
 			return foodDAO.findByFoodTypeAndFoodCateCode(page, limit, foodType);
 		}
 	}
+	
+	//0508 음식유형 이름만 가져옴. 
+	public String findByFoodTypeName(int foodType){
+		return foodDAO.findByFoodTypeName(foodType);
+	}
 
 	// 0501 - PAGING 사상체질 별 음식 보여주기 .
 	public List<FoodVO> findSasangGoodIngredientMainBySasangNameAndPaging(int page, int limit, String sasang){
 		return foodDAO.findSasangGoodIngredientMainBySasangNameAndPaging(page, limit, sasang);
 	}
-
+	
 	// 0423 leee 추가함. 
 	public List<FoodVO> findByFoodIngredientMainInsideIn(List<String> sasang){
 		log.info("sasang 서비스 이름 확인 2: " + sasang);
@@ -131,6 +136,29 @@ public class FoodService {
 		}		
 		
 	}
+	//0516 체질 검색 카운트
+	@Transactional(readOnly = true)
+	public int selectSasangFoodsCountBySearching(String searchKey, String searchWord, int foodType, String sasangType) {
+		
+		if(foodType == 0) {//전체검색
+			
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.countBySasangFoodNameContainingFoodTypeAll(searchWord,sasangType);
+			} else { // 재료명 검색
+				return foodDAO.countBySasangFoodIngredientContainingFoodTypeAll(searchWord,sasangType);
+			}
+			
+		} else {// 카테고리별 검색
+			
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.countBySasangFoodNameContainingAndFoodType(searchWord, sasangType, foodType);
+			} else { // 재료명 검색
+				return foodDAO.countBySasangFoodIngredientContainingAndFoodType(searchWord, sasangType, foodType);
+			}
+			
+		}		
+		
+	}
 
 	@Transactional(readOnly = true)
 	public List<FoodVO> selectFoodsBySearching(int currPage, int limit, String searchKey, String searchWord) {
@@ -153,10 +181,48 @@ public class FoodService {
 	
 	//0501 건강식 레시피 검색 
 	@Transactional(readOnly = true)
-	public List<FoodVO> findBySeachingAndPaging(int currPage, int limit, String searchKey, String searchWord) {
+	public List<FoodVO> findBySeachingAndPaging(int currPage, int limit, String searchKey, String searchWord, int foodType) {
 		
-		return searchKey.equals("foodName") ? foodDAO.findBySeachingFoodNameAndPaging(currPage, limit, searchWord):
-			foodDAO.findBySeachingFoodIngredientAndPaging(currPage, limit, searchWord);
+			if(foodType == 0) {//전체검색
+			
+				if(searchKey.equals("foodName")) {// 레시피명 검색
+					return foodDAO.findBySeachingFoodNameAndPaging(currPage, limit, searchWord);
+				} else { // 재료명 검색
+					return foodDAO.findBySeachingFoodIngredientAndPaging(currPage, limit, searchWord);
+				}
+		
+			} else {// 카테고리별 검색
+		
+				if(searchKey.equals("foodName")) {// 레시피명 검색
+					return foodDAO.findBySeachingFoodNameAndFoodTypePaging(currPage, limit, foodType, searchWord);
+				} else { // 재료명 검색
+					return foodDAO.findBySeachingFoodIngredientAndFoodTypePaging(currPage, limit, foodType, searchWord);
+				}
+				
+			}		
+	}
+	
+	// 0516 사상 레시피 검색 유형+재료
+	@Transactional(readOnly = true)
+	public List<FoodVO> findSearchSasangGoodIngredientMainBySasangIngredientAndPaging(int page, int limit, String searchKey, String searchWord, int foodType, String sasangType) {
+		
+		if(foodType == 0) {//전체검색
+			
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.findSearchSasangGoodIngredientMainBySasangNameAndAllPaging(page, limit, searchWord, sasangType);
+			} else { // 재료명 검색
+				return foodDAO.findSearchSasangGoodIngredientMainBySasangIngredientAndAllPaging(page, limit, searchWord, sasangType);
+			}
+			
+		} else {// 카테고리별 검색
+			
+			if(searchKey.equals("foodName")) {// 레시피명 검색
+				return foodDAO.findSearchSasangGoodIngredientMainBySasangNameAndPaging(page, limit, searchWord, foodType, sasangType);
+			} else { // 재료명 검색
+				return foodDAO.findSearchSasangGoodIngredientMainBySasangIngredientAndPaging(page, limit, searchWord, foodType, sasangType);
+			}
+			
+		}		
 	}
 	
 	// imgUploadPath = /food/image/

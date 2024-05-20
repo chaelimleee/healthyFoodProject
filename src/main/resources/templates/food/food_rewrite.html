@@ -7,16 +7,10 @@
 <meta charset="UTF-8">
 <title>게시글 쓰기</title>
 
-<!-- bootstrap -->
-<!-- <link rel="stylesheet"
-	th:href="@{/bootstrap/5.3.1/css/bootstrap.min.css}" />
-<script th:src="@{/bootstrap/5.3.1/js/bootstrap.min.js}" charset="UTF-8"></script> -->
-
 <!-- summernote lite -->
 <script th:src="@{/jquery/3.7.1/jquery.min.js}"></script>
 
-<link th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}"
-	rel="stylesheet">
+<link rel="stylesheet" th:href="@{/summernote/0.8.18/dist/summernote-lite.min.css}">
 <script th:src="@{/summernote/0.8.18/dist/summernote-lite.min.js}"></script>
 
 <!-- summernote 한글 지원 관련 -->
@@ -27,7 +21,6 @@
 function sendFile(file, el) {
 
   // FormData 객체 
-  // : https://developer.mozilla.org/ko/docs/Web/API/FormData
   let formData = new FormData();
   formData.append('file', file);
   
@@ -47,8 +40,6 @@ function sendFile(file, el) {
     	console.log("이미지 URL : ", url);
     
     	$(el).summernote('editor.insertImage', url);
-    	
-     	// $('#imageBoard').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
      	
     } //
     
@@ -58,10 +49,6 @@ function sendFile(file, el) {
 
 $(function() {
 	
-	// case-1
-	// $('#boardContent').summernote(
-			
-	// case-2
 	$('#boardContentDiv').summernote(
 			{
 				placeholder : '글 내용을 작성하십시오',
@@ -81,14 +68,11 @@ $(function() {
 				// base64 알고리즘으로 암호화된 데이터 스트림(data stream) 형태로 전송됩니다.
 				
 				// - 컨텐츠 내부의 삽입 이미지들 업로드 API Guide
-				// : https://summernote.org/deep-dive/#callbacks			
 				
 				// 참고) 콜백 함수(callback) 
-			    // : https://developer.mozilla.org/ko/docs/Glossary/Callback_function
 				callbacks : {
 					
 					// 참고) onImageUpload 이벤트(event)
-					// : https://summernote.org/deep-dive/#onimageupload
 					
 					onImageUpload: function(files, editor, welEditable) {
 						
@@ -109,7 +93,6 @@ window.onload = function() {
 	
     // 배경그림 변경
 	let titleBg = document.querySelector(".page-header");
-	//titleBg.style.backgroundColor = "red";
 	titleBg.style.backgroundImage = "url('/healthyFoodProject/img/[[${bgImg == null ? "carousel-1.jpg" : bgImg }]]')";
 	titleBg.style.backgroundPosition = "top right";
 	titleBg.style.backgroundRepeat = "no-repeat"; 
@@ -124,14 +107,11 @@ window.onload = function() {
 		boardFile.value = "";
 	} //	
 	
-	// TODO
-	// case-2
 	// 게시글 내용
 	let boardContentDiv= document.getElementById("boardContentDiv");
 	let boardContentHidden = document.getElementById("boardContent");
 	let boardForm = document.getElementById("board_write_frm");
 	
-	// case-2
 	// 폼점검
 	boardForm.onsubmit = function(e) {
 		
@@ -199,108 +179,90 @@ window.onload = function() {
 
 		<div class="content_sect_pnl">
 		
-		<!-- Page Header Start -->
-<!-- 	    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="height: 360px;">
-	        <div class="container">
-	            <h1 class="display-3 mb-3 animated slideInDown">건강식 레시피</h1>
-	            <nav aria-label="breadcrumb animated slideInDown">
-	                <ol class="breadcrumb mb-0">
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-	                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
-	                    <li class="breadcrumb-item text-dark active" aria-current="page">Products</li>
-	                </ol>
-	            </nav>
-	        </div>
-	    </div> -->
+			<!-- Product Start -->
+		    <div class="container-xxl py-2">
+		    
+		        <div class="container">
+		        
+		            <div class="row g-0 gx-5 align-items-end">
+		                <div class="col-lg-6">
+		                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
+		                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
+		                    </div>
+		                </div>
+		            </div>
 	
-		<!-- Product Start -->
-	    <div class="container-xxl py-2">
-	        <div class="container">
-	        
-	            <div class="row g-0 gx-5 align-items-end">
-	                <div class="col-lg-6">
-	                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; ">
-	                        <h1 class="display-6 mb-4"> 레시피 게시글 </h1>
-	                    </div>
-	                </div>
-	            </div>
-
-			<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
-				encType="multipart/form-data" method="post">
-
-				<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
-
-				<table class="table mx-auto mt-4" style="width: 800px;">
-
-					<tr>
-						<th scope="col">작성자</th>
-						<!-- 인증 회원이상 작성할 수 있으므로 작성자는 기본값 자동 완성/읽기전용 처리 -->
-						<td><input type="text" class="form-control" id="memberNick"
-							name="memberNick" th:value="${#authentication.name}" readonly /></td>
-					</tr>
-
-					<tr>
-						<th scope="col">패쓰워드</th>
-						<td><input type="text" class="form-control" id="boardPass"
-							name="boardPass" required 
-							pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" /></td>
-					</tr>
-
-					<tr>
-						<th scope="col">제목</th>
-						<td><input type="text" class="form-control" id="boardSubject"
-							name="boardSubject" required title="글제목을 입력하십시오" /></td>
-					</tr>
-
-					<tr>
-						<th scope="col">내용</th>
-						<td>							
-							<!-- case-1 -->
-							<!-- <textarea class="form-control" id="boardContent"
-								name="boardContent" required></textarea> -->
-														
-							<!-- case-2 -->
-							<div id="boardContentDiv"></div>
-							<input type="hidden" id="boardContent" name="boardContent" />
-							<!-- <input type="text" id="boardContent" name="boardContent" readonly /> -->
-						</td>
-					</tr>
-
-					<tr>
-						<th scope="col">첨부파일</th>
-						<td>
-							<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
-							<div class="row">
-								<div class="col-10">
-									<input class="form-control" type="file" id="boardFile"
-										name="boardFile">
-								</div>	
-								<div class="col-2">
-									<a href="#" class="btn btn-sm btn-outline-success mt-1" id="fileDeleteBtn">첨부 삭제</a>
-								</div>
-							</div>	
-						</td>
-					</tr>
-
-				</table>
-
-				<div class="d-flex justify-content-center">
-					<button type="submit" class="btn btn-outline-success>전송</button>
-					&nbsp;
-					<button type="reset" class="btn btn-outline-success">취소</button>
-				</div>
-
-			</form>
-
-		</div>
-		<!--// content -->
-
-	</div>
-	<!--// layout -->
+					<form id="board_write_frm" th:action="@{'/board/writeProc.do'}"
+						  encType="multipart/form-data" method="post">
+		
+						<h2 class="d-flex justify-content-center">게시글 쓰기</h2>
+		
+						<table class="table mx-auto mt-4" style="width: 800px;">
+		
+							<tr>
+								<th scope="col">작성자</th>
+								<td><input type="text" class="form-control" id="memberNick"
+									name="memberNick" th:value="${#authentication.name}" readonly />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">패쓰워드</th>
+								<td><input type="password" class="form-control" id="boardPass"
+									name="boardPass" required 
+									pattern="(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}" 
+									title="최소 1개의 숫자 혹은 특수 문자를 포함하여 8~20자 사이로 패쓰워드를 입력하십시오" />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">제목</th>
+								<td><input type="text" class="form-control" id="boardSubject"
+									       name="boardSubject" required title="글제목을 입력하십시오" />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">내용</th>
+								<td>							
+									<div id="boardContentDiv"></div>
+									<input type="hidden" id="boardContent" name="boardContent" />
+								</td>
+							</tr>
+		
+							<tr>
+								<th scope="col">첨부파일</th>
+								<td>
+									<!-- 첨부 파일 삭제 기능 추가 : 2024.3 -->
+									<div class="row">
+										<div class="col-10">
+											<input class="form-control" type="file" id="boardFile"
+												   name="boardFile">
+										</div>	
+										<div class="col-2">
+											<a href="#" class="btn btn-sm btn-outline-success mt-1" id="fileDeleteBtn">첨부 삭제</a>
+										</div>
+									</div>	
+								</td>
+							</tr>
+		
+						</table>
+		
+						<div class="d-flex justify-content-center">
+							<button type="submit" class="btn btn-outline-success">전송</button>
+							&nbsp;
+							<button type="reset" class="btn btn-outline-success">취소</button>
+						</div>
+		
+					</form>
 	
-	<!-- summernote test div -->
-	<!-- <div id="imageBoard">
-	</div> -->
-
+				</div><!--// container  -->
+			
+			</div><!--// Product End -->
+			
+		</div><!--// content_sect_pnl -->
+	
+	</div><!--// layout -->
+	
 </body>
 </html>

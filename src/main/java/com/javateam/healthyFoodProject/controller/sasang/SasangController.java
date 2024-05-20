@@ -56,6 +56,9 @@ public class SasangController {
 	@Autowired
 	FoodService foodService;
 	
+	@Autowired
+	MemberService memberService;
+	
 	/**
 	 * 0412 leee 사상체질 진단 페이지 이동 
 	 * @param model
@@ -93,9 +96,29 @@ public class SasangController {
 		
 		log.info("sasang 결과 페이지");
 		
+		// 0516 leee 세션에서 가져옴. 아이디를. 
+		Object principal = SecurityContextHolder.getContext()
+											.getAuthentication()
+											.getPrincipal();
+		
+		CustomUser customUser = (CustomUser)principal;
+		log.info("principal : {}", principal);
+		log.info("id : {}", customUser.getUsername()); // 로그인 아이디
+		
+		String id = customUser.getUsername();
+		
+		MemberDTO memberDTO = memberService.selectMember(id);
+		memberDTO.setMemberSasang(sasang);
+		//String email = memberDTO.getMemberEmail();
+		log.info("memberDTO 확인>> "+memberDTO.getMemberEmail());
+		
+		
+		//0516 체질 db저장 leee
+		memberService.updateMemberSasang(memberDTO);
+		
 		//0424 leee 추가 추천 레시피 뜨게 함. 
 		List<FoodVO> sasangFoodListName = new ArrayList<>();
-		sasangFoodListName = foodService.findSasangGoodIngredientMainBySasangName(sasang);
+		sasangFoodListName = foodService.findSasangGoodIngredientMainBySasangNameResult(sasang);
 		
 		//log.info("sasang 재료 잘 나오는지 확인 >> " + sasangFoodListName.get(0).toString());
 		

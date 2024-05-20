@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("board")
+@RequestMapping({"board","qna"}) //0515 song /qna/download, /board/download 등과 공유하기 위함 
 @Slf4j
 public class FileDownloadController {
 
-	@Value("${fileupload.path}")
+	@Value("${fileUpload.path}")
 	private String uploadPath;
 	
 	private String getBrowser(HttpServletRequest request) {

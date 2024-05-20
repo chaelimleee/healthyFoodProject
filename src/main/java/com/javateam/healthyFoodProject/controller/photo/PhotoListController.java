@@ -27,7 +27,7 @@ public class PhotoListController {
 
 	@GetMapping("/list.do")
 	public String list(@RequestParam(value = "currPage", defaultValue = "1") int currPage,
-			@RequestParam(value = "limit", defaultValue = "10") int limit,
+			@RequestParam(value = "limit", defaultValue = "20") int limit,
 			Model model) {
 
 		PhotoVO photovo = new PhotoVO();
@@ -118,7 +118,7 @@ public class PhotoListController {
 		int maxPage = PageVO.getMaxPage(listCount, limit);
 		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21,...)
 		// int startPage = (((int) ((double)currPage / 10 + 0.9)) - 1) * 10 + 1;
-		int startPage = PageVO.getStartPage(currPage, limit);
+		int startPage = 1;
 		// 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30, ...)
 		int endPage = startPage + 10;
 		log.info("maxPage ==> "+ maxPage);
@@ -141,6 +141,10 @@ public class PhotoListController {
 		model.addAttribute("listCount", listCount);
 //		model.addAttribute("selectImg", selectImg);
 //		log.info("포토 보드 번호 >>>" + selectImg);
+		
+		// 0404 leee 페이지네이션 위해서 현재 페이지에 보여줄 시작 페이지, 마지막 페이지 list.html에 보냄
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
 		
 		// title 0430 포토 커뮤니티
 		model.addAttribute("pageTitle", "커뮤니티");

@@ -29,7 +29,8 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 	List<BoardVO> findByBoardOrigin(int boardOrigin);
 
 	BoardVO findById(int boardCode);
-	
+
+	int countByMemberEmailLike(String memberEmail); // Like
 	int countByboardTitleLike(String boardTitle); // Like
 	int countByboardTitleContaining(String boardTitle); // Containing
 	//0425 song boardContent (LONG데이터 타입) like검색 불능 패치
@@ -54,20 +55,38 @@ public interface BoardDAO extends PagingAndSortingRepository<BoardVO, Integer>{
 				 + "             SELECT * "
 				 + "			 FROM board_tbl "
 				 + "			 WHERE contains(board_content, '%' || :boardContent || '%') > 0 "
+				 + "             AND board_origin = 0 "
 				 + "             ORDER BY board_code DESC "
 				 + "           ) m  "
 				 + "      )  "
-				 + "WHERE page = :page", nativeQuery = true)
+				 + "WHERE page = :page ", nativeQuery = true)
 //	0425 song List<BoardVO> findByBoardContentContaining(@Param("boardContent") String boardContent, @Param("page")int page, @Param("limit") int limit);
-	List<BoardVO> findByBoardContentContaining(@Param("boardContent") String boardContent, @Param("page") int page, @Param("limit") int limit);
+	List<BoardVO> findByBoardContentContaining(@Param("boardContent") String boardContent, 
+											   @Param("page") int page, 
+											   @Param("limit") int limit);
 	
 	Page<BoardVO> findByMemberNickContaining(String memberNick, Pageable pageable);//0424 song memberEmail->memberNick
+	
+	//0507 추가 //0514 유사검색기능 보완(like ex.'촉촉한맛' 검색말고 '촉촉'으로 검색)
+	//findByFirstnameContaining
+	//Page<BoardVO> findByMemberNickAndBoardOrigin(String memberNick, Pageable pageable, int boardOrigin);//0424 song memberEmail->memberNick
+	Page<BoardVO> findByMemberNickContainingAndBoardOrigin(String memberNick, Pageable pageable, int boardOrigin);
+	//0424 song memberEmail->memberNick
+	//0514 song Containing 포함
 	
 	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
 	long countByBoardOrigin(int boardOrigin);
 	
+	// 댓글 제외한 원글들만의 게시글 수 : boardReSeq = 0
+	//  0507 내가쓴 글 카운트
+	long countByBoardOriginAndMemberEmail(int boardOrigin, String memberEmail);
+	
 	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
 	Page<BoardVO> findByBoardOrigin(int boardOrigin, Pageable pageable); 
+	
+	// 댓글 제외한 원글들만의 게시글들만 가져오기(페이징) : boardReSeq = 0
+	//0507 내가 쓴 글 만 보이도록
+	Page<BoardVO> findByBoardOriginAndMemberEmailLike(int boardOrigin, Pageable pageable, String memberEmail); 
 	
 	// 게시글 조회수 갱신
 	@Modifying

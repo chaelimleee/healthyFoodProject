@@ -108,7 +108,7 @@ public class BoardService {
 		return searchKey.equals("boardTitle") ? boardDAO.findByboardTitleContaining(searchWord, pageable).getContent() :
 			   //searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, pageable).getContent() : 
 			   searchKey.equals("boardContent") ? boardDAO.findByBoardContentContaining(searchWord, currPage, limit) : 
-			   boardDAO.findByMemberNickContaining(searchWord, pageable).getContent();
+			   boardDAO.findByMemberNickContainingAndBoardOrigin(searchWord, pageable, 0).getContent();
 	}
 	
 	// imgUploadPath = /board/image/
@@ -192,12 +192,28 @@ public class BoardService {
 		return (int)boardDAO.countByBoardOrigin(0); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
+	//0507 멤버이메일에 해당하는 게시글의 개수. 
+	@Transactional(readOnly = true)
+	public int selectBoardsCountMemberEmail(String memberEmail) {
+		
+		return (int)boardDAO.countByBoardOriginAndMemberEmail(0, memberEmail); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+	} //
+
 	@Transactional(readOnly = true)
 	public List<BoardVO> selectBoardsByPagingWithoutReplies(int currPage, int limit) {
 				
 		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
 		// return boardDAO.findAll(pageable).getContent();
 		return boardDAO.findByBoardOrigin(0, pageable).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
+	} //
+
+	//내가 쓴 글만 조회 .0506
+	@Transactional(readOnly = true)
+	public List<BoardVO> selectBoardsByPagingWithoutMemberEmail(int currPage, int limit , String memberEmail) {
+		
+		Pageable pageable = PageRequest.of(currPage-1, limit, Sort.by(Direction.DESC, "boardCode"));
+		// return boardDAO.findAll(pageable).getContent();
+		return boardDAO.findByBoardOriginAndMemberEmailLike(0, pageable, memberEmail).getContent(); // (댓글 아닌)원글만 추출 : board_re_ref = 0
 	} //
 
 	@Transactional(rollbackFor = Exception.class)

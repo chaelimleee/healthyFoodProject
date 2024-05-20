@@ -112,6 +112,7 @@ public class MemberController {
 		String id = customUser.getUsername();
 		
 		MemberDTO memberDTO = memberService.selectMember(id);
+		log.info("memberDTO 확인>> "+memberDTO);
 		
 		if (memberDTO == null) {
 			// 에러 처리

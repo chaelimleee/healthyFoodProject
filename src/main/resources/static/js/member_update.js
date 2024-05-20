@@ -585,7 +585,7 @@ window.onload = function(e) {
             if (mobileCheckFlag == false) {
 
                 mobileCheckFlag = isCheckFldValid(mobileFld,
-                        /^010-\d{4}-\d{4}$/,
+                        /^010\d{4}\d{4}$/,
                         mobileFld.value, 
                         mobileFldErrPnl,
                         "회원 연락처(휴대폰)를 제시된 예와 같이 작성해주세요.");

@@ -26,7 +26,7 @@ public class BoardListController {
 
 	@GetMapping("list.do")
 	public String list(@RequestParam(value = "currPage", defaultValue = "1") int currPage,
-			@RequestParam(value = "limit", defaultValue = "20") int limit,
+			@RequestParam(value = "limit", defaultValue = "10") int limit,
 			Model model) {
 
 		log.info("게시글 목록");

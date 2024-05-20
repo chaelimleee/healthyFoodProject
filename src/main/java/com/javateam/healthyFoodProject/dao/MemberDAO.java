@@ -53,6 +53,7 @@ public class MemberDAO {
 //		sqlSession.insert("mapper.Member.insertMemberSasang", sasang);
 //	}
 	
+	//0516 사상체질 dB저장 수정
 	public void updateMemberSasang(MemberDTO memberDTO) {
 		sqlSession.insert("mapper.Member.updateMemberSasang", memberDTO);
 	}

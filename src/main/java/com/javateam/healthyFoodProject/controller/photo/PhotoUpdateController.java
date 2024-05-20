@@ -57,7 +57,7 @@ public class PhotoUpdateController {
 		session.setAttribute("boardUpdateSess", photoVO);
 		// }
 
-		log.info("PhotoVO : {}", photoVO);
+		log.info("PhotoVO 확인확인 : {}", photoVO);
 		model.addAttribute("board", photoVO);
 		return "/photo_board/photo_update"; // 0430
 	} //

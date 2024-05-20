@@ -16,7 +16,11 @@ import com.javateam.healthyFoodProject.domain.PageVO;
 import com.javateam.healthyFoodProject.service.FoodService;
 
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * 건강식 레시피 검색. 
+ * @author cofla
+ *
+ */
 @Controller
 @RequestMapping("food")
 @Slf4j
@@ -25,6 +29,12 @@ public class FoodSearchController {
 	@Autowired
 	FoodService foodService;
 
+	/**
+	 * @param foodType 푸드타입 번호를 가져옴.
+	 * @param searchKey 검색할 목록
+	 * @param searchWord 검색할 키워드
+	 * @return
+	 */
 	@GetMapping("searchList.do")
 	public String list(@RequestParam("foodType") int foodType,
 					   @RequestParam(value="currPage", defaultValue="1") int currPage,
@@ -43,7 +53,7 @@ public class FoodSearchController {
 		// 총 "검색" 게시글 수
 		int listCount = foodService.selectFoodsCountBySearching(searchKey, searchWord.trim(), foodType);
 		
-		foodList = foodService.findBySeachingAndPaging(currPage, limit, searchKey, searchWord.trim());	
+		foodList = foodService.findBySeachingAndPaging(currPage, limit, searchKey, searchWord.trim(), foodType);	
 		log.info("foodList사이즈 확인 : " + foodList.size());
 		
 		// 총 페이지 수
