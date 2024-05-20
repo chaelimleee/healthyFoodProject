@@ -136,7 +136,7 @@ public class FoodService {
 		}		
 		
 	}
-	//0516 체질 검색 카운트
+	// 체질 검색 카운트
 	@Transactional(readOnly = true)
 	public int selectSasangFoodsCountBySearching(String searchKey, String searchWord, int foodType, String sasangType) {
 		
@@ -202,7 +202,7 @@ public class FoodService {
 			}		
 	}
 	
-	// 0516 사상 레시피 검색 유형+재료
+	// 사상 레시피 검색 유형+재료
 	@Transactional(readOnly = true)
 	public List<FoodVO> findSearchSasangGoodIngredientMainBySasangIngredientAndPaging(int page, int limit, String searchKey, String searchWord, int foodType, String sasangType) {
 		

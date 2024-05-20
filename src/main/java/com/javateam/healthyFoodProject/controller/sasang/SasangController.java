@@ -96,7 +96,6 @@ public class SasangController {
 		
 		log.info("sasang 결과 페이지");
 		
-		// 0516 leee 세션에서 가져옴. 아이디를. 
 		Object principal = SecurityContextHolder.getContext()
 											.getAuthentication()
 											.getPrincipal();
@@ -113,7 +112,6 @@ public class SasangController {
 		log.info("memberDTO 확인>> "+memberDTO.getMemberEmail());
 		
 		
-		//0516 체질 db저장 leee
 		memberService.updateMemberSasang(memberDTO);
 		
 		//0424 leee 추가 추천 레시피 뜨게 함. 

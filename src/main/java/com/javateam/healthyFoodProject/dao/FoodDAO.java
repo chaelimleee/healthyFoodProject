@@ -89,7 +89,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 												   @Param("foodType") int foodType); 
 	
 	//=============================================<<사상체질별 검색>>=================================================================//
-	// 0516 사상체질 leee 전체 재료 검색. 
+	// 사상체질 leee 전체 재료 검색. 
 	@Query(value= "SELECT count(*) "
 				+ "FROM food_tbl f  "
 				+ "WHERE EXISTS (  "
@@ -104,7 +104,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	int countBySasangFoodIngredientContainingFoodTypeAll(@Param("foodIngredient") String foodIngredient,
 															@Param("sasangType") String sasangType); 
 	
-	// 0516 leee 전체  레시피명 검색. 
+	// leee 전체  레시피명 검색. 
 	@Query(value= "SELECT count(*) "
 				+ "FROM food_tbl f  "
 				+ "WHERE EXISTS (  "
@@ -118,7 +118,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	int countBySasangFoodNameContainingFoodTypeAll(@Param("foodName") String foodName,
 													@Param("sasangType") String sasangType); 
 	
-	// 0516 leee 수정 0이 아닐 때 // 재료로 검색할 때
+	// leee 수정 0이 아닐 때 // 재료로 검색할 때
 	@Query(value= "SELECT COUNT(*) "
 				+ "FROM FOOD_CATE_CODE_TBL C,  "
 				+ "        ( "
@@ -139,7 +139,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 															@Param("sasangType") String sasangType,
 															@Param("foodType")int foodType); 
 	
-	// 0516 leee 수정 0이 아닐 때 // 레시피명으로 검색할 때
+	// leee 수정 0이 아닐 때 // 레시피명으로 검색할 때
 		@Query(value= "SELECT COUNT(*) "
 					+ "FROM FOOD_CATE_CODE_TBL C,  "
 					+ "        ( "
@@ -218,7 +218,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 				+ ") and f.food_ingredient_main_inside is not null",nativeQuery = true)
 	List<FoodVO> findSasangGoodIngredientMainBySasangName(@Param("sasangName") String sasangName);
 	
-	//0513 사상체질 결과 딜레이 심해서 3개만 보여주기로 함. 
+	// 사상체질 결과 딜레이 심해서 3개만 보여주기로 함. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE,"
 			+ "FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE,"
 			+ "FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
@@ -275,7 +275,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 	int countByFoodType(@Param("foodType") int foodType);
 	
 	
-	// 0516 체질 재료 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	// 체질 재료 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
@@ -306,7 +306,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 																					@Param("searchWord") String searchWord,
 																					@Param("sasangType") String sasangType);
 	
-	// 0516 체질 음식명 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	// 체질 음식명 전체 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
@@ -336,7 +336,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 																			@Param("searchWord") String searchWord,
 																			@Param("sasangType") String sasangType);
 	
-	// 0516 체질 유형+ 음식명 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	// 체질 유형+ 음식명 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 				+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 				+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
@@ -369,7 +369,7 @@ public interface FoodDAO extends PagingAndSortingRepository<FoodVO, Integer>{
 																	 	 @Param("foodType") int foodType,
 																	 	 @Param("sasangType") String sasangType);
 	
-	// 0516 체질 유형+ 재료 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
+	// 체질 유형+ 재료 검색 ///사상체질의 좋은 주 재료를 찾아서 푸드테이블에서 주재료에 해당하면서 null이 아닌 음식 찾음. 
 	@Query(value= "SELECT FOOD_CODE, FOOD_NAME, FOOD_IMG, FOOD_INTRODUCE, "
 			+ "	      FOOD_DATE, FOOD_DISPLAY, FOOD_IMG_ORIGIN, FOOD_INGREDIENT_MAIN_INSIDE, "
 			+ "	      FOOD_INGREDIENT_MAIN_VIEW, FOOD_INGREDIENT_SUB_INSIDE, FOOD_INGREDIENT_SUB_VIEW, FOOD_RECIPE "
